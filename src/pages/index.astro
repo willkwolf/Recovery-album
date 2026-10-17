@@ -6,211 +6,146 @@ const sections = SONG_SECTIONS;
 ---
 
 <Layout
-  title="RECOVERY // TIMELINE STUDIO — Single 01: Backup (Live Arranger)"
-  description="Timeline y estudio interactivo estilo Suno para componer y revisar en vivo el single Backup. 6 secciones temporales, bucles extendidos e inspección quirúrgica."
+  title="RECOVERY // Single 01: Backup — Audio Preview"
+  description="Reproductor y mesa de audición minimalista para el single Backup."
 >
-  <div class="terminal-container">
-    <div class="terminal-shell">
-      <!-- Titlebar -->
-      <div class="terminal-top-bar">
-        <div class="terminal-dots">
-          <span class="dot dot-red"></span>
-          <span class="dot dot-amber"></span>
-          <span class="dot dot-green"></span>
+  <div class="studio-container">
+    <!-- Header -->
+    <header class="studio-header">
+      <div class="studio-title-group">
+        <h1 class="studio-title">RECOVERY</h1>
+        <span class="studio-tag">SINGLE 01 // BACKUP</span>
+      </div>
+      <a
+        href="https://github.com/willkwolf/Recovery-album"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="studio-repo-link"
+      >
+        GitHub ↗
+      </a>
+    </header>
+
+    <!-- Transport & Master Deck -->
+    <section class="deck-card">
+      <div class="deck-top">
+        <div class="transport-controls">
+          <button type="button" class="btn btn-primary" id="btn-play" aria-label="Reproducir o pausar">
+            <span id="play-icon">▶</span>
+            <span id="play-label">Play</span>
+          </button>
+          <button type="button" class="btn" id="btn-stop" disabled aria-label="Detener">
+            <span>■</span>
+            <span>Stop</span>
+          </button>
+          <button type="button" class="btn" id="btn-loop-sec" aria-label="Alternar bucle de sección">
+            <span>🔁</span>
+            <span id="loop-label">Loop: Off</span>
+          </button>
         </div>
-        <div class="terminal-sysinfo">
-          <span><span class="pulse-indicator"></span> STUDIO: LIVE SONG TIMELINE</span>
-          <span>ARRANGER: 6 SECCIONES</span>
-          <span>DURACIÓN TOTAL: 05:15</span>
-          <a href="https://github.com/willkwolf/Recovery-album" target="_blank" rel="noopener noreferrer">
-            [ GITHUB_REPO ↗ ]
-          </a>
+
+        <div class="deck-meta">
+          <div class="time-display mono" id="time-display">00:00 / 05:15</div>
+          <div class="active-sec-badge mono" id="active-sec-badge">SEC 01: Fork Loop</div>
+        </div>
+
+        <div class="volume-control">
+          <span class="mono label-muted">VOL</span>
+          <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.8" aria-label="Volumen general" />
+          <span id="vol-val" class="mono label-muted">80%</span>
         </div>
       </div>
 
-      <!-- ASCII Header -->
-      <div class="ascii-banner">
-██████╗ ███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗
-██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝
-██████╔╝█████╗  ██║     ██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ 
-██╔══██╗██╔══╝  ██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝  
-██║  ██║███████╗╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   
->> LIVE SONG TIMELINE STUDIO // SECCIONES EDITABLES ESTILO SUNO &lt;&lt;
+      <!-- Scrubber & Waveform visualizer -->
+      <div class="waveform-container" id="waveform-track" title="Haz clic en cualquier punto para mover el cabezal">
+        <canvas id="waveform-canvas" height="60"></canvas>
+        <div class="playhead" id="playhead"></div>
       </div>
 
-      <div style="padding: 1rem 1rem 0;">
-        <!-- Track & Session Info -->
-        <div class="term-box">
-          <div class="term-box-header">
-            <span>// CORTE EN COMPOSICIÓN: SINGLE 01 — BACKUP (EDICIÓN CONTINUA)</span>
-            <span class="term-badge badge-green">AUDICIÓN EN VIVO SIN POPURRÍ</span>
-          </div>
-          <div class="hud-meta-grid">
-            <div>
-              <span class="hud-label">ESTRUCTURA:</span> <span class="hud-value font-bold">CANCIÓN CONTINUA DE 05:15 MIN</span>
-            </div>
-            <div>
-              <span class="hud-label">CONCEPTO:</span> <span class="hud-value">Bucle Fork 1+ min → Caballo de Troya → Marcha → Flatline → Solo Santana → Techno Rave</span>
-            </div>
-            <div>
-              <span class="hud-label">TIEMPO ACTUAL:</span> <span class="hud-value font-bold" id="time-display">00:00 / 05:15</span>
-            </div>
-            <div>
-              <span class="hud-label">MODO BUCLE:</span> <span class="hud-value" id="loop-mode-label">Canción Completa</span>
-            </div>
-          </div>
+      <!-- Section blocks (Arranger row) -->
+      <div class="sections-strip">
+        {sections.map((sec, idx) => {
+          const widthPct = ((sec.endSec - sec.startSec) / 315) * 100;
+          return (
+            <button
+              type="button"
+              class={`section-block ${idx === 0 ? 'selected' : ''}`}
+              style={`width: ${widthPct}%;`}
+              data-idx={idx}
+              data-start={sec.startSec}
+              data-end={sec.endSec}
+              title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
+            >
+              <span class="sec-num mono">0{idx + 1}</span>
+              <span class="sec-name">{sec.name.split('(')[0]}</span>
+              <span class="sec-range mono">{sec.startTime}</span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Minimalist Section Drawer (Outcome & Feedback tool) -->
+    <section class="drawer-card">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <span class="mono drawer-tag" id="drawer-tag">{sections[0].tag}</span>
+          <h2 class="drawer-name" id="drawer-name">{sections[0].name}</h2>
+          <span class="mono drawer-time" id="drawer-time">{sections[0].startTime} ── {sections[0].endTime}</span>
         </div>
+        <button type="button" class="btn btn-sm btn-active" id="btn-copy-ref" title="Copiar referencia para pegar en Antigravity">
+          <span>📋</span>
+          <span id="copy-ref-text">Copiar ref para Antigravity</span>
+        </button>
+      </div>
 
-        <!-- Master Timeline / Arranger Bar (Suno Style) -->
-        <div class="term-box timeline-box">
-          <div class="term-box-header">
-            <span>// TIMELINE DE LA CANCIÓN (HAZ CLIC EN CUALQUIER SECCIÓN PARA SALTAR O AUDICIONAR)</span>
-            <span class="term-badge badge-cyan" id="transport-badge">ESTADO: DETENIDO</span>
-          </div>
-
-          <!-- Multi-section timeline blocks -->
-          <div class="timeline-track-container" id="timeline-container">
-            <div class="timeline-scrubber" id="timeline-scrubber"></div>
-            <div class="timeline-blocks">
-              {sections.map((sec, idx) => {
-                const widthPercent = ((sec.endSec - sec.startSec) / 315) * 100;
-                return (
-                  <div
-                    class={`timeline-block block-${idx} ${idx === 0 ? 'selected' : ''}`}
-                    style={`width: ${widthPercent}%;`}
-                    data-sec-id={sec.id}
-                    data-start={sec.startSec}
-                    data-end={sec.endSec}
-                    title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
-                  >
-                    <span class="block-label">[{idx + 1}] {sec.startTime}</span>
-                    <span class="block-title">{sec.name.split('(')[0]}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <!-- Master Controls & Scrubber -->
-          <div class="timeline-controls-row">
-            <div class="controls-left">
-              <button type="button" class="term-btn term-btn-primary" id="btn-master-play">
-                <span id="play-glyph">▶</span> <span id="play-text">REPRODUCIR CANCIÓN COMPLETA</span>
-              </button>
-              <button type="button" class="term-btn term-btn-danger" id="btn-master-stop" disabled>
-                ■ DETENER
-              </button>
-              <button type="button" class="term-btn" id="btn-toggle-loop">
-                🔁 <span id="loop-btn-text">BUCLE DE SECCIÓN: OFF</span>
-              </button>
-            </div>
-
-            <div class="controls-right">
-              <span class="hud-label">VOL:</span>
-              <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.8" />
-              <span id="vol-display" class="hud-value">80%</span>
-            </div>
-          </div>
-
-          <!-- Realtime Oscilloscope & Canvas -->
-          <div class="visualizer-wrapper">
-            <canvas id="visualizer-canvas" height="85"></canvas>
-            <div class="visualizer-overlay">
-              <span id="canvas-active-sec">SECCIÓN ACTIVA: [1] Bucle de Suspenso Fork</span>
-              <span id="canvas-telemetry">DSP: 48.0 kHz // WEB AUDIO</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section Inspector & Revision Studio (Suno-style Drawer) -->
-        <div class="term-box section-inspector">
-          <div class="term-box-header">
-            <span>// INSPECTOR DE SECCIÓN (SELECCIONADA EN TIMELINE)</span>
-            <div style="display: flex; gap: 0.5rem;">
-              <button type="button" class="term-btn term-btn-sm" id="btn-play-section">
-                ▶ REPRODUCIR ESTA SECCIÓN
-              </button>
-              <button type="button" class="term-btn term-btn-sm" id="btn-copy-feedback">
-                📋 COPIAR REFERENCIA PARA ANTIGRAVITY
-              </button>
-            </div>
-          </div>
-
-          <div class="inspector-grid">
-            <div class="inspector-meta-col">
-              <div class="inspector-item">
-                <span class="hud-label">TAG DE LA SECCIÓN:</span>
-                <span class="hud-value font-bold" id="insp-tag">{sections[0].tag}</span>
-              </div>
-              <div class="inspector-item">
-                <span class="hud-label">VENTANA DE TIEMPO:</span>
-                <span class="hud-value font-bold" id="insp-window">{sections[0].startTime} ── {sections[0].endTime} (Duración: 1m 15s)</span>
-              </div>
-              <div class="inspector-item">
-                <span class="hud-label">TEMPO / TONALIDAD:</span>
-                <span class="hud-value" id="insp-specs">{sections[0].bpm} BPM // {sections[0].keyCenter}</span>
-              </div>
-              <div class="inspector-item">
-                <span class="hud-label">INSTRUMENTOS ACTIVOS:</span>
-                <span class="hud-value" id="insp-inst">{sections[0].instruments.join(', ')}</span>
-              </div>
-              <div class="inspector-item">
-                <span class="hud-label">ROL DRAMÁTICO:</span>
-                <p class="insp-desc" id="insp-desc">{sections[0].description}</p>
-              </div>
-            </div>
-
-            <div class="inspector-code-col">
-              <div class="code-header-bar">
-                <span>CÓDIGO STRUDEL DE LA SECCIÓN</span>
-                <a
-                  id="insp-repl-link"
-                  href={`https://strudel.cc/#${encodeURIComponent(sections[0].strudelCode)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="term-btn term-btn-sm"
-                >
-                  ABRIR SECCIÓN EN REPL ↗
-                </a>
-              </div>
-              <pre class="term-code"><code id="insp-code">{sections[0].strudelCode}</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- Terminal Log / Console Telemetry -->
-        <div class="term-box">
-          <div class="term-box-header">
-            <span>// REGISTRO DE EVENTOS Y TIMELINE TELEMETRY</span>
-            <span class="term-badge">LOG: TIMELINE ENGINE</span>
-          </div>
-          <div class="term-log" id="terminal-log-output">
-            <span class="log-entry"><span class="log-time">[00:00:00]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Estudio de timeline iniciado. 6 secciones cargadas (05:15 total).</span></span>
-            <span class="log-entry"><span class="log-time">[00:00:01]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Sección 01: Fork Suspense configurada para 1 minuto y 15 segundos continuos.</span></span>
-            <span class="log-entry"><span class="log-time">[00:00:02]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Haz clic en cualquier bloque del timeline para saltar, activar bucle o copiar referencia para cambios.</span> <span class="cursor-blink">_</span></span>
-          </div>
-        </div>
-
-        <!-- Terminal Footer -->
-        <div class="terminal-footer">
+      <div class="drawer-body">
+        <div class="drawer-meta-row">
           <div>
-            <span>RECOVERY // COMPILACIÓN EN VIVO</span> // <span>AUTORIDAD CREATIVA: CREADOR HUMANO</span>
+            <span class="label-muted mono">TEMPO:</span>
+            <span class="mono" id="drawer-tempo">{sections[0].bpm} BPM // {sections[0].keyCenter}</span>
           </div>
           <div>
-            <span>CANCIÓN: SINGLE 01 (BACKUP) // <a href="https://willkwolf.github.io/Recovery-album/">willkwolf.github.io/Recovery-album/</a></span>
+            <span class="label-muted mono">ELEMENTOS:</span>
+            <span id="drawer-inst">{sections[0].instruments.join(', ')}</span>
           </div>
         </div>
+
+        <p class="drawer-desc" id="drawer-desc">{sections[0].description}</p>
+
+        <!-- Collapsible Strudel Code View -->
+        <details class="code-details">
+          <summary class="mono code-summary">
+            <span>Ver código Strudel de la sección</span>
+            <a
+              id="drawer-repl-link"
+              href={`https://strudel.cc/#${encodeURIComponent(sections[0].strudelCode)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mono repl-link"
+            >
+              Abrir en Strudel REPL ↗
+            </a>
+          </summary>
+          <pre class="code-block mono"><code id="drawer-code">{sections[0].strudelCode}</code></pre>
+        </details>
       </div>
-    </div>
+    </section>
+
+    <!-- Footer minimal -->
+    <footer class="studio-footer mono">
+      <span>RECOVERY // ARTISTIC SYSTEM</span>
+      <span>Outcome preview & feedback deck</span>
+    </footer>
   </div>
 </Layout>
 
 <script define:vars={{ sections }}>
-  // Real-time Contiguous Song Engine with Suno-Style Interactive Timeline
+  // Minimalist Contiguous Audio Player Engine
   let isPlaying = false;
   let isLoopingSection = false;
   let activeSectionIndex = 0;
-  let trackSeconds = 0; // Current position in 0..315 seconds
+  let trackSeconds = 0;
   const totalDuration = 315; // 05:15
 
   let audioCtx = null;
@@ -218,56 +153,43 @@ const sections = SONG_SECTIONS;
   let masterGain = null;
   let clockInterval = null;
   let soundTicker = null;
+  let delayNode = null;
+  let feedbackGain = null;
 
-  // DOM elements
-  const playBtn = document.getElementById('btn-master-play');
-  const stopBtn = document.getElementById('btn-master-stop');
-  const playGlyph = document.getElementById('play-glyph');
-  const playText = document.getElementById('play-text');
-  const loopBtn = document.getElementById('btn-toggle-loop');
-  const loopBtnText = document.getElementById('loop-btn-text');
-  const loopModeLabel = document.getElementById('loop-mode-label');
-  const transportBadge = document.getElementById('transport-badge');
+  // DOM Elements
+  const playBtn = document.getElementById('btn-play');
+  const stopBtn = document.getElementById('btn-stop');
+  const playIcon = document.getElementById('play-icon');
+  const playLabel = document.getElementById('play-label');
+  const loopBtn = document.getElementById('btn-loop-sec');
+  const loopLabel = document.getElementById('loop-label');
   const timeDisplay = document.getElementById('time-display');
-  const scrubber = document.getElementById('timeline-scrubber');
-  const timelineContainer = document.getElementById('timeline-container');
-  const blockEls = document.querySelectorAll('.timeline-block');
-  const canvas = document.getElementById('visualizer-canvas');
-  const canvasCtx = canvas.getContext('2d');
-  const canvasActiveSec = document.getElementById('canvas-active-sec');
+  const activeSecBadge = document.getElementById('active-sec-badge');
   const volSlider = document.getElementById('vol-slider');
-  const volDisplay = document.getElementById('vol-display');
-  const logEl = document.getElementById('terminal-log-output');
+  const volVal = document.getElementById('vol-val');
+  const waveformTrack = document.getElementById('waveform-track');
+  const playhead = document.getElementById('playhead');
+  const canvas = document.getElementById('waveform-canvas');
+  const canvasCtx = canvas.getContext('2d');
+  const sectionBtns = document.querySelectorAll('.section-block');
 
-  // Inspector elements
-  const inspTag = document.getElementById('insp-tag');
-  const inspWindow = document.getElementById('insp-window');
-  const inspSpecs = document.getElementById('insp-specs');
-  const inspInst = document.getElementById('insp-inst');
-  const inspDesc = document.getElementById('insp-desc');
-  const inspCode = document.getElementById('insp-code');
-  const inspReplLink = document.getElementById('insp-repl-link');
-  const btnPlaySection = document.getElementById('btn-play-section');
-  const btnCopyFeedback = document.getElementById('btn-copy-feedback');
+  // Drawer Elements
+  const drawerTag = document.getElementById('drawer-tag');
+  const drawerName = document.getElementById('drawer-name');
+  const drawerTime = document.getElementById('drawer-time');
+  const drawerTempo = document.getElementById('drawer-tempo');
+  const drawerInst = document.getElementById('drawer-inst');
+  const drawerDesc = document.getElementById('drawer-desc');
+  const drawerCode = document.getElementById('drawer-code');
+  const drawerReplLink = document.getElementById('drawer-repl-link');
+  const btnCopyRef = document.getElementById('btn-copy-ref');
+  const copyRefText = document.getElementById('copy-ref-text');
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
     const s = Math.floor(sec % 60);
     return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }
-
-  function appendLog(msg, prefix = '>') {
-    const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-    const span = document.createElement('span');
-    span.className = 'log-entry';
-    span.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="log-prefix">${prefix}</span> <span class="log-msg">${msg}</span>`;
-    logEl.appendChild(span);
-    logEl.scrollTop = logEl.scrollHeight;
-  }
-
-  let delayNode = null;
-  let feedbackGain = null;
 
   function getAudioContext() {
     if (!audioCtx) {
@@ -280,7 +202,7 @@ const sections = SONG_SECTIONS;
       masterGain.connect(analyser);
       analyser.connect(audioCtx.destination);
 
-      // Stereo delay for Fork fast melody & Santana solo
+      // Stereo delay line
       delayNode = audioCtx.createDelay();
       delayNode.delayTime.setValueAtTime(0.333, audioCtx.currentTime);
       feedbackGain = audioCtx.createGain();
@@ -313,15 +235,13 @@ const sections = SONG_SECTIONS;
   }
 
   const distortionCurve = makeDistortionCurve(50);
-  const santanaNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16, 349.23, 293.66]; // D5, A4, F4, C5...
-
-  // Original Fork Section 01 Synthesizer Data (from Commit 1 & Seed)
-  const forkMelodyNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25]; // C4, Eb4, G4, F#4, Bb4, D5, C5
+  const santanaNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16, 349.23, 293.66];
+  const forkMelodyNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25];
   const forkDyads = [
     [65.41, 98.00],   // [C2, G2]
     [77.78, 116.54],  // [Eb2, Bb2]
     [87.31, 130.81],  // [F2, C3]
-    [92.50, 130.81]   // [F#2, C3] -> F# persistent alternative timeline dissonance!
+    [92.50, 130.81]   // [F#2, C3]
   ];
 
   function triggerForkMelody(ctx, time, freq, vol = 0.38) {
@@ -333,9 +253,7 @@ const sections = SONG_SECTIONS;
     g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
     osc.connect(g);
     g.connect(masterGain);
-    if (delayNode) {
-      g.connect(delayNode);
-    }
+    if (delayNode) g.connect(delayNode);
     osc.start(time);
     osc.stop(time + 0.25);
   }
@@ -360,236 +278,6 @@ const sections = SONG_SECTIONS;
     });
   }
 
-  function selectSection(index, seekToStart = false) {
-    activeSectionIndex = index;
-    const sec = sections[index];
-
-    blockEls.forEach((b, i) => {
-      b.classList.toggle('selected', i === index);
-    });
-
-    inspTag.textContent = sec.tag;
-    inspWindow.textContent = `${sec.startTime} ── ${sec.endTime} (Duración: ${sec.endSec - sec.startSec}s)`;
-    inspSpecs.textContent = `${sec.bpm} BPM // ${sec.keyCenter}`;
-    inspInst.textContent = sec.instruments.join(', ');
-    inspDesc.textContent = sec.description;
-    inspCode.textContent = sec.strudelCode;
-    inspReplLink.href = `https://strudel.cc/#${encodeURIComponent(sec.strudelCode)}`;
-    canvasActiveSec.textContent = `SECCIÓN ACTIVA: [${index + 1}] ${sec.name.split('(')[0]}`;
-
-    if (seekToStart) {
-      seekTo(sec.startSec);
-    }
-  }
-
-  function seekTo(sec) {
-    trackSeconds = Math.max(0, Math.min(sec, totalDuration));
-    updateScrubberUI();
-    appendLog(`Timeline saltó a ${formatTime(trackSeconds)}.`);
-  }
-
-  function updateScrubberUI() {
-    timeDisplay.textContent = `${formatTime(trackSeconds)} / ${formatTime(totalDuration)}`;
-    const percent = (trackSeconds / totalDuration) * 100;
-    scrubber.style.left = `${percent}%`;
-
-    // Highlight the active section according to current playhead
-    const currentSecIdx = sections.findIndex((s) => trackSeconds >= s.startSec && trackSeconds < s.endSec);
-    if (currentSecIdx !== -1 && currentSecIdx !== activeSectionIndex && !isLoopingSection) {
-      selectSection(currentSecIdx, false);
-      appendLog(`Transición musical a: ${sections[currentSecIdx].name}`);
-    }
-  }
-
-  // Audio synthesis ticker (every 125ms = 16th note at 120bpm)
-  let tickerStep = 0;
-  function startPlayback() {
-    getAudioContext();
-    isPlaying = true;
-    transportBadge.textContent = isLoopingSection ? `EN BUCLE: SECCIÓN ${activeSectionIndex + 1}` : 'REPRODUCIENDO';
-    transportBadge.className = 'term-badge badge-green';
-    playGlyph.textContent = '⏸';
-    playText.textContent = 'PAUSAR';
-    stopBtn.disabled = false;
-
-    // Timeline master clock (1 second steps)
-    clockInterval = setInterval(() => {
-      trackSeconds += 0.5;
-
-      // If looping current section
-      if (isLoopingSection) {
-        const curSec = sections[activeSectionIndex];
-        if (trackSeconds >= curSec.endSec) {
-          trackSeconds = curSec.startSec;
-          appendLog(`Bucle de sección reiniciado: ${curSec.startTime}`);
-        }
-      } else {
-        if (trackSeconds >= totalDuration) {
-          trackSeconds = 0;
-          appendLog('Canción completa finalizada. Reiniciando desde 00:00.');
-        }
-      }
-      updateScrubberUI();
-    }, 500);
-
-    // Audio DSP pulse generator
-    soundTicker = setInterval(() => {
-      const ctx = audioCtx;
-      if (!ctx) return;
-      const time = ctx.currentTime;
-      const s = trackSeconds;
-
-      // SECTION 01: FORK SUSPENSE LOOP ORIGINAL (0:00 - 1:15 | 75 SEGUNDOS PUROS)
-      if (s >= 0 && s < 75) {
-        const stepInBar = tickerStep % 16;
-        const barIdx = Math.floor(tickerStep / 16) % 4;
-        const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850; // Filtro LFO 500Hz a 2200Hz
-
-        // 1. Acorde Dyad Sawtooth al inicio de cada compás: [C2,G2] -> [Eb2,Bb2] -> [F2,C3] -> [F#2,C3]
-        if (stepInBar === 0) {
-          const dyad = forkDyads[barIdx];
-          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
-        }
-
-        // 2. Melodía Rápida Fast(1.75) con Delay Stereo: C4, Eb4, G4, F#4, Bb4, D5, C5
-        if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
-          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
-          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.38);
-        }
-
-        // 3. Patrón Roland TR-909 Kick: bd:3 [~ bd:1] ~ [bd:3 ~]
-        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12 || stepInBar === 14) {
-          const kickVol = (stepInBar === 0 || stepInBar === 12) ? 0.85 : 0.65;
-          triggerKick(ctx, time, 135, 36, kickVol);
-        }
-
-        // 4. Rimshot 5-tuplet con Paneo Stereo: rim*5
-        if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
-          triggerNoise(ctx, time, 0.28, 2200, 0.035);
-        }
-
-        // 5. Polirritmia de Hi-Hats [hh*3, hh*7] con HPF 3200Hz
-        if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
-          const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
-          triggerNoise(ctx, time, hatVol, 3200, 0.025);
-        }
-      }
-
-      // SECTION 02: CABALLO DE TROYA (ARPEGIOS BRILLANTES SOBRE FORK) (1:15 - 2:00)
-      else if (s >= 75 && s < 120) {
-        const stepInBar = tickerStep % 16;
-        const barIdx = Math.floor(tickerStep / 16) % 4;
-        const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
-
-        // Base Fork se mantiene activa
-        if (stepInBar === 0) {
-          const dyad = forkDyads[barIdx];
-          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
-        }
-
-        // Melodía Fork sigue en segundo plano
-        if (tickerStep % 3 === 0) {
-          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
-          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
-        }
-
-        // Arpegios cristalinos engañosos entrando en registro agudo: C5, E5, G5, B5, C6
-        if (tickerStep % 2 === 0) {
-          const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
-          triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
-        }
-
-        // Ritmo TR-909 y Hats
-        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
-          triggerKick(ctx, time, 135, 36, 0.8);
-        }
-        if (stepInBar % 2 === 1) {
-          triggerNoise(ctx, time, 0.16, 3200, 0.03);
-        }
-      }
-
-      // SECTION 03: MARCHA TOTALITARIA & GLITCH (2:00 - 2:45)
-      else if (s >= 120 && s < 165) {
-        // Disciplined Snare Roll (Imperial March)
-        const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
-        triggerNoise(ctx, time, snareVol, 1400, 0.05);
-
-        // Authoritarian Stabs
-        if (tickerStep % 4 === 0) {
-          triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
-        }
-        // Glitch dither burst
-        if (tickerStep % 16 === 14) {
-          triggerNoise(ctx, time, 0.4, 800, 0.08);
-        }
-      }
-
-      // SECTION 04: FLATLINE & HANDSHAKE 1990s (2:45 - 3:25)
-      else if (s >= 165 && s < 205) {
-        // ZERO BASS.
-        // Monotone vital signs EKG beep
-        if (tickerStep % 8 === 0) {
-          triggerSine(ctx, time, 1046.50, 0.35, 0.07);
-        }
-        // 56k Modem Chirp / Handshake sound
-        if (tickerStep % 4 === 2) {
-          const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
-          triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
-        }
-      }
-
-      // SECTION 05: SOLO ROCK INVERTIDO SANTANA (3:25 - 4:05)
-      else if (s >= 205 && s < 245) {
-        // Unaccompanied electric rock guitar (inverted Santana phrasing)
-        if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
-          const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
-          triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
-        }
-      }
-
-      // SECTION 06: RAVE DE RECICLAJE & TECHNO (4:05 - 5:15)
-      else if (s >= 245 && s <= 315) {
-        // Pounding 4/4 Techno Rave Kick
-        if (tickerStep % 4 === 0) {
-          triggerKick(ctx, time, 160, 38, 0.95);
-        }
-        // Off-beat rave open hat
-        if (tickerStep % 4 === 2) {
-          triggerNoise(ctx, time, 0.45, 6000, 0.08);
-        }
-        // Resonant Acid 303 Bassline
-        if (tickerStep % 2 === 0) {
-          const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
-          const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
-          const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
-          triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
-        }
-        // Distorted guitar notes battling in the rave
-        if (tickerStep % 8 === 4) {
-          triggerGuitar(ctx, time, 587.33, 0.2, 0.3);
-        }
-      }
-
-      tickerStep++;
-    }, 125);
-
-    drawVisualizer();
-  }
-
-  function stopPlayback() {
-    if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
-    if (soundTicker) { clearInterval(soundTicker); soundTicker = null; }
-    isPlaying = false;
-    transportBadge.textContent = 'DETENIDO';
-    transportBadge.className = 'term-badge badge-amber';
-    playGlyph.textContent = '▶';
-    playText.textContent = isLoopingSection ? `REPRODUCIR SECCIÓN [${activeSectionIndex + 1}]` : 'REPRODUCIR CANCIÓN COMPLETA';
-    stopBtn.disabled = true;
-    appendLog('Reproducción pausada.');
-    drawVisualizer();
-  }
-
-  // Synthesis helpers
   function triggerKick(ctx, time, startF, endF, vol) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
@@ -718,16 +406,216 @@ const sections = SONG_SECTIONS;
     osc.stop(time + dur);
   }
 
-  // Oscilloscope canvas
-  function drawVisualizer() {
+  function selectSection(index, seek = false) {
+    activeSectionIndex = index;
+    const sec = sections[index];
+
+    sectionBtns.forEach((b, i) => {
+      b.classList.toggle('selected', i === index);
+    });
+
+    activeSecBadge.textContent = `SEC 0${index + 1}: ${sec.name.split('(')[0].trim()}`;
+    drawerTag.textContent = sec.tag;
+    drawerName.textContent = sec.name;
+    drawerTime.textContent = `${sec.startTime} ── ${sec.endTime}`;
+    drawerTempo.textContent = `${sec.bpm} BPM // ${sec.keyCenter}`;
+    drawerInst.textContent = sec.instruments.join(', ');
+    drawerDesc.textContent = sec.description;
+    drawerCode.textContent = sec.strudelCode;
+    drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(sec.strudelCode)}`;
+
+    if (seek) {
+      seekTo(sec.startSec);
+    }
+  }
+
+  function seekTo(sec) {
+    trackSeconds = Math.max(0, Math.min(sec, totalDuration));
+    updateUI();
+  }
+
+  function updateUI() {
+    timeDisplay.textContent = `${formatTime(trackSeconds)} / ${formatTime(totalDuration)}`;
+    const pct = (trackSeconds / totalDuration) * 100;
+    playhead.style.left = `${pct}%`;
+
+    // Highlight current section block
+    const curIdx = sections.findIndex((s) => trackSeconds >= s.startSec && trackSeconds < s.endSec);
+    if (curIdx !== -1 && curIdx !== activeSectionIndex && !isLoopingSection) {
+      selectSection(curIdx, false);
+    }
+  }
+
+  let tickerStep = 0;
+  function startPlayback() {
+    getAudioContext();
+    isPlaying = true;
+    playIcon.textContent = '⏸';
+    playLabel.textContent = 'Pause';
+    stopBtn.disabled = false;
+
+    // Timeline timer
+    clockInterval = setInterval(() => {
+      trackSeconds += 0.5;
+
+      if (isLoopingSection) {
+        const curSec = sections[activeSectionIndex];
+        if (trackSeconds >= curSec.endSec) {
+          trackSeconds = curSec.startSec;
+        }
+      } else {
+        if (trackSeconds >= totalDuration) {
+          trackSeconds = 0;
+        }
+      }
+      updateUI();
+    }, 500);
+
+    // Audio DSP pulse generator
+    soundTicker = setInterval(() => {
+      const ctx = audioCtx;
+      if (!ctx) return;
+      const time = ctx.currentTime;
+      const s = trackSeconds;
+
+      // SECTION 01: FORK SUSPENSE (0:00 - 1:15)
+      if (s >= 0 && s < 75) {
+        const stepInBar = tickerStep % 16;
+        const barIdx = Math.floor(tickerStep / 16) % 4;
+        const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
+
+        if (stepInBar === 0) {
+          const dyad = forkDyads[barIdx];
+          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+        }
+
+        if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
+          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.38);
+        }
+
+        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12 || stepInBar === 14) {
+          const kickVol = (stepInBar === 0 || stepInBar === 12) ? 0.85 : 0.65;
+          triggerKick(ctx, time, 135, 36, kickVol);
+        }
+
+        if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
+          triggerNoise(ctx, time, 0.28, 2200, 0.035);
+        }
+
+        if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
+          const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
+          triggerNoise(ctx, time, hatVol, 3200, 0.025);
+        }
+      }
+
+      // SECTION 02: CABALLO DE TROYA (1:15 - 2:00)
+      else if (s >= 75 && s < 120) {
+        const stepInBar = tickerStep % 16;
+        const barIdx = Math.floor(tickerStep / 16) % 4;
+        const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
+
+        if (stepInBar === 0) {
+          const dyad = forkDyads[barIdx];
+          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+        }
+
+        if (tickerStep % 3 === 0) {
+          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
+        }
+
+        if (tickerStep % 2 === 0) {
+          const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
+          triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
+        }
+
+        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
+          triggerKick(ctx, time, 135, 36, 0.8);
+        }
+        if (stepInBar % 2 === 1) {
+          triggerNoise(ctx, time, 0.16, 3200, 0.03);
+        }
+      }
+
+      // SECTION 03: MARCHA TOTALITARIA (2:00 - 2:45)
+      else if (s >= 120 && s < 165) {
+        const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
+        triggerNoise(ctx, time, snareVol, 1400, 0.05);
+
+        if (tickerStep % 4 === 0) {
+          triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
+        }
+        if (tickerStep % 16 === 14) {
+          triggerNoise(ctx, time, 0.4, 800, 0.08);
+        }
+      }
+
+      // SECTION 04: FLATLINE & MODEM (2:45 - 3:25)
+      else if (s >= 165 && s < 205) {
+        if (tickerStep % 8 === 0) {
+          triggerSine(ctx, time, 1046.50, 0.35, 0.07);
+        }
+        if (tickerStep % 4 === 2) {
+          const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
+          triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
+        }
+      }
+
+      // SECTION 05: SOLO ROCK INVERTIDO SANTANA (3:25 - 4:05)
+      else if (s >= 205 && s < 245) {
+        if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
+          const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
+          triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
+        }
+      }
+
+      // SECTION 06: RAVE TECHNO RECICLAJE (4:05 - 5:15)
+      else if (s >= 245 && s <= 315) {
+        if (tickerStep % 4 === 0) {
+          triggerKick(ctx, time, 160, 38, 0.95);
+        }
+        if (tickerStep % 4 === 2) {
+          triggerNoise(ctx, time, 0.45, 6000, 0.08);
+        }
+        if (tickerStep % 2 === 0) {
+          const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
+          const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
+          const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
+          triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
+        }
+        if (tickerStep % 8 === 4) {
+          triggerGuitar(ctx, time, 587.33, 0.2, 0.3);
+        }
+      }
+
+      tickerStep++;
+    }, 125);
+
+    drawWaveform();
+  }
+
+  function stopPlayback() {
+    if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+    if (soundTicker) { clearInterval(soundTicker); soundTicker = null; }
+    isPlaying = false;
+    playIcon.textContent = '▶';
+    playLabel.textContent = 'Play';
+    stopBtn.disabled = true;
+    drawWaveform();
+  }
+
+  function drawWaveform() {
     if (!canvas) return;
     const width = canvas.width = canvas.clientWidth;
     const height = canvas.height = canvas.clientHeight;
 
+    canvasCtx.fillStyle = '#101217';
+    canvasCtx.fillRect(0, 0, width, height);
+
     if (!analyser || !isPlaying) {
-      canvasCtx.fillStyle = '#03060a';
-      canvasCtx.fillRect(0, 0, width, height);
-      canvasCtx.strokeStyle = 'rgba(0, 255, 157, 0.25)';
+      // Clean idle baseline
+      canvasCtx.strokeStyle = '#232731';
       canvasCtx.lineWidth = 1;
       canvasCtx.beginPath();
       canvasCtx.moveTo(0, height / 2);
@@ -740,45 +628,25 @@ const sections = SONG_SECTIONS;
     const timeData = new Uint8Array(bufferLength);
     analyser.getByteTimeDomainData(timeData);
 
-    const freqData = new Uint8Array(bufferLength);
-    analyser.getByteFrequencyData(freqData);
-
-    canvasCtx.fillStyle = 'rgba(3, 6, 10, 0.35)';
-    canvasCtx.fillRect(0, 0, width, height);
-
-    // Spectrum
-    const barWidth = (width / bufferLength) * 2;
-    let x = 0;
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = (freqData[i] / 255) * height * 0.72;
-      canvasCtx.fillStyle = `rgba(0, 229, 255, ${0.1 + (freqData[i] / 255) * 0.45})`;
-      canvasCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
-      x += barWidth;
-    }
-
-    // Oscilloscope line
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = '#00ff9d';
-    canvasCtx.shadowBlur = 8;
-    canvasCtx.shadowColor = '#00ff9d';
+    canvasCtx.lineWidth = 1.5;
+    canvasCtx.strokeStyle = '#38bdf8';
     canvasCtx.beginPath();
 
     const sliceWidth = width / bufferLength;
-    let wx = 0;
+    let x = 0;
     for (let i = 0; i < bufferLength; i++) {
       const v = timeData[i] / 128.0;
       const y = (v * height) / 2;
-      if (i === 0) canvasCtx.moveTo(wx, y);
-      else canvasCtx.lineTo(wx, y);
-      wx += sliceWidth;
+      if (i === 0) canvasCtx.moveTo(x, y);
+      else canvasCtx.lineTo(x, y);
+      x += sliceWidth;
     }
     canvasCtx.stroke();
-    canvasCtx.shadowBlur = 0;
 
-    requestAnimationFrame(drawVisualizer);
+    requestAnimationFrame(drawWaveform);
   }
 
-  // Listeners
+  // Event Handlers
   playBtn.addEventListener('click', () => {
     if (isPlaying) stopPlayback();
     else startPlayback();
@@ -789,278 +657,328 @@ const sections = SONG_SECTIONS;
     seekTo(0);
   });
 
-  btnToggleLoop.addEventListener('click', () => {
+  loopBtn.addEventListener('click', () => {
     isLoopingSection = !isLoopingSection;
-    loopBtnText.textContent = isLoopingSection ? `BUCLE DE SECCIÓN: ON ([${activeSectionIndex + 1}])` : 'BUCLE DE SECCIÓN: OFF';
-    loopModeLabel.textContent = isLoopingSection ? `Bucle Sección [${activeSectionIndex + 1}]` : 'Canción Completa';
-    loopBtn.classList.toggle('term-btn-primary', isLoopingSection);
-
-    if (isLoopingSection) {
-      appendLog(`Modo bucle activado en Sección ${activeSectionIndex + 1}: ${sections[activeSectionIndex].startTime} - ${sections[activeSectionIndex].endTime}`);
-    } else {
-      appendLog('Modo bucle desactivado. Reproducción continua del timeline activada.');
-    }
-  });
-
-  btnPlaySection.addEventListener('click', () => {
-    const sec = sections[activeSectionIndex];
-    seekTo(sec.startSec);
-    if (!isPlaying) startPlayback();
-    appendLog(`Reproduciendo Sección ${activeSectionIndex + 1}: ${sec.name}`);
-  });
-
-  btnCopyFeedback.addEventListener('click', async () => {
-    const sec = sections[activeSectionIndex];
-    const textToCopy = `[FEEDBACK PARA ANTIGRAVITY] Sección 0${activeSectionIndex + 1} (${sec.startTime} - ${sec.endTime}) - ${sec.name.split('(')[0].trim()}: `;
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      const prev = btnCopyFeedback.textContent;
-      btnCopyFeedback.textContent = '¡REFERENCIA COPIADA!';
-      setTimeout(() => { btnCopyFeedback.textContent = prev; }, 2000);
-      appendLog(`Referencia copiada: "${textToCopy}"`);
-    } catch (e) {
-      console.warn(e);
-    }
+    loopLabel.textContent = isLoopingSection ? `Loop: Sec 0${activeSectionIndex + 1}` : 'Loop: Off';
+    loopBtn.classList.toggle('btn-active', isLoopingSection);
   });
 
   volSlider.addEventListener('input', (e) => {
     const val = parseFloat(e.target.value);
-    volDisplay.textContent = `${Math.round(val * 100)}%`;
+    volVal.textContent = `${Math.round(val * 100)}%`;
     if (masterGain && audioCtx) {
       masterGain.gain.setValueAtTime(val, audioCtx.currentTime);
     }
   });
 
-  // Clicking on timeline blocks
-  blockEls.forEach((block, idx) => {
-    block.addEventListener('click', () => {
+  sectionBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
       selectSection(idx, true);
     });
   });
 
-  // Clicking directly on timeline container to scrub time
-  timelineContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('timeline-block') || e.target.closest('.timeline-block')) return;
-    const rect = timelineContainer.getBoundingClientRect();
+  waveformTrack.addEventListener('click', (e) => {
+    const rect = waveformTrack.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const pct = Math.max(0, Math.min(1, clickX / rect.width));
     seekTo(pct * totalDuration);
   });
 
-  // Initial UI state
+  btnCopyRef.addEventListener('click', async () => {
+    const sec = sections[activeSectionIndex];
+    const textToCopy = `[FEEDBACK SECCIÓN 0${activeSectionIndex + 1}] (${sec.startTime} - ${sec.endTime}) - ${sec.name.split('(')[0].trim()}: `;
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      const originalText = copyRefText.textContent;
+      copyRefText.textContent = '¡Copiado al portapapeles!';
+      setTimeout(() => { copyRefText.textContent = originalText; }, 2000);
+    } catch (e) {
+      console.warn(e);
+    }
+  });
+
+  // Init
   selectSection(0, false);
-  drawVisualizer();
+  drawWaveform();
 </script>
 
 <style>
-  .hud-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  /* Producer Deck Card */
+  .deck-card {
+    background: var(--studio-panel);
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .deck-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .transport-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .deck-meta {
+    display: flex;
+    align-items: center;
     gap: 0.75rem;
-    font-size: 0.85rem;
   }
 
-  .hud-label {
-    color: var(--term-text-dim);
+  .time-display {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--studio-text);
+  }
+
+  .active-sec-badge {
     font-size: 0.75rem;
-    margin-right: 0.35rem;
-    text-transform: uppercase;
+    background: var(--studio-panel-subtle);
+    border: 1px solid var(--studio-border);
+    color: var(--studio-accent);
+    padding: 3px 8px;
+    border-radius: 4px;
   }
 
-  .hud-value {
-    color: var(--term-text);
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
   }
 
-  .font-bold {
-    font-weight: 700;
-    color: var(--term-green);
-  }
-
-  /* Timeline Arranger Bar */
-  .timeline-box {
-    background: #04080e;
-    border-color: var(--term-green-dim);
-  }
-
-  .timeline-track-container {
-    position: relative;
-    background: #020407;
-    border: 1px solid var(--term-border);
+  .volume-control input[type="range"] {
+    accent-color: var(--studio-accent);
+    cursor: pointer;
+    width: 80px;
+    height: 4px;
+    background: var(--studio-border);
     border-radius: 2px;
-    height: 64px;
-    margin-bottom: 0.75rem;
+  }
+
+  .label-muted {
+    color: var(--studio-text-muted);
+    font-size: 0.75rem;
+  }
+
+  /* Waveform scrubber */
+  .waveform-container {
+    position: relative;
+    background: #101217;
+    border: 1px solid var(--studio-border);
+    border-radius: 4px;
+    height: 60px;
     cursor: pointer;
     overflow: hidden;
   }
 
-  .timeline-blocks {
-    display: flex;
-    height: 100%;
+  #waveform-canvas {
     width: 100%;
-  }
-
-  .timeline-block {
     height: 100%;
-    border-right: 1px solid #142a27;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 0.5rem;
-    position: relative;
-    transition: all 0.15s ease;
-    user-select: none;
+    display: block;
   }
 
-  .timeline-block:hover {
-    filter: brightness(1.3);
-  }
-
-  .timeline-block.selected {
-    box-shadow: inset 0 0 12px rgba(0, 255, 157, 0.4);
-    border: 1px solid var(--term-green);
-    border-bottom: 3px solid var(--term-green);
-  }
-
-  .block-0 { background: rgba(0, 255, 157, 0.12); }
-  .block-1 { background: rgba(0, 229, 255, 0.12); }
-  .block-2 { background: rgba(255, 183, 3, 0.12); }
-  .block-3 { background: rgba(255, 51, 102, 0.12); }
-  .block-4 { background: rgba(160, 32, 240, 0.15); }
-  .block-5 { background: rgba(0, 255, 157, 0.22); }
-
-  .block-label {
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--term-cyan);
-    margin-bottom: 2px;
-  }
-
-  .block-title {
-    font-size: 0.72rem;
-    color: var(--term-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .timeline-scrubber {
+  .playhead {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 2px;
     background: #ffffff;
-    box-shadow: 0 0 8px #00ff9d, 0 0 2px #ffffff;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
     left: 0%;
     pointer-events: none;
     z-index: 10;
   }
 
-  .timeline-controls-row {
+  /* Arranger Row / Section Blocks */
+  .sections-strip {
+    display: flex;
+    height: 46px;
+    background: var(--studio-panel-subtle);
+    border: 1px solid var(--studio-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .section-block {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--studio-border);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .section-block:last-child {
+    border-right: none;
+  }
+
+  .section-block:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .section-block.selected {
+    background: var(--studio-accent-dim);
+    border-bottom: 2px solid var(--studio-accent);
+  }
+
+  .sec-num {
+    font-size: 0.65rem;
+    color: var(--studio-accent);
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .sec-name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--studio-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .sec-range {
+    font-size: 0.62rem;
+    color: var(--studio-text-muted);
+    line-height: 1;
+  }
+
+  /* Section Drawer (Feedback Card) */
+  .drawer-card {
+    background: var(--studio-panel);
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .drawer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--studio-border);
   }
 
-  .controls-left {
+  .drawer-title-group {
     display: flex;
-    gap: 0.5rem;
+    align-items: baseline;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
 
-  .controls-right {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .drawer-tag {
+    font-size: 0.7rem;
+    background: var(--studio-panel-subtle);
+    border: 1px solid var(--studio-border);
+    color: var(--studio-accent);
+    padding: 2px 6px;
+    border-radius: 3px;
   }
 
-  .controls-right input[type="range"] {
-    accent-color: var(--term-green);
-    cursor: pointer;
-    width: 90px;
+  .drawer-name {
+    font-size: 1rem;
+    font-weight: 600;
   }
 
-  /* Visualizer */
-  .visualizer-wrapper {
-    position: relative;
+  .drawer-time {
+    font-size: 0.8rem;
+    color: var(--studio-text-muted);
   }
 
-  .visualizer-overlay {
-    position: absolute;
-    bottom: 5px;
-    left: 8px;
-    right: 8px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    color: var(--term-text-dim);
-    pointer-events: none;
-    text-transform: uppercase;
-  }
-
-  /* Section Inspector */
-  .section-inspector {
-    background: #03060b;
-    border-color: var(--term-cyan);
-  }
-
-  .inspector-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .inspector-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .inspector-meta-col {
+  .drawer-body {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.85rem;
   }
 
-  .inspector-item {
+  .drawer-meta-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
     font-size: 0.82rem;
+  }
+
+  .drawer-desc {
+    font-size: 0.85rem;
+    color: var(--studio-text-muted);
     line-height: 1.5;
   }
 
-  .insp-desc {
-    color: var(--term-text);
-    margin-top: 2px;
-    font-size: 0.8rem;
-    background: #060b12;
-    padding: 0.5rem;
-    border-left: 2px solid var(--term-green);
+  /* Collapsible Code Block */
+  .code-details {
+    background: var(--studio-panel-subtle);
+    border: 1px solid var(--studio-border);
+    border-radius: 4px;
+    overflow: hidden;
   }
 
-  .inspector-code-col {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .code-header-bar {
+  .code-summary {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--studio-text-muted);
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.75rem;
-    color: var(--term-text-dim);
-    margin-bottom: 0.35rem;
+    user-select: none;
   }
 
-  .term-code {
-    background: #020407;
-    border: 1px solid var(--term-border);
-    padding: 0.65rem;
+  .code-summary:hover {
+    color: var(--studio-text);
+  }
+
+  .repl-link {
+    color: var(--studio-accent);
+  }
+
+  .repl-link:hover {
+    text-decoration: underline;
+  }
+
+  .code-block {
+    margin: 0;
+    padding: 0.75rem;
+    background: #090a0d;
+    border-top: 1px solid var(--studio-border);
     font-size: 0.78rem;
-    line-height: 1.4;
-    color: #8be9fd;
+    line-height: 1.45;
+    color: #e6edf3;
     overflow-x: auto;
-    max-height: 220px;
-    flex-grow: 1;
+    max-height: 200px;
+  }
+
+  /* Minimal Footer */
+  .studio-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: var(--studio-text-muted);
+    padding-top: 1rem;
+    border-top: 1px solid var(--studio-border);
   }
 </style>
