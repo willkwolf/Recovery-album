@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StrudelPlayer from '../components/StrudelPlayer.astro';
+import { TRACKS } from '../data/tracks';
+
+const firstTrack = TRACKS[0];
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="RECOVERY — Álbum Generativo y Código Fuente"
+  description="Entorno público del álbum experimental RECOVERY. El código fuente algorítmico y los experimentos sonoros como parte constitutiva de la obra."
+>
+  <div class="container">
+    <!-- Hero / System Presentation -->
+    <section class="hero-section">
+      <div class="system-tag">
+        <span class="status-dot"></span> SISTEMA DE COMPOSICIÓN ALGORÍTMICA
+      </div>
+      <h1 class="hero-title">RECOVERY</h1>
+      <p class="hero-subtitle">
+        Un sistema artístico y musical donde el código fuente, los experimentos algorítmicos
+        y la síntesis sonora browser-native forman parte integral de la obra.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href={`${baseUrl}/album`} class="btn btn-primary">
+          ▶ Escuchar Primer Single (Backup)
+        </a>
+        <a href={`${baseUrl}/lab`} class="btn">
+          🔬 Explorar Variaciones en el Laboratorio
+        </a>
+        <a href={`${baseUrl}/architecture`} class="btn">
+          📐 Arquitectura del Sistema
+        </a>
+      </div>
+    </section>
+
+    <!-- Project State & Principles -->
+    <section class="state-grid">
+      <div class="panel">
+        <div class="panel-title">
+          <span>01 / AUTORIDAD CREATIVA</span>
+          <span class="badge">HUMANO EN CONTROL</span>
+        </div>
+        <p>
+          La dirección estética, el significado conceptual, la selección de cortes y las decisiones
+          de publicación permanecen bajo el criterio exclusivo del creador humano. Las inteligencias
+          asistentes proponen variaciones algorítmicas sin alterar la premisa artística.
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span>02 / FRONTERA DE PRIVACIDAD</span>
+          <span class="badge badge-success">ESTRICTA</span>
+        </div>
+        <p>
+          Separación infranqueable entre el espacio privado de pensamiento (OpenWiki, reflexiones,
+          prompts internos) y este repositorio de artefactos públicos verificados por el Publication Gate.
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span>03 / TRANSPARENCIA DE CÓDIGO</span>
+          <span class="badge">STRUDEL / WEB AUDIO</span>
+        </div>
+        <p>
+          Las composiciones no son pistas de audio pre-renderizadas estáticas e inaccesibles:
+          el código generativo se ejecuta en tiempo real en el navegador, permitiendo audición e inspección.
+        </p>
+      </div>
+    </section>
+
+    <!-- Immediate Audition Section -->
+    <section class="preview-section">
+      <div class="section-header">
+        <div>
+          <span class="badge">PRIMER EXPERIMENTO PUBLICADO</span>
+          <h2 class="section-title">Single 01: {firstTrack.title}</h2>
+        </div>
+        <a href={`${baseUrl}/album`} class="view-all-link">Ver ficha en Álbum →</a>
+      </div>
+
+      <p class="section-intro">{firstTrack.summary}</p>
+
+      <StrudelPlayer trackTitle={firstTrack.title} variations={firstTrack.variations} />
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .hero-section {
+    padding: var(--space-xl) 0 var(--space-2xl);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .system-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.08em;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--success);
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+    font-family: var(--font-mono);
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .state-grid p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .preview-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    margin-top: var(--space-xs);
+  }
+
+  .section-intro {
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    max-width: 720px;
+  }
+
+  .view-all-link {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+  }
+</style>

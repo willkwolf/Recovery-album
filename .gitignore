@@ -1,0 +1,33 @@
+# Dependencies and Build Output
+node_modules/
+dist/
+.astro/
+
+# Environment and Secrets (strictly forbidden in public repo)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Private Creative Workspace Boundary (OpenWiki, Unfiltered Notes, Raw Research)
+Research/
+research/
+OpenWiki/
+openwiki/
+private/
+drafts/
+notes/
+*.local
+*.local.*
+
+# OS and Editor Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

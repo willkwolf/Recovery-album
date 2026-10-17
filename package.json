@@ -1,0 +1,21 @@
+{
+  "name": "recovery-music",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify:boundary": "node scripts/verify-boundary.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.7.0"
+  }
+}

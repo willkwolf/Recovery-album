@@ -1,0 +1,86 @@
+{
+  "$schema": "./src/data/manifest.schema.json",
+  "manifestVersion": "1.0.0",
+  "project": "RECOVERY",
+  "environment": "public-artifact",
+  "policy": {
+    "humanApprovalRequired": true,
+    "allowUnapprovedArtifacts": false,
+    "licenseStatus": "undecided-pending-creator-decision"
+  },
+  "approvedArtifacts": [
+    {
+      "id": "track-01-backup",
+      "type": "track",
+      "title": "Backup",
+      "medium": "Música Digital / Electrónica Algorítmica",
+      "status": "candidate",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "Human Creator",
+        "date": "2026-10-17",
+        "scope": "seed-experiment-and-variations",
+        "mediumDefinition": "Musica Digital / Electronica generada por codigo e instrumentos digitales"
+      },
+      "sourceFiles": [
+        "src/data/tracks.ts"
+      ],
+      "variations": [
+        {
+          "name": "museo",
+          "concept": "la memoria como reliquia",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
+          "name": "transito",
+          "concept": "la memoria como combustible",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
+          "name": "fork",
+          "concept": "la memoria ya en otra parte",
+          "runtime": "strudel",
+          "approved": true
+        }
+      ]
+    },
+    {
+      "id": "doc-architecture",
+      "type": "documentation",
+      "title": "System Architecture",
+      "status": "approved",
+      "path": "docs/ARCHITECTURE.md",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "System Foundation",
+        "date": "2026-10-17"
+      }
+    },
+    {
+      "id": "doc-publication-policy",
+      "type": "documentation",
+      "title": "Publication Gate Policy",
+      "status": "approved",
+      "path": "docs/PUBLICATION_POLICY.md",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "System Foundation",
+        "date": "2026-10-17"
+      }
+    },
+    {
+      "id": "doc-agent-roles",
+      "type": "documentation",
+      "title": "Agent Responsibilities & Interfaces",
+      "status": "approved",
+      "path": "docs/AGENT_ROLES.md",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "System Foundation",
+        "date": "2026-10-17"
+      }
+    }
+  ]
+}

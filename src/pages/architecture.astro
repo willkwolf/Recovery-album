@@ -1,0 +1,322 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Arquitectura del Sistema — RECOVERY"
+  description="Explicación del sistema público, separación de entornos, interfaces de agentes, motor Strudel y compuerta de publicación."
+>
+  <div class="container">
+    <header class="page-header">
+      <span class="badge badge-success">SISTEMA PÚBLICO</span>
+      <h1 class="page-title">Arquitectura del Sistema</h1>
+      <p class="page-desc">
+        Documentación técnica de la infraestructura pública, la frontera de privacidad y la relación
+        entre la dirección humana, los agentes de software, el código algorítmico y la publicación web.
+      </p>
+    </header>
+
+    <!-- Diagram / Overview -->
+    <section class="arch-section">
+      <div class="panel">
+        <h2 class="panel-title">1. Modelo de Doble Entorno</h2>
+        <div class="ascii-diagram">
+          <pre><code>+-------------------------------------------------------------+
+|                ENTORNO PRIVADO CREATIVO                     |
+|                 (OpenWiki / Local Brain)                    |
+|  - Dossiers de investigación y notas conceptuales           |
+|  - Prompts en bruto y transcripciones de modelos           |
+|  - Cuaderno de reflexiones personales y descartes           |
++------------------------------+------------------------------+
+                               |
+                   Autorización Humana Explícita
+                    (Publication Gate / Manifest)
+                               |
+                               v
++-------------------------------------------------------------+
+|                 ENTORNO PÚBLICO DE ARTEFACTOS               |
+|                   (Repositorio Git & Web)                   |
+|  - Código algorítmico Strudel aprobado                      |
+|  - Esquemas de metadatos de pistas (TypeScript)             |
+|  - Interfaz de reproducción estática (Astro + Web Audio)    |
+|  - Verificador de límites (scripts/verify-boundary.mjs)     |
++-------------------------------------------------------------+</code></pre>
+        </div>
+        <p class="diagram-caption">
+          Fig 1. Flujo unidireccional y compuerta de autorización entre el espacio privado de pensamiento y los artefactos públicos.
+        </p>
+      </div>
+    </section>
+
+    <!-- Boundary Policy -->
+    <section class="arch-section">
+      <div class="panel">
+        <h2 class="panel-title">2. Frontera Infranqueable de Privacidad</h2>
+        <p>
+          El sistema está concebido para asegurar que <strong>el proceso reflexivo íntimo nunca se exponga involuntariamente</strong>.
+          La separación física es la primera línea de defensa:
+        </p>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <h3 class="feature-title">Lo que Permanece Privado</h3>
+            <ul>
+              <li>Notas conceptuales sin filtrar y borradores de OpenWiki.</li>
+              <li>Instrucciones y prompts exactos enviados a modelos de IA.</li>
+              <li>Bitácoras de error, reflexiones personales y experimentos sonoros descartados.</li>
+              <li>Claves de API, credenciales y variables de entorno.</li>
+            </ul>
+          </div>
+          <div class="feature-item">
+            <h3 class="feature-title">Lo que se Publica</h3>
+            <ul>
+              <li>Código fuente musical ejecutable en Strudel aprobado explícitamente.</li>
+              <li>Metadatos técnicos y notas de contexto público.</li>
+              <li>Componentes web estáticos, estilos accesibles y documentación arquitectónica.</li>
+              <li>Historial de commits mínimo y orientado a artefactos terminados.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="arch-section">
+      <div class="panel">
+        <h2 class="panel-title">3. Pila Tecnológica & Decisiones de Diseño</h2>
+        <div class="table-container">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>Componente</th>
+                <th>Tecnología</th>
+                <th>Justificación Técnica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono font-bold">Sitio Estático</td>
+                <td>Astro 5 (SSG)</td>
+                <td>Zero-JS por defecto, compilación estática ultrarrápida, compatibilidad nativa con GitHub Pages.</td>
+              </tr>
+              <tr>
+                <td class="mono font-bold">Tipado & Validación</td>
+                <td>TypeScript</td>
+                <td>Definición estricta del esquema de pistas y comprobación de integridad en compilación.</td>
+              </tr>
+              <tr>
+                <td class="mono font-bold">Síntesis Algorítmica</td>
+                <td>Strudel / Web Audio</td>
+                <td>Livecoding basado en TidalCycles. Código legible y audición nativa en el navegador del usuario.</td>
+              </tr>
+              <tr>
+                <td class="mono font-bold">Compuerta de Publicación</td>
+                <td>Node.js Script + Git</td>
+                <td>Validación previa a la compilación que detecta fugas de rutas privadas o credenciales.</td>
+              </tr>
+              <tr>
+                <td class="mono font-bold">CI/CD & Hosting</td>
+                <td>GitHub Actions & Pages</td>
+                <td>Permisos mínimos (least-privilege: contents: read, pages: write, id-token: write).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agent Roles Specification -->
+    <section class="arch-section">
+      <div class="panel">
+        <h2 class="panel-title">4. Roles e Interfaces de Agentes</h2>
+        <p class="section-lead">
+          Los agentes de software desempeñan roles modulares con responsabilidades circunscritas.
+          Ningún agente posee autoridad para publicar o alterar autónomamente la premisa estética del álbum:
+        </p>
+        <div class="roles-grid">
+          <div class="role-card">
+            <h3 class="role-name mono">COMPOSER</h3>
+            <p>Produce candidatos de código Strudel a partir de especificaciones armónicas y rítmicas aprobadas.</p>
+          </div>
+          <div class="role-card">
+            <h3 class="role-name mono">CRITIC</h3>
+            <p>Evalúa métricas técnicas observables (polirritmias, compatibilidad de audio) sin juzgar estética.</p>
+          </div>
+          <div class="role-card">
+            <h3 class="role-name mono">RESEARCHER</h3>
+            <p>Aporta referencias técnicas de síntesis y teoría musical con atribución explícita de fuentes.</p>
+          </div>
+          <div class="role-card">
+            <h3 class="role-name mono">CURATOR</h3>
+            <p>Propone agrupaciones y secuencias; la decisión final recae en el creador humano.</p>
+          </div>
+          <div class="role-card">
+            <h3 class="role-name mono">ARCHIVIST</h3>
+            <p>Mantiene el manifiesto público de artefactos y el registro de cambios técnicos aprobados.</p>
+          </div>
+          <div class="role-card">
+            <h3 class="role-name mono">WEBMASTER</h3>
+            <p>Garantiza accesibilidad (WCAG), rendimiento estático y despliegue seguro en GitHub Pages.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publication Gate -->
+    <section class="arch-section">
+      <div class="panel">
+        <h2 class="panel-title">5. Flujo del Publication Gate</h2>
+        <ol class="gate-steps">
+          <li>
+            <strong>Propuesta:</strong> Se redacta una variación o artefacto en el laboratorio o espacio privado.
+          </li>
+          <li>
+            <strong>Revisión Humana:</strong> El creador evalúa la obra musicalmente, sin depender de puntuaciones automáticas.
+          </li>
+          <li>
+            <strong>Inclusión en Manifiesto:</strong> El artefacto se documenta en <code>artifacts.manifest.json</code> con firma explícita.
+          </li>
+          <li>
+            <strong>Verificación Automatizada:</strong> Se ejecuta <code>npm run verify:boundary</code> localmente y en CI.
+          </li>
+          <li>
+            <strong>Despliegue a Producción:</strong> GitHub Pages recibe únicamente la compilación generada en <code>dist/</code>.
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    margin: var(--space-xs) 0 var(--space-sm);
+  }
+
+  .page-desc {
+    color: var(--text-muted);
+    max-width: 750px;
+  }
+
+  .arch-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .ascii-diagram pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: var(--space-md);
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .diagram-caption {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-top: var(--space-xs);
+    font-family: var(--font-mono);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .feature-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+  }
+
+  .feature-title {
+    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    margin-bottom: var(--space-sm);
+    color: var(--accent);
+  }
+
+  .feature-item ul {
+    list-style: square inside;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+    margin-top: var(--space-sm);
+  }
+
+  .tech-table th {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+
+  .tech-table td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .section-lead {
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .role-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+  }
+
+  .role-name {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: var(--space-xs);
+  }
+
+  .role-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .gate-steps {
+    margin-top: var(--space-md);
+    padding-left: var(--space-lg);
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+
+  .gate-steps code {
+    color: var(--accent);
+  }
+</style>

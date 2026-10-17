@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'RECOVERY — Generative Music & Code System',
+  description = 'Public artifact environment for RECOVERY, an experimental generative music album where source code and sound experiments are part of the artwork.'
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathname = Astro.url.pathname;
+
+function isActive(path: string) {
+  const target = `${baseUrl}${path}`;
+  if (path === '/' && (pathname === `${baseUrl}/` || pathname === baseUrl || pathname === '/')) {
+    return true;
+  }
+  return path !== '/' && pathname.startsWith(target);
+}
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0d0f12" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href={`${baseUrl}/`} class="brand">
+          <span>RECOVERY</span>
+          <span class="brand-badge">PUBLIC ARTIFACT</span>
+        </a>
+        <nav aria-label="Navegación principal">
+          <ul class="nav-links">
+            <li>
+              <a href={`${baseUrl}/`} class={isActive('/') ? 'active' : ''}>Inicio</a>
+            </li>
+            <li>
+              <a href={`${baseUrl}/album`} class={isActive('/album') ? 'active' : ''}>Álbum</a>
+            </li>
+            <li>
+              <a href={`${baseUrl}/lab`} class={isActive('/lab') ? 'active' : ''}>Laboratorio</a>
+            </li>
+            <li>
+              <a href={`${baseUrl}/architecture`} class={isActive('/architecture') ? 'active' : ''}>Arquitectura</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-meta">
+            <div><strong>PROYECTO:</strong> RECOVERY (Entorno Público de Artefactos)</div>
+            <div><strong>ESTADO:</strong> FASE 1 — Bocetación & Primer Single (Backup)</div>
+            <div><strong>FRONTERA DE PRIVACIDAD:</strong> Verificado por Publication Gate. Libre de prompts privados y registros OpenWiki.</div>
+          </div>
+          <div class="footer-meta">
+            <div><strong>MOTOR SONORO:</strong> Strudel / Web Audio</div>
+            <div><strong>COMPILACIÓN:</strong> Astro Static Site</div>
+            <div><strong>LICENCIAMIENTO:</strong> Reservado / Decisión del creador</div>
+          </div>
+        </div>
+        <div class="footer-copy">
+          <span>&copy; {new Date().getFullYear()} RECOVERY — Sistema de Arte Sonoro Algorítmico</span>
+          <span>Autoridad creativa: Creador Humano</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

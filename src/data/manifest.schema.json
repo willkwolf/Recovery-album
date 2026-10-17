@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArtifactManifest",
+  "type": "object",
+  "required": ["manifestVersion", "project", "environment", "policy", "approvedArtifacts"],
+  "properties": {
+    "manifestVersion": { "type": "string" },
+    "project": { "type": "string" },
+    "environment": { "type": "string", "enum": ["public-artifact"] },
+    "policy": {
+      "type": "object",
+      "required": ["humanApprovalRequired", "allowUnapprovedArtifacts", "licenseStatus"],
+      "properties": {
+        "humanApprovalRequired": { "type": "boolean" },
+        "allowUnapprovedArtifacts": { "type": "boolean" },
+        "licenseStatus": { "type": "string" }
+      }
+    },
+    "approvedArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "title", "status", "humanApproval"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string" },
+          "humanApproval": {
+            "type": "object",
+            "required": ["approved", "signoff", "date"],
+            "properties": {
+              "approved": { "type": "boolean" },
+              "signoff": { "type": "string" },
+              "date": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
