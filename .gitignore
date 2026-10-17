@@ -11,11 +11,14 @@ dist/
 *.key
 *.cert
 
-# Private Creative Workspace Boundary (OpenWiki, Unfiltered Notes, Raw Research)
+# Private Creative Workspace Boundary (OpenWiki, Unfiltered Notes, Raw Research, Agent Orchestration)
 Research/
 research/
 OpenWiki/
 openwiki/
+agent_crew/
+orchestrator/
+.agents/
 private/
 drafts/
 notes/
