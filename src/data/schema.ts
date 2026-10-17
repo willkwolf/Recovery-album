@@ -1,3 +1,18 @@
+export interface SongSection {
+  id: string;
+  tag: string;
+  name: string;
+  startTime: string;
+  endTime: string;
+  startSec: number;
+  endSec: number;
+  bpm: number;
+  keyCenter: string;
+  instruments: string[];
+  description: string;
+  strudelCode: string;
+}
+
 export interface TrackVariation {
   id: string;
   name: string;
@@ -27,5 +42,6 @@ export interface Track {
   summary: string;
   publicNotes: string[];
   variations: TrackVariation[];
+  sections?: SongSection[];
   humanApproval: HumanApproval;
 }
