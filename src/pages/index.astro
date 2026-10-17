@@ -266,6 +266,9 @@ const sections = SONG_SECTIONS;
     logEl.scrollTop = logEl.scrollHeight;
   }
 
+  let delayNode = null;
+  let feedbackGain = null;
+
   function getAudioContext() {
     if (!audioCtx) {
       const AudioContextClass = window.AudioContext || window['webkitAudioContext'];
@@ -276,6 +279,20 @@ const sections = SONG_SECTIONS;
       masterGain.gain.setValueAtTime(parseFloat(volSlider.value), audioCtx.currentTime);
       masterGain.connect(analyser);
       analyser.connect(audioCtx.destination);
+
+      // Stereo delay for Fork fast melody & Santana solo
+      delayNode = audioCtx.createDelay();
+      delayNode.delayTime.setValueAtTime(0.333, audioCtx.currentTime);
+      feedbackGain = audioCtx.createGain();
+      feedbackGain.gain.setValueAtTime(0.55, audioCtx.currentTime);
+      const delayFilter = audioCtx.createBiquadFilter();
+      delayFilter.type = 'lowpass';
+      delayFilter.frequency.setValueAtTime(2500, audioCtx.currentTime);
+
+      delayNode.connect(feedbackGain);
+      feedbackGain.connect(delayFilter);
+      delayFilter.connect(delayNode);
+      delayNode.connect(masterGain);
     }
     if (audioCtx.state === 'suspended') {
       audioCtx.resume();
@@ -297,6 +314,51 @@ const sections = SONG_SECTIONS;
 
   const distortionCurve = makeDistortionCurve(50);
   const santanaNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16, 349.23, 293.66]; // D5, A4, F4, C5...
+
+  // Original Fork Section 01 Synthesizer Data (from Commit 1 & Seed)
+  const forkMelodyNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25]; // C4, Eb4, G4, F#4, Bb4, D5, C5
+  const forkDyads = [
+    [65.41, 98.00],   // [C2, G2]
+    [77.78, 116.54],  // [Eb2, Bb2]
+    [87.31, 130.81],  // [F2, C3]
+    [92.50, 130.81]   // [F#2, C3] -> F# persistent alternative timeline dissonance!
+  ];
+
+  function triggerForkMelody(ctx, time, freq, vol = 0.38) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
+    osc.connect(g);
+    g.connect(masterGain);
+    if (delayNode) {
+      g.connect(delayNode);
+    }
+    osc.start(time);
+    osc.stop(time + 0.25);
+  }
+
+  function triggerForkChord(ctx, time, freq1, freq2, filterFreq, dur) {
+    [freq1, freq2].forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, time);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(filterFreq, time);
+      filter.Q.value = 5;
+      g.gain.setValueAtTime(0.35, time);
+      g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc.connect(filter);
+      filter.connect(g);
+      g.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + dur);
+    });
+  }
 
   function selectSection(index, seekToStart = false) {
     activeSectionIndex = index;
@@ -377,40 +439,73 @@ const sections = SONG_SECTIONS;
       const time = ctx.currentTime;
       const s = trackSeconds;
 
-      // SECTION 01: FORK SUSPENSE (0:00 - 1:15)
+      // SECTION 01: FORK SUSPENSE LOOP ORIGINAL (0:00 - 1:15 | 75 SEGUNDOS PUROS)
       if (s >= 0 && s < 75) {
-        // Hypnotic Fork Groove: Kick on 1, 9, 13
-        if (tickerStep % 8 === 0 || tickerStep % 16 === 12) {
-          triggerKick(ctx, time, 130, 36, 0.75);
+        const stepInBar = tickerStep % 16;
+        const barIdx = Math.floor(tickerStep / 16) % 4;
+        const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850; // Filtro LFO 500Hz a 2200Hz
+
+        // 1. Acorde Dyad Sawtooth al inicio de cada compás: [C2,G2] -> [Eb2,Bb2] -> [F2,C3] -> [F#2,C3]
+        if (stepInBar === 0) {
+          const dyad = forkDyads[barIdx];
+          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
         }
-        // Dark Sub Bass (Fork notes C, Eb, F, F#)
-        if (tickerStep % 4 === 0) {
-          const bassFreqs = [65.41, 77.78, 87.31, 92.50];
-          triggerSaw(ctx, time, bassFreqs[(tickerStep / 4) % bassFreqs.length], 0.28, 900, 0.28);
+
+        // 2. Melodía Rápida Fast(1.75) con Delay Stereo: C4, Eb4, G4, F#4, Bb4, D5, C5
+        if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
+          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.38);
         }
-        // Crisp Rimshot
-        if (tickerStep % 4 === 2) {
-          triggerNoise(ctx, time, 0.25, 2000, 0.03);
+
+        // 3. Patrón Roland TR-909 Kick: bd:3 [~ bd:1] ~ [bd:3 ~]
+        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12 || stepInBar === 14) {
+          const kickVol = (stepInBar === 0 || stepInBar === 12) ? 0.85 : 0.65;
+          triggerKick(ctx, time, 135, 36, kickVol);
         }
-        // Subtle hi-hats
-        if (tickerStep % 2 === 1) {
-          triggerNoise(ctx, time, 0.12, 5000, 0.02);
+
+        // 4. Rimshot 5-tuplet con Paneo Stereo: rim*5
+        if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
+          triggerNoise(ctx, time, 0.28, 2200, 0.035);
+        }
+
+        // 5. Polirritmia de Hi-Hats [hh*3, hh*7] con HPF 3200Hz
+        if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
+          const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
+          triggerNoise(ctx, time, hatVol, 3200, 0.025);
         }
       }
 
-      // SECTION 02: CABALLO DE TROYA / ARPEGIOS (1:15 - 2:00)
+      // SECTION 02: CABALLO DE TROYA (ARPEGIOS BRILLANTES SOBRE FORK) (1:15 - 2:00)
       else if (s >= 75 && s < 120) {
-        // Fork base keeps pulsing
-        if (tickerStep % 8 === 0) triggerKick(ctx, time, 130, 36, 0.75);
-        if (tickerStep % 4 === 0) {
-          triggerSaw(ctx, time, 65.41, 0.25, 1000, 0.25);
+        const stepInBar = tickerStep % 16;
+        const barIdx = Math.floor(tickerStep / 16) % 4;
+        const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
+
+        // Base Fork se mantiene activa
+        if (stepInBar === 0) {
+          const dyad = forkDyads[barIdx];
+          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
         }
-        // Trojan deceptive bright chimes (C5, E5, G5, B5, C6)
+
+        // Melodía Fork sigue en segundo plano
+        if (tickerStep % 3 === 0) {
+          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
+        }
+
+        // Arpegios cristalinos engañosos entrando en registro agudo: C5, E5, G5, B5, C6
         if (tickerStep % 2 === 0) {
           const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
-          triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.15, 0.18);
+          triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
         }
-        if (tickerStep % 2 === 1) triggerNoise(ctx, time, 0.14, 5500, 0.03);
+
+        // Ritmo TR-909 y Hats
+        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
+          triggerKick(ctx, time, 135, 36, 0.8);
+        }
+        if (stepInBar % 2 === 1) {
+          triggerNoise(ctx, time, 0.16, 3200, 0.03);
+        }
       }
 
       // SECTION 03: MARCHA TOTALITARIA & GLITCH (2:00 - 2:45)

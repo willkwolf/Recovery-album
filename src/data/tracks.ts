@@ -12,17 +12,30 @@ export const SONG_SECTIONS: SongSection[] = [
     bpm: 110,
     keyCenter: 'C menor (disonancia F# persistente)',
     instruments: ['Sawtooth Sub-Bass', 'TR-909 Kick', 'Rimshot Panning', 'Polyrhythmic Hi-Hats'],
-    description: 'El bucle original de Fork extendido durante más de un minuto completo. Genera una atmósfera hipnótica y tensa de contención en el sandbox sin apresurarse ni saturar.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 01:15): Bucle de Suspenso Fork
+    description: 'El bucle original de Fork extendido durante más de un minuto completo. Polirritmia asimétrica y disonancia armónica de fuga con acordes sawtooth filtrados, melodía rápida en delay, caja de ritmos TR-909 y polirritmia de hi-hats 3 contra 7.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 01:15): Bucle de Suspenso Fork Original (1+ Minuto)
+// Polirritmia asimétrica y disonancia armónica de fuga
 stack(
-  note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>".slow(2))
-    .s("sawtooth").lpf(1100).gain(0.8),
+  note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>")
+    .s("sawtooth")
+    .lpf(sine.range(500, 2200).slow(6))
+    .gain(0.8),
   note("c4 eb4 g4 fs4 bb4 d5 c5")
-    .fast(1.75).s("sine").gain(0.4)
-    .delay(0.35).delaytime(0.333).delayfeedback(0.55),
-  s("bd:3 [~ bd:1] ~ [bd:3 ~]").bank("RolandTR909").gain(0.8),
-  s("rim*5").gain(0.6).pan(sine.range(0.2, 0.8).slow(3)),
-  s("[hh*4, hh*8]").gain(perlin.range(0.2, 0.65)).hpf(3000)
+    .fast(1.75)
+    .s("sine")
+    .gain(0.45)
+    .delay(0.35)
+    .delaytime(0.333)
+    .delayfeedback(0.55),
+  s("bd:3 [~ bd:1] ~ [bd:3 ~]")
+    .bank("RolandTR909")
+    .gain(0.8),
+  s("rim*5")
+    .gain(0.65)
+    .pan(sine.range(0.2, 0.8).slow(3)),
+  s("[hh*3, hh*7]")
+    .gain(perlin.range(0.25, 0.65))
+    .hpf(3200)
 )`
   },
   {
