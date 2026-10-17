@@ -2,6 +2,8 @@
 
 [![Privacy Boundary & Build](https://github.com/willkwolf/Recovery-album/actions/workflows/deploy.yml/badge.svg)](https://github.com/willkwolf/Recovery-album/actions/workflows/deploy.yml)
 
+> 🟢 **LIVE TERMINAL PLAYER**: [https://willkwolf.github.io/Recovery-album/](https://willkwolf.github.io/Recovery-album/)
+
 **RECOVERY** is an experimental algorithmic musical system where the source code, compositional scripts, and sound experiments are constitutive elements of the artwork.
 
 The human creator exercises final authority over aesthetic direction, vibe, conceptual meaning, sequencing, and publication decisions. Software agents assist with implementation, composition tooling, technical evaluation, and site maintenance.
@@ -78,7 +80,7 @@ The inaugural public experiment implements three algorithmic variations of the s
 2. **Variación B (Tránsito)**: *La memoria como combustible* — Motor rítmico percusivo (124 BPM), pulso implacable y administración digital de la memoria.
 3. **Variación C (Fork)**: *La memoria ya en otra parte* — Bifurcación polirrítmica asimétrica (110 BPM) con disonancia armónica no resuelta.
 
-All three variations can be auditioned and edited live directly in the [Experimental Lab](https://recovery-music.github.io/lab).
+All three variations can be auditioned live directly in the [Live Terminal Player](https://willkwolf.github.io/Recovery-album/).
 
 ---
 

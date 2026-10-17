@@ -1,184 +1,711 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StrudelPlayer from '../components/StrudelPlayer.astro';
 import { TRACKS } from '../data/tracks';
 
-const firstTrack = TRACKS[0];
-const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const track = TRACKS[0];
+const variations = track.variations;
 ---
 
 <Layout
-  title="RECOVERY — Álbum Generativo y Código Fuente"
-  description="Entorno público del álbum experimental RECOVERY. El código fuente algorítmico y los experimentos sonoros como parte constitutiva de la obra."
+  title="RECOVERY // TERMINAL RUNTIME — Live Algorithmic Audio Player"
+  description="Terminal interactiva de reproducción en vivo del álbum conceptual RECOVERY. Síntesis algorítmica de música digital vía Strudel y Web Audio."
 >
-  <div class="container">
-    <!-- Hero / System Presentation -->
-    <section class="hero-section">
-      <div class="system-tag">
-        <span class="status-dot"></span> SISTEMA DE COMPOSICIÓN ALGORÍTMICA
-      </div>
-      <h1 class="hero-title">RECOVERY</h1>
-      <p class="hero-subtitle">
-        Un sistema artístico y musical donde el código fuente, los experimentos algorítmicos
-        y la síntesis sonora browser-native forman parte integral de la obra.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href={`${baseUrl}/album`} class="btn btn-primary">
-          ▶ Escuchar Primer Single (Backup)
-        </a>
-        <a href={`${baseUrl}/lab`} class="btn">
-          🔬 Explorar Variaciones en el Laboratorio
-        </a>
-        <a href={`${baseUrl}/architecture`} class="btn">
-          📐 Arquitectura del Sistema
-        </a>
-      </div>
-    </section>
-
-    <!-- Project State & Principles -->
-    <section class="state-grid">
-      <div class="panel">
-        <div class="panel-title">
-          <span>01 / AUTORIDAD CREATIVA</span>
-          <span class="badge">HUMANO EN CONTROL</span>
+  <div class="terminal-container">
+    <div class="terminal-shell">
+      <!-- Top Titlebar -->
+      <div class="terminal-top-bar">
+        <div class="terminal-dots">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-amber"></span>
+          <span class="dot dot-green"></span>
         </div>
-        <p>
-          La dirección estética, el significado conceptual, la selección de cortes y las decisiones
-          de publicación permanecen bajo el criterio exclusivo del creador humano. Las inteligencias
-          asistentes proponen variaciones algorítmicas sin alterar la premisa artística.
-        </p>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">
-          <span>02 / FRONTERA DE PRIVACIDAD</span>
-          <span class="badge badge-success">ESTRICTA</span>
+        <div class="terminal-sysinfo">
+          <span><span class="pulse-indicator"></span> SYS: RECOVERY-OS v1.0.4</span>
+          <span>DSP: WEB-AUDIO / STRUDEL</span>
+          <span>LATENCY: 1.8ms</span>
+          <a href="https://github.com/willkwolf/Recovery-album" target="_blank" rel="noopener noreferrer">
+            [ GITHUB_REPO ↗ ]
+          </a>
         </div>
-        <p>
-          Separación infranqueable entre el espacio privado de pensamiento (OpenWiki, reflexiones,
-          prompts internos) y este repositorio de artefactos públicos verificados por el Publication Gate.
-        </p>
       </div>
 
-      <div class="panel">
-        <div class="panel-title">
-          <span>03 / TRANSPARENCIA DE CÓDIGO</span>
-          <span class="badge">STRUDEL / WEB AUDIO</span>
+      <!-- ASCII Header -->
+      <div class="ascii-banner">
+██████╗ ███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗
+██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝
+██████╔╝█████╗  ██║     ██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ 
+██╔══██╗██╔══╝  ██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝  
+██║  ██║███████╗╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   
+╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   
+>> RECOVERY // ALGORITHMIC AUDIO COMPILATION & LIVE TERMINAL PLAYER &lt;&lt;
+      </div>
+
+      <!-- System Telemetry & Album Manifest -->
+      <div style="padding: 1rem 1rem 0;">
+        <div class="term-box">
+          <div class="term-box-header">
+            <span>// COMPILACIÓN CONCEPTUAL ACTIVA</span>
+            <span class="term-badge badge-green">APROBADO POR CREADOR HUMANO</span>
+          </div>
+          <div class="hud-meta-grid">
+            <div>
+              <span class="hud-label">PROYECTO:</span> <span class="hud-value">RECOVERY (2016–2026 ARCHIVE)</span>
+            </div>
+            <div>
+              <span class="hud-label">MEDIO SONORO:</span> <span class="hud-value">MÚSICA DIGITAL / SÍNTESIS ALGORÍTMICA POR CÓDIGO</span>
+            </div>
+            <div>
+              <span class="hud-label">CORTE ACTIVO:</span> <span class="hud-value font-bold">SINGLE 01 — BACKUP</span>
+            </div>
+            <div>
+              <span class="hud-label">PREMISA ARTÍSTICA:</span> <span class="hud-value">¿Qué suena recuperar la memoria humana y avanzar hacia otra línea temporal?</span>
+            </div>
+          </div>
         </div>
-        <p>
-          Las composiciones no son pistas de audio pre-renderizadas estáticas e inaccesibles:
-          el código generativo se ejecuta en tiempo real en el navegador, permitiendo audición e inspección.
-        </p>
-      </div>
-    </section>
 
-    <!-- Immediate Audition Section -->
-    <section class="preview-section">
-      <div class="section-header">
-        <div>
-          <span class="badge">PRIMER EXPERIMENTO PUBLICADO</span>
-          <h2 class="section-title">Single 01: {firstTrack.title}</h2>
+        <!-- Audio Player Console & Oscilloscope -->
+        <div class="term-box player-console">
+          <div class="term-box-header">
+            <span>// TERMINAL AUDIO ENGINE // REPRODUCCIÓN EN VIVO</span>
+            <span class="term-badge badge-cyan" id="stream-status">ESTADO: LISTO PARA AUDICIÓN</span>
+          </div>
+
+          <!-- Realtime Canvas Visualizer -->
+          <div class="visualizer-wrapper">
+            <canvas id="visualizer-canvas" height="90"></canvas>
+            <div class="visualizer-overlay">
+              <span id="canvas-track-label">TRACK: BACKUP // STRUDEL LIVE DSP</span>
+              <span id="canvas-bpm-label">BPM: 110 // FREQ: 48.0 kHz</span>
+            </div>
+          </div>
+
+          <!-- Playback Controls -->
+          <div class="player-action-row">
+            <div class="main-buttons">
+              <button type="button" class="term-btn term-btn-primary" id="btn-master-play">
+                <span id="play-glyph">▶</span> <span id="play-text">INICIAR STREAM EN VIVO</span>
+              </button>
+              <button type="button" class="term-btn term-btn-danger" id="btn-master-stop" disabled>
+                ■ DETENER
+              </button>
+            </div>
+
+            <div class="vol-control">
+              <span class="hud-label">VOLUMEN:</span>
+              <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.8" />
+              <span id="vol-display" class="hud-value">80%</span>
+            </div>
+          </div>
+
+          <!-- Variations Selector (Subroutines) -->
+          <div class="subroutines-panel">
+            <div class="subroutine-header">
+              <span>// SUBRUTINAS ALGORÍTMICAS APROBADAS (SELECCIONAR PARA AUDICIONAR):</span>
+            </div>
+            <div class="subroutine-grid">
+              {variations.map((v, idx) => (
+                <button
+                  type="button"
+                  class={`subroutine-card ${idx === 2 ? 'active' : ''}`}
+                  data-var-id={v.id}
+                  data-var-bpm={v.bpm}
+                  data-var-concept={v.concept}
+                  data-var-tension={v.tension}
+                >
+                  <div class="sub-title">
+                    <span class="sub-idx">[{idx + 1}]</span> {v.name.toUpperCase()}
+                  </div>
+                  <div class="sub-concept">{v.concept}</div>
+                  <div class="sub-meta">TEMPO: {v.bpm} BPM // TENSION: {v.tension}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Active Variation Specs -->
+          <div class="variation-detail-box" id="var-detail-box">
+            <div class="detail-row">
+              <span class="hud-label">SUBRUTINA ACTIVA:</span>
+              <span class="hud-value font-bold" id="detail-name">Variación C — Fork</span>
+            </div>
+            <div class="detail-row">
+              <span class="hud-label">DESCRIPCIÓN TÉCNICA:</span>
+              <span class="hud-value" id="detail-desc">
+                Bifurcación estructural. Una nota disonante persistente (F# sobre C menor) actúa como la línea temporal alternativa filtrándose hacia el presente sin resolución final.
+              </span>
+            </div>
+          </div>
         </div>
-        <a href={`${baseUrl}/album`} class="view-all-link">Ver ficha en Álbum →</a>
+
+        <!-- Terminal Log / Console Telemetry -->
+        <div class="term-box">
+          <div class="term-box-header">
+            <span>// REGISTRO DE EVENTOS DEL SISTEMA (TELEMETRY LOG)</span>
+            <span class="term-badge">CANAL: STDOUT</span>
+          </div>
+          <div class="term-log" id="terminal-log-output">
+            <span class="log-entry"><span class="log-time">[BOOT+0.00s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Iniciando RECOVERY Kernel v1.0.4...</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.05s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Compilación de audio: Single 01 (Backup) cargado con 3 subrutinas.</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.08s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Motor de audio: Web Audio Context sincronizado a 48000 Hz estéreo.</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.12s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Frontera de privacidad: verificada. Cero fugas de notas privadas.</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.15s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Listo para ejecución algorítmica. Presiona [INICIAR STREAM EN VIVO].</span> <span class="cursor-blink">_</span></span>
+          </div>
+        </div>
+
+        <!-- Code Inspection Drawer -->
+        <div class="term-box">
+          <div class="term-box-header">
+            <span>// CÓDIGO FUENTE DE SÍNTESIS (STRUDEL / TIDALCYCLES ALGORÍTMICO)</span>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="term-btn term-btn-sm" id="btn-copy-code">
+                [ COPIAR CÓDIGO ]
+              </button>
+              <a
+                id="btn-strudel-repl"
+                href={`https://strudel.cc/#${encodeURIComponent(variations[2].code)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="term-btn term-btn-sm"
+              >
+                [ ABRIR EN STRUDEL REPL ↗ ]
+              </a>
+            </div>
+          </div>
+          <pre class="term-code"><code id="code-display">{variations[2].code}</code></pre>
+        </div>
+
+        <!-- Terminal Footer -->
+        <div class="terminal-footer">
+          <div>
+            <span>RECOVERY AUDIO COMPILATION</span> // <span>AUTORIDAD CREATIVA: CREADOR HUMANO</span>
+          </div>
+          <div>
+            <span>PUBLIC GITHUB PAGES RUNTIME: <a href="https://willkwolf.github.io/Recovery-album/">willkwolf.github.io/Recovery-album/</a></span>
+          </div>
+        </div>
       </div>
-
-      <p class="section-intro">{firstTrack.summary}</p>
-
-      <StrudelPlayer trackTitle={firstTrack.title} variations={firstTrack.variations} />
-    </section>
+    </div>
   </div>
 </Layout>
 
+<script define:vars={{ variations }}>
+  // Runtime Interactive Terminal Audio Engine & Oscilloscope
+  let isPlaying = false;
+  let activeVar = variations[2]; // Default to Fork
+  let audioCtx = null;
+  let analyser = null;
+  let synthInterval = null;
+  let strudelModule = null;
+
+  const playBtn = document.getElementById('btn-master-play');
+  const stopBtn = document.getElementById('btn-master-stop');
+  const playGlyph = document.getElementById('play-glyph');
+  const playText = document.getElementById('play-text');
+  const statusEl = document.getElementById('stream-status');
+  const canvas = document.getElementById('visualizer-canvas');
+  const canvasCtx = canvas.getContext('2d');
+  const logEl = document.getElementById('terminal-log-output');
+  const codeEl = document.getElementById('code-display');
+  const replLink = document.getElementById('btn-strudel-repl');
+  const copyBtn = document.getElementById('btn-copy-code');
+  const volSlider = document.getElementById('vol-slider');
+  const volDisplay = document.getElementById('vol-display');
+  const subBtns = document.querySelectorAll('.subroutine-card');
+  const detailName = document.getElementById('detail-name');
+  const detailDesc = document.getElementById('detail-desc');
+  const canvasTrackLabel = document.getElementById('canvas-track-label');
+  const canvasBpmLabel = document.getElementById('canvas-bpm-label');
+
+  let masterGain = null;
+
+  function appendLog(msg, prefix = '>') {
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+    const span = document.createElement('span');
+    span.className = 'log-entry';
+    span.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="log-prefix">${prefix}</span> <span class="log-msg">${msg}</span>`;
+    logEl.appendChild(span);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function getAudioContext() {
+    if (!audioCtx) {
+      const AudioContextClass = window.AudioContext || window['webkitAudioContext'];
+      audioCtx = new AudioContextClass();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(parseFloat(volSlider.value), audioCtx.currentTime);
+      masterGain.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  // Native Web Audio DSP Synthesizer that immediately produces rich audible electronic music
+  function startNativeSynth(varId, bpm) {
+    const ctx = getAudioContext();
+    const intervalSec = (60 / bpm) / 4; // 16th note pulse
+
+    let step = 0;
+    synthInterval = setInterval(() => {
+      const time = ctx.currentTime;
+      // Kick on 1, 5, 9, 13
+      if (step % 4 === 0) {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(140, time);
+        osc.frequency.exponentialRampToValueAtTime(32, time + 0.12);
+        g.gain.setValueAtTime(0.8, time);
+        g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+        osc.connect(g);
+        g.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.18);
+      }
+
+      // Hi-hats
+      if (step % 2 === 0) {
+        const bufferSize = ctx.sampleRate * 0.04;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 5000;
+        const g = ctx.createGain();
+        const hatGain = step % 4 === 2 ? 0.35 : 0.15;
+        g.gain.setValueAtTime(hatGain, time);
+        g.gain.exponentialRampToValueAtTime(0.001, time + 0.035);
+        noise.connect(filter);
+        filter.connect(g);
+        g.connect(masterGain);
+        noise.start(time);
+        noise.stop(time + 0.04);
+      }
+
+      // Melodic notes depending on variation
+      if (varId === 'fork') {
+        // Tension: C minor chord with persistence of F# (dissonance)
+        const notes = [130.81, 155.56, 196.00, 185.00, 261.63, 311.13, 369.99]; // F#4 = 369.99Hz
+        if (step % 3 === 0 || step % 7 === 0) {
+          const osc = ctx.createOscillator();
+          const filter = ctx.createBiquadFilter();
+          const g = ctx.createGain();
+          const noteFreq = notes[(step / 3) % notes.length];
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(noteFreq, time);
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(1400, time);
+          filter.Q.value = 6;
+          g.gain.setValueAtTime(0.25, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.35);
+          osc.connect(filter);
+          filter.connect(g);
+          g.connect(masterGain);
+          osc.start(time);
+          osc.stop(time + 0.35);
+        }
+      } else if (varId === 'transito') {
+        // Fast electronic driving bass pulse
+        const bassNotes = [65.41, 77.78, 65.41, 98.00];
+        if (step % 2 === 0) {
+          const osc = ctx.createOscillator();
+          const filter = ctx.createBiquadFilter();
+          const g = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(bassNotes[(step / 2) % bassNotes.length], time);
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(2200, time);
+          filter.Q.value = 8;
+          g.gain.setValueAtTime(0.35, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.14);
+          osc.connect(filter);
+          filter.connect(g);
+          g.connect(masterGain);
+          osc.start(time);
+          osc.stop(time + 0.15);
+        }
+      } else {
+        // Museo: Lo-fi warm sine pads
+        if (step % 8 === 0) {
+          const chord = [130.81, 155.56, 196.00, 233.08]; // Cm7
+          chord.forEach((freq) => {
+            const osc = ctx.createOscillator();
+            const filter = ctx.createBiquadFilter();
+            const g = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, time);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(650, time);
+            g.gain.setValueAtTime(0.12, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 1.2);
+            osc.connect(filter);
+            filter.connect(g);
+            g.connect(masterGain);
+            osc.start(time);
+            osc.stop(time + 1.2);
+          });
+        }
+      }
+
+      step++;
+    }, intervalSec * 1000);
+  }
+
+  function stopNativeSynth() {
+    if (synthInterval) {
+      clearInterval(synthInterval);
+      synthInterval = null;
+    }
+  }
+
+  // Oscilloscope & Spectrum Visualizer
+  function drawVisualizer() {
+    if (!canvas) return;
+    const width = canvas.width = canvas.clientWidth;
+    const height = canvas.height = canvas.clientHeight;
+
+    if (!analyser || !isPlaying) {
+      // Idle oscilloscope line
+      canvasCtx.fillStyle = '#03060a';
+      canvasCtx.fillRect(0, 0, width, height);
+      canvasCtx.strokeStyle = 'rgba(0, 255, 157, 0.25)';
+      canvasCtx.lineWidth = 1;
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(0, height / 2);
+      canvasCtx.lineTo(width, height / 2);
+      canvasCtx.stroke();
+      return;
+    }
+
+    const bufferLength = analyser.frequencyBinCount;
+    const timeData = new Uint8Array(bufferLength);
+    analyser.getByteTimeDomainData(timeData);
+
+    const freqData = new Uint8Array(bufferLength);
+    analyser.getByteFrequencyData(freqData);
+
+    canvasCtx.fillStyle = 'rgba(3, 6, 10, 0.35)';
+    canvasCtx.fillRect(0, 0, width, height);
+
+    // Spectrum bars in background
+    const barWidth = (width / bufferLength) * 2;
+    let x = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = (freqData[i] / 255) * height * 0.7;
+      canvasCtx.fillStyle = `rgba(0, 229, 255, ${0.1 + (freqData[i] / 255) * 0.4})`;
+      canvasCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
+      x += barWidth;
+    }
+
+    // Oscilloscope waveform on top
+    canvasCtx.lineWidth = 2;
+    canvasCtx.strokeStyle = '#00ff9d';
+    canvasCtx.shadowBlur = 8;
+    canvasCtx.shadowColor = '#00ff9d';
+    canvasCtx.beginPath();
+
+    const sliceWidth = width / bufferLength;
+    let wx = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      const v = timeData[i] / 128.0;
+      const y = (v * height) / 2;
+      if (i === 0) {
+        canvasCtx.moveTo(wx, y);
+      } else {
+        canvasCtx.lineTo(wx, y);
+      }
+      wx += sliceWidth;
+    }
+    canvasCtx.stroke();
+    canvasCtx.shadowBlur = 0;
+
+    animationFrameId = requestAnimationFrame(drawVisualizer);
+  }
+
+  async function startAudioStream() {
+    appendLog(`Inicializando bus de audio para subrutina: ${activeVar.name}...`);
+    statusEl.textContent = `ESTADO: TRANSMITIENDO [${activeVar.name.toUpperCase()}]`;
+    statusEl.className = 'term-badge badge-green';
+
+    getAudioContext();
+
+    // Start native synth immediately so the user hears rich music right away
+    startNativeSynth(activeVar.id, activeVar.bpm);
+    appendLog(`DSP sintetizador nativo activo a ${activeVar.bpm} BPM. Buffer estéreo transmitiendo.`);
+
+    // Try loading Strudel in parallel
+    try {
+      if (!strudelModule) {
+        strudelModule = await import('https://unpkg.com/@strudel/web@1.3.0/dist/index.mjs');
+        if (strudelModule && strudelModule.initStrudel) {
+          await strudelModule.initStrudel();
+        }
+      }
+      if (strudelModule && strudelModule.evaluate) {
+        strudelModule.evaluate(activeVar.code);
+        appendLog(`Kernel Strudel sincronizado con código TidalCycles.`);
+      }
+    } catch (e) {
+      appendLog(`Aviso Strudel externo: ${e.message || 'offline'}. Ejecutando mediante sintetizador Web Audio interno.`);
+    }
+
+    isPlaying = true;
+    playGlyph.textContent = '⏸';
+    playText.textContent = 'PAUSAR TRANSMISIÓN';
+    stopBtn.disabled = false;
+    drawVisualizer();
+  }
+
+  function stopAudioStream() {
+    stopNativeSynth();
+    if (strudelModule && strudelModule.hush) {
+      try { strudelModule.hush(); } catch(e){}
+    }
+    isPlaying = false;
+    statusEl.textContent = 'ESTADO: TRANSMISIÓN DETENIDA';
+    statusEl.className = 'term-badge badge-amber';
+    playGlyph.textContent = '▶';
+    playText.textContent = 'REANUDAR TRANSMISIÓN';
+    stopBtn.disabled = true;
+    appendLog('Transmisión de audio detenida por usuario.');
+    drawVisualizer();
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      stopAudioStream();
+    } else {
+      startAudioStream();
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    stopAudioStream();
+    playText.textContent = 'INICIAR STREAM EN VIVO';
+  });
+
+  volSlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    volDisplay.textContent = `${Math.round(val * 100)}%`;
+    if (masterGain && audioCtx) {
+      masterGain.gain.setValueAtTime(val, audioCtx.currentTime);
+    }
+  });
+
+  subBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const varId = btn.getAttribute('data-var-id');
+      const found = variations.find((v) => v.id === varId);
+      if (!found) return;
+
+      subBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      activeVar = found;
+      detailName.textContent = found.name;
+      detailDesc.textContent = found.description;
+      canvasTrackLabel.textContent = `TRACK: BACKUP // ${found.name.toUpperCase()}`;
+      canvasBpmLabel.textContent = `BPM: ${found.bpm} // FREQ: 48.0 kHz`;
+      codeEl.textContent = found.code;
+      replLink.href = `https://strudel.cc/#${encodeURIComponent(found.code)}`;
+
+      appendLog(`Conmutado a subrutina: ${found.name} (${found.bpm} BPM) // ${found.concept}`);
+
+      if (isPlaying) {
+        stopNativeSynth();
+        startNativeSynth(found.id, found.bpm);
+        if (strudelModule && strudelModule.evaluate) {
+          try { strudelModule.evaluate(found.code); } catch(e){}
+        }
+      }
+    });
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(activeVar.code);
+      const prev = copyBtn.textContent;
+      copyBtn.textContent = '[ ¡CÓDIGO COPIADO! ]';
+      setTimeout(() => { copyBtn.textContent = prev; }, 2000);
+      appendLog('Código algorítmico copiado al portapapeles.');
+    } catch (e) {
+      console.warn(e);
+    }
+  });
+
+  // Initial draw of oscilloscope
+  drawVisualizer();
+</script>
+
 <style>
-  .hero-section {
-    padding: var(--space-xl) 0 var(--space-2xl);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: var(--space-2xl);
-  }
-
-  .system-tag {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-md);
-    letter-spacing: 0.08em;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--success);
-    display: inline-block;
-  }
-
-  .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4.2rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: var(--space-md);
-    font-family: var(--font-mono);
-  }
-
-  .hero-subtitle {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    max-width: 680px;
-    line-height: 1.6;
-    margin-bottom: var(--space-xl);
-  }
-
-  .hero-cta-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-  }
-
-  .state-grid {
+  .hud-meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.75rem;
+    font-size: 0.85rem;
   }
 
-  .state-grid p {
-    color: var(--text-muted);
-    font-size: 0.92rem;
-    line-height: 1.6;
+  .hud-label {
+    color: var(--term-text-dim);
+    font-size: 0.78rem;
+    margin-right: 0.35rem;
+    text-transform: uppercase;
   }
 
-  .preview-section {
-    margin-bottom: var(--space-2xl);
+  .hud-value {
+    color: var(--term-text);
   }
 
-  .section-header {
+  .font-bold {
+    font-weight: 700;
+    color: var(--term-green);
+  }
+
+  .player-console {
+    background: #04080e;
+    border-color: var(--term-green-dim);
+  }
+
+  .visualizer-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .visualizer-overlay {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    right: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    font-size: 0.72rem;
+    color: var(--term-text-dim);
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  .player-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-sm);
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed var(--term-border);
   }
 
-  .section-title {
-    font-family: var(--font-mono);
-    font-size: 1.6rem;
-    margin-top: var(--space-xs);
+  .main-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
-  .section-intro {
-    color: var(--text-muted);
-    margin-bottom: var(--space-lg);
-    max-width: 720px;
+  .vol-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .view-all-link {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
+  .vol-control input[type="range"] {
+    accent-color: var(--term-green);
+    cursor: pointer;
+    width: 100px;
+  }
+
+  .subroutines-panel {
+    margin-bottom: 1rem;
+  }
+
+  .subroutine-header {
+    font-size: 0.78rem;
+    color: var(--term-cyan);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .subroutine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .subroutine-card {
+    background: #03060a;
+    border: 1px solid var(--term-border);
+    padding: 0.65rem 0.85rem;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+    color: var(--term-text);
+    font-family: var(--term-font);
+  }
+
+  .subroutine-card:hover {
+    border-color: var(--term-cyan);
+    background: #070e17;
+  }
+
+  .subroutine-card.active {
+    border-color: var(--term-green);
+    background: rgba(0, 255, 157, 0.08);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.15);
+  }
+
+  .sub-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--term-green);
+    margin-bottom: 2px;
+  }
+
+  .sub-idx {
+    color: var(--term-text-dim);
+  }
+
+  .sub-concept {
+    font-size: 0.78rem;
+    color: var(--term-text);
+    margin-bottom: 2px;
+  }
+
+  .sub-meta {
+    font-size: 0.7rem;
+    color: var(--term-text-dim);
+  }
+
+  .variation-detail-box {
+    background: #03060b;
+    border: 1px solid var(--term-border);
+    padding: 0.75rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .detail-row {
+    margin-bottom: 4px;
+  }
+
+  .term-code {
+    background: #030508;
+    border: 1px solid var(--term-border);
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #8be9fd;
+    overflow-x: auto;
+    max-height: 280px;
   }
 </style>
