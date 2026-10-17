@@ -1,4 +1,4 @@
-import type { Track, SongSection } from './schema';
+import type { Track, SongSection, TrackVariation } from './schema';
 
 export const SONG_SECTIONS: SongSection[] = [
   {
@@ -144,85 +144,126 @@ stack(
   }
 ];
 
+export const TRACK_VARIATIONS: TrackVariation[] = [
+  {
+    id: 'fork',
+    name: 'Variación C — Fork (Base Original)',
+    lifecycle: ':Mutacion',
+    concept: 'La memoria ya en otra parte — Mutante Alfa Aprobado',
+    tension: 'restauración ↔ fuga (disonancia F# persistente / compás abierto)',
+    runtime: 'strudel',
+    bpm: 110,
+    description: 'LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7. Este es el ADN inmutable sobre el cual se construyen los experimentos.',
+    code: `// :Mutacion — Variación C: Fork (Línea Base Aprobada)
+stack(
+  note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>")
+    .s("sawtooth")
+    .lpf(sine.range(500, 2200).slow(6))
+    .gain(0.8),
+  note("c4 eb4 g4 fs4 bb4 d5 c5")
+    .fast(1.75)
+    .s("sine")
+    .gain(0.45)
+    .delay(0.35)
+    .delaytime(0.333)
+    .delayfeedback(0.55),
+  s("bd:3 [~ bd:1] ~ [bd:3 ~]")
+    .bank("RolandTR909")
+    .gain(0.8),
+  s("rim*5")
+    .gain(0.65)
+    .pan(sine.range(0.2, 0.8).slow(3)),
+  s("[hh*3, hh*7]")
+    .gain(perlin.range(0.25, 0.65))
+    .hpf(3200)
+)`
+  },
+  {
+    id: 'trojan-suite',
+    name: 'Backup: Trojan Sandbox Suite',
+    lifecycle: ':Challenger',
+    concept: 'Simulación del troyano en sandbox antivirus — 6 secciones continuas',
+    tension: 'suspenso ↔ marcha totalitaria ↔ flatline 90s ↔ solo invertido ↔ rave',
+    runtime: 'strudel',
+    bpm: 110,
+    description: 'MUTANTE DESARROLLADO EN DISPUTA. Extiende el bucle Fork más de 1 minuto, introduce el falso optimismo cristalino, la marcha marcial con glitches, el flatline de signos vitales con modem 90s, el solo invertido de Santana y el Rave de reciclaje a 138 BPM.',
+    code: `// :Challenger — Suite Continua Trojan Sandbox (05:15)
+// Integra las 6 secciones temporales en secuencia evolutiva
+cat(
+  // Sec 01: Fork Suspense Loop (0:00 - 1:15)
+  // Sec 02: Caballo de Troya Chimes (1:15 - 2:00)
+  // Sec 03: Marcha Totalitaria (2:00 - 2:45)
+  // Sec 04: Flatline & 56k Modem (2:45 - 3:25)
+  // Sec 05: Solo Rock Santana Invertido (3:25 - 4:05)
+  // Sec 06: Rave Techno de Reciclaje (4:05 - 5:15)
+)`
+  },
+  {
+    id: 'museo',
+    name: 'Variación A — Museo',
+    lifecycle: ':Experimentacion',
+    concept: 'La memoria como reliquia',
+    tension: 'recuerdo ↔ archivo (lo-fi / saturación / caída)',
+    runtime: 'strudel',
+    bpm: 72,
+    description: 'Boceto inicial archivado. Texturas filtradas y sostenidas en una cadencia lenta.',
+    code: `// :Experimentacion — Variación A: Museo (Archivada)
+stack(
+  note("<c3 eb3 g3 bb3 d4>".slow(4))
+    .s("sine")
+    .lpf(sine.range(350, 1100).slow(8))
+    .decay(2.5)
+    .sustain(0.4)
+    .gain(0.7),
+  s("bd:2 [~ bd:1] ~ bd:2")
+    .gain(0.65)
+    .lpf(750)
+)`
+  },
+  {
+    id: 'transito',
+    name: 'Variación B — Tránsito',
+    lifecycle: ':Experimentacion',
+    concept: 'La memoria como combustible',
+    tension: 'orgánico ↔ procesado (motor rítmico / administración)',
+    runtime: 'strudel',
+    bpm: 124,
+    description: 'Boceto inicial archivado. Pulso implacable con Roland TR-808.',
+    code: `// :Experimentacion — Variación B: Tránsito (Archivada)
+stack(
+  s("bd [~ bd] bd [~ bd]")
+    .bank("RolandTR808")
+    .gain(0.85),
+  note("c2 [c2 eb2] g1 [bb1 c2]")
+    .s("sawtooth")
+    .lpf(1300)
+)`
+  }
+];
+
 export const TRACKS: Track[] = [
   {
     id: 'track-01-backup',
     number: 1,
-    title: 'Backup (Live Timeline Edition)',
+    title: 'Backup',
     medium: 'Música Digital / Electrónica Algorítmica',
     status: 'candidate',
-    duration: '05:15',
-    summary: 'Composición continua en vivo de 05:15 minutos estructurada en 6 secciones temporales interactivas. Modelado del Caballo de Troya en sandbox: bucle de suspenso Fork de 1+ minuto, arpegios brillantes, marcha imperial totalitaria, flatline analógico de los 90s, solo invertido de Santana y explosión Techno Rave de reciclaje.',
+    lifecycle: ':Mutacion',
+    duration: '05:15 (Suite) / 01:15 (Fork Base)',
+    summary: 'Primer track del ciclo RECOVERY. Sistema de experimentación HITL con linaje claro: Mutante Alfa C (Fork) y Challenger Trojan Sandbox Suite.',
     humanApproval: {
       approved: true,
       signoff: 'Human Creator',
       date: '2026-10-17',
-      scope: 'timeline-song-structure-and-suno-interface',
-      notes: 'Aprobada la composición como una canción continua en vivo con línea de tiempo estilo Suno (6 secciones inspeccionables, loop de Fork extendido a más de 1 minuto y transiciones coherentes).'
+      scope: 'fork-mutation-and-trojan-challenger-suite',
+      notes: 'Variación C elegida como :Mutacion activa. Suite Trojan Sandbox definida como :Challenger para audición y refinamiento.'
     },
     publicNotes: [
-      'Estructura de canción continua: 6 secciones temporales con duraciones reales y marcadores de edición.',
-      'El bucle Fork inicial se desarrolla con calma durante más de 1 minuto completo (00:00 - 01:15).',
-      'Línea de tiempo interactiva estilo Suno: haz clic en cualquier sección para saltar, activar bucle de inspección o copiar la referencia exacta para solicitar cambios a Antigravity.'
+      'Sistema de estados HITL: :Experimentacion -> :Mutacion -> :Challenger -> :Victory.',
+      'Línea base activa (:Mutacion): Variación C (Fork), preservando su ADN armónico y polirrítmico.',
+      'Challenger en desarrollo (:Challenger): Suite continua de 6 secciones temporales simulando el troyano en sandbox antivirus.'
     ],
     sections: SONG_SECTIONS,
-    variations: [
-      {
-        id: 'full-song-timeline',
-        name: 'Canción Completa (Timeline Continuo de 05:15)',
-        concept: 'Progresión lineal de 6 secciones sin popurrí',
-        tension: 'suspenso ↔ marcha imperial ↔ flatline ↔ solo invertido ↔ techno rave',
-        runtime: 'strudel',
-        bpm: 110,
-        description: 'La canción íntegra en vivo. Cada sección evoluciona en su propio tiempo respetando el minuto completo de Fork.',
-        code: `// CANCIÓN COMPLETA: Backup (Live Timeline Edition - 05:15)
-// Cadena secuencial de las 6 secciones temporales
-cat(
-  // 00:00 - 01:15: Fork Suspense Loop (1+ minuto)
-  stack(
-    note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>".slow(2)).s("sawtooth").lpf(1100),
-    note("c4 eb4 g4 fs4 bb4 d5 c5").fast(1.75).s("sine").gain(0.4),
-    s("bd:3 [~ bd:1] ~ [bd:3 ~]").gain(0.8),
-    s("rim*5").gain(0.6),
-    s("[hh*4, hh*8]").gain(0.5).hpf(3000)
-  ).slow(4),
-
-  // 01:15 - 02:00: Caballo de Troya (Arpegios Brillantes)
-  stack(
-    note("<[c2,g2] [eb2,bb2] [fs2,c3]>").s("sawtooth").lpf(1200),
-    note("<[c5,e5,g5,b5] [d5,fs5,a5,cs6]>").s("triangle").fast(2).gain(0.45),
-    s("bd:3 [~ bd:1] ~ bd:3").gain(0.8),
-    s("[hh*4, hh*8]").gain(0.5).hpf(3000)
-  ).slow(4),
-
-  // 02:00 - 02:45: Marcha Totalitaria
-  stack(
-    s("sd*4").gain(0.9),
-    s("bd [~ bd] bd [bd ~]").gain(0.85),
-    note("<c3 eb3 g3 c4>*4").s("sawtooth").distort(0.6).lpf(1900)
-  ).slow(4),
-
-  // 02:45 - 03:25: Flatline & Handshake 1990s
-  stack(
-    note("c6*8").s("sine").gain(0.7).decay(0.04),
-    note("<fs6 cs7 b6 e7>").s("square").fast(8).gain(0.4).lpf(3500)
-  ).slow(4),
-
-  // 03:25 - 04:05: Solo Rock Invertido (Santana)
-  stack(
-    note("<[d5,a4,f4] [c5,g4,e4] [bb4,f4,d4] [a4,e4,cs4]>")
-      .s("sawtooth").distort(0.7).gain(0.85).delay(0.35)
-  ).slow(4),
-
-  // 04:05 - 05:15: Rave de Reciclaje
-  stack(
-    s("bd*4").gain(1.0),
-    s("~ [cp,sd:2] ~ [cp,sd:2]").gain(0.85),
-    s("hh*16").gain(0.65).hpf(4000),
-    note("d2 [d2 f2] g2 [bb1 c2] cs2 d2").s("sawtooth").lpf(3000).resonance(18)
-  ).slow(4)
-)`
-      }
-    ]
+    variations: TRACK_VARIATIONS
   }
 ];

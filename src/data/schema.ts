@@ -1,3 +1,5 @@
+export type LifecycleState = ':Experimentacion' | ':Mutacion' | ':Challenger' | ':Victory';
+
 export interface SongSection {
   id: string;
   tag: string;
@@ -16,6 +18,7 @@ export interface SongSection {
 export interface TrackVariation {
   id: string;
   name: string;
+  lifecycle: LifecycleState;
   concept: string;
   tension: string;
   runtime: 'strudel';
@@ -38,6 +41,7 @@ export interface Track {
   title: string;
   medium: string;
   status: 'candidate' | 'approved' | 'archived';
+  lifecycle: LifecycleState;
   duration: string;
   summary: string;
   publicNotes: string[];

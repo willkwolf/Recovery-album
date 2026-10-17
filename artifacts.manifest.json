@@ -15,11 +15,12 @@
       "title": "Backup",
       "medium": "Música Digital / Electrónica Algorítmica",
       "status": "candidate",
+      "lifecycle": ":Mutacion",
       "humanApproval": {
         "approved": true,
         "signoff": "Human Creator",
         "date": "2026-10-17",
-        "scope": "seed-experiment-and-variations",
+        "scope": "fork-mutation-and-trojan-challenger-suite",
         "mediumDefinition": "Musica Digital / Electronica generada por codigo e instrumentos digitales"
       },
       "sourceFiles": [
@@ -27,26 +28,30 @@
       ],
       "variations": [
         {
-          "name": "fork-suite",
-          "concept": "Suite Completa: Simulación del Troyano en Sandbox",
+          "name": "fork",
+          "lifecycle": ":Mutacion",
+          "concept": "Variación C: Fork (Línea Base Activa Aprobada)",
           "runtime": "strudel",
           "approved": true
         },
         {
-          "name": "fork-sandbox",
-          "concept": "Acto I: Sandbox & Caballo de Troya (arpegios brillantes)",
+          "name": "trojan-suite",
+          "lifecycle": ":Challenger",
+          "concept": "Trojan Sandbox Suite (6 Secciones Continuas)",
           "runtime": "strudel",
           "approved": true
         },
         {
-          "name": "fork-march",
-          "concept": "Acto II: Marcha Imperial, Infección Glitch y Flatline 1990s",
+          "name": "museo",
+          "lifecycle": ":Experimentacion",
+          "concept": "Variación A: Museo (Archivada)",
           "runtime": "strudel",
           "approved": true
         },
         {
-          "name": "fork-rave",
-          "concept": "Acto III: Inversión Santana & Rave de Reciclaje",
+          "name": "transito",
+          "lifecycle": ":Experimentacion",
+          "concept": "Variación B: Tránsito (Archivada)",
           "runtime": "strudel",
           "approved": true
         }

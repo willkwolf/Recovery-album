@@ -1,13 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { SONG_SECTIONS } from '../data/tracks';
+import { SONG_SECTIONS, TRACK_VARIATIONS } from '../data/tracks';
 
 const sections = SONG_SECTIONS;
+const variations = TRACK_VARIATIONS;
 ---
 
 <Layout
-  title="RECOVERY // Single 01: Backup — Audio Preview"
-  description="Reproductor y mesa de audición minimalista para el single Backup."
+  title="RECOVERY // Single 01: Backup — Audio Preview & HITL Lab"
+  description="Mesa de audición minimalista y laboratorio de ciclo de vida HITL (:Experimentacion, :Mutacion, :Challenger, :Victory)."
 >
   <div class="studio-container">
     <!-- Header -->
@@ -25,6 +26,25 @@ const sections = SONG_SECTIONS;
         GitHub ↗
       </a>
     </header>
+
+    <!-- Lifecycle State Bar (HITL Memory & Genealogía) -->
+    <div class="lifecycle-bar">
+      <span class="mono label-muted">LINEA DE TIEMPO / ESTADO:</span>
+      <div class="lifecycle-nav">
+        <button type="button" class="btn btn-sm btn-active" id="tab-mutacion" data-mode="mutacion">
+          <span class="status-indicator ind-mutacion"></span>
+          <span>:Mutacion (Base Fork C)</span>
+        </button>
+        <button type="button" class="btn btn-sm" id="tab-challenger" data-mode="challenger">
+          <span class="status-indicator ind-challenger"></span>
+          <span>:Challenger (Suite Trojan 05:15)</span>
+        </button>
+        <button type="button" class="btn btn-sm" id="tab-exp" data-mode="exp">
+          <span class="status-indicator ind-exp"></span>
+          <span>:Experimentacion (Bocetos A/B)</span>
+        </button>
+      </div>
+    </div>
 
     <!-- Transport & Master Deck -->
     <section class="deck-card">
@@ -45,8 +65,8 @@ const sections = SONG_SECTIONS;
         </div>
 
         <div class="deck-meta">
-          <div class="time-display mono" id="time-display">00:00 / 05:15</div>
-          <div class="active-sec-badge mono" id="active-sec-badge">SEC 01: Fork Loop</div>
+          <div class="time-display mono" id="time-display">00:00 / 01:15</div>
+          <div class="active-sec-badge mono" id="active-sec-badge">:Mutacion // Fork Base C</div>
         </div>
 
         <div class="volume-control">
@@ -62,8 +82,8 @@ const sections = SONG_SECTIONS;
         <div class="playhead" id="playhead"></div>
       </div>
 
-      <!-- Section blocks (Arranger row) -->
-      <div class="sections-strip">
+      <!-- Section blocks (Arranger row for Challenger mode) -->
+      <div class="sections-strip" id="challenger-strip" style="display: none;">
         {sections.map((sec, idx) => {
           const widthPct = ((sec.endSec - sec.startSec) / 315) * 100;
           return (
@@ -83,15 +103,24 @@ const sections = SONG_SECTIONS;
           );
         })}
       </div>
+
+      <!-- Single block strip for Mutacion mode -->
+      <div class="mutation-strip" id="mutation-strip">
+        <div class="mutation-info-bar">
+          <span class="mono sec-num">:Mutacion Aprobada</span>
+          <span class="sec-name font-medium">Variación C — Fork (ADN Inmutable: Polirritmia 1.75 + Disonancia F# + TR-909)</span>
+          <span class="mono sec-range">00:00 ── 01:15 (Loop puro)</span>
+        </div>
+      </div>
     </section>
 
-    <!-- Minimalist Section Drawer (Outcome & Feedback tool) -->
+    <!-- Section / Variation Drawer (Feedback & Inspection Deck) -->
     <section class="drawer-card">
       <div class="drawer-header">
         <div class="drawer-title-group">
-          <span class="mono drawer-tag" id="drawer-tag">{sections[0].tag}</span>
-          <h2 class="drawer-name" id="drawer-name">{sections[0].name}</h2>
-          <span class="mono drawer-time" id="drawer-time">{sections[0].startTime} ── {sections[0].endTime}</span>
+          <span class="mono drawer-tag" id="drawer-tag">:Mutacion // BASE</span>
+          <h2 class="drawer-name" id="drawer-name">Variación C — Fork (Base Original)</h2>
+          <span class="mono drawer-time" id="drawer-time">00:00 ── 01:15</span>
         </div>
         <button type="button" class="btn btn-sm btn-active" id="btn-copy-ref" title="Copiar referencia para pegar en Antigravity">
           <span>📋</span>
@@ -102,24 +131,30 @@ const sections = SONG_SECTIONS;
       <div class="drawer-body">
         <div class="drawer-meta-row">
           <div>
-            <span class="label-muted mono">TEMPO:</span>
-            <span class="mono" id="drawer-tempo">{sections[0].bpm} BPM // {sections[0].keyCenter}</span>
+            <span class="label-muted mono">ESTADO HITL:</span>
+            <span class="mono font-bold" id="drawer-lifecycle">:Mutacion</span>
           </div>
           <div>
-            <span class="label-muted mono">ELEMENTOS:</span>
-            <span id="drawer-inst">{sections[0].instruments.join(', ')}</span>
+            <span class="label-muted mono">TEMPO / TONALIDAD:</span>
+            <span class="mono" id="drawer-tempo">110 BPM // C menor (F# persistente)</span>
+          </div>
+          <div>
+            <span class="label-muted mono">ELEMENTOS CLAVE:</span>
+            <span id="drawer-inst">Sawtooth Chords LFO, Fast 1.75 Melody, Roland TR-909, Rimshot 5-tuplet, 3v7 Hats</span>
           </div>
         </div>
 
-        <p class="drawer-desc" id="drawer-desc">{sections[0].description}</p>
+        <p class="drawer-desc" id="drawer-desc">
+          LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7. Este es el ADN inmutable sobre el cual se construyen los experimentos.
+        </p>
 
         <!-- Collapsible Strudel Code View -->
         <details class="code-details">
           <summary class="mono code-summary">
-            <span>Ver código Strudel de la sección</span>
+            <span>Ver código Strudel</span>
             <a
               id="drawer-repl-link"
-              href={`https://strudel.cc/#${encodeURIComponent(sections[0].strudelCode)}`}
+              href={`https://strudel.cc/#${encodeURIComponent(variations[0].code)}`}
               target="_blank"
               rel="noopener noreferrer"
               class="mono repl-link"
@@ -127,7 +162,7 @@ const sections = SONG_SECTIONS;
               Abrir en Strudel REPL ↗
             </a>
           </summary>
-          <pre class="code-block mono"><code id="drawer-code">{sections[0].strudelCode}</code></pre>
+          <pre class="code-block mono"><code id="drawer-code">{variations[0].code}</code></pre>
         </details>
       </div>
     </section>
@@ -135,18 +170,19 @@ const sections = SONG_SECTIONS;
     <!-- Footer minimal -->
     <footer class="studio-footer mono">
       <span>RECOVERY // ARTISTIC SYSTEM</span>
-      <span>Outcome preview & feedback deck</span>
+      <span>Genealogía HITL: :Experimentacion → :Mutacion → :Challenger → :Victory</span>
     </footer>
   </div>
 </Layout>
 
-<script define:vars={{ sections }}>
-  // Minimalist Contiguous Audio Player Engine
+<script define:vars={{ sections, variations }}>
+  // Minimalist Contiguous Audio Player Engine with HITL Lifecycle Navigation
+  let currentMode = 'mutacion'; // 'mutacion' | 'challenger' | 'exp'
   let isPlaying = false;
   let isLoopingSection = false;
   let activeSectionIndex = 0;
   let trackSeconds = 0;
-  const totalDuration = 315; // 05:15
+  let totalDuration = 75; // Default for Fork :Mutacion (01:15)
 
   let audioCtx = null;
   let analyser = null;
@@ -157,6 +193,12 @@ const sections = SONG_SECTIONS;
   let feedbackGain = null;
 
   // DOM Elements
+  const tabMutacion = document.getElementById('tab-mutacion');
+  const tabChallenger = document.getElementById('tab-challenger');
+  const tabExp = document.getElementById('tab-exp');
+  const challengerStrip = document.getElementById('challenger-strip');
+  const mutationStrip = document.getElementById('mutation-strip');
+
   const playBtn = document.getElementById('btn-play');
   const stopBtn = document.getElementById('btn-stop');
   const playIcon = document.getElementById('play-icon');
@@ -177,6 +219,7 @@ const sections = SONG_SECTIONS;
   const drawerTag = document.getElementById('drawer-tag');
   const drawerName = document.getElementById('drawer-name');
   const drawerTime = document.getElementById('drawer-time');
+  const drawerLifecycle = document.getElementById('drawer-lifecycle');
   const drawerTempo = document.getElementById('drawer-tempo');
   const drawerInst = document.getElementById('drawer-inst');
   const drawerDesc = document.getElementById('drawer-desc');
@@ -202,7 +245,6 @@ const sections = SONG_SECTIONS;
       masterGain.connect(analyser);
       analyser.connect(audioCtx.destination);
 
-      // Stereo delay line
       delayNode = audioCtx.createDelay();
       delayNode.delayTime.setValueAtTime(0.333, audioCtx.currentTime);
       feedbackGain = audioCtx.createGain();
@@ -292,6 +334,39 @@ const sections = SONG_SECTIONS;
     osc.stop(time + 0.18);
   }
 
+  function triggerNoise(ctx, time, vol, freq, dur) {
+    const bufSize = ctx.sampleRate * dur;
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const f = ctx.createBiquadFilter();
+    f.type = 'highpass';
+    f.frequency.value = freq;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    src.connect(f);
+    f.connect(g);
+    g.connect(masterGain);
+    src.start(time);
+    src.stop(time + dur);
+  }
+
+  function triggerTriangle(ctx, time, freq, vol, dur) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(time);
+    osc.stop(time + dur);
+  }
+
   function triggerSaw(ctx, time, freq, vol, lpf, dur) {
     const osc = ctx.createOscillator();
     const f = ctx.createBiquadFilter();
@@ -304,19 +379,6 @@ const sections = SONG_SECTIONS;
     g.gain.exponentialRampToValueAtTime(0.001, time + dur);
     osc.connect(f);
     f.connect(g);
-    g.connect(masterGain);
-    osc.start(time);
-    osc.stop(time + dur);
-  }
-
-  function triggerTriangle(ctx, time, freq, vol, dur) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(freq, time);
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-    osc.connect(g);
     g.connect(masterGain);
     osc.start(time);
     osc.stop(time + dur);
@@ -346,26 +408,6 @@ const sections = SONG_SECTIONS;
     g.connect(masterGain);
     osc.start(time);
     osc.stop(time + dur);
-  }
-
-  function triggerNoise(ctx, time, vol, freq, dur) {
-    const bufSize = ctx.sampleRate * dur;
-    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const f = ctx.createBiquadFilter();
-    f.type = 'highpass';
-    f.frequency.value = freq;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-    src.connect(f);
-    f.connect(g);
-    g.connect(masterGain);
-    src.start(time);
-    src.stop(time + dur);
   }
 
   function triggerGuitar(ctx, time, freq, vol, dur) {
@@ -406,6 +448,57 @@ const sections = SONG_SECTIONS;
     osc.stop(time + dur);
   }
 
+  function setMode(mode) {
+    stopPlayback();
+    currentMode = mode;
+    trackSeconds = 0;
+
+    tabMutacion.classList.toggle('btn-active', mode === 'mutacion');
+    tabChallenger.classList.toggle('btn-active', mode === 'challenger');
+    tabExp.classList.toggle('btn-active', mode === 'exp');
+
+    if (mode === 'mutacion') {
+      totalDuration = 75; // 01:15
+      challengerStrip.style.display = 'none';
+      mutationStrip.style.display = 'block';
+      activeSecBadge.textContent = ':Mutacion // Fork Base C';
+      
+      const forkVar = variations.find(v => v.id === 'fork');
+      drawerTag.textContent = ':Mutacion // BASE';
+      drawerName.textContent = forkVar.name;
+      drawerTime.textContent = '00:00 ── 01:15';
+      drawerLifecycle.textContent = ':Mutacion (Aprobada)';
+      drawerTempo.textContent = `${forkVar.bpm} BPM // C menor (F# persistente)`;
+      drawerInst.textContent = 'Sawtooth Chords LFO, Fast 1.75 Melody, Roland TR-909, Rimshot 5-tuplet, 3v7 Hats';
+      drawerDesc.textContent = forkVar.description;
+      drawerCode.textContent = forkVar.code;
+      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(forkVar.code)}`;
+    } else if (mode === 'challenger') {
+      totalDuration = 315; // 05:15
+      challengerStrip.style.display = 'flex';
+      mutationStrip.style.display = 'none';
+      selectSection(0, false);
+    } else if (mode === 'exp') {
+      totalDuration = 90;
+      challengerStrip.style.display = 'none';
+      mutationStrip.style.display = 'block';
+      activeSecBadge.textContent = ':Experimentacion // Bocetos A & B';
+      
+      const museoVar = variations.find(v => v.id === 'museo');
+      drawerTag.textContent = ':Experimentacion // ARCHIVADA';
+      drawerName.textContent = 'Variaciones A & B (Bocetos Iniciales)';
+      drawerTime.textContent = '00:00 ── 01:30';
+      drawerLifecycle.textContent = ':Experimentacion';
+      drawerTempo.textContent = '72 BPM (Museo) / 124 BPM (Tránsito)';
+      drawerInst.textContent = 'Sine pads, TR-808, Square leads';
+      drawerDesc.textContent = 'Bocetos originales exploratorios archivados tras la selección de Fork como Mutante base.';
+      drawerCode.textContent = museoVar.code;
+      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(museoVar.code)}`;
+    }
+
+    updateUI();
+  }
+
   function selectSection(index, seek = false) {
     activeSectionIndex = index;
     const sec = sections[index];
@@ -414,15 +507,18 @@ const sections = SONG_SECTIONS;
       b.classList.toggle('selected', i === index);
     });
 
-    activeSecBadge.textContent = `SEC 0${index + 1}: ${sec.name.split('(')[0].trim()}`;
-    drawerTag.textContent = sec.tag;
-    drawerName.textContent = sec.name;
-    drawerTime.textContent = `${sec.startTime} ── ${sec.endTime}`;
-    drawerTempo.textContent = `${sec.bpm} BPM // ${sec.keyCenter}`;
-    drawerInst.textContent = sec.instruments.join(', ');
-    drawerDesc.textContent = sec.description;
-    drawerCode.textContent = sec.strudelCode;
-    drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(sec.strudelCode)}`;
+    if (currentMode === 'challenger') {
+      activeSecBadge.textContent = `SEC 0${index + 1}: ${sec.name.split('(')[0].trim()}`;
+      drawerTag.textContent = ':Challenger // SUITE';
+      drawerName.textContent = sec.name;
+      drawerTime.textContent = `${sec.startTime} ── ${sec.endTime}`;
+      drawerLifecycle.textContent = ':Challenger (En Disputa)';
+      drawerTempo.textContent = `${sec.bpm} BPM // ${sec.keyCenter}`;
+      drawerInst.textContent = sec.instruments.join(', ');
+      drawerDesc.textContent = sec.description;
+      drawerCode.textContent = sec.strudelCode;
+      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(sec.strudelCode)}`;
+    }
 
     if (seek) {
       seekTo(sec.startSec);
@@ -439,10 +535,11 @@ const sections = SONG_SECTIONS;
     const pct = (trackSeconds / totalDuration) * 100;
     playhead.style.left = `${pct}%`;
 
-    // Highlight current section block
-    const curIdx = sections.findIndex((s) => trackSeconds >= s.startSec && trackSeconds < s.endSec);
-    if (curIdx !== -1 && curIdx !== activeSectionIndex && !isLoopingSection) {
-      selectSection(curIdx, false);
+    if (currentMode === 'challenger') {
+      const curIdx = sections.findIndex((s) => trackSeconds >= s.startSec && trackSeconds < s.endSec);
+      if (curIdx !== -1 && curIdx !== activeSectionIndex && !isLoopingSection) {
+        selectSection(curIdx, false);
+      }
     }
   }
 
@@ -454,11 +551,10 @@ const sections = SONG_SECTIONS;
     playLabel.textContent = 'Pause';
     stopBtn.disabled = false;
 
-    // Timeline timer
     clockInterval = setInterval(() => {
       trackSeconds += 0.5;
 
-      if (isLoopingSection) {
+      if (isLoopingSection && currentMode === 'challenger') {
         const curSec = sections[activeSectionIndex];
         if (trackSeconds >= curSec.endSec) {
           trackSeconds = curSec.startSec;
@@ -471,15 +567,14 @@ const sections = SONG_SECTIONS;
       updateUI();
     }, 500);
 
-    // Audio DSP pulse generator
     soundTicker = setInterval(() => {
       const ctx = audioCtx;
       if (!ctx) return;
       const time = ctx.currentTime;
       const s = trackSeconds;
 
-      // SECTION 01: FORK SUSPENSE (0:00 - 1:15)
-      if (s >= 0 && s < 75) {
+      // MODE 1: :MUTACION (FORK C PURO)
+      if (currentMode === 'mutacion') {
         const stepInBar = tickerStep % 16;
         const barIdx = Math.floor(tickerStep / 16) % 4;
         const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
@@ -509,83 +604,117 @@ const sections = SONG_SECTIONS;
         }
       }
 
-      // SECTION 02: CABALLO DE TROYA (1:15 - 2:00)
-      else if (s >= 75 && s < 120) {
-        const stepInBar = tickerStep % 16;
-        const barIdx = Math.floor(tickerStep / 16) % 4;
-        const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
+      // MODE 2: :CHALLENGER (TROJAN SANDBOX SUITE)
+      else if (currentMode === 'challenger') {
+        // Sec 01: Fork Suspense (0:00 - 1:15)
+        if (s >= 0 && s < 75) {
+          const stepInBar = tickerStep % 16;
+          const barIdx = Math.floor(tickerStep / 16) % 4;
+          const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
 
-        if (stepInBar === 0) {
-          const dyad = forkDyads[barIdx];
-          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+          if (stepInBar === 0) {
+            const dyad = forkDyads[barIdx];
+            triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+          }
+          if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
+            const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+            triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.38);
+          }
+          if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12 || stepInBar === 14) {
+            const kickVol = (stepInBar === 0 || stepInBar === 12) ? 0.85 : 0.65;
+            triggerKick(ctx, time, 135, 36, kickVol);
+          }
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
+            triggerNoise(ctx, time, 0.28, 2200, 0.035);
+          }
+          if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
+            const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
+            triggerNoise(ctx, time, hatVol, 3200, 0.025);
+          }
         }
+        // Sec 02: Caballo de Troya (1:15 - 2:00)
+        else if (s >= 75 && s < 120) {
+          const stepInBar = tickerStep % 16;
+          const barIdx = Math.floor(tickerStep / 16) % 4;
+          const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
 
-        if (tickerStep % 3 === 0) {
-          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
-          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
+          if (stepInBar === 0) {
+            const dyad = forkDyads[barIdx];
+            triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+          }
+          if (tickerStep % 3 === 0) {
+            const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+            triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
+          }
+          if (tickerStep % 2 === 0) {
+            const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
+            triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
+          }
+          if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
+            triggerKick(ctx, time, 135, 36, 0.8);
+          }
+          if (stepInBar % 2 === 1) {
+            triggerNoise(ctx, time, 0.16, 3200, 0.03);
+          }
         }
-
-        if (tickerStep % 2 === 0) {
-          const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
-          triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
+        // Sec 03: Marcha Totalitaria (2:00 - 2:45)
+        else if (s >= 120 && s < 165) {
+          const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
+          triggerNoise(ctx, time, snareVol, 1400, 0.05);
+          if (tickerStep % 4 === 0) {
+            triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
+          }
+          if (tickerStep % 16 === 14) {
+            triggerNoise(ctx, time, 0.4, 800, 0.08);
+          }
         }
-
-        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
-          triggerKick(ctx, time, 135, 36, 0.8);
+        // Sec 04: Flatline & Modem (2:45 - 3:25)
+        else if (s >= 165 && s < 205) {
+          if (tickerStep % 8 === 0) {
+            triggerSine(ctx, time, 1046.50, 0.35, 0.07);
+          }
+          if (tickerStep % 4 === 2) {
+            const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
+            triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
+          }
         }
-        if (stepInBar % 2 === 1) {
-          triggerNoise(ctx, time, 0.16, 3200, 0.03);
+        // Sec 05: Solo Rock Santana (3:25 - 4:05)
+        else if (s >= 205 && s < 245) {
+          if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
+            const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
+            triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
+          }
+        }
+        // Sec 06: Rave Techno (4:05 - 5:15)
+        else if (s >= 245 && s <= 315) {
+          if (tickerStep % 4 === 0) {
+            triggerKick(ctx, time, 160, 38, 0.95);
+          }
+          if (tickerStep % 4 === 2) {
+            triggerNoise(ctx, time, 0.45, 6000, 0.08);
+          }
+          if (tickerStep % 2 === 0) {
+            const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
+            const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
+            const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
+            triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
+          }
+          if (tickerStep % 8 === 4) {
+            triggerGuitar(ctx, time, 587.33, 0.2, 0.3);
+          }
         }
       }
 
-      // SECTION 03: MARCHA TOTALITARIA (2:00 - 2:45)
-      else if (s >= 120 && s < 165) {
-        const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
-        triggerNoise(ctx, time, snareVol, 1400, 0.05);
-
-        if (tickerStep % 4 === 0) {
-          triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
-        }
-        if (tickerStep % 16 === 14) {
-          triggerNoise(ctx, time, 0.4, 800, 0.08);
-        }
-      }
-
-      // SECTION 04: FLATLINE & MODEM (2:45 - 3:25)
-      else if (s >= 165 && s < 205) {
-        if (tickerStep % 8 === 0) {
-          triggerSine(ctx, time, 1046.50, 0.35, 0.07);
-        }
-        if (tickerStep % 4 === 2) {
-          const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
-          triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
-        }
-      }
-
-      // SECTION 05: SOLO ROCK INVERTIDO SANTANA (3:25 - 4:05)
-      else if (s >= 205 && s < 245) {
-        if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
-          const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
-          triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
-        }
-      }
-
-      // SECTION 06: RAVE TECHNO RECICLAJE (4:05 - 5:15)
-      else if (s >= 245 && s <= 315) {
-        if (tickerStep % 4 === 0) {
-          triggerKick(ctx, time, 160, 38, 0.95);
-        }
-        if (tickerStep % 4 === 2) {
-          triggerNoise(ctx, time, 0.45, 6000, 0.08);
-        }
-        if (tickerStep % 2 === 0) {
-          const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
-          const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
-          const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
-          triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
-        }
-        if (tickerStep % 8 === 4) {
-          triggerGuitar(ctx, time, 587.33, 0.2, 0.3);
+      // MODE 3: :EXPERIMENTACION (MUSEO / TRANSITO BOCETOS)
+      else if (currentMode === 'exp') {
+        if (s < 45) {
+          // Museo (Lo-fi 72 bpm)
+          if (tickerStep % 8 === 0) triggerSine(ctx, time, 261.63, 0.3, 0.5);
+          if (tickerStep % 4 === 0) triggerKick(ctx, time, 110, 32, 0.6);
+        } else {
+          // Tránsito (124 bpm)
+          if (tickerStep % 4 === 0) triggerKick(ctx, time, 140, 35, 0.8);
+          if (tickerStep % 2 === 1) triggerNoise(ctx, time, 0.2, 4000, 0.03);
         }
       }
 
@@ -614,7 +743,6 @@ const sections = SONG_SECTIONS;
     canvasCtx.fillRect(0, 0, width, height);
 
     if (!analyser || !isPlaying) {
-      // Clean idle baseline
       canvasCtx.strokeStyle = '#232731';
       canvasCtx.lineWidth = 1;
       canvasCtx.beginPath();
@@ -629,7 +757,7 @@ const sections = SONG_SECTIONS;
     analyser.getByteTimeDomainData(timeData);
 
     canvasCtx.lineWidth = 1.5;
-    canvasCtx.strokeStyle = '#38bdf8';
+    canvasCtx.strokeStyle = currentMode === 'mutacion' ? '#34d399' : (currentMode === 'challenger' ? '#38bdf8' : '#fbbf24');
     canvasCtx.beginPath();
 
     const sliceWidth = width / bufferLength;
@@ -671,6 +799,10 @@ const sections = SONG_SECTIONS;
     }
   });
 
+  tabMutacion.addEventListener('click', () => setMode('mutacion'));
+  tabChallenger.addEventListener('click', () => setMode('challenger'));
+  tabExp.addEventListener('click', () => setMode('exp'));
+
   sectionBtns.forEach((btn, idx) => {
     btn.addEventListener('click', () => {
       selectSection(idx, true);
@@ -685,8 +817,16 @@ const sections = SONG_SECTIONS;
   });
 
   btnCopyRef.addEventListener('click', async () => {
-    const sec = sections[activeSectionIndex];
-    const textToCopy = `[FEEDBACK SECCIÓN 0${activeSectionIndex + 1}] (${sec.startTime} - ${sec.endTime}) - ${sec.name.split('(')[0].trim()}: `;
+    let textToCopy = '';
+    if (currentMode === 'mutacion') {
+      textToCopy = `[FEEDBACK :Mutacion] Variación C (Fork Base): `;
+    } else if (currentMode === 'challenger') {
+      const sec = sections[activeSectionIndex];
+      textToCopy = `[FEEDBACK :Challenger] Sección 0${activeSectionIndex + 1} (${sec.startTime} - ${sec.endTime}) - ${sec.name.split('(')[0].trim()}: `;
+    } else {
+      textToCopy = `[FEEDBACK :Experimentacion] Bocetos: `;
+    }
+
     try {
       await navigator.clipboard.writeText(textToCopy);
       const originalText = copyRefText.textContent;
@@ -698,11 +838,41 @@ const sections = SONG_SECTIONS;
   });
 
   // Init
-  selectSection(0, false);
+  setMode('mutacion');
   drawWaveform();
 </script>
 
 <style>
+  /* Lifecycle Navigation Bar */
+  .lifecycle-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--studio-panel);
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+  }
+
+  .lifecycle-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .status-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .ind-mutacion { background: var(--studio-success); box-shadow: 0 0 5px var(--studio-success); }
+  .ind-challenger { background: var(--studio-accent); box-shadow: 0 0 5px var(--studio-accent); }
+  .ind-exp { background: #fbbf24; box-shadow: 0 0 5px #fbbf24; }
+
   /* Producer Deck Card */
   .deck-card {
     background: var(--studio-panel);
@@ -770,6 +940,15 @@ const sections = SONG_SECTIONS;
     font-size: 0.75rem;
   }
 
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .font-bold {
+    font-weight: 700;
+    color: var(--studio-text);
+  }
+
   /* Waveform scrubber */
   .waveform-container {
     position: relative;
@@ -807,6 +986,24 @@ const sections = SONG_SECTIONS;
     border: 1px solid var(--studio-border);
     border-radius: 4px;
     overflow: hidden;
+  }
+
+  .mutation-strip {
+    height: 40px;
+    background: var(--studio-panel-subtle);
+    border: 1px solid var(--studio-border);
+    border-radius: 4px;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .mutation-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 0.75rem;
   }
 
   .section-block {
@@ -848,7 +1045,6 @@ const sections = SONG_SECTIONS;
 
   .sec-name {
     font-size: 0.72rem;
-    font-weight: 500;
     color: var(--studio-text);
     white-space: nowrap;
     overflow: hidden;
