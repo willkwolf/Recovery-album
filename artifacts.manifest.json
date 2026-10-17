@@ -27,20 +27,26 @@
       ],
       "variations": [
         {
-          "name": "museo",
-          "concept": "la memoria como reliquia",
+          "name": "fork-suite",
+          "concept": "Suite Completa: Simulación del Troyano en Sandbox",
           "runtime": "strudel",
           "approved": true
         },
         {
-          "name": "transito",
-          "concept": "la memoria como combustible",
+          "name": "fork-sandbox",
+          "concept": "Acto I: Sandbox & Caballo de Troya (arpegios brillantes)",
           "runtime": "strudel",
           "approved": true
         },
         {
-          "name": "fork",
-          "concept": "la memoria ya en otra parte",
+          "name": "fork-march",
+          "concept": "Acto II: Marcha Imperial, Infección Glitch y Flatline 1990s",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
+          "name": "fork-rave",
+          "concept": "Acto III: Inversión Santana & Rave de Reciclaje",
           "runtime": "strudel",
           "approved": true
         }

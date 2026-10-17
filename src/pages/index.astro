@@ -7,8 +7,8 @@ const variations = track.variations;
 ---
 
 <Layout
-  title="RECOVERY // TERMINAL RUNTIME — Live Algorithmic Audio Player"
-  description="Terminal interactiva de reproducción en vivo del álbum conceptual RECOVERY. Síntesis algorítmica de música digital vía Strudel y Web Audio."
+  title="RECOVERY // TERMINAL RUNTIME — Single 01: Backup (Trojan Sandbox Iteration)"
+  description="Terminal interactiva de audio algorítmico. Simulación del Caballo de Troya en sandbox: de la marcha totalitaria al Rave de reciclaje con solo invertido de Santana."
 >
   <div class="terminal-container">
     <div class="terminal-shell">
@@ -20,9 +20,9 @@ const variations = track.variations;
           <span class="dot dot-green"></span>
         </div>
         <div class="terminal-sysinfo">
-          <span><span class="pulse-indicator"></span> SYS: RECOVERY-OS v1.0.4</span>
+          <span><span class="pulse-indicator"></span> SYS: RECOVERY-OS v1.1.0</span>
+          <span>SANDBOX: ISOLATED QUARANTINE</span>
           <span>DSP: WEB-AUDIO / STRUDEL</span>
-          <span>LATENCY: 1.8ms</span>
           <a href="https://github.com/willkwolf/Recovery-album" target="_blank" rel="noopener noreferrer">
             [ GITHUB_REPO ↗ ]
           </a>
@@ -37,28 +37,28 @@ const variations = track.variations;
 ██╔══██╗██╔══╝  ██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝  
 ██║  ██║███████╗╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   
 ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   
->> RECOVERY // ALGORITHMIC AUDIO COMPILATION & LIVE TERMINAL PLAYER &lt;&lt;
+>> EXPERIMENTAL CYCLE 01: BACKUP // TROJAN SANDBOX RECYCLING RUNTIME &lt;&lt;
       </div>
 
       <!-- System Telemetry & Album Manifest -->
       <div style="padding: 1rem 1rem 0;">
         <div class="term-box">
           <div class="term-box-header">
-            <span>// COMPILACIÓN CONCEPTUAL ACTIVA</span>
+            <span>// ARCHIVO EN CUARENTENA: SINGLE 01 — BACKUP (TROJAN EDITION)</span>
             <span class="term-badge badge-green">APROBADO POR CREADOR HUMANO</span>
           </div>
           <div class="hud-meta-grid">
             <div>
-              <span class="hud-label">PROYECTO:</span> <span class="hud-value">RECOVERY (2016–2026 ARCHIVE)</span>
+              <span class="hud-label">SISTEMA ACTIVO:</span> <span class="hud-value">ANTIVIRUS SANDBOX (LECTURA DE TROYANO)</span>
             </div>
             <div>
-              <span class="hud-label">MEDIO SONORO:</span> <span class="hud-value">MÚSICA DIGITAL / SÍNTESIS ALGORÍTMICA POR CÓDIGO</span>
+              <span class="hud-label">MEDIO SONORO:</span> <span class="hud-value">MÚSICA DIGITAL / ELECTRÓNICA ALGORÍTMICA</span>
             </div>
             <div>
-              <span class="hud-label">CORTE ACTIVO:</span> <span class="hud-value font-bold">SINGLE 01 — BACKUP</span>
+              <span class="hud-label">ESTRATEGIA CONCEPTUAL:</span> <span class="hud-value font-bold">CABALLO DE TROYA (BRILLO ENGAÑOSO) → MARCHA → RAVE</span>
             </div>
             <div>
-              <span class="hud-label">PREMISA ARTÍSTICA:</span> <span class="hud-value">¿Qué suena recuperar la memoria humana y avanzar hacia otra línea temporal?</span>
+              <span class="hud-label">DIRECCIÓN:</span> <span class="hud-value">Solo invertido Black Magic Woman (Santana) + Despido de la marcha con Techno</span>
             </div>
           </div>
         </div>
@@ -72,10 +72,10 @@ const variations = track.variations;
 
           <!-- Realtime Canvas Visualizer -->
           <div class="visualizer-wrapper">
-            <canvas id="visualizer-canvas" height="90"></canvas>
+            <canvas id="visualizer-canvas" height="95"></canvas>
             <div class="visualizer-overlay">
-              <span id="canvas-track-label">TRACK: BACKUP // STRUDEL LIVE DSP</span>
-              <span id="canvas-bpm-label">BPM: 110 // FREQ: 48.0 kHz</span>
+              <span id="canvas-track-label">TRACK: BACKUP // SUITE COMPLETA (TROYANO EN SANDBOX)</span>
+              <span id="canvas-bpm-label">BPM: 124 // 48.0 kHz ESTÉREO</span>
             </div>
           </div>
 
@@ -100,20 +100,20 @@ const variations = track.variations;
           <!-- Variations Selector (Subroutines) -->
           <div class="subroutines-panel">
             <div class="subroutine-header">
-              <span>// SUBRUTINAS ALGORÍTMICAS APROBADAS (SELECCIONAR PARA AUDICIONAR):</span>
+              <span>// SUBRUTINAS DE SIMULACIÓN (SELECCIONAR PARA AUDICIÓN DIRECTA):</span>
             </div>
             <div class="subroutine-grid">
               {variations.map((v, idx) => (
                 <button
                   type="button"
-                  class={`subroutine-card ${idx === 2 ? 'active' : ''}`}
+                  class={`subroutine-card ${idx === 0 ? 'active' : ''}`}
                   data-var-id={v.id}
                   data-var-bpm={v.bpm}
                   data-var-concept={v.concept}
                   data-var-tension={v.tension}
                 >
                   <div class="sub-title">
-                    <span class="sub-idx">[{idx + 1}]</span> {v.name.toUpperCase()}
+                    <span class="sub-idx">[{idx === 0 ? 'SUITE' : `ACTO ${idx}`}]</span> {v.name.toUpperCase()}
                   </div>
                   <div class="sub-concept">{v.concept}</div>
                   <div class="sub-meta">TEMPO: {v.bpm} BPM // TENSION: {v.tension}</div>
@@ -126,13 +126,11 @@ const variations = track.variations;
           <div class="variation-detail-box" id="var-detail-box">
             <div class="detail-row">
               <span class="hud-label">SUBRUTINA ACTIVA:</span>
-              <span class="hud-value font-bold" id="detail-name">Variación C — Fork</span>
+              <span class="hud-value font-bold" id="detail-name">{variations[0].name}</span>
             </div>
             <div class="detail-row">
               <span class="hud-label">DESCRIPCIÓN TÉCNICA:</span>
-              <span class="hud-value" id="detail-desc">
-                Bifurcación estructural. Una nota disonante persistente (F# sobre C menor) actúa como la línea temporal alternativa filtrándose hacia el presente sin resolución final.
-              </span>
+              <span class="hud-value" id="detail-desc">{variations[0].description}</span>
             </div>
           </div>
         </div>
@@ -140,15 +138,15 @@ const variations = track.variations;
         <!-- Terminal Log / Console Telemetry -->
         <div class="term-box">
           <div class="term-box-header">
-            <span>// REGISTRO DE EVENTOS DEL SISTEMA (TELEMETRY LOG)</span>
-            <span class="term-badge">CANAL: STDOUT</span>
+            <span>// TELEMETRÍA DEL SISTEMA ANTIVIRUS & AUDIO THREAD</span>
+            <span class="term-badge">CANAL: LOG/ANTIVIRUS</span>
           </div>
           <div class="term-log" id="terminal-log-output">
-            <span class="log-entry"><span class="log-time">[BOOT+0.00s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Iniciando RECOVERY Kernel v1.0.4...</span></span>
-            <span class="log-entry"><span class="log-time">[BOOT+0.05s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Compilación de audio: Single 01 (Backup) cargado con 3 subrutinas.</span></span>
-            <span class="log-entry"><span class="log-time">[BOOT+0.08s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Motor de audio: Web Audio Context sincronizado a 48000 Hz estéreo.</span></span>
-            <span class="log-entry"><span class="log-time">[BOOT+0.12s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Frontera de privacidad: verificada. Cero fugas de notas privadas.</span></span>
-            <span class="log-entry"><span class="log-time">[BOOT+0.15s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Listo para ejecución algorítmica. Presiona [INICIAR STREAM EN VIVO].</span> <span class="cursor-blink">_</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.00s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Iniciando sandbox seguro aislado...</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.05s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Archivo montado: Trojan.MemoryDestroyer (Copia analizada: Backup.flac).</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.08s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Detector de patrones: arpegios brillantes detectados (Caballo de Troya activo).</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.12s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">DSP Web Audio: búfer estéreo 48kHz listo. Motor Strudel enlazado.</span></span>
+            <span class="log-entry"><span class="log-time">[BOOT+0.15s]</span> <span class="log-prefix">&gt;</span> <span class="log-msg">Presiona [INICIAR STREAM EN VIVO] para audicionar la simulación.</span> <span class="cursor-blink">_</span></span>
           </div>
         </div>
 
@@ -162,7 +160,7 @@ const variations = track.variations;
               </button>
               <a
                 id="btn-strudel-repl"
-                href={`https://strudel.cc/#${encodeURIComponent(variations[2].code)}`}
+                href={`https://strudel.cc/#${encodeURIComponent(variations[0].code)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="term-btn term-btn-sm"
@@ -171,16 +169,16 @@ const variations = track.variations;
               </a>
             </div>
           </div>
-          <pre class="term-code"><code id="code-display">{variations[2].code}</code></pre>
+          <pre class="term-code"><code id="code-display">{variations[0].code}</code></pre>
         </div>
 
         <!-- Terminal Footer -->
         <div class="terminal-footer">
           <div>
-            <span>RECOVERY AUDIO COMPILATION</span> // <span>AUTORIDAD CREATIVA: CREADOR HUMANO</span>
+            <span>RECOVERY // EXPERIMENTO SINGLE 01 (BACKUP)</span> // <span>AUTORIDAD CREATIVA: CREADOR HUMANO</span>
           </div>
           <div>
-            <span>PUBLIC GITHUB PAGES RUNTIME: <a href="https://willkwolf.github.io/Recovery-album/">willkwolf.github.io/Recovery-album/</a></span>
+            <span>PUBLIC RUNTIME: <a href="https://willkwolf.github.io/Recovery-album/">willkwolf.github.io/Recovery-album/</a></span>
           </div>
         </div>
       </div>
@@ -189,11 +187,12 @@ const variations = track.variations;
 </Layout>
 
 <script define:vars={{ variations }}>
-  // Runtime Interactive Terminal Audio Engine & Oscilloscope
+  // Enhanced Terminal Audio Engine: Trojan Horse, Imperial March, Flatline Beep, Santana Inversion & Rave
   let isPlaying = false;
-  let activeVar = variations[2]; // Default to Fork
+  let activeVar = variations[0]; // Default to Suite Completa
   let audioCtx = null;
   let analyser = null;
+  let masterGain = null;
   let synthInterval = null;
   let strudelModule = null;
 
@@ -215,8 +214,6 @@ const variations = track.variations;
   const detailDesc = document.getElementById('detail-desc');
   const canvasTrackLabel = document.getElementById('canvas-track-label');
   const canvasBpmLabel = document.getElementById('canvas-bpm-label');
-
-  let masterGain = null;
 
   function appendLog(msg, prefix = '>') {
     const now = new Date();
@@ -245,120 +242,265 @@ const variations = track.variations;
     return audioCtx;
   }
 
-  // Native Web Audio DSP Synthesizer that immediately produces rich audible electronic music
+  // WaveShaper for electric guitar rock distortion
+  function makeDistortionCurve(amount = 50) {
+    const k = amount;
+    const n_samples = 44100;
+    const curve = new Float32Array(n_samples);
+    const deg = Math.PI / 180;
+    for (let i = 0; i < n_samples; ++i) {
+      const x = (i * 2) / n_samples - 1;
+      curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+    }
+    return curve;
+  }
+
+  // Multi-phased Procedural Audio Engine for the Trojan Simulator
   function startNativeSynth(varId, bpm) {
     const ctx = getAudioContext();
-    const intervalSec = (60 / bpm) / 4; // 16th note pulse
-
+    const intervalSec = (60 / bpm) / 4; // 16th notes
     let step = 0;
+    const distortionCurve = makeDistortionCurve(45);
+
+    // Inverted Santana (Black Magic Woman) Notes in D minor (reversed melodic contour)
+    const santanaInvertedNotes = [
+      587.33, // D5
+      440.00, // A4
+      349.23, // F4
+      523.25, // C5
+      392.00, // G4
+      329.63, // E4
+      466.16, // Bb4
+      349.23, // F4
+      293.66, // D4
+      440.00, // A4
+      329.63, // E4
+      277.18  // C#4
+    ];
+
     synthInterval = setInterval(() => {
       const time = ctx.currentTime;
-      // Kick on 1, 5, 9, 13
-      if (step % 4 === 0) {
-        const osc = ctx.createOscillator();
-        const g = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(140, time);
-        osc.frequency.exponentialRampToValueAtTime(32, time + 0.12);
-        g.gain.setValueAtTime(0.8, time);
-        g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
-        osc.connect(g);
-        g.connect(masterGain);
-        osc.start(time);
-        osc.stop(time + 0.18);
+      const measure = Math.floor(step / 16);
+
+      // Determine current mode if in Suite or specific act
+      let currentPhase = 'sandbox';
+      if (varId === 'fork-suite') {
+        if (measure < 4) currentPhase = 'sandbox';
+        else if (measure < 8) currentPhase = 'march';
+        else currentPhase = 'rave';
+      } else if (varId === 'fork-sandbox') {
+        currentPhase = 'sandbox';
+      } else if (varId === 'fork-march') {
+        currentPhase = 'march';
+      } else if (varId === 'fork-rave') {
+        currentPhase = 'rave';
       }
 
-      // Hi-hats
-      if (step % 2 === 0) {
-        const bufferSize = ctx.sampleRate * 0.04;
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-        const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.value = 5000;
-        const g = ctx.createGain();
-        const hatGain = step % 4 === 2 ? 0.35 : 0.15;
-        g.gain.setValueAtTime(hatGain, time);
-        g.gain.exponentialRampToValueAtTime(0.001, time + 0.035);
-        noise.connect(filter);
-        filter.connect(g);
-        g.connect(masterGain);
-        noise.start(time);
-        noise.stop(time + 0.04);
-      }
-
-      // Melodic notes depending on variation
-      if (varId === 'fork') {
-        // Tension: C minor chord with persistence of F# (dissonance)
-        const notes = [130.81, 155.56, 196.00, 185.00, 261.63, 311.13, 369.99]; // F#4 = 369.99Hz
-        if (step % 3 === 0 || step % 7 === 0) {
+      // --- PHASE 1: SANDBOX & CABALLO DE TROYA ---
+      if (currentPhase === 'sandbox') {
+        // Kick on 1 and 9
+        if (step % 8 === 0) {
           const osc = ctx.createOscillator();
-          const filter = ctx.createBiquadFilter();
           const g = ctx.createGain();
-          const noteFreq = notes[(step / 3) % notes.length];
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(noteFreq, time);
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(1400, time);
-          filter.Q.value = 6;
-          g.gain.setValueAtTime(0.25, time);
-          g.gain.exponentialRampToValueAtTime(0.001, time + 0.35);
-          osc.connect(filter);
-          filter.connect(g);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(130, time);
+          osc.frequency.exponentialRampToValueAtTime(36, time + 0.15);
+          g.gain.setValueAtTime(0.75, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+          osc.connect(g);
           g.connect(masterGain);
           osc.start(time);
-          osc.stop(time + 0.35);
+          osc.stop(time + 0.18);
         }
-      } else if (varId === 'transito') {
-        // Fast electronic driving bass pulse
-        const bassNotes = [65.41, 77.78, 65.41, 98.00];
+
+        // Tense Bass
+        if (step % 4 === 0) {
+          const bass = ctx.createOscillator();
+          const f = ctx.createBiquadFilter();
+          const g = ctx.createGain();
+          bass.type = 'sawtooth';
+          const bassFreqs = [65.41, 77.78, 87.31, 92.50]; // C2, Eb2, F2, F#2
+          bass.frequency.setValueAtTime(bassFreqs[(step / 4) % bassFreqs.length], time);
+          f.type = 'lowpass';
+          f.frequency.setValueAtTime(700, time);
+          g.gain.setValueAtTime(0.3, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+          bass.connect(f);
+          f.connect(g);
+          g.connect(masterGain);
+          bass.start(time);
+          bass.stop(time + 0.25);
+        }
+
+        // Trojan Bright Arpeggio (Deceptive Brightness / Positive Mask)
         if (step % 2 === 0) {
-          const osc = ctx.createOscillator();
+          const chime = ctx.createOscillator();
+          const g = ctx.createGain();
+          chime.type = 'triangle';
+          const brightNotes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66, 739.99]; // High C5, E5, G5, B5, C6, D6, F#5
+          chime.frequency.setValueAtTime(brightNotes[(step / 2) % brightNotes.length], time);
+          g.gain.setValueAtTime(0.14, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+          chime.connect(g);
+          g.connect(masterGain);
+          chime.start(time);
+          chime.stop(time + 0.18);
+        }
+
+        // Subtle Hi-hats
+        if (step % 2 === 1) {
+          triggerNoiseHat(ctx, time, 0.12, 4500);
+        }
+      }
+
+      // --- PHASE 2: MARCHA IMPERIAL & FLATLINE 1990s ---
+      else if (currentPhase === 'march') {
+        const marchMeasure = measure % 4;
+
+        if (marchMeasure < 3) {
+          // Militaristic Snare Roll (Imperial March)
+          const snareGain = (step % 4 === 0) ? 0.6 : (step % 2 === 0 ? 0.35 : 0.2);
+          triggerNoiseHat(ctx, time, snareGain, 1200);
+
+          // Authoritarian Stabs
+          if (step % 4 === 0) {
+            const stab = ctx.createOscillator();
+            const f = ctx.createBiquadFilter();
+            const g = ctx.createGain();
+            stab.type = 'sawtooth';
+            stab.frequency.setValueAtTime(130.81, time); // C3
+            f.type = 'bandpass';
+            f.frequency.setValueAtTime(1400, time);
+            g.gain.setValueAtTime(0.4, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+            stab.connect(f);
+            f.connect(g);
+            g.connect(masterGain);
+            stab.start(time);
+            stab.stop(time + 0.18);
+          }
+        } else {
+          // BASS ELIMINATED: Vital signs EKG flatline beep + 1990s dial-up glitch
+          if (step % 8 === 0) {
+            // EKG vital sign beep (monotone high sine)
+            const beep = ctx.createOscillator();
+            const g = ctx.createGain();
+            beep.type = 'sine';
+            beep.frequency.setValueAtTime(1046.50, time); // C6 flatline
+            g.gain.setValueAtTime(0.35, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
+            beep.connect(g);
+            g.connect(masterGain);
+            beep.start(time);
+            beep.stop(time + 0.08);
+          }
+
+          if (step % 4 === 2) {
+            // Dial-up 56k handshake squeal chirp
+            const modem = ctx.createOscillator();
+            const g = ctx.createGain();
+            modem.type = 'square';
+            const chirpFreq = 1800 + Math.sin(step * 3) * 600;
+            modem.frequency.setValueAtTime(chirpFreq, time);
+            g.gain.setValueAtTime(0.08, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
+            modem.connect(g);
+            g.connect(masterGain);
+            modem.start(time);
+            modem.stop(time + 0.06);
+          }
+        }
+      }
+
+      // --- PHASE 3: SANTANA INVERSION & RECYCLING TECHNO RAVE ---
+      else if (currentPhase === 'rave') {
+        // Heavy 4/4 Techno Rave Kick
+        if (step % 4 === 0) {
+          const kick = ctx.createOscillator();
+          const g = ctx.createGain();
+          kick.type = 'sine';
+          kick.frequency.setValueAtTime(160, time);
+          kick.frequency.exponentialRampToValueAtTime(38, time + 0.18);
+          g.gain.setValueAtTime(0.95, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
+          kick.connect(g);
+          g.connect(masterGain);
+          kick.start(time);
+          kick.stop(time + 0.22);
+        }
+
+        // Off-beat Rave Hi-hats
+        if (step % 4 === 2) {
+          triggerNoiseHat(ctx, time, 0.45, 6000);
+        }
+
+        // Acid 303 Bassline fighting the march
+        if (step % 2 === 0) {
+          const acid = ctx.createOscillator();
           const filter = ctx.createBiquadFilter();
           const g = ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(bassNotes[(step / 2) % bassNotes.length], time);
+          acid.type = 'sawtooth';
+          const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
+          acid.frequency.setValueAtTime(acidNotes[(step / 2) % acidNotes.length], time);
           filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(2200, time);
-          filter.Q.value = 8;
+          filter.frequency.setValueAtTime(800 + Math.sin(step * 0.4) * 1600, time);
+          filter.Q.value = 14;
           g.gain.setValueAtTime(0.35, time);
           g.gain.exponentialRampToValueAtTime(0.001, time + 0.14);
-          osc.connect(filter);
+          acid.connect(filter);
           filter.connect(g);
           g.connect(masterGain);
-          osc.start(time);
-          osc.stop(time + 0.15);
+          acid.start(time);
+          acid.stop(time + 0.14);
         }
-      } else {
-        // Museo: Lo-fi warm sine pads
-        if (step % 8 === 0) {
-          const chord = [130.81, 155.56, 196.00, 233.08]; // Cm7
-          chord.forEach((freq) => {
-            const osc = ctx.createOscillator();
-            const filter = ctx.createBiquadFilter();
-            const g = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, time);
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(650, time);
-            g.gain.setValueAtTime(0.12, time);
-            g.gain.exponentialRampToValueAtTime(0.001, time + 1.2);
-            osc.connect(filter);
-            filter.connect(g);
-            g.connect(masterGain);
-            osc.start(time);
-            osc.stop(time + 1.2);
-          });
+
+        // Electric Rock Guitar Lead: Black Magic Woman inverted phrases
+        if (step % 3 === 0 || step % 7 === 0) {
+          const guitar = ctx.createOscillator();
+          const shaper = ctx.createWaveShaper();
+          const filter = ctx.createBiquadFilter();
+          const g = ctx.createGain();
+          guitar.type = 'sawtooth';
+          const guitarFreq = santanaInvertedNotes[(step / 3) % santanaInvertedNotes.length];
+          guitar.frequency.setValueAtTime(guitarFreq, time);
+          shaper.curve = distortionCurve;
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(2600, time);
+          g.gain.setValueAtTime(0.25, time);
+          g.gain.exponentialRampToValueAtTime(0.001, time + 0.38);
+          guitar.connect(shaper);
+          shaper.connect(filter);
+          filter.connect(g);
+          g.connect(masterGain);
+          guitar.start(time);
+          guitar.stop(time + 0.38);
         }
       }
 
       step++;
     }, intervalSec * 1000);
+  }
+
+  function triggerNoiseHat(ctx, time, volume, freq) {
+    const bufferSize = ctx.sampleRate * 0.04;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.value = freq;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(volume, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.038);
+    noise.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+    noise.start(time);
+    noise.stop(time + 0.04);
   }
 
   function stopNativeSynth() {
@@ -375,7 +517,6 @@ const variations = track.variations;
     const height = canvas.height = canvas.clientHeight;
 
     if (!analyser || !isPlaying) {
-      // Idle oscilloscope line
       canvasCtx.fillStyle = '#03060a';
       canvasCtx.fillRect(0, 0, width, height);
       canvasCtx.strokeStyle = 'rgba(0, 255, 157, 0.25)';
@@ -397,12 +538,12 @@ const variations = track.variations;
     canvasCtx.fillStyle = 'rgba(3, 6, 10, 0.35)';
     canvasCtx.fillRect(0, 0, width, height);
 
-    // Spectrum bars in background
+    // Spectrum bars
     const barWidth = (width / bufferLength) * 2;
     let x = 0;
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = (freqData[i] / 255) * height * 0.7;
-      canvasCtx.fillStyle = `rgba(0, 229, 255, ${0.1 + (freqData[i] / 255) * 0.4})`;
+      const barHeight = (freqData[i] / 255) * height * 0.72;
+      canvasCtx.fillStyle = `rgba(0, 229, 255, ${0.1 + (freqData[i] / 255) * 0.45})`;
       canvasCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
       x += barWidth;
     }
@@ -429,21 +570,29 @@ const variations = track.variations;
     canvasCtx.stroke();
     canvasCtx.shadowBlur = 0;
 
-    animationFrameId = requestAnimationFrame(drawVisualizer);
+    requestAnimationFrame(drawVisualizer);
   }
 
   async function startAudioStream() {
-    appendLog(`Inicializando bus de audio para subrutina: ${activeVar.name}...`);
+    appendLog(`Inicializando simulación en sandbox para subrutina: ${activeVar.name}...`);
     statusEl.textContent = `ESTADO: TRANSMITIENDO [${activeVar.name.toUpperCase()}]`;
     statusEl.className = 'term-badge badge-green';
 
     getAudioContext();
 
-    // Start native synth immediately so the user hears rich music right away
+    // Start procedural synth
     startNativeSynth(activeVar.id, activeVar.bpm);
-    appendLog(`DSP sintetizador nativo activo a ${activeVar.bpm} BPM. Buffer estéreo transmitiendo.`);
+    appendLog(`Motor DSP procedural activo a ${activeVar.bpm} BPM.`);
 
-    // Try loading Strudel in parallel
+    if (activeVar.id === 'fork-suite') {
+      appendLog(`[Fase 1] Caballo de Troya: arpegios brillantes en máscara.`);
+    } else if (activeVar.id === 'fork-march') {
+      appendLog(`[Marcha Totalitaria] Cadencia uniforme y flatline con modem 56k.`);
+    } else if (activeVar.id === 'fork-rave') {
+      appendLog(`[Inversión Santana & Rave] Guitarra rock invertida y Techno demoledor.`);
+    }
+
+    // Connect to Strudel in parallel
     try {
       if (!strudelModule) {
         strudelModule = await import('https://unpkg.com/@strudel/web@1.3.0/dist/index.mjs');
@@ -453,10 +602,10 @@ const variations = track.variations;
       }
       if (strudelModule && strudelModule.evaluate) {
         strudelModule.evaluate(activeVar.code);
-        appendLog(`Kernel Strudel sincronizado con código TidalCycles.`);
+        appendLog(`Kernel Strudel evaluando patrones TidalCycles.`);
       }
     } catch (e) {
-      appendLog(`Aviso Strudel externo: ${e.message || 'offline'}. Ejecutando mediante sintetizador Web Audio interno.`);
+      appendLog(`Aviso Strudel externo: ${e.message || 'offline'}. Ejecutando en DSP nativo Web Audio.`);
     }
 
     isPlaying = true;
@@ -477,7 +626,7 @@ const variations = track.variations;
     playGlyph.textContent = '▶';
     playText.textContent = 'REANUDAR TRANSMISIÓN';
     stopBtn.disabled = true;
-    appendLog('Transmisión de audio detenida por usuario.');
+    appendLog('Transmisión detenida por el operador.');
     drawVisualizer();
   }
 
@@ -515,11 +664,11 @@ const variations = track.variations;
       detailName.textContent = found.name;
       detailDesc.textContent = found.description;
       canvasTrackLabel.textContent = `TRACK: BACKUP // ${found.name.toUpperCase()}`;
-      canvasBpmLabel.textContent = `BPM: ${found.bpm} // FREQ: 48.0 kHz`;
+      canvasBpmLabel.textContent = `BPM: ${found.bpm} // 48.0 kHz ESTÉREO`;
       codeEl.textContent = found.code;
       replLink.href = `https://strudel.cc/#${encodeURIComponent(found.code)}`;
 
-      appendLog(`Conmutado a subrutina: ${found.name} (${found.bpm} BPM) // ${found.concept}`);
+      appendLog(`Conmutado a: ${found.name} (${found.bpm} BPM)`);
 
       if (isPlaying) {
         stopNativeSynth();
@@ -543,7 +692,7 @@ const variations = track.variations;
     }
   });
 
-  // Initial draw of oscilloscope
+  // Initial draw
   drawVisualizer();
 </script>
 
@@ -636,7 +785,7 @@ const variations = track.variations;
 
   .subroutine-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 0.5rem;
   }
 
@@ -664,7 +813,7 @@ const variations = track.variations;
   }
 
   .sub-title {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--term-green);
     margin-bottom: 2px;
@@ -675,13 +824,13 @@ const variations = track.variations;
   }
 
   .sub-concept {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--term-text);
     margin-bottom: 2px;
   }
 
   .sub-meta {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--term-text-dim);
   }
 
@@ -706,6 +855,6 @@ const variations = track.variations;
     line-height: 1.45;
     color: #8be9fd;
     overflow-x: auto;
-    max-height: 280px;
+    max-height: 320px;
   }
 </style>
