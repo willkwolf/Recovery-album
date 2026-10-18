@@ -48,6 +48,21 @@ Dado que el Director General (DG) y el Crew de agentes están en una fase de **V
   - La caja de texto permite al DG verter su visión en lenguaje natural libremente.
   - El botón **[Copiar Prompt]** ofrece retroalimentación visual inmediata (`✅ ¡PROMPT COPIADO!`) al copiar al portapapeles.
 
+### Criterio 6: Vibe Console Intelligence & Despacho XML Multi-Rol (<vibe_dispatch>)
+- **Principio:** Innovación de enrutamiento agéntico y separación de instrucciones por nivel de abstracción (L1 Estrategia, L2 Ejecución, L3 Auditoría).
+- **Características:**
+  - **Inputs Dedicados por Rol:** Entradas de texto individuales para cada agente activo (`DM`, `CP`, `SD`, `AE`, `QA`), permitiendo afinar directivas específicas sin mezclar dominios técnicos.
+  - **Estructura de Datos XML Pura:** Generación en tiempo real del bloque `<vibe_dispatch version="1.0">` con tags de metadatos, ancla de reloj a 16avos, directivas agénticas y stack de herramientas de código abierto.
+  - **Stack de Audio de Código Abierto Integrado:**
+    - DAW: LMMS (proyectos `.mmp` XML) y Ardour.
+    - Síntesis: Surge XT (Wavetable + FM, matriz de 12 LFOs) y Cardinal (modular DISTRHO / VCV Rack).
+    - DSP y Master: Chowdhury DSP (ChowTapeModel, Chow Centaur) y Airwindows (Slew, Density), con estricto apego a EBU R128 (-14.0 LUFS ± 0.5, True Peak < -1.0 dBTP).
+  - **Transiciones Fluidas:**
+    - Espina rítmica continua (`playCountdownTick`) sin interrupción a través de los límites de acto.
+    - Rampa de automatización con lookahead (redoble accelerando y barrido de filtro).
+    - Respiración de tensión de 1 compás (caída limpia a silencio sin colisión de fase antes del drop).
+  - **Purga de Inspiraciones Literales:** Eliminación total de nombres comerciales de artistas en interfaz, badges y datos, reemplazados por terminología técnica y funcional de diseño sonoro.
+
 ---
 
 ## 3. Automatización de Pruebas con Vibium
@@ -62,4 +77,4 @@ npm run test:quality
 npm run test:vibium
 ```
 
-La suite evalúa automáticamente los 5 criterios en navegadores reales sin intervención humana, emitiendo un reporte conciso de aprobación o alerta.
+La suite evalúa automáticamente los criterios en navegadores reales sin intervención humana, emitiendo un reporte conciso de aprobación o alerta.

@@ -107,8 +107,8 @@ stack(
   },
   {
     id: 'sec-05',
-    tag: '[SECCIÓN 05 // SOLO ROCK SANTANA INVERTIDO & FUGA FINAL]',
-    name: 'Black Magic Woman al Revés & Disolución (4:10 - 5:15)',
+    tag: '[SECCIÓN 05 // SOLO FUZZ OVERDRIVE INVERTIDO & FUGA FINAL]',
+    name: 'Fuzz Invertido en D menor & Disolución (4:10 - 5:15)',
     startTime: '04:10',
     endTime: '05:15',
     startSec: 250,
@@ -116,8 +116,8 @@ stack(
     bpm: 110,
     keyCenter: 'D menor blues invertido',
     instruments: ['Overdrive Guitar Inverted', 'Ping-Pong Delay', 'Room Convolution', 'Dither Fade Out'],
-    description: 'Solo de guitarra eléctrica interpretando las frases de Black Magic Woman de Santana de forma invertida. Sin base rítmica al inicio, desvaneciéndose en el vacío cuántico hacia la línea temporal alternativa (FORK).',
-    strudelCode: `// SECCIÓN 05 (04:10 - 05:15): Solo Santana Invertido & Fuga Final
+    description: 'Solo de guitarra eléctrica saturada interpretando frases modales de blues menor de forma invertida. Sin base rítmica al inicio, desvaneciéndose en el vacío cuántico hacia la línea temporal alternativa (FORK).',
+    strudelCode: `// SECCIÓN 05 (04:10 - 05:15): Solo Fuzz Invertido & Fuga Final
 stack(
   note("<[d5,a4,f4] [c5,g4,e4] [bb4,f4,d4] [a4,e4,cs4]>")
     .s("sawtooth").distort(0.7).gain(0.85)
@@ -135,7 +135,7 @@ export const TRACK_VARIATIONS: TrackVariation[] = [
     tension: 'urgencia temporal ↔ pulso de memoria',
     runtime: 'strudel',
     bpm: 115,
-    description: 'ÚNICA MUTACIÓN CONSERVADA. El pulso de reloj a semicorcheas de Hans Zimmer con micropaneo, subgrave 35Hz y modulación de filtro. Es el ancla rítmica y narrativa definitiva para el vibe coding del single.',
+    description: 'ÚNICA MUTACIÓN CONSERVADA. El pulso de reloj a semicorcheas con micropaneo, subgrave 35Hz y modulación de filtro. Es el ancla rítmica y narrativa definitiva para el vibe coding del single.',
     code: `// :Mutacion — Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)
 stack(
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
@@ -149,7 +149,7 @@ stack(
 export const SPLINTERNET_SECTIONS: SongSection[] = [
   {
     id: 'sec-sp-01',
-    tag: '[SECCIÓN 01 // TICKING CLOCK & FRENCH TOUCH (ZIMMER x DAFT PUNK)]',
+    tag: '[SECCIÓN 01 // TICKING CLOCK SPINE & FRENCH TOUCH 4-POLE SWEEP]',
     name: 'Reloj de Cuenta Regresiva & French Sweep (0:00 - 1:05)',
     startTime: '00:00',
     endTime: '01:05',
@@ -157,19 +157,19 @@ export const SPLINTERNET_SECTIONS: SongSection[] = [
     endSec: 65,
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
-    instruments: ['Hans Zimmer Ticking Rimshot', 'Sub-Braam 35Hz', 'Daft Punk 4-Pole LP Filter Sweep', 'French House 4/4 Kick', 'Off-beat Open Hats', 'Funky Octave Slap Bass'],
-    description: 'AUTONOMÍA L1 (80%): El reloj implacable de Hans Zimmer marca la cuenta regresiva antes de que los cortafuegos aíslen los nodos. Entra un bombo 4/4 francés de pegada implacable, acordes con filtro pasabajos dinámico estilo Daft Punk bombeados por sidechain, hi-hats sincopados en contratiempo y un slap-bassline con rebotes de octava.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Zimmer Ticking Clock x Daft Punk French Touch
+    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz', 'Analog 4-Pole LP Resonant Filter Sweep', 'French House 4/4 Kick', 'Off-beat Open Hats', 'Funky Octave Slap Bass'],
+    description: 'AUTONOMÍA L1 (80%): El pulso de cuenta regresiva marca los segundos antes del corte de red. Entra un bombo 4/4 francés de pegada analógica, acordes con barrido dinámico LP de 4 polos bombeados por sidechain, hi-hats sincopados en contratiempo y un slap-bassline con rebotes de octava.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Ticking Clock Spine & French Touch 4-Pole Sweep
 // Autonomía Agéntica L1: 80% — Ensamble de 6 canales multicapa studio
 stack(
-  // Capa 1: Reloj Zimmer a semicorcheas con micropan y variaciones métricas
+  // Capa 1: Reloj de cuenta regresiva a semicorcheas con micropan y variaciones métricas
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
   // Capa 2: Bombo francés 4/4 con pegada de transitorio y sidechain natural
   s("bd*4").bank("RolandTR909").gain(1.0),
   // Capa 3: Hi-hats franceses con apertura en contratiempo sincopado
   s("~ hh:open ~ hh:open").gain(0.8).decay(0.12).hpf(4800),
   s("hh*16").euclid(11,16).gain("<0.3 0.65 0.45 0.8>*4").hpf(5500),
-  // Capa 4: Acordes French House (Daft Punk) con barrido LPF resonante y ducking
+  // Capa 4: Acordes French House con barrido LPF resonante y ducking
   note("<[c3,eb3,g3,bb3,d4] [ab2,c3,eb3,g3,c4] [f2,ab2,c3,eb3,g3] [g2,b2,d3,f3,b3]>")
     .s("sawtooth")
     .lpf(sine.range(380, 3600).slow(8))
@@ -185,7 +185,7 @@ stack(
   },
   {
     id: 'sec-sp-02',
-    tag: '[SECCIÓN 02 // HYBRID BREAKBEAT & DROP-D CRUNCH (LINKIN PARK)]',
+    tag: '[SECCIÓN 02 // HYBRID BREAKBEAT & DROP-D CRUNCH]',
     name: 'Breakbeat Industrial & Cable Roto (1:05 - 2:00)',
     startTime: '01:05',
     endTime: '02:00',
@@ -193,9 +193,9 @@ stack(
     endSec: 120,
     bpm: 115,
     keyCenter: 'C menor Drop-D / 115 BPM',
-    instruments: ['Linkin Park Hybrid Breakbeat', 'Ghost Snare 16ths', 'Drop-D Industrial Saw Crunch', 'Ride Cymbal Polyrhythm', 'Parallel Distorted Bass'],
-    description: 'AUTONOMÍA L1 (80%): Inspiración Linkin Park (Reanimation / Meteora). La rotura de cables transoceánicos detona un breakbeat sincopado con redobles fantasma de caja, hi-hats polirrítmicos, guitarras industriales cortadas en ping-pong delay y un bajo Drop-D comprimido al límite.',
-    strudelCode: `// SECCIÓN 02 (01:05 - 02:00): Hybrid Breakbeat & Industrial Slams (Linkin Park)
+    instruments: ['Hybrid Acoustic-Digital Breakbeat', 'Ghost Snare 16ths', 'Drop-D Industrial Saw Crunch', 'Ride Cymbal Polyrhythm', 'Parallel Distorted Bass'],
+    description: 'AUTONOMÍA L1 (80%): Arquitectura híbrida rock-electrónica. La rotura de cables transoceánicos detona un breakbeat sincopado con redobles fantasma de caja, hi-hats polirrítmicos, guitarras industriales cortadas en ping-pong delay y un bajo Drop-D comprimido al límite.',
+    strudelCode: `// SECCIÓN 02 (01:05 - 02:00): Hybrid Breakbeat & Industrial Slams
 // Autonomía Agéntica L1: 80% — Polirritmia, redobles fantasma y compresión paralela
 stack(
   // Capa 1: Bombo híbrido sincopado y caja con capas de clap/acoustic
@@ -220,7 +220,7 @@ stack(
   },
   {
     id: 'sec-sp-03',
-    tag: '[SECCIÓN 03 // DIGITAL DROPOUT & HARSH SILENCE (CODE ORANGE)]',
+    tag: '[SECCIÓN 03 // BRUTALIST DIGITAL DROPOUT & HARSH SILENCE]',
     name: 'Apagón Nacional & Clipping Brutalista (2:00 - 2:50)',
     startTime: '02:00',
     endTime: '02:50',
@@ -229,8 +229,8 @@ stack(
     bpm: 115,
     keyCenter: 'Disonancia Tritono C-F# / 115 BPM',
     instruments: ['Instant 0ms Dropout', 'Square Wave Clipping', '945 TWh Server Hum', 'Noise Bursts BPF', 'Metal Percussion Clangs'],
-    description: 'AUTONOMÍA L1 (80%): Inspiración Code Orange. La música sufre caídas a cero absoluto (dropout digital puro de 0ms sin reverb tail), emulando apagones y desconexiones de infraestructura. Entre el vacío zumban servidores de IA a 60 Hz antes de estallar en clipping abrasivo y percusiones de chatarra industrial.',
-    strudelCode: `// SECCIÓN 03 (02:00 - 02:50): Code Orange Digital Dropout & Harsh Feedback
+    description: 'AUTONOMÍA L1 (80%): Desconexión brutalista y estética noise industrial. La música sufre caídas a cero absoluto (dropout digital puro de 0ms sin reverb tail), emulando apagones y desconexiones de infraestructura. Entre el vacío zumban servidores de IA a 60 Hz antes de estallar en clipping abrasivo y percusiones de chatarra industrial.',
+    strudelCode: `// SECCIÓN 03 (02:00 - 02:50): Brutalist Digital Dropout & Harsh Feedback
 // Autonomía Agéntica L1: 80% — Caídas a 0ms sin reverb, clipping abrasivo y percusión metálica
 stack(
   // Capa 1: Riff brutalista tritono C-F# con cortes estocásticos a silencio puro (0ms)
@@ -251,7 +251,7 @@ stack(
   },
   {
     id: 'sec-sp-04',
-    tag: '[SECCIÓN 04 // SURGICAL FM NEURO GROWL DROP (SKRILLEX)]',
+    tag: '[SECCIÓN 04 // SURGICAL FM NEURO GROWL DROP (140 BPM HALF-TIME)]',
     name: 'Extracción de Memoria FM Growl (2:50 - 3:40)',
     startTime: '02:50',
     endTime: '03:40',
@@ -259,16 +259,16 @@ stack(
     endSec: 220,
     bpm: 140,
     keyCenter: 'C menor Bass Music / 140 BPM (Half-time Stomp)',
-    instruments: ['Skrillex Surgical FM Growl', 'Sub-Bass 32Hz', 'Off-beat Snare Claps', 'Micro-stutter 32nds', 'Laser Micro-Arps', 'Euclidean Hats'],
-    description: 'AUTONOMÍA L1 (80%): Inspiración Skrillex y Noisia. Salto de tempo a 140 BPM en ritmo half-time brutal. El bajo FM neuro utiliza modulación formántica ultrarrápida (resonancia 26) con separación estricta de subgrave puro a 32 Hz, arpegios láser a 32avos y bombos secos con snare reverberado.',
-    strudelCode: `// SECCIÓN 04 (02:50 - 03:40): Skrillex Surgical FM Neuro Growl Drop (140 BPM)
+    instruments: ['Surgical FM Neuro Growl', 'Sub-Bass 32Hz', 'Off-beat Snare Claps', 'Micro-stutter 32nds', 'Laser Micro-Arps', 'Euclidean Hats'],
+    description: 'AUTONOMÍA L1 (80%): Arquitectura de diseño sonoro neurofunk / dubstep de alta modulación. Salto de tempo a 140 BPM en ritmo half-time brutal. El bajo FM neuro utiliza modulación formántica ultrarrápida (resonancia 26) con separación estricta de subgrave puro a 32 Hz, arpegios láser a 32avos y bombos secos con snare reverberado.',
+    strudelCode: `// SECCIÓN 04 (02:50 - 03:40): Surgical FM Neuro Growl Drop (140 BPM)
 // Autonomía Agéntica L1: 80% — Frecuencia modulada formántica, sub-bass 32Hz y half-time
 stack(
   // Capa 1: Bombo de impacto ultra seco + Snare masivo con reverb gate
   s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.1),
   // Capa 2: Sub-bass puro a 32 Hz separado de los medios
   note("<c1 eb1 fs1 g1>").s("sine").gain(1.0),
-  // Capa 3: Skrillex Neuro Talking Growl (Sawtooth con filtro de formantes resonante a 26)
+  // Capa 3: Neuro Talking Growl (Sawtooth con filtro de formantes resonante a 26)
   note("c2 [c2 eb2] [fs2 g2] [bb2 c3] [~ c2] [eb2 c2]")
     .s("sawtooth")
     .lpf(perlin.range(350, 4900).fast(6))
@@ -284,7 +284,7 @@ stack(
   },
   {
     id: 'sec-sp-05',
-    tag: '[SECCIÓN 05 // MONUMENTAL BRAAM & SIDECHAIN FADE (ZIMMER x DAFT PUNK)]',
+    tag: '[SECCIÓN 05 // MONUMENTAL 35HZ BRAAM & SIDECHAIN PUMP FADE]',
     name: 'Colapso Monumental & Fork Infinito (3:40 - 4:45)',
     startTime: '03:40',
     endTime: '04:45',
@@ -292,14 +292,14 @@ stack(
     endSec: 285,
     bpm: 105,
     keyCenter: 'C menor / Eb mayor / 105 BPM',
-    instruments: ['Zimmer Massive Braam 35Hz', 'French Touch Sidechain Pump Pad', 'Archaeological Ocarina Bells', 'Deep Space Reverb', 'Distant 909 Sub-Kick'],
-    description: 'AUTONOMÍA L1 (80%): Hans Zimmer y Daft Punk unidos en la catarsis final del single. Un braam descomunal de 35 Hz con armónicos de metal sostiene la caída de la vieja internet mientras sintetizadores analógicos bombeados por sidechain y campanas místicas de Ocarina of Time reverberan hacia la nueva línea temporal.',
-    strudelCode: `// SECCIÓN 05 (03:40 - 04:45): Zimmer Monumental Braam x Daft Punk Sidechain Fade
+    instruments: ['Massive Sub-Braam 35Hz', 'French Touch Sidechain Pump Pad', 'Archaeological Ocarina Bells', 'Deep Space Reverb', 'Distant 909 Sub-Kick'],
+    description: 'AUTONOMÍA L1 (80%): Síntesis cinemática monumental y bombeo sidechain. Un braam descomunal de 35 Hz con armónicos de metal sostiene la caída de la vieja internet mientras sintetizadores analógicos bombeados por sidechain y campanas místicas de Ocarina of Time reverberan hacia la nueva línea temporal.',
+    strudelCode: `// SECCIÓN 05 (03:40 - 04:45): Monumental 35Hz Braam & Sidechain Pump Fade
 // Autonomía Agéntica L1: 80% — Braam descomunal 35Hz, bombeo sidechain y melodía arqueológica
 stack(
-  // Capa 1: Hans Zimmer Massive Braam a 35Hz con resonancia de bronce
+  // Capa 1: Massive Braam a 35Hz con resonancia de bronce
   note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
-  // Capa 2: Daft Punk French Touch synth pads bombeados rítmicamente por sidechain
+  // Capa 2: French Touch synth pads bombeados rítmicamente por sidechain
   note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
     .s("sawtooth")
     .lpf(sine.range(500, 2400).slow(6))
@@ -320,7 +320,7 @@ export const SPLINTERNET_VARIATIONS: TrackVariation[] = [
     id: 'countdown-clock',
     name: 'Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)',
     lifecycle: ':Mutacion',
-    concept: 'Único patrón exitoso al vibe: Ticking Clock de Hans Zimmer a 16avos con sub-bass 35Hz',
+    concept: 'Único patrón exitoso al vibe: Ticking Clock de cuenta regresiva a 16avos con sub-bass 35Hz',
     tension: 'cuenta regresiva implacable ↔ suspensión temporal',
     runtime: 'strudel',
     bpm: 115,
@@ -368,7 +368,7 @@ export const TRACKS: Track[] = [
     status: 'candidate',
     lifecycle: ':Challenger',
     duration: '04:45 (Suite 5 Actos)',
-    summary: 'Single experimental propuesto por el Crew Multiagente tras asimilar el dossier geopolítico 2016-2026. Hibrida a Linkin Park, Skrillex, Code Orange, Daft Punk y Hans Zimmer en un viaje de 5 actos.',
+    summary: 'Single experimental propuesto por el Crew Multiagente tras asimilar el dossier geopolítico 2016-2026. Hibrida breakbeat industrial, neuro growls FM a 140 BPM, dropouts brutalistas de 0ms, barridos franceses de 4 polos y braams monumentales de 35 Hz en un viaje de 5 actos.',
     humanApproval: {
       approved: false,
       signoff: 'Multi-Agent Crew L3 QA (Pending Human Signoff)',
@@ -377,7 +377,7 @@ export const TRACKS: Track[] = [
       notes: 'Crew de 9 agentes completó Ronda 1 con veredicto VERDE. Pendiente de audición y firma del Director General.'
     },
     publicNotes: [
-      'Inspiraciones integradas: Hans Zimmer (Ticking Clock), Linkin Park (Breakbeat híbrido), Code Orange (Dropout brutal), Skrillex (Neuro FM growl) y Daft Punk (French touch & sidechain).',
+      'Ejes sonoros integrados: Ticking Clock (pulso de cuenta regresiva), Breakbeat híbrido (cables cortados), Brutalist Dropout (silencio 0ms sin reverb), Surgical FM Neuro Growl (half-time 140 BPM) y Monumental Sub-Braam (35 Hz con sidechain pump).',
       'Eje conceptual: La fragmentación de la internet única (RuNet, cortafuegos de Estado, 945 TWh en IA extractiva y retroceso a 1978).',
       'Cumple especificaciones de mezcla técnica: -14.0 LUFS integrados y True Peak < -1.0 dBTP.'
     ],

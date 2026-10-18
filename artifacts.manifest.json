@@ -76,7 +76,7 @@
         "signoff": "Human Creator",
         "date": "2026-10-18",
         "scope": "5-act-experimental-suite-proposal",
-        "mediumDefinition": "Single experimental multi-influencia (Zimmer, Linkin Park, Code Orange, Skrillex, Daft Punk)"
+        "mediumDefinition": "Single experimental multicapa (Ticking Clock, Hybrid Breakbeat, Brutalist Dropout, Neuro Growl, Monumental Braam)"
       },
       "sourceFiles": [
         "src/data/tracks.ts"
@@ -97,9 +97,9 @@
           "approved": true
         },
         {
-          "name": "splinternet-skrillex",
+          "name": "splinternet-neuro",
           "lifecycle": ":Experimentacion",
-          "concept": "Splinternet // Neuro Skrillex Drop",
+          "concept": "Splinternet // Surgical FM Neuro Growl Drop",
           "runtime": "strudel",
           "approved": true
         }
