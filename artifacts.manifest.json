@@ -28,6 +28,13 @@
       ],
       "variations": [
         {
+          "name": "champion-rebase",
+          "lifecycle": ":Victory",
+          "concept": "Champion Baseline Rebase: Rave de Reciclaje (138 BPM) -> Transición Inteligente -> Fork C Mutante (110 BPM)",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
           "name": "fork",
           "lifecycle": ":Mutacion",
           "concept": "Variación C: Fork (Línea Base Activa Aprobada)",

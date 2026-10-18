@@ -3,17 +3,65 @@ import type { Track, SongSection, TrackVariation } from './schema';
 export const SONG_SECTIONS: SongSection[] = [
   {
     id: 'sec-01',
-    tag: '[SECCIÓN 01 // FORK SUSPENSE LOOP (EXTENDED)]',
-    name: 'Bucle de Suspenso Fork (0:00 - 1:15)',
+    tag: '[SECCIÓN 01 // RAVE DE RECICLAJE & COMBATE TECHNO (INTRO IN MEDIA RES)]',
+    name: 'Rave de Reciclaje — Estado del Arte 2026 (0:00 - 1:15)',
     startTime: '00:00',
     endTime: '01:15',
     startSec: 0,
     endSec: 75,
+    bpm: 138,
+    keyCenter: 'D menor Acid 303 // 138 BPM',
+    instruments: ['Roland TR-909 Kick 4/4', 'Syncopated Claps & Snares', 'Acid 303 Resonant Saw', 'Distorted Rock Stabs'],
+    description: 'CHAMPION REBASE: La pista arranca in media res en el estado del arte de 2026. Una pista de baile clandestina de 138 BPM donde la civilización en colapso recicla sus datos y combate el totalitarismo con ritmos implacables.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 01:15): Rave de Reciclaje & Combate Techno (138 BPM)
+// Estado del arte 2026: Catarsis rave y resistencia
+stack(
+  s("bd*4").bank("RolandTR909").gain(1.0),
+  s("~ [cp,sd:2] ~ [cp,sd:2]").gain(0.85),
+  s("hh*16").gain("<0.3 0.7 0.5 0.9>*4").hpf(4000),
+  note("d2 [d2 f2] g2 [bb1 c2] cs2 d2")
+    .s("sawtooth").lpf(sine.range(400, 3400).slow(2)).resonance(18).gain(0.85),
+  note("<[d5,a4,f4] [c5,g4,e4]>").s("sawtooth").distort(0.6).gain(0.5)
+)`
+  },
+  {
+    id: 'sec-02',
+    tag: '[SECCIÓN 02 // TRANSICIÓN INTELIGENTE DE TRANSPORTE (138 -> 110 BPM)]',
+    name: 'Cápsula de Transporte & Disonancia F# (1:15 - 1:50)',
+    startTime: '01:15',
+    endTime: '01:50',
+    startSec: 75,
+    endSec: 110,
+    bpm: 124,
+    keyCenter: 'Modulación D menor -> C menor (Pivote Tritono F#)',
+    instruments: ['Decelerating 909 Kick', 'Bandpass Dither Sweep', 'Tritone F# Drone', 'Incoming 5-tuplet Rimshot'],
+    description: 'TRANSICIÓN INTELIGENTE: La catarsis del rave se comprime y desacelera mediante modulación métrica (138 BPM -> 110 BPM). El bombo entra en filtro paso-altos mientras el tritono F# (92.5 Hz) sirve de puente armónico hacia la cápsula del Fork C.',
+    strudelCode: `// SECCIÓN 02 (01:15 - 01:50): Transición Inteligente de Transporte (138 -> 110 BPM)
+// Desaceleración métrica y modulación D menor -> C menor
+stack(
+  // Bombo del Rave filtrándose y espaciándose
+  s("bd [~ bd] ~ [bd ~]").bank("RolandTR909").lpf(sine.range(800, 180).slow(4)).gain(0.75),
+  // Barrido de ruido y artefacto de compresión dither
+  s("crackle*16").gain(perlin.range(0.1, 0.45)).hpf(3000),
+  // Nota puente pivote armónico: Tritono F# (92.50 Hz / 369.99 Hz)
+  note("<[fs2,c3] [fs2,c3,fs3]>").s("sawtooth").lpf(950).gain(0.7).decay(1.2),
+  // Entrada lateral del rimshot 5-tuplet anticipando Fork C
+  s("rim*5").gain(sine.range(0.1, 0.65).slow(2)).pan(sine.range(0.1, 0.9).slow(2))
+)`
+  },
+  {
+    id: 'sec-03',
+    tag: '[SECCIÓN 03 // FORK MUTANTE ALFA APROBADO (LÍNEA BASE CHAMPION)]',
+    name: 'Bucle Fork C Mutante — Memoria en Fuga (1:50 - 3:05)',
+    startTime: '01:50',
+    endTime: '03:05',
+    startSec: 110,
+    endSec: 185,
     bpm: 110,
-    keyCenter: 'C menor (disonancia F# persistente)',
-    instruments: ['Sawtooth Sub-Bass', 'TR-909 Kick', 'Rimshot Panning', 'Polyrhythmic Hi-Hats'],
-    description: 'El bucle original de Fork extendido durante más de un minuto completo. Polirritmia asimétrica y disonancia armónica de fuga con acordes sawtooth filtrados, melodía rápida en delay, caja de ritmos TR-909 y polirritmia de hi-hats 3 contra 7.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 01:15): Bucle de Suspenso Fork Original (1+ Minuto)
+    keyCenter: 'C menor (Disonancia F# persistente // 110 BPM)',
+    instruments: ['Sawtooth Chords LFO', 'Fast 1.75 Melody Delay', 'TR-909 Kick Groove', 'Rimshot 5-tuplet', 'Polyrhythmic 3v7 Hats'],
+    description: 'CHAMPION FORK: La cápsula aterriza en el sandbox. Acordes dyad Sawtooth con filtro LFO, melodía rápida a 1.75 en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7. Este es el ADN inmutable preservado y transportado.',
+    strudelCode: `// SECCIÓN 03 (01:50 - 03:05): Fork Mutante Alfa (Línea Base Champion)
 // Polirritmia asimétrica y disonancia armónica de fuga
 stack(
   note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>")
@@ -39,121 +87,73 @@ stack(
 )`
   },
   {
-    id: 'sec-02',
-    tag: '[SECCIÓN 02 // CABALLO DE TROYA (ARPEGIOS BRILLANTES)]',
-    name: 'Falso Optimismo Crystalline (1:15 - 2:00)',
-    startTime: '01:15',
-    endTime: '02:00',
-    startSec: 75,
-    endSec: 120,
-    bpm: 110,
-    keyCenter: 'C menor modulando a E/B brillante',
-    instruments: ['Fork Bassline', 'Crystalline Triangle Chimes', 'Delay Feedback', 'TR-909 Groove'],
-    description: 'Sobre la base del bucle Fork, se introducen gradualmente arpegios cristalinos en registro agudo. Un tono engañosamente positivo que actúa como Caballo de Troya mientras el troyano corrompe sectores de memoria.',
-    strudelCode: `// SECCIÓN 02 (01:15 - 02:00): Caballo de Troya (Falso Optimismo)
-stack(
-  note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>".slow(2))
-    .s("sawtooth").lpf(1200).gain(0.8),
-  // Arpegio brillante engañoso (Caballo de Troya)
-  note("<[c5,e5,g5,b5] [d5,fs5,a5,cs6] [eb5,g5,bb5,d6]>")
-    .s("triangle").fast(2).delay(0.4).delaytime(0.125).delayfeedback(0.55).gain(0.45),
-  s("bd:3 [~ bd:1] ~ [bd:3 ~]").bank("RolandTR909").gain(0.8),
-  s("[hh*4, hh*8]").gain(perlin.range(0.25, 0.7)).hpf(3000)
-)`
-  },
-  {
-    id: 'sec-03',
-    tag: '[SECCIÓN 03 // MARCHA TOTALITARIA & INFECCIÓN GLITCH]',
-    name: 'Disciplina Imperial & Dither (2:00 - 2:45)',
-    startTime: '02:00',
-    endTime: '02:45',
-    startSec: 120,
-    endSec: 165,
-    bpm: 120,
-    keyCenter: 'C stabs con modulación marcial',
-    instruments: ['TR-808 Snare Roll', 'Imperial Stabs', 'Bitcrush Distortion Bursts'],
-    description: 'La cadencia se transforma en una marcha militar uniforme y disciplinada. Bloques armónicos rígidos que comienzan a sufrir micro-desconexiones, ráfagas de dither y degradación glitch al entrar en cuarentena.',
-    strudelCode: `// SECCIÓN 03 (02:00 - 02:45): Marcha Totalitaria & Glitch
-stack(
-  s("sd*4").bank("RolandTR808").gain(0.9),
-  s("bd [~ bd] bd [bd ~]").gain(0.85),
-  note("<c3 eb3 g3 c4>*4")
-    .s("sawtooth").distort(sine.range(0.1, 0.85).slow(4)).lpf(2000)
-)`
-  },
-  {
     id: 'sec-04',
-    tag: '[SECCIÓN 04 // FLATLINE & HANDSHAKE 1990s]',
-    name: 'Supresión de Graves & Tono Modem/Fax (2:45 - 3:25)',
-    startTime: '02:45',
-    endTime: '03:25',
-    startSec: 165,
-    endSec: 205,
+    tag: '[SECCIÓN 04 // TROJAN SANDBOX & FLATLINE 90s]',
+    name: 'Chimes Cristalinos & Tono Modem/Fax (3:05 - 4:10)',
+    startTime: '03:05',
+    endTime: '04:10',
+    startSec: 185,
+    endSec: 250,
     bpm: 110,
-    keyCenter: 'C6 estático (1046 Hz)',
-    instruments: ['Sine EKG Vital Beep', '56k Modem Carrier Chirp', 'Zero Sub-Bass'],
-    description: 'El bajo desaparece de golpe. Queda únicamente un pulso de signos vitales (beep monótono) y un guiño analógico breve a la conexión dial-up / fax de los 90s, indicando que el troyano está incapacitado en el sandbox.',
-    strudelCode: `// SECCIÓN 04 (02:45 - 03:25): Flatline & Handshake 1990s
+    keyCenter: 'C menor a C6 estático (1046 Hz)',
+    instruments: ['Crystalline Triangle Arp', 'Zero Sub-Bass Flatline', '56k Modem Chirp', 'Glitch Bursts'],
+    description: 'El falso optimismo cristalino (Caballo de Troya) entra en cuarentena: el bajo desaparece de golpe dejando el pulso de signos vitales (beep monótono C6) y el guiño de handshake analógico a 56k.',
+    strudelCode: `// SECCIÓN 04 (03:05 - 04:10): Trojan Sandbox & Flatline 90s
 stack(
-  // Signos vitales monotono (sin bajo)
+  note("<[c5,e5,g5,b5] [d5,fs5,a5,cs6]>").s("triangle").fast(2).delay(0.3).gain(0.4),
   note("c6*8").s("sine").gain(0.7).decay(0.04),
-  // Guiño de modem dial-up 1990s
-  note("<fs6 cs7 b6 e7>").s("square").fast(8).gain(0.4).lpf(3500)
+  note("<fs6 cs7 b6 e7>").s("square").fast(8).gain(0.35).lpf(3500)
 )`
   },
   {
     id: 'sec-05',
-    tag: '[SECCIÓN 05 // SOLO ROCK INVERTIDO (SANTANA)]',
-    name: 'Black Magic Woman al Revés (3:25 - 4:05)',
-    startTime: '03:25',
-    endTime: '04:05',
-    startSec: 205,
-    endSec: 245,
+    tag: '[SECCIÓN 05 // SOLO ROCK SANTANA INVERTIDO & FUGA FINAL]',
+    name: 'Black Magic Woman al Revés & Disolución (4:10 - 5:15)',
+    startTime: '04:10',
+    endTime: '05:15',
+    startSec: 250,
+    endSec: 315,
     bpm: 110,
     keyCenter: 'D menor blues invertido',
-    instruments: ['Overdrive Electric Guitar', 'Delay / Room Reverb', 'Sin Base Rítmica'],
-    description: 'Entrada solitaria de guitarra eléctrica rock con overdrive y retardo, interpretando las frases de Black Magic Woman de Santana de forma invertida (al revés). Sin base percusiva al inicio, flotando en el vacío del sandbox.',
-    strudelCode: `// SECCIÓN 05 (03:25 - 04:05): Solo Santana Invertido (Sin Base)
+    instruments: ['Overdrive Guitar Inverted', 'Ping-Pong Delay', 'Room Convolution', 'Dither Fade Out'],
+    description: 'Solo de guitarra eléctrica interpretando las frases de Black Magic Woman de Santana de forma invertida. Sin base rítmica al inicio, desvaneciéndose en el vacío cuántico hacia la línea temporal alternativa (FORK).',
+    strudelCode: `// SECCIÓN 05 (04:10 - 05:15): Solo Santana Invertido & Fuga Final
 stack(
   note("<[d5,a4,f4] [c5,g4,e4] [bb4,f4,d4] [a4,e4,cs4]>")
     .s("sawtooth").distort(0.7).gain(0.85)
     .delay(0.35).delayfeedback(0.6)
-)`
-  },
-  {
-    id: 'sec-06',
-    tag: '[SECCIÓN 06 // RAVE DE RECICLAJE & COMBATE TECHNO]',
-    name: 'Catarsis Rave vs. Totalitarismo (4:05 - 5:15)',
-    startTime: '04:05',
-    endTime: '05:15',
-    startSec: 245,
-    endSec: 315,
-    bpm: 138,
-    keyCenter: 'D menor Acid 303',
-    instruments: ['Pounding 4/4 Techno Kick', 'Syncopated Off-beat Hats', 'Acid 303 Resonant Bass', 'Distorted Claps'],
-    description: 'El proceso de reciclaje del troyano: una base caótica de Techno Rave a 138 BPM desmantela la marcha totalitaria en una lucha sónica liberadora antes del cierre.',
-    strudelCode: `// SECCIÓN 06 (04:05 - 05:15): Rave de Reciclaje
-stack(
-  s("bd*4").bank("RolandTR909").gain(1.0),
-  s("~ [cp,sd:2] ~ [cp,sd:2]").gain(0.85),
-  s("hh*16").gain("<0.3 0.7 0.5 0.9>*4").hpf(4000),
-  note("d2 [d2 f2] g2 [bb1 c2] cs2 d2")
-    .s("sawtooth").lpf(sine.range(400, 3400).slow(2)).resonance(18).gain(0.85),
-  note("<[d5,a4,f4] [c5,g4,e4]>").s("sawtooth").distort(0.6).gain(0.5)
 )`
   }
 ];
 
 export const TRACK_VARIATIONS: TrackVariation[] = [
   {
+    id: 'champion-rebase',
+    name: 'Champion Baseline Rebase (Rave -> Transición -> Fork C)',
+    lifecycle: ':Victory',
+    concept: 'CHAMPION ACTIVO: Estado del arte 2026. Comienza en Rave de Reciclaje (138 BPM) y transmuta al Fork C (110 BPM)',
+    tension: 'combate rave ↔ cápsula de transporte ↔ polirritmia fork ↔ solo invertido',
+    runtime: 'strudel',
+    bpm: 138,
+    description: 'NUEVO CHAMPION DEFINITIVO. Invierte la estructura narrativa: arranca en la catarsis combativa del Rave de 138 BPM, modula métricamente a través de la cápsula de transporte (F# pivote) y aterriza en la pureza polirrítmica del Fork C.',
+    code: `// :Victory — Champion Baseline Rebase (05:15)
+cat(
+  // Sec 01: Rave de Reciclaje (138 BPM) — Estado del arte 2026 (0:00 - 1:15)
+  // Sec 02: Transición Inteligente de Transporte (138 -> 110 BPM) (1:15 - 1:50)
+  // Sec 03: Fork Mutante Alfa Aprobado (110 BPM) (1:50 - 3:05)
+  // Sec 04: Trojan Sandbox & Flatline 56k (3:05 - 4:10)
+  // Sec 05: Solo Santana Invertido & Fuga al Fork (4:10 - 5:15)
+)`
+  },
+  {
     id: 'fork',
-    name: 'Variación C — Fork (Base Original)',
+    name: 'Variación C — Fork (ADN Mutante Alfa)',
     lifecycle: ':Mutacion',
-    concept: 'La memoria ya en otra parte — Mutante Alfa Aprobado',
+    concept: 'Línea base inmutable aprobada transportada por el Rave',
     tension: 'restauración ↔ fuga (disonancia F# persistente / compás abierto)',
     runtime: 'strudel',
     bpm: 110,
-    description: 'LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7. Este es el ADN inmutable sobre el cual se construyen los experimentos.',
+    description: 'LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7.',
     code: `// :Mutacion — Variación C: Fork (Línea Base Aprobada)
 stack(
   note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>")
@@ -179,64 +179,50 @@ stack(
 )`
   },
   {
-    id: 'trojan-suite',
-    name: 'Backup: Trojan Sandbox Suite',
+    id: 'mutation-neuro-acid',
+    name: 'Mutación 01 — Neuro-Acid Infusion',
     lifecycle: ':Challenger',
-    concept: 'Simulación del troyano en sandbox antivirus — 6 secciones continuas',
-    tension: 'suspenso ↔ marcha totalitaria ↔ flatline 90s ↔ solo invertido ↔ rave',
+    concept: 'Mutación propuesta: Inyección de bajo FM Skrillex dentro del Rave 303',
+    tension: 'acid analógico ↔ neurofunk quirúrgico',
+    runtime: 'strudel',
+    bpm: 138,
+    description: 'MUTACIÓN PROPUESTA. Cruza la línea de bajo TB-303 del Rave de apertura con un modulador FM formántico, generando chirridos orgánico-digitales agresivos.',
+    code: `// :Challenger — Mutación 01: Neuro-Acid Infusion
+stack(
+  s("bd*4").bank("RolandTR909").gain(1.0),
+  note("d2 [d2 f2] g2 [bb1 c2] cs2 d2")
+    .s("sawtooth").lpf(perlin.range(500, 4200).fast(4)).resonance(22).gain(0.9)
+)`
+  },
+  {
+    id: 'mutation-tritone-pedal',
+    name: 'Mutación 02 — Tritone F# Lockdown',
+    lifecycle: ':Challenger',
+    concept: 'Mutación propuesta: F# persistente extendido como bordón pedal',
+    tension: 'estabilidad ↔ disonancia perpetua',
     runtime: 'strudel',
     bpm: 110,
-    description: 'MUTANTE DESARROLLADO EN DISPUTA. Extiende el bucle Fork más de 1 minuto, introduce el falso optimismo cristalino, la marcha marcial con glitches, el flatline de signos vitales con modem 90s, el solo invertido de Santana y el Rave de reciclaje a 138 BPM.',
-    code: `// :Challenger — Suite Continua Trojan Sandbox (05:15)
-// Integra las 6 secciones temporales en secuencia evolutiva
-cat(
-  // Sec 01: Fork Suspense Loop (0:00 - 1:15)
-  // Sec 02: Caballo de Troya Chimes (1:15 - 2:00)
-  // Sec 03: Marcha Totalitaria (2:00 - 2:45)
-  // Sec 04: Flatline & 56k Modem (2:45 - 3:25)
-  // Sec 05: Solo Rock Santana Invertido (3:25 - 4:05)
-  // Sec 06: Rave Techno de Reciclaje (4:05 - 5:15)
-)`
-  },
-  {
-    id: 'museo',
-    name: 'Variación A — Museo',
-    lifecycle: ':Experimentacion',
-    concept: 'La memoria como reliquia',
-    tension: 'recuerdo ↔ archivo (lo-fi / saturación / caída)',
-    runtime: 'strudel',
-    bpm: 72,
-    description: 'Boceto inicial archivado. Texturas filtradas y sostenidas en una cadencia lenta.',
-    code: `// :Experimentacion — Variación A: Museo (Archivada)
+    description: 'MUTACIÓN PROPUESTA. El tritono F# no desaparece nunca; se convierte en un pedal sub-bass continuo que atraviesa desde el Rave hasta el Solo invertido.',
+    code: `// :Challenger — Mutación 02: Tritone F# Lockdown
 stack(
-  note("<c3 eb3 g3 bb3 d4>".slow(4))
-    .s("sine")
-    .lpf(sine.range(350, 1100).slow(8))
-    .decay(2.5)
-    .sustain(0.4)
-    .gain(0.7),
-  s("bd:2 [~ bd:1] ~ bd:2")
-    .gain(0.65)
-    .lpf(750)
+  note("fs1").s("sine").gain(0.75).slow(8),
+  note("<[c2,g2] [fs2,c3]>").s("sawtooth").lpf(1200).gain(0.8)
 )`
   },
   {
-    id: 'transito',
-    name: 'Variación B — Tránsito',
-    lifecycle: ':Experimentacion',
-    concept: 'La memoria como combustible',
-    tension: 'orgánico ↔ procesado (motor rítmico / administración)',
+    id: 'mutation-brutalist-drop',
+    name: 'Mutación 03 — Brutalist 0ms Drop-Cut',
+    lifecycle: ':Challenger',
+    concept: 'Mutación propuesta: Corte a silencio absoluto de Code Orange previo a Fork C',
+    tension: 'velocidad ↔ vacío cero',
     runtime: 'strudel',
     bpm: 124,
-    description: 'Boceto inicial archivado. Pulso implacable con Roland TR-808.',
-    code: `// :Experimentacion — Variación B: Tránsito (Archivada)
-stack(
-  s("bd [~ bd] bd [~ bd]")
-    .bank("RolandTR808")
-    .gain(0.85),
-  note("c2 [c2 eb2] g1 [bb1 c2]")
-    .s("sawtooth")
-    .lpf(1300)
+    description: 'MUTACIÓN PROPUESTA. En el segundo 01:49, justo antes de que arranque el Fork C, un corte de 1 segundo de silencio digital absoluto (0ms sin reverb).',
+    code: `// :Challenger — Mutación 03: Brutalist 0ms Drop-Cut
+cat(
+  s("bd*4").gain(1.0).fast(2),
+  s("~").gain(0), // Silencio puro
+  note("c2").s("sawtooth").gain(0.9)
 )`
   }
 ];
@@ -418,23 +404,23 @@ export const TRACKS: Track[] = [
   {
     id: 'track-01-backup',
     number: 1,
-    title: 'Backup',
+    title: 'Backup // Champion Rebase',
     medium: 'Música Digital / Electrónica Algorítmica',
     status: 'candidate',
-    lifecycle: ':Mutacion',
-    duration: '05:15 (Suite) / 01:15 (Fork Base)',
-    summary: 'Primer track del ciclo RECOVERY. Sistema de experimentación HITL con linaje claro: Mutante Alfa C (Fork) y Challenger Trojan Sandbox Suite.',
+    lifecycle: ':Victory',
+    duration: '05:15 (Champion Suite) / 01:15 (Rave Intro)',
+    summary: 'CHAMPION REBASE DEFINITIVO. Inicia en el estado del arte de 2026 con el Rave de Reciclaje (138 BPM), transiciona mediante desaceleración métrica y modulación F# a la base Fork C (110 BPM), pasando por el sandbox troyano hasta la fuga del solo invertido.',
     humanApproval: {
       approved: true,
-      signoff: 'Human Creator',
-      date: '2026-10-17',
-      scope: 'fork-mutation-and-trojan-challenger-suite',
-      notes: 'Variación C elegida como :Mutacion activa. Suite Trojan Sandbox definida como :Challenger para audición y refinamiento.'
+      signoff: 'Human Director General (DG)',
+      date: '2026-10-18',
+      scope: 'champion-baseline-rebase-rave-to-fork',
+      notes: 'Aprobado por el Director General como Champion. Comienza en Rave de Reciclaje (138 BPM) y transiciona al Fork C Mutante como transporte hacia la nueva línea temporal.'
     },
     publicNotes: [
       'Sistema de estados HITL: :Experimentacion -> :Mutacion -> :Challenger -> :Victory.',
-      'Línea base activa (:Mutacion): Variación C (Fork), preservando su ADN armónico y polirrítmico.',
-      'Challenger en desarrollo (:Challenger): Suite continua de 6 secciones temporales simulando el troyano en sandbox antivirus.'
+      'Champion Activo (:Victory): Rave de Reciclaje (138 BPM) -> Transición Inteligente -> Fork C Mutante (110 BPM).',
+      'Mutaciones propuestas en disputa (:Challenger): Neuro-Acid Infusion, Tritone F# Lockdown, Brutalist 0ms Drop-Cut.'
     ],
     sections: SONG_SECTIONS,
     variations: TRACK_VARIATIONS
