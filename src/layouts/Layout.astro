@@ -7,21 +7,37 @@ interface Props {
 }
 
 const {
-  title = 'RECOVERY // Single 01: Backup — Audio Preview',
-  description = 'Reproductor y mesa de audición para el corte conceptual Backup.'
+  title = 'RECOVERY // Vibe Coding Workstation v0.2.0-beta',
+  description = 'Estación de trabajo minimalista de Vibe Coding musical: audición dual A/B en pantalla dividida (Baseline vs Challenger), 7+ stems studio, modo claro/oscuro y generador de prompts para Antigravity.'
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0c0d10" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#090c12" id="meta-theme-color" />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <!-- Inline script to prevent FOUT (Flash of Unstyled Theme) -->
+    <script is:inline>
+      (function() {
+        try {
+          const stored = localStorage.getItem('recovery_theme');
+          const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          const theme = stored || (systemPrefersLight ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+          const metaTheme = document.getElementById('meta-theme-color');
+          if (metaTheme) {
+            metaTheme.setAttribute('content', theme === 'light' ? '#f8fafc' : '#090c12');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <slot />

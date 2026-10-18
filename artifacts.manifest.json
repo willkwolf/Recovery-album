@@ -140,6 +140,18 @@
         "signoff": "System Foundation",
         "date": "2026-10-17"
       }
+    },
+    {
+      "id": "doc-ui-quality-contract",
+      "type": "documentation",
+      "title": "UI Quality Contract & Vibium Testing",
+      "status": "approved",
+      "path": "docs/CONTRATO_CALIDAD_UI.md",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "Human Director General (DG)",
+        "date": "2026-10-18"
+      }
     }
   ]
 }

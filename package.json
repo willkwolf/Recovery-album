@@ -9,13 +9,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "verify:boundary": "node scripts/verify-boundary.mjs"
+    "verify:boundary": "node scripts/verify-boundary.mjs",
+    "test:vibium": "node scripts/test-vibium.mjs",
+    "test:quality": "node scripts/test-vibium.mjs"
   },
   "dependencies": {
     "astro": "^5.4.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vibium": "^26.8.21"
   }
 }

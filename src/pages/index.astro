@@ -9,22 +9,37 @@ const challengerTrack = TRACKS[1];
 
 <Layout
   title="RECOVERY // Vibe Coding Workstation v0.2.0-beta"
-  description="Estación de trabajo minimalista de Vibe Coding musical: audición dual A/B en pantalla dividida (Baseline vs Challenger), 7+ stems studio, transiciones de storyboard y generador de prompts para Antigravity."
+  description="Estación de trabajo minimalista de Vibe Coding musical: audición dual A/B en pantalla dividida (Baseline vs Challenger), 7+ stems studio, modo claro/oscuro y generador de prompts para Antigravity."
 >
-  <div class="vibe-workstation">
-    <!-- Header Minimalista -->
-    <header class="workstation-header">
+  <main class="vibe-workstation" id="main-workstation">
+    <!-- Header Minimalista y Barra de Herramientas -->
+    <header class="workstation-header" role="banner">
       <div class="header-left">
         <h1 class="logo-title">RECOVERY</h1>
-        <span class="badge-beta mono">v0.2.0-beta</span>
-        <span class="badge-mode mono">VIBE CODING LAB // DUAL DECK</span>
+        <span class="badge-beta mono" aria-label="Versión beta 0.2.0">v0.2.0-beta</span>
+        <span class="badge-mode mono" aria-label="Modo de trabajo">VIBE CODING LAB // DUAL DECK</span>
       </div>
-      <div class="header-right mono">
+
+      <div class="header-right">
+        <!-- Theme Toggle Switch (Modo Claro / Modo Oscuro) -->
+        <button
+          type="button"
+          class="btn-theme-toggle"
+          id="btn-theme-toggle"
+          aria-label="Alternar entre modo claro y modo oscuro"
+          aria-pressed="false"
+          title="Cambiar entre modo claro y oscuro"
+        >
+          <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
+          <span class="theme-label mono" id="theme-label">Oscuro</span>
+        </button>
+
         <a
           href="https://github.com/willkwolf/Recovery-album"
           target="_blank"
           rel="noopener noreferrer"
-          class="repo-link"
+          class="repo-link mono"
+          aria-label="Abrir repositorio de GitHub en pestaña nueva"
         >
           GitHub ↗
         </a>
@@ -32,41 +47,41 @@ const challengerTrack = TRACKS[1];
     </header>
 
     <!-- PANTALLA DIVIDIDA: DECK 1 (BASELINE) ARRIBA -->
-    <section class="deck-split-card deck-baseline" id="deck-baseline-card">
+    <section class="deck-split-card deck-baseline" id="deck-baseline-card" aria-labelledby="deck-1-title">
       <div class="deck-header">
         <div class="deck-identity">
           <span class="deck-badge deck-badge-baseline mono">🎛️ DECK 1: BASELINE // 100% DG GROUND TRUTH</span>
-          <h2 class="deck-track-title">{baselineTrack.title}</h2>
+          <h2 class="deck-track-title" id="deck-1-title">{baselineTrack.title}</h2>
           <p class="deck-track-sub mono">
             Rave de Reciclaje (138 BPM) ──► Cápsula F# (124 BPM) ──► Fork C Mutante (110 BPM) ──► Trojan Sandbox ──► Solo Santana Invertido
           </p>
         </div>
-        <div class="deck-transport">
-          <button type="button" class="btn btn-baseline-play" id="btn-play-0" aria-label="Reproducir Baseline">
-            <span id="play-icon-0">▶</span>
+        <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Baseline">
+          <button type="button" class="btn btn-baseline-play" id="btn-play-0" aria-label="Reproducir o pausar Baseline">
+            <span id="play-icon-0" aria-hidden="true">▶</span>
             <span id="play-label-0">Play Baseline</span>
           </button>
-          <button type="button" class="btn btn-stop" id="btn-stop-0" disabled aria-label="Detener Baseline">
-            <span>■</span>
+          <button type="button" class="btn btn-stop" id="btn-stop-0" disabled aria-label="Detener reproducción Baseline">
+            <span aria-hidden="true">■</span>
             <span>Stop</span>
           </button>
-          <button type="button" class="btn btn-loop" id="btn-loop-0" aria-label="Bucle de sección Baseline">
-            <span>🔁</span>
+          <button type="button" class="btn btn-loop" id="btn-loop-0" aria-label="Alternar repetición de sección en Baseline" aria-pressed="false">
+            <span aria-hidden="true">🔁</span>
             <span id="loop-label-0">Loop: Off</span>
           </button>
-          <div class="time-readout mono" id="time-display-0">00:00 / 05:15</div>
+          <div class="time-readout mono" id="time-display-0" aria-live="polite" aria-label="Tiempo actual y duración de Baseline">00:00 / 05:15</div>
         </div>
       </div>
 
       <!-- Scrubber & Waveform Canvas Baseline -->
-      <div class="waveform-box" id="waveform-track-0" title="Haz clic en cualquier punto para mover el cabezal de la Baseline">
-        <canvas id="waveform-canvas-0" height="52"></canvas>
-        <div class="selection-overlay overlay-baseline" id="selection-overlay-0"></div>
-        <div class="playhead playhead-baseline" id="playhead-0"></div>
+      <div class="waveform-box" id="waveform-track-0" tabindex="0" role="slider" aria-label="Navegador de posición en Baseline" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal de la Baseline">
+        <canvas id="waveform-canvas-0" height="52" aria-hidden="true"></canvas>
+        <div class="selection-overlay overlay-baseline" id="selection-overlay-0" aria-hidden="true"></div>
+        <div class="playhead playhead-baseline" id="playhead-0" aria-hidden="true"></div>
       </div>
 
       <!-- Timeline Sections Strip Baseline -->
-      <div class="sections-row" id="sections-strip-0">
+      <div class="sections-row" id="sections-strip-0" role="group" aria-label="Secciones de la pista Baseline">
         {baselineTrack.sections?.map((sec, idx) => (
           <button
             type="button"
@@ -75,9 +90,10 @@ const challengerTrack = TRACKS[1];
             data-sec-idx={idx}
             data-start={sec.startSec}
             data-end={sec.endSec}
+            aria-label={`Sección 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
             title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
           >
-            <span class="mono sec-num">0{idx + 1}</span>
+            <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
             <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
             <span class="mono sec-time">{sec.startTime}</span>
           </button>
@@ -86,41 +102,41 @@ const challengerTrack = TRACKS[1];
     </section>
 
     <!-- PANTALLA DIVIDIDA: DECK 2 (CHALLENGER) ABAJO -->
-    <section class="deck-split-card deck-challenger" id="deck-challenger-card">
+    <section class="deck-split-card deck-challenger" id="deck-challenger-card" aria-labelledby="deck-2-title">
       <div class="deck-header">
         <div class="deck-identity">
           <span class="deck-badge deck-badge-challenger mono">⚡ DECK 2: CHALLENGER // 80% AI CREW SINGLE</span>
-          <h2 class="deck-track-title">{challengerTrack.title}</h2>
+          <h2 class="deck-track-title" id="deck-2-title">{challengerTrack.title}</h2>
           <p class="deck-track-sub mono">
             01: Zimmer x Daft Punk (105 BPM) ──► 02: Linkin Park Breakbeat (115 BPM) ──► 03: Code Orange Dropout (115 BPM) ──► 04: Skrillex Neuro FM (140 BPM) ──► 05: Braam x Ocarina Fade (105 BPM)
           </p>
         </div>
-        <div class="deck-transport">
-          <button type="button" class="btn btn-challenger-play" id="btn-play-1" aria-label="Reproducir Challenger">
-            <span id="play-icon-1">▶</span>
+        <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Challenger">
+          <button type="button" class="btn btn-challenger-play" id="btn-play-1" aria-label="Reproducir o pausar Challenger">
+            <span id="play-icon-1" aria-hidden="true">▶</span>
             <span id="play-label-1">Play Challenger</span>
           </button>
-          <button type="button" class="btn btn-stop" id="btn-stop-1" disabled aria-label="Detener Challenger">
-            <span>■</span>
+          <button type="button" class="btn btn-stop" id="btn-stop-1" disabled aria-label="Detener reproducción Challenger">
+            <span aria-hidden="true">■</span>
             <span>Stop</span>
           </button>
-          <button type="button" class="btn btn-loop" id="btn-loop-1" aria-label="Bucle de sección Challenger">
-            <span>🔁</span>
+          <button type="button" class="btn btn-loop" id="btn-loop-1" aria-label="Alternar repetición de sección en Challenger" aria-pressed="false">
+            <span aria-hidden="true">🔁</span>
             <span id="loop-label-1">Loop: Off</span>
           </button>
-          <div class="time-readout mono" id="time-display-1">00:00 / 04:45</div>
+          <div class="time-readout mono" id="time-display-1" aria-live="polite" aria-label="Tiempo actual y duración de Challenger">00:00 / 04:45</div>
         </div>
       </div>
 
       <!-- Scrubber & Waveform Canvas Challenger -->
-      <div class="waveform-box" id="waveform-track-1" title="Haz clic en cualquier punto para mover el cabezal del Challenger">
-        <canvas id="waveform-canvas-1" height="52"></canvas>
-        <div class="selection-overlay overlay-challenger" id="selection-overlay-1"></div>
-        <div class="playhead playhead-challenger" id="playhead-1"></div>
+      <div class="waveform-box" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="285" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal del Challenger">
+        <canvas id="waveform-canvas-1" height="52" aria-hidden="true"></canvas>
+        <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
+        <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
       </div>
 
       <!-- Timeline Sections Strip Challenger -->
-      <div class="sections-row" id="sections-strip-1">
+      <div class="sections-row" id="sections-strip-1" role="group" aria-label="Actos del single Challenger">
         {challengerTrack.sections?.map((sec, idx) => (
           <button
             type="button"
@@ -129,9 +145,10 @@ const challengerTrack = TRACKS[1];
             data-sec-idx={idx}
             data-start={sec.startSec}
             data-end={sec.endSec}
+            aria-label={`Acto 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
             title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
           >
-            <span class="mono sec-num">0{idx + 1}</span>
+            <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
             <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
             <span class="mono sec-time">{sec.startTime}</span>
           </button>
@@ -140,20 +157,26 @@ const challengerTrack = TRACKS[1];
     </section>
 
     <!-- DOCKED CONSOLE: VIBE CODING & MULTI-AGENT PROMPT GENERATOR -->
-    <section class="vibe-console-card">
+    <section class="vibe-console-card" aria-labelledby="console-heading">
       <div class="console-header">
         <div class="console-title-group">
           <div class="console-tag-row">
-            <span class="console-pill mono">🎙️ VIBE PROMPT CONSOLE</span>
-            <span class="mono text-xs text-muted" id="active-target-deck-label">Target: DECK 2 (Challenger Single)</span>
+            <span class="console-pill mono" id="console-heading">🎙️ VIBE PROMPT CONSOLE</span>
+            <span class="mono text-xs text-muted" id="active-target-deck-label" aria-live="polite">Target: DECK 2 (Challenger Single)</span>
           </div>
           <p class="console-instruction">
             Construye el single con palabras. Selecciona la sección arriba, ajusta tu dirección en lenguaje natural y copia el prompt formateado con 1 clic para Antigravity.
           </p>
         </div>
         <div class="console-actions-top">
-          <button type="button" class="btn btn-primary btn-copy-prompt" id="btn-copy-vibe-prompt" title="Copiar bloque de prompt estructurado para pegar en Antigravity">
-            <span>📋</span>
+          <button
+            type="button"
+            class="btn btn-primary btn-copy-prompt"
+            id="btn-copy-vibe-prompt"
+            aria-label="Copiar bloque de prompt estructurado para pegar en Antigravity"
+            title="Copiar prompt al portapapeles"
+          >
+            <span aria-hidden="true">📋</span>
             <span id="btn-copy-text">Copiar Prompt</span>
           </button>
         </div>
@@ -163,21 +186,28 @@ const challengerTrack = TRACKS[1];
         <!-- Target Deck Toggle & Approved Vibe Anchor -->
         <div class="console-row-meta">
           <div class="target-deck-selector">
-            <span class="mono label-muted">DECK OBJETIVO:</span>
-            <div class="deck-toggle-group">
-              <button type="button" class="btn-deck-toggle" id="btn-select-deck-0" data-deck="0">
+            <span class="mono label-muted" id="label-deck-sel">DECK OBJETIVO:</span>
+            <div class="deck-toggle-group" role="group" aria-labelledby="label-deck-sel">
+              <button type="button" class="btn-deck-toggle" id="btn-select-deck-0" data-deck="0" aria-pressed="false">
                 <span>🎛️ Deck 1: Baseline</span>
               </button>
-              <button type="button" class="btn-deck-toggle active-deck-toggle" id="btn-select-deck-1" data-deck="1">
+              <button type="button" class="btn-deck-toggle active-deck-toggle" id="btn-select-deck-1" data-deck="1" aria-pressed="true">
                 <span>⚡ Deck 2: Challenger</span>
               </button>
             </div>
           </div>
 
           <div class="vibe-anchor-box">
-            <span class="mono label-muted">PATRÓN VIBE APROBADO:</span>
-            <button type="button" class="anchor-pill anchor-pill-active" id="btn-toggle-anchor" title="Activar/desactivar ancla en el prompt">
-              <span class="anchor-icon">⏱️</span>
+            <span class="mono label-muted" id="label-anchor-sel">PATRÓN VIBE APROBADO:</span>
+            <button
+              type="button"
+              class="anchor-pill anchor-pill-active"
+              id="btn-toggle-anchor"
+              aria-pressed="true"
+              aria-labelledby="label-anchor-sel"
+              title="Activar/desactivar inclusión del ancla rítmica en el prompt"
+            >
+              <span class="anchor-icon" aria-hidden="true">⏱️</span>
               <span class="anchor-text">Reloj de Cuenta Regresiva (Hans Zimmer 16th Pulse)</span>
             </button>
           </div>
@@ -185,13 +215,13 @@ const challengerTrack = TRACKS[1];
 
         <!-- Target Crew Routing Pills -->
         <div class="console-routing-row">
-          <span class="mono label-muted">ENRUTAR CONVERSACIÓN CON AGENTES:</span>
-          <div class="crew-chips" id="crew-chips">
-            <button type="button" class="chip-crew chip-crew-active" data-role="DM">L1 · DM (Dirección Musical)</button>
-            <button type="button" class="chip-crew chip-crew-active" data-role="CP">L2 · CP (Composición)</button>
-            <button type="button" class="chip-crew chip-crew-active" data-role="SD">L2 · SD (Diseño Sonoro)</button>
-            <button type="button" class="chip-crew chip-crew-active" data-role="AE">L2 · AE (Ingeniería de Audio)</button>
-            <button type="button" class="chip-crew" data-role="QA">L3 · QA (Auditoría & Gate)</button>
+          <span class="mono label-muted" id="label-crew-sel">ENRUTAR CONVERSACIÓN CON AGENTES:</span>
+          <div class="crew-chips" id="crew-chips" role="group" aria-labelledby="label-crew-sel">
+            <button type="button" class="chip-crew chip-crew-active" data-role="DM" aria-pressed="true">L1 · DM (Dirección Musical)</button>
+            <button type="button" class="chip-crew chip-crew-active" data-role="CP" aria-pressed="true">L2 · CP (Composición)</button>
+            <button type="button" class="chip-crew chip-crew-active" data-role="SD" aria-pressed="true">L2 · SD (Diseño Sonoro)</button>
+            <button type="button" class="chip-crew chip-crew-active" data-role="AE" aria-pressed="true">L2 · AE (Ingeniería de Audio)</button>
+            <button type="button" class="chip-crew" data-role="QA" aria-pressed="false">L3 · QA (Auditoría & Gate)</button>
           </div>
         </div>
 
@@ -212,19 +242,19 @@ const challengerTrack = TRACKS[1];
         <div class="console-preview-row">
           <div class="preview-header-bar">
             <span class="mono label-muted">PROMPT ESTRUCTURADO PARA ANTIGRAVITY (VISTA PREVIA):</span>
-            <span class="mono text-xs text-muted" id="preview-range-badge">00:00 ── 01:05 (65s)</span>
+            <span class="mono text-xs text-muted" id="preview-range-badge" aria-live="polite">00:00 ── 01:05 (65s)</span>
           </div>
-          <pre class="prompt-code-block mono"><code id="prompt-preview-output">Generando prompt...</code></pre>
+          <pre class="prompt-code-block mono" tabindex="0" aria-label="Texto formateado del prompt"><code id="prompt-preview-output">Generando prompt...</code></pre>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="workstation-footer mono">
+    <!-- Footer Minimalista -->
+    <footer class="workstation-footer mono" role="contentinfo">
       <span>RECOVERY // VIBE CODING WORKSTATION (v0.2.0-beta)</span>
       <span>Genealogía HITL: :Experimentacion → :Mutacion → :Challenger → :Victory</span>
     </footer>
-  </div>
+  </main>
 </Layout>
 
 <script define:vars={{ tracksData }}>
@@ -265,6 +295,40 @@ const challengerTrack = TRACKS[1];
   let clockInterval = null;
   let soundTicker = null;
   let tickerStep = 0;
+
+  // Theme Management
+  const btnThemeToggle = document.getElementById('btn-theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const themeLabel = document.getElementById('theme-label');
+
+  function getCurrentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'dark';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('recovery_theme', theme);
+    const metaTheme = document.getElementById('meta-theme-color');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'light' ? '#f8fafc' : '#090c12');
+    }
+    if (theme === 'light') {
+      themeIcon.textContent = '☀️';
+      themeLabel.textContent = 'Claro';
+      btnThemeToggle.setAttribute('aria-pressed', 'true');
+    } else {
+      themeIcon.textContent = '🌙';
+      themeLabel.textContent = 'Oscuro';
+      btnThemeToggle.setAttribute('aria-pressed', 'false');
+    }
+    drawWaveforms();
+  }
+
+  btnThemeToggle.addEventListener('click', () => {
+    const current = getCurrentTheme();
+    const nextTheme = current === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
 
   // DOM Cache
   const btnSelectDeck0 = document.getElementById('btn-select-deck-0');
@@ -365,7 +429,7 @@ const challengerTrack = TRACKS[1];
   }
 
   function playNoise(ctx, time, vol = 0.35, highpassF = 4000, dur = 0.08) {
-    const bufSize = Math.floor(ctx.sampleRate * dur);
+    const bufSize = Math.max(1, Math.floor(ctx.sampleRate * dur));
     const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
     const data = buf.getChannelData(0);
     for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
@@ -649,31 +713,25 @@ const challengerTrack = TRACKS[1];
       else if (deckId === 1) {
         // ACTO 1: Zimmer Clock x French Touch Daft Punk (00:00 - 01:05)
         if (s < 65) {
-          // French House Punchy 4/4 Kick
           if (stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95);
-          // Open Hat on off-beats
           if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35, 5500, 0.08);
-          // Zimmer Ticking Clock with stereo micropan
           const pan = Math.sin(tickerStep * 0.4) * 0.6;
           playZimmerTick(ctx, time, pan);
-          // Daft Punk Sweeping Disco Chord Stabs with Sidechain Ducking
           if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
             const chords = [
-              [130.81, 155.56, 196.00, 233.08], // Cm7
-              [103.83, 130.81, 155.56, 196.00], // Abmaj7
-              [87.31, 103.83, 130.81, 155.56],  // Fm7
-              [98.00, 123.47, 146.83, 174.61]   // G7
+              [130.81, 155.56, 196.00, 233.08],
+              [103.83, 130.81, 155.56, 196.00],
+              [87.31, 103.83, 130.81, 155.56],
+              [98.00, 123.47, 146.83, 174.61]
             ];
             const chordIdx = Math.floor(tickerStep / 16) % chords.length;
             const filterSweep = 600 + Math.sin(tickerStep * 0.2) * 2200;
             chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22, filterSweep, 0.18));
           }
-          // Funky Octave Slap Bass Bounce
           if (stepInBar % 2 === 0) {
             const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
             playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38, 0.1);
           }
-          // Accelerando Snare Build Transition (around 0:55 - 1:05)
           if (s >= 55 && s < 65) {
             if (tickerStep % 2 === 0) playNoise(ctx, time, 0.3 + (s - 55) * 0.05, 3000, 0.05);
           }
@@ -681,31 +739,24 @@ const challengerTrack = TRACKS[1];
 
         // ACTO 2: Breakbeat Híbrido & Drop-D Industrial (Linkin Park) (01:05 - 02:00)
         else if (s >= 65 && s < 120) {
-          // Syncopated Linkin Park Breakbeat Kick
           if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
             playKick(ctx, time, 165, 38, 1.0);
           }
-          // Heavy Snare Layer + Clap
           if (stepInBar === 4 || stepInBar === 12) {
             playNoise(ctx, time, 0.65, 3200, 0.12);
             playKick(ctx, time, 190, 75, 0.4);
           }
-          // Ghost Snares
           if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
             playNoise(ctx, time, 0.22, 2800, 0.04);
           }
-          // Polyrhythmic Hi-Hats & Ride
           if (stepInBar % 2 === 1) playNoise(ctx, time, 0.25, 6200, 0.025);
-          // Industrial Drop-D Reese Saw
           if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
             const rNotes = [65.41, 77.78, 87.31, 92.50];
             playSaw(ctx, time, rNotes[Math.floor(stepInBar / 4) % rNotes.length], 0.48, 2600, 0.28);
           }
-          // Industrial Synth-Guitar Riff
           if (stepInBar === 2 || stepInBar === 6 || stepInBar === 14) {
             playSaw(ctx, time, 261.63, 0.32, 3800, 0.14);
           }
-          // Filter Riser Transition into Dropout (around 1:52 - 2:00)
           if (s >= 112 && s < 120) {
             playNoise(ctx, time, 0.1 + (s - 112) * 0.04, 2000 + (s - 112) * 500, 0.1);
           }
@@ -713,26 +764,21 @@ const challengerTrack = TRACKS[1];
 
         // ACTO 3: Brutalist Digital Dropout & Harsh Feedback (Code Orange) (02:00 - 02:50)
         else if (s >= 120 && s < 170) {
-          // 1-Bar 0ms Total Silence Dropout every 2 bars (steps 8-11)
           const isDropout = (Math.floor(tickerStep / 16) % 2 === 1) && (stepInBar >= 8 && stepInBar <= 11);
           if (!isDropout) {
             if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 12) {
-              playSquare(ctx, time, 92.50, 0.65, 0.14); // F#2 clipping square
-              playSquare(ctx, time, 65.41, 0.65, 0.14); // C2 clipping square
+              playSquare(ctx, time, 92.50, 0.65, 0.14);
+              playSquare(ctx, time, 65.41, 0.65, 0.14);
             }
             if (stepInBar === 4 || stepInBar === 14) {
-              playNoise(ctx, time, 0.55, 1600, 0.09); // Metal percussion
+              playNoise(ctx, time, 0.55, 1600, 0.09);
               playSquare(ctx, time, 466.16, 0.3, 0.06);
             }
-            if (stepInBar === 0) playSaw(ctx, time, 60, 0.35, 140, 1.8); // 60Hz Server hum
-          }
-          // Pre-Drop 1-beat silence (around 2:48 - 2:50)
-          if (s >= 168 && s < 170) {
-            // calculated silence breathing room
+            if (stepInBar === 0) playSaw(ctx, time, 60, 0.35, 140, 1.8);
           }
         }
 
-        // ACTO 4: Surgical FM Neuro Growl Drop (Skrillex / Noisia) (02:50 - 03:40 // 140 BPM Half-time)
+        // ACTO 4: Surgical FM Neuro Growl Drop (Skrillex / Noisia) (02:50 - 03:40)
         else if (s >= 170 && s < 220) {
           if (stepInBar === 0 || stepInBar === 10) playKick(ctx, time, 170, 32, 1.1);
           if (stepInBar === 8) {
@@ -812,6 +858,7 @@ const challengerTrack = TRACKS[1];
     // Update section buttons highlight
     deckDOM[deckId].stripButtons.forEach((b, i) => {
       b.classList.toggle(`sec-btn-active-${deckId}`, i === secIdx);
+      b.setAttribute('aria-pressed', i === secIdx ? 'true' : 'false');
     });
 
     seekDeck(deckId, sec.startSec);
@@ -826,12 +873,16 @@ const challengerTrack = TRACKS[1];
     dom.timeDisplay.textContent = `${formatTime(d.currentSec)} / ${formatTime(d.duration)}`;
     const pct = (d.currentSec / d.duration) * 100;
     dom.playhead.style.left = `${pct}%`;
+    dom.waveformTrack.setAttribute('aria-valuenow', Math.round(d.currentSec));
 
     // Detect section changes during playback
     const curIdx = d.sections.findIndex(s => d.currentSec >= s.startSec && d.currentSec < s.endSec);
     if (curIdx !== -1 && curIdx !== d.activeSecIdx && loopingDeck !== deckId) {
       d.activeSecIdx = curIdx;
-      dom.stripButtons.forEach((b, i) => b.classList.toggle(`sec-btn-active-${deckId}`, i === curIdx));
+      dom.stripButtons.forEach((b, i) => {
+        b.classList.toggle(`sec-btn-active-${deckId}`, i === curIdx);
+        b.setAttribute('aria-pressed', i === curIdx ? 'true' : 'false');
+      });
       if (activeTargetDeck === deckId) {
         selStart = d.sections[curIdx].startSec;
         selEnd = d.sections[curIdx].endSec;
@@ -860,14 +911,22 @@ const challengerTrack = TRACKS[1];
 
   function updateTargetDeckUI() {
     btnSelectDeck0.classList.toggle('active-deck-toggle', activeTargetDeck === 0);
+    btnSelectDeck0.setAttribute('aria-pressed', activeTargetDeck === 0 ? 'true' : 'false');
     btnSelectDeck1.classList.toggle('active-deck-toggle', activeTargetDeck === 1);
+    btnSelectDeck1.setAttribute('aria-pressed', activeTargetDeck === 1 ? 'true' : 'false');
     activeTargetDeckLabel.textContent = activeTargetDeck === 0
       ? 'Target: DECK 1 (Baseline Ground Truth)'
       : 'Target: DECK 2 (Challenger Single)';
   }
 
-  // Waveform Rendering
+  // Waveform Rendering that respects light/dark theme
   function drawWaveforms() {
+    const isLight = getCurrentTheme() === 'light';
+    const canvasBg = isLight ? '#f8fafc' : '#07090e';
+    const gridLineColor = isLight ? '#e2e8f0' : '#1a2230';
+    const baselineColor = isLight ? '#059669' : '#10b981';
+    const challengerColor = isLight ? '#0284c7' : '#38bdf8';
+
     [0, 1].forEach((idx) => {
       const dom = deckDOM[idx];
       const canvas = dom.canvas;
@@ -876,11 +935,11 @@ const challengerTrack = TRACKS[1];
       const w = canvas.width = canvas.clientWidth;
       const h = canvas.height = canvas.clientHeight;
 
-      ctx2d.fillStyle = '#0d1117';
+      ctx2d.fillStyle = canvasBg;
       ctx2d.fillRect(0, 0, w, h);
 
       if (playingDeck !== idx || !analyser) {
-        ctx2d.strokeStyle = '#1e2430';
+        ctx2d.strokeStyle = gridLineColor;
         ctx2d.lineWidth = 1;
         ctx2d.beginPath();
         ctx2d.moveTo(0, h / 2);
@@ -894,7 +953,7 @@ const challengerTrack = TRACKS[1];
       analyser.getByteTimeDomainData(dataArray);
 
       ctx2d.lineWidth = 1.8;
-      ctx2d.strokeStyle = idx === 0 ? '#10b981' : '#38bdf8';
+      ctx2d.strokeStyle = idx === 0 ? baselineColor : challengerColor;
       ctx2d.beginPath();
 
       const sliceWidth = w / bufferLen;
@@ -913,6 +972,11 @@ const challengerTrack = TRACKS[1];
       requestAnimationFrame(drawWaveforms);
     }
   }
+
+  // Window Resize Listener for Responsive Canvas Dimensions
+  window.addEventListener('resize', () => {
+    drawWaveforms();
+  });
 
   // Vibe Prompt Generator
   function generateVibePrompt() {
@@ -982,10 +1046,12 @@ ${mandateNotice}`;
         loopingDeck = null;
         dom.loopLabel.textContent = 'Loop: Off';
         dom.loopBtn.classList.remove('btn-loop-active');
+        dom.loopBtn.setAttribute('aria-pressed', 'false');
       } else {
         loopingDeck = idx;
         dom.loopLabel.textContent = `Loop: Sec 0${d.activeSecIdx + 1}`;
         dom.loopBtn.classList.add('btn-loop-active');
+        dom.loopBtn.setAttribute('aria-pressed', 'true');
       }
     });
 
@@ -994,6 +1060,15 @@ ${mandateNotice}`;
       const clickX = e.clientX - rect.left;
       const pct = Math.max(0, Math.min(1, clickX / rect.width));
       seekDeck(idx, pct * d.duration);
+    });
+
+    // Keyboard navigation on waveform slider
+    dom.waveformTrack.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        seekDeck(idx, d.currentSec + 5);
+      } else if (e.key === 'ArrowLeft') {
+        seekDeck(idx, d.currentSec - 5);
+      }
     });
 
     dom.stripButtons.forEach((btn, sIdx) => {
@@ -1030,6 +1105,7 @@ ${mandateNotice}`;
   btnToggleAnchor.addEventListener('click', () => {
     includeCountdownAnchor = !includeCountdownAnchor;
     btnToggleAnchor.classList.toggle('anchor-pill-active', includeCountdownAnchor);
+    btnToggleAnchor.setAttribute('aria-pressed', includeCountdownAnchor ? 'true' : 'false');
     generateVibePrompt();
   });
 
@@ -1040,9 +1116,11 @@ ${mandateNotice}`;
       if (activeCrewRoles.has(role)) {
         activeCrewRoles.delete(role);
         chip.classList.remove('chip-crew-active');
+        chip.setAttribute('aria-pressed', 'false');
       } else {
         activeCrewRoles.add(role);
         chip.classList.add('chip-crew-active');
+        chip.setAttribute('aria-pressed', 'true');
       }
       generateVibePrompt();
     });
@@ -1071,6 +1149,8 @@ ${mandateNotice}`;
   });
 
   // Init
+  const initialTheme = getCurrentTheme();
+  applyTheme(initialTheme);
   updateTargetDeckUI();
   updateSelectionOverlays();
   generateVibePrompt();
@@ -1078,48 +1158,53 @@ ${mandateNotice}`;
 </script>
 
 <style>
-  /* Layout Base Minimalista */
+  /* Layout Base Minimalista y Seguro contra Ruptura de Márgenes */
   .vibe-workstation {
-    max-width: 1080px;
+    width: 100%;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 1.25rem 1rem 4rem;
+    padding: 1.25rem 1.15rem 4rem;
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
-    color: #e2e8f0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   .mono {
-    font-family: var(--font-mono, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace);
+    font-family: var(--studio-font-mono, monospace);
   }
 
-  .text-xs { font-size: 0.65rem; }
-  .text-muted { color: #64748b; }
-  .label-muted { color: #64748b; font-size: 0.68rem; letter-spacing: 0.05em; font-weight: 600; }
+  .text-xs { font-size: 0.68rem; }
+  .text-muted { color: var(--text-muted); }
+  .label-muted { color: var(--text-muted); font-size: 0.68rem; letter-spacing: 0.05em; font-weight: 600; }
 
   /* Header */
   .workstation-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 0.65rem;
-    border-bottom: 1px solid #1c222d;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
     flex-wrap: wrap;
     gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .header-left {
     display: flex;
     align-items: center;
     gap: 0.65rem;
+    flex-wrap: wrap;
+    min-width: 0;
   }
 
   .logo-title {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: 0.16em;
-    color: #f8fafc;
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -1134,52 +1219,97 @@ ${mandateNotice}`;
 
   .badge-mode {
     font-size: 0.68rem;
-    background: #1e293b;
-    color: #38bdf8;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--deck-challenger-accent);
     padding: 0.18rem 0.5rem;
     border-radius: 4px;
     letter-spacing: 0.04em;
   }
 
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Theme Toggle Button */
+  .btn-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-theme-toggle:hover {
+    background: var(--btn-hover);
+    border-color: var(--border-focus);
+    transform: translateY(-1px);
+  }
+
+  .btn-theme-toggle:active {
+    transform: translateY(1px);
+  }
+
+  .theme-icon {
+    font-size: 0.85rem;
+  }
+
   .repo-link {
     font-size: 0.72rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.15s;
+    font-weight: 500;
   }
 
   .repo-link:hover {
-    color: #38bdf8;
+    color: var(--text-primary);
   }
 
-  /* PANTALLA DIVIDIDA: DECK CARDS */
+  /* PANTALLA DIVIDIDA: DECK CARDS CON PATRÓN MODERNO TIPO REACT */
   .deck-split-card {
-    background: #0f131a;
-    border: 1px solid #1f2735;
-    border-radius: 8px;
-    padding: 1rem 1.15rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
+    box-shadow: var(--shadow-card);
     transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .deck-baseline {
-    border-left: 4px solid #10b981;
+    border-left: 5px solid var(--deck-baseline-accent);
   }
 
   .deck-baseline:hover {
-    border-color: #243545;
-    border-left-color: #10b981;
+    border-color: var(--border-strong);
+    border-left-color: var(--deck-baseline-accent);
   }
 
   .deck-challenger {
-    border-left: 4px solid #38bdf8;
+    border-left: 5px solid var(--deck-challenger-accent);
   }
 
   .deck-challenger:hover {
-    border-color: #243545;
-    border-left-color: #38bdf8;
+    border-color: var(--border-strong);
+    border-left-color: var(--deck-challenger-accent);
   }
 
   .deck-header {
@@ -1188,47 +1318,54 @@ ${mandateNotice}`;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .deck-identity {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
+    flex: 1 1 320px;
+    min-width: 0;
   }
 
   .deck-badge {
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.06em;
-    padding: 0.12rem 0.4rem;
-    border-radius: 3px;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
     display: inline-block;
     width: fit-content;
   }
 
   .deck-badge-baseline {
-    background: rgba(16, 185, 129, 0.18);
-    color: #34d399;
-    border: 1px solid rgba(16, 185, 129, 0.4);
+    background: var(--deck-baseline-bg);
+    color: var(--deck-baseline-accent);
+    border: 1px solid var(--deck-baseline-border);
   }
 
   .deck-badge-challenger {
-    background: rgba(56, 189, 248, 0.18);
-    color: #7dd3fc;
-    border: 1px solid rgba(56, 189, 248, 0.4);
+    background: var(--deck-challenger-bg);
+    color: var(--deck-challenger-accent);
+    border: 1px solid var(--deck-challenger-border);
   }
 
   .deck-track-title {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #f1f5f9;
+    color: var(--text-primary);
     margin: 0;
+    word-break: break-word;
   }
 
   .deck-track-sub {
     font-size: 0.68rem;
-    color: #64748b;
+    color: var(--text-muted);
     margin: 0;
+    line-height: 1.4;
+    word-break: break-word;
   }
 
   .deck-transport {
@@ -1236,36 +1373,40 @@ ${mandateNotice}`;
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+    box-sizing: border-box;
   }
 
   .time-readout {
     font-size: 0.78rem;
     font-weight: 700;
-    background: #080b0f;
-    border: 1px solid #1a2230;
-    padding: 0.35rem 0.65rem;
-    border-radius: 4px;
-    color: #cbd5e1;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    padding: 0.38rem 0.65rem;
+    border-radius: 5px;
+    color: var(--text-secondary);
     min-width: 105px;
     text-align: center;
   }
 
-  /* Waveform Container & Scrubber */
+  /* Waveform Container & Scrubber Seguro contra Desbordamiento */
   .waveform-box {
     position: relative;
     width: 100%;
+    max-width: 100%;
     height: 52px;
-    background: #0a0d13;
-    border: 1px solid #1b2331;
-    border-radius: 5px;
+    background: var(--canvas-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
+    box-sizing: border-box;
   }
 
   .waveform-box canvas {
     width: 100%;
     height: 100%;
     display: block;
+    max-width: 100%;
   }
 
   .playhead {
@@ -1275,15 +1416,15 @@ ${mandateNotice}`;
     left: 0;
     width: 2px;
     pointer-events: none;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
   }
 
   .playhead-baseline {
-    background: #10b981;
+    background: var(--deck-baseline-accent);
   }
 
   .playhead-challenger {
-    background: #38bdf8;
+    background: var(--deck-challenger-accent);
   }
 
   .selection-overlay {
@@ -1297,46 +1438,68 @@ ${mandateNotice}`;
   }
 
   .overlay-baseline {
-    background: rgba(16, 185, 129, 0.15);
-    border-color: #10b981;
+    background: var(--deck-baseline-bg);
+    border-color: var(--deck-baseline-accent);
   }
 
   .overlay-challenger {
-    background: rgba(56, 189, 248, 0.15);
-    border-color: #38bdf8;
+    background: var(--deck-challenger-bg);
+    border-color: var(--deck-challenger-accent);
   }
 
-  /* Timeline Sections Strip Buttons */
+  /* Timeline Sections Strip Buttons con Grid Responsivo y Fluido */
   .sections-row {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.4rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.45rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 860px) {
+    .sections-row {
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+  }
+
+  @media (max-width: 500px) {
+    .sections-row {
+      grid-template-columns: 1fr;
+    }
   }
 
   .sec-btn {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0.45rem 0.6rem;
-    background: #131822;
-    border: 1px solid #202838;
-    border-radius: 4px;
+    padding: 0.5rem 0.65rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
     cursor: pointer;
     text-align: left;
-    transition: all 0.15s;
-    color: #94a3b8;
+    transition: all 0.15s ease;
+    color: var(--text-secondary);
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .sec-btn:hover {
-    background: #1a2232;
-    border-color: #334155;
-    color: #f1f5f9;
+    background: var(--btn-hover);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+
+  .sec-btn:active {
+    transform: translateY(1px);
   }
 
   .sec-num {
     font-size: 0.65rem;
     font-weight: 700;
-    opacity: 0.6;
+    opacity: 0.7;
   }
 
   .sec-label {
@@ -1346,38 +1509,45 @@ ${mandateNotice}`;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    display: block;
   }
 
   .sec-time {
     font-size: 0.62rem;
-    color: #64748b;
+    color: var(--text-muted);
     margin-top: 0.15rem;
   }
 
   .sec-btn-active-0 {
-    background: rgba(16, 185, 129, 0.18) !important;
-    border-color: #10b981 !important;
-    color: #6ee7b7 !important;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+    background: var(--deck-baseline-bg) !important;
+    border-color: var(--deck-baseline-accent) !important;
+    color: var(--deck-baseline-accent) !important;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
   }
 
   .sec-btn-active-1 {
-    background: rgba(56, 189, 248, 0.18) !important;
-    border-color: #38bdf8 !important;
-    color: #7dd3fc !important;
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+    background: var(--deck-challenger-bg) !important;
+    border-color: var(--deck-challenger-accent) !important;
+    color: var(--deck-challenger-accent) !important;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
   }
 
   /* VIBE PROMPT CONSOLE CARD */
   .vibe-console-card {
-    background: #0f131a;
-    border: 1px solid #243044;
-    border-radius: 8px;
-    padding: 1.15rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .console-header {
@@ -1386,8 +1556,15 @@ ${mandateNotice}`;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
-    border-bottom: 1px solid #1c2432;
+    border-bottom: 1px solid var(--border-subtle);
     padding-bottom: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .console-title-group {
+    flex: 1 1 300px;
+    min-width: 0;
   }
 
   .console-tag-row {
@@ -1395,28 +1572,32 @@ ${mandateNotice}`;
     align-items: center;
     gap: 0.6rem;
     margin-bottom: 0.25rem;
+    flex-wrap: wrap;
   }
 
   .console-pill {
     font-size: 0.72rem;
     font-weight: 700;
-    background: #1e293b;
-    color: #f8fafc;
-    padding: 0.15rem 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #334155;
+    background: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    padding: 0.18rem 0.55rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-strong);
   }
 
   .console-instruction {
-    font-size: 0.72rem;
-    color: #94a3b8;
+    font-size: 0.73rem;
+    color: var(--text-secondary);
     margin: 0;
+    line-height: 1.4;
   }
 
   .console-body {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .console-row-meta {
@@ -1425,35 +1606,39 @@ ${mandateNotice}`;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .target-deck-selector {
     display: flex;
     align-items: center;
     gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .deck-toggle-group {
     display: flex;
     gap: 0.35rem;
+    flex-wrap: wrap;
   }
 
   .btn-deck-toggle {
     font-size: 0.72rem;
     font-family: inherit;
     font-weight: 600;
-    padding: 0.35rem 0.65rem;
-    background: #151b26;
-    border: 1px solid #283448;
-    color: #94a3b8;
-    border-radius: 4px;
+    padding: 0.38rem 0.7rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
   }
 
   .btn-deck-toggle:hover {
-    background: #1d2535;
-    color: #f1f5f9;
+    background: var(--btn-hover);
+    color: var(--text-primary);
   }
 
   .active-deck-toggle {
@@ -1466,6 +1651,7 @@ ${mandateNotice}`;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .anchor-pill {
@@ -1474,20 +1660,27 @@ ${mandateNotice}`;
     gap: 0.4rem;
     font-size: 0.7rem;
     font-family: inherit;
-    padding: 0.3rem 0.6rem;
-    background: #16202c;
-    border: 1px solid #26384d;
-    border-radius: 4px;
-    color: #94a3b8;
+    padding: 0.35rem 0.65rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .anchor-pill-active {
-    background: rgba(245, 158, 11, 0.15);
-    border-color: #f59e0b;
-    color: #fbbf24;
-    font-weight: 600;
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-color: #f59e0b !important;
+    color: #d97706 !important;
+    font-weight: 700;
+  }
+
+  html[data-theme="dark"] .anchor-pill-active {
+    color: #fbbf24 !important;
   }
 
   /* Crew Chips */
@@ -1495,35 +1688,39 @@ ${mandateNotice}`;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .crew-chips {
     display: flex;
     gap: 0.4rem;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .chip-crew {
     font-size: 0.7rem;
-    font-family: var(--font-mono, monospace);
-    padding: 0.25rem 0.55rem;
-    background: #141a24;
-    border: 1px solid #232c3d;
-    border-radius: 4px;
-    color: #94a3b8;
+    font-family: var(--studio-font-mono, monospace);
+    padding: 0.28rem 0.6rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
   }
 
   .chip-crew:hover {
-    background: #1c2432;
-    color: #f1f5f9;
+    background: var(--btn-hover);
+    color: var(--text-primary);
   }
 
   .chip-crew-active {
-    background: rgba(14, 165, 233, 0.18);
-    border-color: #0ea5e9;
-    color: #38bdf8;
+    background: rgba(14, 165, 233, 0.16) !important;
+    border-color: #0ea5e9 !important;
+    color: var(--deck-challenger-accent) !important;
     font-weight: 700;
   }
 
@@ -1532,24 +1729,29 @@ ${mandateNotice}`;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .director-textarea {
     width: 100%;
-    background: #080b0f;
-    border: 1px solid #252f40;
-    border-radius: 5px;
-    padding: 0.65rem 0.75rem;
-    color: #f8fafc;
-    font-size: 0.8rem;
-    line-height: 1.45;
+    max-width: 100%;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 0.75rem 0.85rem;
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    line-height: 1.5;
     resize: vertical;
     outline: none;
-    transition: border-color 0.2s;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .director-textarea:focus {
-    border-color: #38bdf8;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--deck-challenger-bg);
   }
 
   /* Prompt Preview */
@@ -1557,26 +1759,37 @@ ${mandateNotice}`;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .preview-header-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
 
   .prompt-code-block {
-    background: #07090d;
-    border: 1px solid #1a2230;
-    border-radius: 5px;
-    padding: 0.75rem 0.85rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 0.85rem;
     font-size: 0.73rem;
-    color: #93c5fd;
-    line-height: 1.45;
+    color: var(--code-text);
+    line-height: 1.5;
     white-space: pre-wrap;
     max-height: 220px;
     overflow-y: auto;
+    overflow-x: hidden;
     margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
   }
 
   /* Buttons */
@@ -1584,14 +1797,15 @@ ${mandateNotice}`;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.4rem 0.75rem;
+    padding: 0.42rem 0.8rem;
     font-size: 0.75rem;
     font-family: inherit;
     font-weight: 600;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
     user-select: none;
+    box-sizing: border-box;
   }
 
   .btn-baseline-play {
@@ -1602,6 +1816,7 @@ ${mandateNotice}`;
 
   .btn-baseline-play:hover {
     background: #10b981;
+    transform: translateY(-1px);
   }
 
   .btn-challenger-play {
@@ -1612,16 +1827,17 @@ ${mandateNotice}`;
 
   .btn-challenger-play:hover {
     background: #0ea5e9;
+    transform: translateY(-1px);
   }
 
   .btn-stop {
-    background: #1c222c;
-    border: 1px solid #2b3546;
-    color: #e2e8f0;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
   }
 
   .btn-stop:hover:not(:disabled) {
-    background: #283244;
+    background: var(--btn-hover);
   }
 
   .btn-stop:disabled {
@@ -1630,20 +1846,20 @@ ${mandateNotice}`;
   }
 
   .btn-loop {
-    background: #161c26;
-    border: 1px solid #283448;
-    color: #94a3b8;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
   }
 
   .btn-loop:hover {
-    background: #1f2736;
-    color: #f1f5f9;
+    background: var(--btn-hover);
+    color: var(--text-primary);
   }
 
   .btn-loop-active {
-    background: #312e81;
-    border-color: #6366f1;
-    color: #a5b4fc;
+    background: #312e81 !important;
+    border-color: #6366f1 !important;
+    color: #a5b4fc !important;
   }
 
   .btn-primary {
@@ -1653,15 +1869,16 @@ ${mandateNotice}`;
   }
 
   .btn-copy-prompt {
-    padding: 0.55rem 1.15rem;
-    font-size: 0.8rem;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    box-shadow: 0 0 14px rgba(2, 132, 199, 0.4);
+    box-shadow: 0 0 14px rgba(2, 132, 199, 0.35);
   }
 
   .btn-copy-prompt:hover {
     background: #0369a1;
+    transform: translateY(-1px);
   }
 
   .btn-success-glow {
@@ -1670,22 +1887,21 @@ ${mandateNotice}`;
     box-shadow: 0 0 16px rgba(16, 185, 129, 0.6) !important;
   }
 
-  /* Footer */
+  /* Footer Minimalista */
   .workstation-footer {
     display: flex;
     justify-content: space-between;
     font-size: 0.68rem;
-    color: #475569;
-    border-top: 1px solid #171d26;
-    padding-top: 0.65rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 0.75rem;
     flex-wrap: wrap;
     gap: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   @media (max-width: 768px) {
-    .sections-row {
-      grid-template-columns: 1fr;
-    }
     .console-header {
       flex-direction: column;
     }
