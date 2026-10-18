@@ -128,101 +128,20 @@ stack(
 
 export const TRACK_VARIATIONS: TrackVariation[] = [
   {
-    id: 'champion-rebase',
-    name: 'Champion Baseline Rebase (Rave -> Transición -> Fork C)',
-    lifecycle: ':Victory',
-    concept: 'CHAMPION ACTIVO: Estado del arte 2026. Comienza en Rave de Reciclaje (138 BPM) y transmuta al Fork C (110 BPM)',
-    tension: 'combate rave ↔ cápsula de transporte ↔ polirritmia fork ↔ solo invertido',
-    runtime: 'strudel',
-    bpm: 138,
-    description: 'NUEVO CHAMPION DEFINITIVO. Invierte la estructura narrativa: arranca en la catarsis combativa del Rave de 138 BPM, modula métricamente a través de la cápsula de transporte (F# pivote) y aterriza en la pureza polirrítmica del Fork C.',
-    code: `// :Victory — Champion Baseline Rebase (05:15)
-cat(
-  // Sec 01: Rave de Reciclaje (138 BPM) — Estado del arte 2026 (0:00 - 1:15)
-  // Sec 02: Transición Inteligente de Transporte (138 -> 110 BPM) (1:15 - 1:50)
-  // Sec 03: Fork Mutante Alfa Aprobado (110 BPM) (1:50 - 3:05)
-  // Sec 04: Trojan Sandbox & Flatline 56k (3:05 - 4:10)
-  // Sec 05: Solo Santana Invertido & Fuga al Fork (4:10 - 5:15)
-)`
-  },
-  {
-    id: 'fork',
-    name: 'Variación C — Fork (ADN Mutante Alfa)',
+    id: 'countdown-clock',
+    name: 'Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)',
     lifecycle: ':Mutacion',
-    concept: 'Línea base inmutable aprobada transportada por el Rave',
-    tension: 'restauración ↔ fuga (disonancia F# persistente / compás abierto)',
+    concept: 'Único patrón exitoso al vibe: pulso implacable de cuenta regresiva de 16avos con paneo estéreo',
+    tension: 'urgencia temporal ↔ pulso de memoria',
     runtime: 'strudel',
-    bpm: 110,
-    description: 'LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7.',
-    code: `// :Mutacion — Variación C: Fork (Línea Base Aprobada)
+    bpm: 115,
+    description: 'ÚNICA MUTACIÓN CONSERVADA. El pulso de reloj a semicorcheas de Hans Zimmer con micropaneo, subgrave 35Hz y modulación de filtro. Es el ancla rítmica y narrativa definitiva para el vibe coding del single.',
+    code: `// :Mutacion — Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)
 stack(
-  note("<[c2,g2] [eb2,bb2] [f2,c3] [fs2,c3]>")
-    .s("sawtooth")
-    .lpf(sine.range(500, 2200).slow(6))
-    .gain(0.8),
-  note("c4 eb4 g4 fs4 bb4 d5 c5")
-    .fast(1.75)
-    .s("sine")
-    .gain(0.45)
-    .delay(0.35)
-    .delaytime(0.333)
-    .delayfeedback(0.55),
-  s("bd:3 [~ bd:1] ~ [bd:3 ~]")
-    .bank("RolandTR909")
-    .gain(0.8),
-  s("rim*5")
-    .gain(0.65)
-    .pan(sine.range(0.2, 0.8).slow(3)),
-  s("[hh*3, hh*7]")
-    .gain(perlin.range(0.25, 0.65))
-    .hpf(3200)
-)`
-  },
-  {
-    id: 'mutation-neuro-acid',
-    name: 'Mutación 01 — Neuro-Acid Infusion',
-    lifecycle: ':Challenger',
-    concept: 'Mutación propuesta: Inyección de bajo FM Skrillex dentro del Rave 303',
-    tension: 'acid analógico ↔ neurofunk quirúrgico',
-    runtime: 'strudel',
-    bpm: 138,
-    description: 'MUTACIÓN PROPUESTA. Cruza la línea de bajo TB-303 del Rave de apertura con un modulador FM formántico, generando chirridos orgánico-digitales agresivos.',
-    code: `// :Challenger — Mutación 01: Neuro-Acid Infusion
-stack(
-  s("bd*4").bank("RolandTR909").gain(1.0),
-  note("d2 [d2 f2] g2 [bb1 c2] cs2 d2")
-    .s("sawtooth").lpf(perlin.range(500, 4200).fast(4)).resonance(22).gain(0.9)
-)`
-  },
-  {
-    id: 'mutation-tritone-pedal',
-    name: 'Mutación 02 — Tritone F# Lockdown',
-    lifecycle: ':Challenger',
-    concept: 'Mutación propuesta: F# persistente extendido como bordón pedal',
-    tension: 'estabilidad ↔ disonancia perpetua',
-    runtime: 'strudel',
-    bpm: 110,
-    description: 'MUTACIÓN PROPUESTA. El tritono F# no desaparece nunca; se convierte en un pedal sub-bass continuo que atraviesa desde el Rave hasta el Solo invertido.',
-    code: `// :Challenger — Mutación 02: Tritone F# Lockdown
-stack(
-  note("fs1").s("sine").gain(0.75).slow(8),
-  note("<[c2,g2] [fs2,c3]>").s("sawtooth").lpf(1200).gain(0.8)
-)`
-  },
-  {
-    id: 'mutation-brutalist-drop',
-    name: 'Mutación 03 — Brutalist 0ms Drop-Cut',
-    lifecycle: ':Challenger',
-    concept: 'Mutación propuesta: Corte a silencio absoluto de Code Orange previo a Fork C',
-    tension: 'velocidad ↔ vacío cero',
-    runtime: 'strudel',
-    bpm: 124,
-    description: 'MUTACIÓN PROPUESTA. En el segundo 01:49, justo antes de que arranque el Fork C, un corte de 1 segundo de silencio digital absoluto (0ms sin reverb).',
-    code: `// :Challenger — Mutación 03: Brutalist 0ms Drop-Cut
-cat(
-  s("bd*4").gain(1.0).fast(2),
-  s("~").gain(0), // Silencio puro
-  note("c2").s("sawtooth").gain(0.9)
+  s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
+  note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(160).gain(0.9).slow(2),
+  s("hh*16").euclid(11,16).gain("<0.25 0.6 0.4 0.75>*4").hpf(5000),
+  note("c4 eb4 g4 f4").s("triangle").fast(2).delay(0.25).gain(0.35)
 )`
   }
 ];
@@ -398,70 +317,20 @@ stack(
 
 export const SPLINTERNET_VARIATIONS: TrackVariation[] = [
   {
-    id: 'splinternet-suite',
-    name: 'Splinternet // Rewired (Suite 5 Actos)',
-    lifecycle: ':Challenger',
-    concept: 'Fragmentación de red & IA comiéndose la memoria (Zimmer, Linkin Park, Code Orange, Skrillex, Daft Punk)',
-    tension: 'urgencia cuenta regresiva ↔ breakbeat industrial ↔ dropout brutal ↔ neuro growl ↔ braam monumental',
-    runtime: 'strudel',
-    bpm: 115,
-    description: 'SINGLE EXPERIMENTAL PROPUESTO POR EL CREW MULTIAGENTE. Fusión de 5 influencias maestras sobre el dossier geopolítico 2016-2026. 04:45 continuos pasando por reloj Zimmer, breakbeat Linkin Park, dropout Code Orange, drop Skrillex y sidechain Daft Punk.',
-    code: `// :Challenger — Splinternet // Rewired (04:45)
-cat(
-  // Acto 1: Ticking Clock Zimmer x French Touch Daft Punk (00:00 - 01:05)
-  // Acto 2: Breakbeat Híbrido Linkin Park (01:05 - 02:00)
-  // Acto 3: Dropout Digital Brutalista Code Orange (02:00 - 02:50)
-  // Acto 4: FM Neuro Growl Skrillex Drop (02:50 - 03:40)
-  // Acto 5: Colapso Monumental & Fade Infinito (03:40 - 04:45)
-)`
-  },
-  {
-    id: 'splinternet-fork',
-    name: 'Splinternet // Mutación Base (Reloj + Breakbeat)',
+    id: 'countdown-clock',
+    name: 'Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)',
     lifecycle: ':Mutacion',
-    concept: 'ADN base del single: Ticking Clock de Zimmer x Breakbeat Linkin Park',
-    tension: 'reloj ↔ breakbeat industrial',
+    concept: 'Único patrón exitoso al vibe: Ticking Clock de Hans Zimmer a 16avos con sub-bass 35Hz',
+    tension: 'cuenta regresiva implacable ↔ suspensión temporal',
     runtime: 'strudel',
     bpm: 115,
-    description: 'Núcleo rítmico aprobado de Splinternet. Combina la urgencia implacable del reloj Zimmer a semicorcheas con el groove sincopado de batería híbrida Linkin Park.',
-    code: `// :Mutacion — Splinternet Base Loop (02:00)
-// Autonomía Agéntica L1: 80% — Zimmer Ticking Clock x Linkin Park Hybrid Breakbeat
+    description: 'ÚNICA MUTACIÓN CONSERVADA PARA PRODUCCIÓN. El pulso a semicorcheas con micropaneo, subgrave 35Hz y modulación de filtro. Es el ancla rítmica y narrativa definitiva para el vibe coding del single.',
+    code: `// :Mutacion — Reloj de Cuenta Regresiva (Vibe Coding Core)
 stack(
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
-  s("bd:3 [~ bd:1] [~ sd:2] [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").gain(1.05),
-  s("~ sn:1*4 ~ sn:1*2").gain("<0.2 0.5 0.3 0.7>*4").pan(sine.range(0.35, 0.65).slow(2)),
-  s("hh*16").gain("<0.35 0.85 0.4 0.95 0.5 0.8 0.4 1.0>*2").hpf(4200),
-  s("ride(5,8)").gain(0.42).decay(0.3),
-  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] [c2!2] [bb1 c2]")
-    .s("sawtooth")
-    .distort(0.82)
-    .lpf(sine.range(500, 2800).slow(4))
-    .resonance(16)
-    .gain(0.92)
-)`
-  },
-  {
-    id: 'splinternet-skrillex',
-    name: 'Splinternet // Neuro Skrillex Drop',
-    lifecycle: ':Experimentacion',
-    concept: 'Exploración extrema de síntesis FM y modulación formántica',
-    tension: 'orden algorítmico ↔ caos quirúrgico',
-    runtime: 'strudel',
-    bpm: 140,
-    description: 'Boceto de laboratorio para el drop más agresivo del single a 140 BPM.',
-    code: `// :Experimentacion — Neuro Skrillex Lab (140 BPM Half-Time)
-// Autonomía Agéntica L1: 80% — Frecuencia modulada, sub-bass 32Hz y half-time
-stack(
-  s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.1),
-  note("<c1 eb1 fs1 g1>").s("sine").gain(1.0),
-  note("c2 [c2 eb2] [fs2 g2] [bb2 c3] [~ c2] [eb2 c2]")
-    .s("sawtooth")
-    .lpf(perlin.range(350, 4900).fast(6))
-    .resonance(26)
-    .distort(0.85)
-    .gain(0.96),
-  note("c5 eb5 fs5 g5 bb5 c6").fast(4).s("triangle").decay(0.04).pan(sine.range(0.1, 0.9).fast(3)).gain(0.55),
-  s("hh*16").euclid(13,16).gain("<0.4 0.9 0.6 1.0>*4").hpf(5500)
+  note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(160).gain(0.9).slow(2),
+  s("hh*16").euclid(11,16).gain("<0.25 0.6 0.4 0.75>*4").hpf(5000),
+  note("c4 eb4 g4 f4").s("triangle").fast(2).delay(0.25).gain(0.35)
 )`
   }
 ];
