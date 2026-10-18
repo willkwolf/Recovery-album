@@ -1,14 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { TRACKS } from '../data/tracks';
+import pkg from '../../package.json';
 
+const appVersion = pkg.version;
 const tracksData = TRACKS;
 const baselineTrack = TRACKS[0];
 const challengerTrack = TRACKS[1];
 ---
 
 <Layout
-  title="RECOVERY // Vibe Coding Workstation v0.2.0-beta"
+  title={`RECOVERY // Vibe Coding Workstation v${appVersion}`}
   description="Estación de trabajo minimalista de Vibe Coding musical: audición dual A/B en pantalla dividida (Baseline vs Challenger), 7+ stems studio, modo claro/oscuro y generador de prompts para Antigravity."
 >
   <main class="vibe-workstation" id="main-workstation">
@@ -16,7 +18,7 @@ const challengerTrack = TRACKS[1];
     <header class="workstation-header" role="banner">
       <div class="header-left">
         <h1 class="logo-title">RECOVERY</h1>
-        <span class="badge-beta mono" aria-label="Versión beta 0.2.0">v0.2.0-beta</span>
+        <span class="badge-beta mono" aria-label={`Versión beta ${appVersion}`}>v{appVersion}</span>
         <span class="badge-mode mono" aria-label="Modo de trabajo">VIBE CODING LAB // DUAL DECK</span>
       </div>
 
@@ -129,10 +131,39 @@ const challengerTrack = TRACKS[1];
       </div>
 
       <!-- Scrubber & Waveform Canvas Challenger -->
-      <div class="waveform-box" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="480" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal del Challenger">
+      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="480" aria-valuenow="0" title="Arrastra sobre la onda para seleccionar un rango y anotar, o haz clic para mover el cabezal">
         <canvas id="waveform-canvas-1" height="52" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
+        <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
+        <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
         <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
+      </div>
+
+      <!-- Popover de Anotación Flotante para el Director General -->
+      <div class="annotation-popover" id="annotation-popover" style="display: none;" role="dialog" aria-modal="false" aria-labelledby="popover-title">
+        <div class="popover-arrow"></div>
+        <div class="popover-header">
+          <span class="popover-range mono" id="popover-range-label">00:00 ── 00:00</span>
+          <button type="button" class="btn-popover-close" id="btn-popover-close" aria-label="Cerrar globo">✕</button>
+        </div>
+        <textarea
+          id="popover-note-input"
+          class="popover-textarea mono"
+          rows="2"
+          placeholder="Escribe tu anotación táctica (ej: 'Falta crossfader suave y barrido de filtro')..."
+        ></textarea>
+        <div class="popover-actions">
+          <button type="button" class="btn-popover-save" id="btn-popover-save">Guardar Anotación</button>
+        </div>
+      </div>
+
+      <!-- Tira de Anotaciones Activas del Director (Timeline Chips) -->
+      <div class="director-annotations-bar" id="director-annotations-bar" style="display: none;">
+        <div class="annotations-bar-header">
+          <span class="mono text-xs label-muted">ANOTACIONES DE TIMELINE DEL DIRECTOR (<span id="annotations-count">0</span>):</span>
+          <button type="button" class="btn-clear-annotations mono" id="btn-clear-annotations" title="Eliminar todas las notas">Limpiar Todo</button>
+        </div>
+        <div class="annotations-chips-list" id="annotations-chips-list"></div>
       </div>
 
       <!-- Timeline Sections Strip Challenger -->
@@ -207,20 +238,6 @@ const challengerTrack = TRACKS[1];
             </div>
           </div>
 
-          <div class="vibe-anchor-box">
-            <span class="mono label-muted" id="label-anchor-sel">PATRÓN VIBE APROBADO:</span>
-            <button
-              type="button"
-              class="anchor-pill anchor-pill-active"
-              id="btn-toggle-anchor"
-              aria-pressed="true"
-              aria-labelledby="label-anchor-sel"
-              title="Activar/desactivar inclusión del ancla rítmica en el prompt"
-            >
-              <span class="anchor-icon" aria-hidden="true">⏱️</span>
-              <span class="anchor-text">Reloj de Cuenta Regresiva (Pulso a 16avos & Sub-Bass 35Hz)</span>
-            </button>
-          </div>
 
           <!-- Rescue Protocol // Lyra Reverse Engineering (A Demanda) -->
           <div class="vibe-rescue-box">
@@ -367,7 +384,7 @@ const challengerTrack = TRACKS[1];
 
     <!-- Footer Minimalista -->
     <footer class="workstation-footer mono" role="contentinfo">
-      <span>RECOVERY // VIBE CODING WORKSTATION (v0.2.0-beta)</span>
+      <span>RECOVERY // VIBE CODING WORKSTATION (v{appVersion})</span>
       <span>Genealogía HITL: :Experimentacion → :Mutacion → :Challenger → :Victory</span>
     </footer>
   </main>
@@ -451,7 +468,6 @@ const challengerTrack = TRACKS[1];
   const btnSelectDeck0 = document.getElementById('btn-select-deck-0');
   const btnSelectDeck1 = document.getElementById('btn-select-deck-1');
   const activeTargetDeckLabel = document.getElementById('active-target-deck-label');
-  const btnToggleAnchor = document.getElementById('btn-toggle-anchor');
   const btnToggleRescue = document.getElementById('btn-toggle-rescue');
   const rescuePillLabel = document.getElementById('rescue-pill-label');
   const btnExportReferenceWav = document.getElementById('btn-export-reference-wav');
@@ -462,6 +478,23 @@ const challengerTrack = TRACKS[1];
   const previewRangeBadge = document.getElementById('preview-range-badge');
   const btnCopyVibePrompt = document.getElementById('btn-copy-vibe-prompt');
   const btnCopyText = document.getElementById('btn-copy-text');
+
+  // Annotation Tooling DOM Cache
+  const annotationPopover = document.getElementById('annotation-popover');
+  const popoverRangeLabel = document.getElementById('popover-range-label');
+  const popoverNoteInput = document.getElementById('popover-note-input');
+  const btnPopoverSave = document.getElementById('btn-popover-save');
+  const btnPopoverClose = document.getElementById('btn-popover-close');
+  const directorAnnotationsBar = document.getElementById('director-annotations-bar');
+  const annotationsChipsList = document.getElementById('annotations-chips-list');
+  const annotationsCountEl = document.getElementById('annotations-count');
+  const btnClearAnnotations = document.getElementById('btn-clear-annotations');
+  const selectionDraftOverlay = document.getElementById('selection-draft-1');
+  const annotationsMarkersLayer = document.getElementById('annotations-layer-1');
+
+  // Director Timeline Annotations State (Multi-section with overlap detection)
+  let directorAnnotations = [];
+  let pendingAnnotationRange = null;
 
   // Deck DOM references
   const deckDOM = [
@@ -1319,6 +1352,21 @@ const challengerTrack = TRACKS[1];
   </reverse_engineering_rescue>\n`;
     }
 
+    let annotationsXml = '';
+    if (directorAnnotations.length > 0) {
+      annotationsXml = '\n  <director_timeline_annotations count="' + directorAnnotations.length + '">\n';
+      directorAnnotations.forEach((ann, aIdx) => {
+        const overlapFlag = ann.hasOverlap ? ' overlap_detected="true" transition_requirement="equal_power_crossfader"' : '';
+        annotationsXml += `    <annotation id="ann-${aIdx + 1}" start="${ann.startStr}" end="${ann.endStr}" duration_sec="${ann.durSec}"${overlapFlag}>\n`;
+        annotationsXml += `      <note>${escapeXml(ann.note)}</note>\n`;
+        if (ann.hasOverlap) {
+          annotationsXml += `      <crossfader_hint>Superposición de tiempos detectada con otra sección: aplicar curva de crossfade Equal-Power o S-Curve sin corte abrupto.</crossfader_hint>\n`;
+        }
+        annotationsXml += `    </annotation>\n`;
+      });
+      annotationsXml += '  </director_timeline_annotations>\n';
+    }
+
     const xmlOutput = `<?xml version="1.0" encoding="UTF-8"?>
 <vibe_dispatch version="1.0">
   <metadata>
@@ -1336,7 +1384,7 @@ const challengerTrack = TRACKS[1];
 
   <director_intent>
     ${escapeXml(userNote)}
-  </director_intent>${rescueXml}
+  </director_intent>${annotationsXml}${rescueXml}
   <agent_directives>
     <!-- Mandato para el Crew Multiagente -->
 ${directivesXml}  </agent_directives>
@@ -1404,12 +1452,15 @@ ${strudelCode}
       }
     });
 
-    dom.waveformTrack.addEventListener('click', (e) => {
-      const rect = dom.waveformTrack.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const pct = Math.max(0, Math.min(1, clickX / rect.width));
-      seekDeck(idx, pct * d.duration);
-    });
+    // Scrubber interaction: Deck 0 (Baseline / Museo: solo clic para seek)
+    if (idx === 0) {
+      dom.waveformTrack.addEventListener('click', (e) => {
+        const rect = dom.waveformTrack.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const pct = Math.max(0, Math.min(1, clickX / rect.width));
+        seekDeck(0, pct * d.duration);
+      });
+    }
 
     // Keyboard navigation on waveform slider
     dom.waveformTrack.addEventListener('keydown', (e) => {
@@ -1426,6 +1477,204 @@ ${strudelCode}
       });
     });
   });
+
+  // DRAG & SELECTION ANNOTATION SYSTEM (Exclusivo para Deck 2 / Challenger)
+  const challengerWaveformTrack = deckDOM[1].waveformTrack;
+  let isSelecting = false;
+  let selectStartPx = 0;
+  let selectStartTime = 0;
+
+  function recalculateAnnotationOverlaps() {
+    directorAnnotations.forEach((a1, i) => {
+      a1.hasOverlap = directorAnnotations.some((a2, j) => {
+        if (i === j) return false;
+        return (a1.startSec < a2.endSec && a1.endSec > a2.startSec);
+      });
+    });
+  }
+
+  function renderAnnotationMarkers() {
+    if (!annotationsMarkersLayer) return;
+    annotationsMarkersLayer.innerHTML = '';
+    const d1Duration = decks[1].duration;
+
+    directorAnnotations.forEach((ann, idx) => {
+      const leftPct = (ann.startSec / d1Duration) * 100;
+      const widthPct = Math.max(0.5, ((ann.endSec - ann.startSec) / d1Duration) * 100);
+
+      const marker = document.createElement('div');
+      marker.className = `annotation-timeline-marker ${ann.hasOverlap ? 'marker-has-overlap' : ''}`;
+      marker.style.left = `${leftPct}%`;
+      marker.style.width = `${widthPct}%`;
+      marker.title = `[Nota ${idx + 1}] ${ann.startStr} - ${ann.endStr}: ${ann.note}`;
+      annotationsMarkersLayer.appendChild(marker);
+    });
+
+    renderAnnotationsChips();
+  }
+
+  function renderAnnotationsChips() {
+    if (!directorAnnotationsBar || !annotationsChipsList || !annotationsCountEl) return;
+    annotationsCountEl.textContent = directorAnnotations.length;
+    directorAnnotationsBar.style.display = directorAnnotations.length > 0 ? 'block' : 'none';
+    annotationsChipsList.innerHTML = '';
+
+    directorAnnotations.forEach((ann, idx) => {
+      const chip = document.createElement('div');
+      chip.className = `ann-chip ${ann.hasOverlap ? 'ann-chip-overlap' : ''}`;
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'ann-chip-text mono';
+      const overlapBadge = ann.hasOverlap ? ' 🔀 [Falta Crossfader]' : '';
+      textSpan.textContent = `[${ann.startStr} - ${ann.endStr}] ${ann.note}${overlapBadge}`;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'ann-chip-del';
+      deleteBtn.setAttribute('aria-label', `Eliminar nota ${idx + 1}`);
+      deleteBtn.textContent = '✕';
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        directorAnnotations.splice(idx, 1);
+        recalculateAnnotationOverlaps();
+        renderAnnotationMarkers();
+        generateVibePrompt();
+      });
+
+      chip.appendChild(textSpan);
+      chip.appendChild(deleteBtn);
+      chip.addEventListener('click', () => {
+        selStart = ann.startSec;
+        selEnd = ann.endSec;
+        seekDeck(1, ann.startSec);
+        updateSelectionOverlays();
+        generateVibePrompt();
+      });
+      annotationsChipsList.appendChild(chip);
+    });
+  }
+
+  function openAnnotationPopover(startSec, endSec, clientX) {
+    if (!annotationPopover || !popoverRangeLabel || !popoverNoteInput) return;
+    const sStart = Math.min(startSec, endSec);
+    const sEnd = Math.max(startSec, endSec);
+    pendingAnnotationRange = {
+      startSec: Math.round(sStart),
+      endSec: Math.round(sEnd),
+      durSec: Math.round(sEnd - sStart),
+      startStr: formatTime(sStart),
+      endStr: formatTime(sEnd)
+    };
+
+    popoverRangeLabel.textContent = `RANGO: ${pendingAnnotationRange.startStr} ── ${pendingAnnotationRange.endStr} (${pendingAnnotationRange.durSec}s)`;
+    popoverNoteInput.value = '';
+
+    // Posicionamiento horizontal relativo a la pista
+    const trackRect = challengerWaveformTrack.getBoundingClientRect();
+    const relativeX = clientX - trackRect.left;
+    const clampedX = Math.max(12, Math.min(trackRect.width - 240, relativeX - 100));
+    annotationPopover.style.left = `${clampedX}px`;
+    annotationPopover.style.display = 'flex';
+    popoverNoteInput.focus();
+  }
+
+  function closeAnnotationPopover() {
+    if (annotationPopover) {
+      annotationPopover.style.display = 'none';
+      pendingAnnotationRange = null;
+    }
+    if (selectionDraftOverlay) {
+      selectionDraftOverlay.style.display = 'none';
+    }
+  }
+
+  if (challengerWaveformTrack) {
+    challengerWaveformTrack.addEventListener('mousedown', (e) => {
+      // Ignorar clicks dentro del popover si estuviera abierto
+      if (annotationPopover && annotationPopover.contains(e.target)) return;
+      isSelecting = true;
+      const rect = challengerWaveformTrack.getBoundingClientRect();
+      selectStartPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      selectStartTime = (selectStartPx / rect.width) * decks[1].duration;
+
+      if (selectionDraftOverlay) {
+        selectionDraftOverlay.style.left = `${(selectStartPx / rect.width) * 100}%`;
+        selectionDraftOverlay.style.width = '0%';
+        selectionDraftOverlay.style.display = 'block';
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isSelecting) return;
+      const rect = challengerWaveformTrack.getBoundingClientRect();
+      const currentPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const leftPx = Math.min(selectStartPx, currentPx);
+      const widthPx = Math.abs(currentPx - selectStartPx);
+
+      if (selectionDraftOverlay) {
+        selectionDraftOverlay.style.left = `${(leftPx / rect.width) * 100}%`;
+        selectionDraftOverlay.style.width = `${Math.max(0.5, (widthPx / rect.width) * 100)}%`;
+      }
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isSelecting) return;
+      isSelecting = false;
+
+      const rect = challengerWaveformTrack.getBoundingClientRect();
+      const endPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const widthPx = Math.abs(endPx - selectStartPx);
+
+      // Si el arrastre es muy corto (< 6px), tratar como click de seek habitual
+      if (widthPx < 6) {
+        if (selectionDraftOverlay) selectionDraftOverlay.style.display = 'none';
+        const pct = Math.max(0, Math.min(1, endPx / rect.width));
+        seekDeck(1, pct * decks[1].duration);
+        return;
+      }
+
+      // Rango seleccionado válido para anotación
+      const t1 = (Math.min(selectStartPx, endPx) / rect.width) * decks[1].duration;
+      const t2 = (Math.max(selectStartPx, endPx) / rect.width) * decks[1].duration;
+
+      activeTargetDeck = 1;
+      selStart = t1;
+      selEnd = t2;
+      seekDeck(1, t1);
+      updateTargetDeckUI();
+      updateSelectionOverlays();
+
+      openAnnotationPopover(t1, t2, e.clientX);
+    });
+  }
+
+  if (btnPopoverSave) {
+    btnPopoverSave.addEventListener('click', () => {
+      if (!pendingAnnotationRange) return;
+      const noteText = popoverNoteInput.value.trim() || 'Ajuste solicitado por el Director General en este rango.';
+      directorAnnotations.push({
+        ...pendingAnnotationRange,
+        note: noteText,
+        hasOverlap: false
+      });
+      recalculateAnnotationOverlaps();
+      renderAnnotationMarkers();
+      generateVibePrompt();
+      closeAnnotationPopover();
+    });
+  }
+
+  if (btnPopoverClose) {
+    btnPopoverClose.addEventListener('click', closeAnnotationPopover);
+  }
+
+  if (btnClearAnnotations) {
+    btnClearAnnotations.addEventListener('click', () => {
+      directorAnnotations = [];
+      renderAnnotationMarkers();
+      generateVibePrompt();
+    });
+  }
 
   // Target Deck Selector buttons
   btnSelectDeck0.addEventListener('click', () => {
@@ -1447,14 +1696,6 @@ ${strudelCode}
     selEnd = sec ? sec.endSec : 65;
     updateTargetDeckUI();
     updateSelectionOverlays();
-    generateVibePrompt();
-  });
-
-  // Approved Vibe Anchor Toggle
-  btnToggleAnchor.addEventListener('click', () => {
-    includeCountdownAnchor = !includeCountdownAnchor;
-    btnToggleAnchor.classList.toggle('anchor-pill-active', includeCountdownAnchor);
-    btnToggleAnchor.setAttribute('aria-pressed', includeCountdownAnchor ? 'true' : 'false');
     generateVibePrompt();
   });
 
@@ -2502,9 +2743,206 @@ ${strudelCode}
     box-sizing: border-box;
   }
 
-  @media (max-width: 768px) {
-    .console-header {
-      flex-direction: column;
-    }
+  /* Estilos para Selección y Anotaciones Dinámicas del Director (Deck 2 Challenger) */
+  .waveform-box-challenger {
+    cursor: crosshair;
+  }
+
+  .selection-draft-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    background: rgba(56, 189, 248, 0.22);
+    border-left: 2px dashed #38bdf8;
+    border-right: 2px dashed #38bdf8;
+    pointer-events: none;
+    z-index: 4;
+    display: none;
+  }
+
+  .annotations-markers-layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .annotation-timeline-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: rgba(245, 158, 11, 0.28);
+    border-top: 3px solid #f59e0b;
+    border-bottom: 2px solid #f59e0b;
+    box-sizing: border-box;
+    opacity: 0.85;
+  }
+
+  .annotation-timeline-marker.marker-has-overlap {
+    background: rgba(239, 68, 68, 0.35);
+    border-top: 3px solid #ef4444;
+    border-bottom: 2px solid #ef4444;
+  }
+
+  /* Popover Flotante de Anotación */
+  .annotation-popover {
+    position: relative;
+    margin-top: 0.4rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 0.65rem 0.8rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    z-index: 20;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: min(340px, 95vw);
+    box-sizing: border-box;
+  }
+
+  .popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .popover-range {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--deck-challenger-accent);
+  }
+
+  .btn-popover-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .btn-popover-close:hover {
+    color: var(--text-primary);
+  }
+
+  .popover-textarea {
+    width: 100%;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.72rem;
+    color: var(--text-primary);
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .popover-textarea:focus {
+    border-color: var(--deck-challenger-accent);
+  }
+
+  .popover-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-popover-save {
+    background: #0284c7;
+    border: 1px solid #38bdf8;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-popover-save:hover {
+    background: #0369a1;
+  }
+
+  /* Tira de Anotaciones Chips */
+  .director-annotations-bar {
+    width: 100%;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 0.5rem 0.65rem;
+    box-sizing: border-box;
+    margin-top: 0.35rem;
+  }
+
+  .annotations-bar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+
+  .btn-clear-annotations {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .btn-clear-annotations:hover {
+    color: #ef4444;
+  }
+
+  .annotations-chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ann-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.68rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ann-chip:hover {
+    transform: translateY(-1px);
+    border-color: #f59e0b;
+  }
+
+  .ann-chip-overlap {
+    border-left: 3px solid #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+  }
+
+  .ann-chip-del {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    cursor: pointer;
+    padding: 0 0.15rem;
+  }
+
+  .ann-chip-del:hover {
+    color: #ef4444;
   }
 </style>
