@@ -12,15 +12,15 @@
     {
       "id": "track-01-backup",
       "type": "track",
-      "title": "Backup",
+      "title": "Backup (Archived Seed)",
       "medium": "Música Digital / Electrónica Algorítmica",
-      "status": "candidate",
-      "lifecycle": ":Mutacion",
+      "status": "archived",
+      "lifecycle": ":Experimentacion",
       "humanApproval": {
         "approved": true,
         "signoff": "Human Creator",
         "date": "2026-10-17",
-        "scope": "fork-mutation-and-trojan-challenger-suite",
+        "scope": "initial-seed-archived-after-splinternet-victory",
         "mediumDefinition": "Musica Digital / Electronica generada por codigo e instrumentos digitales"
       },
       "sourceFiles": [
@@ -29,7 +29,7 @@
       "variations": [
         {
           "name": "champion-rebase",
-          "lifecycle": ":Victory",
+          "lifecycle": ":Experimentacion",
           "concept": "Champion Baseline Rebase: Rave de Reciclaje (138 BPM) -> Transición Inteligente -> Fork C Mutante (110 BPM)",
           "runtime": "strudel",
           "approved": true
@@ -37,13 +37,13 @@
         {
           "name": "fork",
           "lifecycle": ":Mutacion",
-          "concept": "Variación C: Fork (Línea Base Activa Aprobada)",
+          "concept": "Variación C: Fork (Archivado)",
           "runtime": "strudel",
           "approved": true
         },
         {
           "name": "trojan-suite",
-          "lifecycle": ":Challenger",
+          "lifecycle": ":Experimentacion",
           "concept": "Trojan Sandbox Suite (6 Secciones Continuas)",
           "runtime": "strudel",
           "approved": true
@@ -67,15 +67,15 @@
     {
       "id": "track-02-splinternet",
       "type": "track",
-      "title": "Splinternet // Rewired",
+      "title": "Splinternet // Rewired (Champion)",
       "medium": "Electrónica Experimental / Multi-Influencia Geopolítica",
-      "status": "candidate",
-      "lifecycle": ":Challenger",
+      "status": "approved",
+      "lifecycle": ":Victory",
       "humanApproval": {
         "approved": true,
-        "signoff": "Human Creator",
+        "signoff": "Human Director General (DG)",
         "date": "2026-10-18",
-        "scope": "5-act-experimental-suite-proposal",
+        "scope": "promoted-from-challenger-to-champion-victory",
         "mediumDefinition": "Single experimental multicapa (Ticking Clock, Hybrid Breakbeat, Brutalist Dropout, Neuro Growl, Monumental Braam)"
       },
       "sourceFiles": [
@@ -84,8 +84,8 @@
       "variations": [
         {
           "name": "splinternet-suite",
-          "lifecycle": ":Challenger",
-          "concept": "Splinternet // Rewired (Suite 5 Actos)",
+          "lifecycle": ":Victory",
+          "concept": "Splinternet // Rewired (Suite 5 Actos - Champion Baseline)",
           "runtime": "strudel",
           "approved": true
         },
@@ -100,6 +100,33 @@
           "name": "splinternet-neuro",
           "lifecycle": ":Experimentacion",
           "concept": "Splinternet // Surgical FM Neuro Growl Drop",
+          "runtime": "strudel",
+          "approved": true
+        }
+      ]
+    },
+    {
+      "id": "track-03-neurogenesis",
+      "type": "track",
+      "title": "Rewired // Neuro-Genesis",
+      "medium": "Electrónica Modular / Síntesis FM & Industrial",
+      "status": "candidate",
+      "lifecycle": ":Challenger",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "Human Creator (Pending Final Audition)",
+        "date": "2026-10-18",
+        "scope": "new-challenger-progressive-suite-proposal",
+        "mediumDefinition": "Single Challenger progresivo multicapa (Ambient Inmersivo, Breakbeat Modular, Tensión Industrial, Surgical Neuro Drop, Braam Sideral)"
+      },
+      "sourceFiles": [
+        "src/data/tracks.ts"
+      ],
+      "variations": [
+        {
+          "name": "countdown-clock-neuro",
+          "lifecycle": ":Mutacion",
+          "concept": "Reloj de Cuenta Regresiva (Patrón Vibe Aprobado)",
           "runtime": "strudel",
           "approved": true
         }

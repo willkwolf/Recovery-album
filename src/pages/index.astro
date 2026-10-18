@@ -53,7 +53,7 @@ const challengerTrack = TRACKS[1];
           <span class="deck-badge deck-badge-baseline mono">🎛️ DECK 1: BASELINE // 100% DG GROUND TRUTH</span>
           <h2 class="deck-track-title" id="deck-1-title">{baselineTrack.title}</h2>
           <p class="deck-track-sub mono">
-            Rave de Reciclaje (138 BPM) ──► Cápsula F# (124 BPM) ──► Fork C Mutante (110 BPM) ──► Trojan Sandbox ──► Solo Fuzz Invertido
+            01: Ticking Clock Spine (105 BPM) ──► 02: Hybrid Breakbeat (115 BPM) ──► 03: Brutalist Dropout (115 BPM) ──► 04: Surgical FM Neuro (140 BPM) ──► 05: Monumental Sub-Braam (105 BPM)
           </p>
         </div>
         <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Baseline">
@@ -69,12 +69,12 @@ const challengerTrack = TRACKS[1];
             <span aria-hidden="true">🔁</span>
             <span id="loop-label-0">Loop: Off</span>
           </button>
-          <div class="time-readout mono" id="time-display-0" aria-live="polite" aria-label="Tiempo actual y duración de Baseline">00:00 / 05:15</div>
+          <div class="time-readout mono" id="time-display-0" aria-live="polite" aria-label="Tiempo actual y duración de Baseline">00:00 / 04:45</div>
         </div>
       </div>
 
       <!-- Scrubber & Waveform Canvas Baseline -->
-      <div class="waveform-box" id="waveform-track-0" tabindex="0" role="slider" aria-label="Navegador de posición en Baseline" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal de la Baseline">
+      <div class="waveform-box" id="waveform-track-0" tabindex="0" role="slider" aria-label="Navegador de posición en Baseline" aria-valuemin="0" aria-valuemax="285" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal de la Baseline">
         <canvas id="waveform-canvas-0" height="52" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-baseline" id="selection-overlay-0" aria-hidden="true"></div>
         <div class="playhead playhead-baseline" id="playhead-0" aria-hidden="true"></div>
@@ -108,7 +108,7 @@ const challengerTrack = TRACKS[1];
           <span class="deck-badge deck-badge-challenger mono">⚡ DECK 2: CHALLENGER // 80% AI CREW SINGLE</span>
           <h2 class="deck-track-title" id="deck-2-title">{challengerTrack.title}</h2>
           <p class="deck-track-sub mono">
-            01: Ticking Clock & French Sweep (105 BPM) ──► 02: Hybrid Breakbeat (115 BPM) ──► 03: Brutalist Dropout (115 BPM) ──► 04: Surgical FM Neuro (140 BPM) ──► 05: Monumental Sub-Braam (105 BPM)
+            01: Ambient Inmersivo (105 BPM) ──► 02: Breakbeat Modular (118 BPM) ──► 03: Tensión Industrial (118 BPM) ──► 04: Surgical Neuro Drop (140 BPM) ──► 05: Braam Sideral (105 BPM)
           </p>
         </div>
         <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Challenger">
@@ -124,12 +124,12 @@ const challengerTrack = TRACKS[1];
             <span aria-hidden="true">🔁</span>
             <span id="loop-label-1">Loop: Off</span>
           </button>
-          <div class="time-readout mono" id="time-display-1" aria-live="polite" aria-label="Tiempo actual y duración de Challenger">00:00 / 04:45</div>
+          <div class="time-readout mono" id="time-display-1" aria-live="polite" aria-label="Tiempo actual y duración de Challenger">00:00 / 04:50</div>
         </div>
       </div>
 
       <!-- Scrubber & Waveform Canvas Challenger -->
-      <div class="waveform-box" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="285" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal del Challenger">
+      <div class="waveform-box" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="290" aria-valuenow="0" title="Haz clic o arrastra para mover el cabezal del Challenger">
         <canvas id="waveform-canvas-1" height="52" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
         <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
@@ -357,7 +357,7 @@ const challengerTrack = TRACKS[1];
     {
       id: 0,
       track: tracksData[0],
-      duration: 315,
+      duration: 285,
       currentSec: 0,
       activeSecIdx: 0,
       sections: tracksData[0].sections || []
@@ -365,7 +365,7 @@ const challengerTrack = TRACKS[1];
     {
       id: 1,
       track: tracksData[1],
-      duration: 285,
+      duration: 290,
       currentSec: 0,
       activeSecIdx: 0,
       sections: tracksData[1].sections || []
@@ -738,68 +738,96 @@ const challengerTrack = TRACKS[1];
       const s = d.currentSec;
       const stepInBar = tickerStep % 16;
 
-      // --- DECK 0: BASELINE (100% CONTROL DG) ---
+      // --- DECK 0: BASELINE (100% CONTROL DG // SPLINTERNET REWIRED CHAMPION) ---
       if (deckId === 0) {
-        // Section 1: Rave de Reciclaje (0:00 - 1:15 // 138 BPM)
-        if (s < 75) {
-          if (stepInBar % 4 === 0) playKick(ctx, time, 160, 38, 0.95);
-          if (stepInBar % 4 === 2) playNoise(ctx, time, 0.45, 4500, 0.08);
-          if (stepInBar % 2 === 1) playNoise(ctx, time, 0.2, 6000, 0.03);
+        // Reloj de cuenta regresiva continuo
+        const pan = Math.sin(tickerStep * 0.35) * 0.55;
+        if (s < 120 || s >= 170) {
+          playCountdownTick(ctx, time, pan);
+        }
+
+        // ACTO 1: Ticking Clock Spine & French Sweep (00:00 - 01:05)
+        if (s < 65) {
+          if (stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95);
+          if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35, 5500, 0.08);
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+            const chords = [
+              [130.81, 155.56, 196.00, 233.08],
+              [103.83, 130.81, 155.56, 196.00],
+              [87.31, 103.83, 130.81, 155.56],
+              [98.00, 123.47, 146.83, 174.61]
+            ];
+            const chordIdx = Math.floor(tickerStep / 16) % chords.length;
+            const filterSweep = 600 + Math.sin(tickerStep * 0.2) * 2200;
+            chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22, filterSweep, 0.18));
+          }
           if (stepInBar % 2 === 0) {
-            const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
-            const aF = acidNotes[(tickerStep / 2) % acidNotes.length];
-            const filterF = 800 + Math.sin(tickerStep * 0.4) * 1800;
-            playAcid(ctx, time, aF, filterF, 0.35, 0.14);
+            const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
+            playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38, 0.1);
           }
+        }
+        // ACTO 2: Hybrid Breakbeat (01:05 - 02:00)
+        else if (s >= 65 && s < 120) {
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) playKick(ctx, time, 165, 38, 1.0);
           if (stepInBar === 4 || stepInBar === 12) {
-            playSaw(ctx, time, 293.66, 0.3, 2400, 0.2); // D4 stab
+            playNoise(ctx, time, 0.65, 3200, 0.12);
+            playKick(ctx, time, 190, 75, 0.4);
+          }
+          if (stepInBar % 2 === 1) playNoise(ctx, time, 0.25, 6200, 0.025);
+          if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
+            const rNotes = [65.41, 77.78, 87.31, 92.50];
+            playSaw(ctx, time, rNotes[Math.floor(stepInBar / 4) % rNotes.length], 0.48, 2600, 0.28);
           }
         }
-        // Section 2: Transición Cápsula F# (1:15 - 1:50 // 138 -> 110 BPM)
-        else if (s >= 75 && s < 110) {
-          if (stepInBar === 0 || stepInBar === 6 || stepInBar === 12) {
-            playKick(ctx, time, 120, 32, 0.65);
-          }
-          if (stepInBar % 4 === 1) playNoise(ctx, time, 0.18, 2200, 0.06);
-          if (stepInBar === 0) playSaw(ctx, time, 92.50, 0.45, 950, 1.8); // F#2 drone
-          if (tickerStep % 3 === 0) playNoise(ctx, time, 0.25, 3200, 0.025);
-        }
-        // Section 3: Fork C Mutante (1:50 - 3:05 // 110 BPM)
-        else if (s >= 110 && s < 185) {
-          const barIdx = Math.floor(tickerStep / 16) % 4;
-          const lfoFilter = 1350 + Math.sin(tickerStep * 0.15) * 850;
-          if (stepInBar === 0) {
-            const dyads = [[65.41, 98.00], [77.78, 116.54], [87.31, 130.81], [92.50, 130.81]];
-            dyads[barIdx].forEach(f => playSaw(ctx, time, f, 0.3, lfoFilter, 1.9));
-          }
-          if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
-            const mNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25];
-            playSine(ctx, time, mNotes[(tickerStep * 2) % mNotes.length], 0.35, 0.2);
-          }
-          if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) playKick(ctx, time, 135, 36, 0.8);
-          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
-            playNoise(ctx, time, 0.26, 2400, 0.035);
+        // ACTO 3: Brutalist Digital Dropout (02:00 - 02:50)
+        else if (s >= 120 && s < 170) {
+          const isDropout = (Math.floor(tickerStep / 16) % 2 === 1) && (stepInBar >= 8 && stepInBar <= 11);
+          if (!isDropout) {
+            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 12) {
+              playSquare(ctx, time, 92.50, 0.65, 0.14);
+              playSquare(ctx, time, 65.41, 0.65, 0.14);
+            }
+            if (stepInBar === 4 || stepInBar === 14) playNoise(ctx, time, 0.55, 1600, 0.09);
+            if (stepInBar === 0) playSaw(ctx, time, 60, 0.35, 140, 1.8);
           }
         }
-        // Section 4: Trojan Sandbox (3:05 - 4:10)
-        else if (s >= 185 && s < 250) {
-          if (stepInBar % 4 === 0) {
-            playTriangle(ctx, time, 523.25, 0.25, 0.4);
-            playTriangle(ctx, time, 659.25, 0.2, 0.35);
+        // ACTO 4: Surgical FM Neuro Growl Drop (02:50 - 03:40)
+        else if (s >= 170 && s < 220) {
+          if (stepInBar === 0 || stepInBar === 10) playKick(ctx, time, 170, 32, 1.1);
+          if (stepInBar === 8) {
+            playNoise(ctx, time, 0.75, 2400, 0.18);
+            playKick(ctx, time, 200, 90, 0.6);
           }
-          if (tickerStep % 8 === 0) playSine(ctx, time, 1046.50, 0.35, 0.08); // EKG flatline
-          if (tickerStep % 6 === 2) playSquare(ctx, time, 1800, 0.08, 0.04);   // 56k chirp
+          if (stepInBar % 2 === 0) {
+            const growlNotes = [65.41, 77.78, 92.50, 98.00, 116.54, 130.81];
+            const gF = growlNotes[(tickerStep / 2) % growlNotes.length];
+            const modF = 120 + ((tickerStep * 23) % 280);
+            const filtF = 800 + Math.sin(tickerStep * 0.7) * 3200;
+            playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.75, 0.22);
+          }
         }
-        // Section 5: Solo Fuzz Invertido & Fuga Final (4:10 - 5:15)
-        else if (s >= 250 && s <= 315) {
-          if (tickerStep % 3 === 0) {
-            const fuzzNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16];
-            playSaw(ctx, time, fuzzNotes[(tickerStep / 3) % fuzzNotes.length], 0.35, 2400, 0.4);
+        // ACTO 5: Monumental 35Hz Sub-Braam (03:40 - 04:45)
+        else if (s >= 220 && s <= 285) {
+          if (stepInBar === 0) playMonumentalBraam(ctx, time, 35, 0.9, 2.2);
+          if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+            const pChords = [
+              [130.81, 196.00, 261.63, 311.13],
+              [116.54, 174.61, 233.08, 293.66],
+              [103.83, 155.56, 207.65, 261.63],
+              [98.00, 146.83, 196.00, 246.94]
+            ];
+            const padIdx = Math.floor(tickerStep / 16) % pChords.length;
+            pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.18, 1400, 0.4));
           }
+          if (tickerStep % 4 === 0) {
+            const bells = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
+            playSine(ctx, time, bells[(tickerStep / 4) % bells.length], 0.25, 0.6);
+          }
+          if (stepInBar % 4 === 0) playKick(ctx, time, 90, 30, 0.4);
         }
       }
 
-      // --- DECK 1: CHALLENGER (80% CREW AUTONOMY // STUDIO SUITE 5 ACTOS CON TRANSICIONES FLUIDAS) ---
+      // --- DECK 1: CHALLENGER (80% CREW AUTONOMY // REWIRED // NEURO-GENESIS SUITE) ---
       else if (deckId === 1) {
         // ESPINA CONTINUA: El Reloj de Cuenta Regresiva nunca se corta entre transiciones
         const pan = Math.sin(tickerStep * 0.35) * 0.55;
@@ -807,7 +835,7 @@ const challengerTrack = TRACKS[1];
           playCountdownTick(ctx, time, pan);
         }
 
-        // ACTO 1: Ticking Clock Spine & French Sweep (00:00 - 01:05)
+        // ACTO 1: Ambient Inmersivo & Ticking Clock (00:00 - 01:05 // 105 BPM)
         if (s < 65) {
           const isTransitionBreath = s >= 64.2 && s < 65.0; // 1-beat tension breath
           if (!isTransitionBreath) {
@@ -838,7 +866,7 @@ const challengerTrack = TRACKS[1];
           }
         }
 
-        // ACTO 2: Breakbeat Híbrido & Drop-D Industrial (01:05 - 02:00)
+        // ACTO 2: Breakbeat Modular & Low-End Saturado (01:05 - 02:00 // 118 BPM)
         else if (s >= 65 && s < 120) {
           const isTransitionBreath = s >= 119.2 && s < 120.0; // 1-beat tension breath
           if (!isTransitionBreath) {
@@ -869,7 +897,7 @@ const challengerTrack = TRACKS[1];
           }
         }
 
-        // ACTO 3: Brutalist Digital Dropout & Harsh Feedback (02:00 - 02:50)
+        // ACTO 3: Tensión Industrial & 1-Beat Silence Breath (02:00 - 02:50 // 118 BPM)
         else if (s >= 120 && s < 170) {
           const isTransitionBreath = s >= 169.2 && s < 170.0; // 1-beat tension breath
           const isDropout = (Math.floor(tickerStep / 16) % 2 === 1) && (stepInBar >= 8 && stepInBar <= 11);
@@ -891,7 +919,7 @@ const challengerTrack = TRACKS[1];
           }
         }
 
-        // ACTO 4: Surgical FM Neuro Growl Drop (02:50 - 03:40 // 140 BPM Half-time)
+        // ACTO 4: Surgical Neuro Drop & Laser Arps (02:50 - 03:40 // 140 BPM Half-time)
         else if (s >= 170 && s < 220) {
           if (stepInBar === 0 || stepInBar === 10) playKick(ctx, time, 170, 32, 1.1);
           if (stepInBar === 8) {
@@ -916,8 +944,8 @@ const challengerTrack = TRACKS[1];
           }
         }
 
-        // ACTO 5: Monumental 35Hz Sub-Braam & Sidechain Pump Fade (03:40 - 04:45)
-        else if (s >= 220 && s <= 285) {
+        // ACTO 5: Braam Sideral & Ocarina Ancestral Fade (03:40 - 04:50 // 105 BPM)
+        else if (s >= 220 && s <= 290) {
           if (stepInBar === 0) playMonumentalBraam(ctx, time, 35, 0.9, 2.2);
           if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
             const pChords = [
