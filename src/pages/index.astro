@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { TRACKS, SONG_SECTIONS, TRACK_VARIATIONS, SPLINTERNET_SECTIONS, SPLINTERNET_VARIATIONS } from '../data/tracks';
+import { TRACKS } from '../data/tracks';
 import { METACATEGORIES } from '../data/categories';
 
 const tracksData = TRACKS;
@@ -35,18 +35,24 @@ const categoriesData = METACATEGORIES;
     <!-- High-Level Dual Navigation Tabs (Baseline vs Challenger) -->
     <nav class="primary-tabs-nav" aria-label="Navegación principal de pistas">
       <button type="button" class="tab-main-btn tab-main-active" id="btn-tab-baseline" data-track-index="0">
-        <span class="mono tab-icon">🏆</span>
+        <span class="mono tab-icon">🎛️</span>
         <div class="tab-text-group">
-          <span class="tab-title">TAB 1: BASELINE // CHAMPION REBASE</span>
-          <span class="tab-sub mono">Rave de Reciclaje (138 BPM) ──► Fork C Mutante (110 BPM)</span>
+          <div class="tab-title-row">
+            <span class="tab-title">TAB 1: BASELINE [DG COCKPIT]</span>
+            <span class="gov-badge gov-dg mono">100% CONTROL DG</span>
+          </div>
+          <span class="tab-sub mono">Rave de Reciclaje (138 BPM) ──► Fork C Mutante (110 BPM) // Fuente de verdad</span>
         </div>
       </button>
 
       <button type="button" class="tab-main-btn" id="btn-tab-challenger" data-track-index="1">
         <span class="mono tab-icon">⚡</span>
         <div class="tab-text-group">
-          <span class="tab-title">TAB 2: CHALLENGER // SPLINTERNET</span>
-          <span class="tab-sub mono">Suite Multi-Género en 5 Actos (04:45 min)</span>
+          <div class="tab-title-row">
+            <span class="tab-title">TAB 2: CHALLENGER [CREW STUDIO]</span>
+            <span class="gov-badge gov-challenger mono">80% AUTONOMÍA L1</span>
+          </div>
+          <span class="tab-sub mono">Suite Multi-Género en 5 Actos (04:45) // Libertad métrica y complejidad studio</span>
         </div>
       </button>
     </nav>
@@ -1178,10 +1184,19 @@ const categoriesData = METACATEGORIES;
 
     const currentCode = activeSec ? activeSec.strudelCode : (track.variations?.[0]?.code || '// Sin código');
 
+    const governanceNotice = currentTrackIdx === 1
+      ? `- **Gobernanza:** CHALLENGER LAB (80% Autonomía Agéntica L1/L2 en timings, patrones y stems studio)`
+      : `- **Gobernanza:** BASELINE DG COCKPIT (100% Control Directo del DG // Ground Truth Feedback)`;
+
+    const mandateNotice = currentTrackIdx === 1
+      ? `DM, CP, SD, AE: Proceder con 80% de autonomía técnica y compositiva sobre el rango temporal [${formattedStart} ── ${formattedEnd}]. Los agentes L1 tienen plena libertad para definir duraciones, transiciones métricas, texturas y canales multicapa con nivel de estudio profesional (Techno/EDM/Daft Punk, -14.0 LUFS ± 0.5, True Peak < -1.0 dBTP). Consolidar informe en L3 QA.`
+      : `DM, CP, SD, AE: Aplicar las directivas anteriores sobre el rango temporal [${formattedStart} ── ${formattedEnd}] respetando los estándares de producción de estudio profesional (-14.0 LUFS ± 0.5, True Peak < -1.0 dBTP, dinámica multicapa y transiciones armónicas inteligentes). Consolidar informe en L3 QA.`;
+
     const promptText = `### FEEDBACK TÁCTICO // SELECCIÓN DE TIMELINE (v0.2.0-beta)
 - **Track Objetivo:** ${track.title} (${track.id})
 - **Rango Seleccionado:** ${formattedStart} ── ${formattedEnd} (${durSec} segundos)
 - **Modo:** ${currentMode.toUpperCase()}
+${governanceNotice}
 - **Sección en Foco:** ${activeSec ? `${activeSec.tag} — ${activeSec.name}` : 'Rango Continuo Personalizado'}
 - **Tempo / Tonalidad:** ${activeSec ? `${activeSec.bpm} BPM // ${activeSec.keyCenter}` : '138 -> 110 BPM'}
 - **Directivas / Exponentes Seleccionados:** ${tagsString}
@@ -1196,7 +1211,7 @@ ${currentCode.trim()}
 \`\`\`
 
 #### 3. Mandato para el Crew Multiagente:
-DM, CP, SD, AE: Aplicar las directivas anteriores sobre el rango temporal [${formattedStart} ── ${formattedEnd}] respetando los límites de mezcla (-14.0 LUFS ± 0.5, True Peak < -1.0 dBTP) y los invariantes del manifiesto de Seed.md (Restauración ↔ Fuga, nada de nostalgia pasiva). Consolidar informe en L3 QA.`;
+${mandateNotice}`;
 
     promptPreviewCode.textContent = promptText;
   }
@@ -1351,27 +1366,153 @@ DM, CP, SD, AE: Aplicar las directivas anteriores sobre el rango temporal [${for
         }
       }
 
-      // TRACK 02: SPLINTERNET // REWIRED
+      // TRACK 02: SPLINTERNET // REWIRED (STUDIO MULTI-CHANNEL SUITE)
+      // Autonomía Agéntica L1: 80% — Daft Punk, Linkin Park, Code Orange, Skrillex, Hans Zimmer
       else if (currentTrackIdx === 1) {
         const stepInBar = tickerStep % 16;
 
+        // ACTO 1: Zimmer Clock x French Touch Daft Punk (00:00 - 01:05)
         if (s < 65) {
-          triggerZimmerTick(ctx, time, Math.sin(tickerStep * 0.3) * 0.5);
-          if (stepInBar === 0) triggerSaw(ctx, time, 130.81, 0.22, 1800, 1.8);
-        } else if (s >= 65 && s < 120) {
-          if (stepInBar === 0 || stepInBar === 8) triggerKick(ctx, time, 150, 40, 0.9);
-          if (stepInBar === 4 || stepInBar === 12) triggerNoise(ctx, time, 0.5, 1200, 0.07);
-          if (stepInBar === 0 || stepInBar === 2) triggerSaw(ctx, time, 65.41, 0.55, 2600, 0.22);
-        } else if (s >= 120 && s < 170) {
-          if (stepInBar === 0) triggerSquare(ctx, time, 92.50, 0.7, 0.12);
-        } else if (s >= 170 && s < 220) {
-          if (stepInBar % 8 === 0) triggerKick(ctx, time, 160, 38, 1.0);
-          if (stepInBar % 8 === 4) triggerNoise(ctx, time, 0.6, 1800, 0.08);
-          if (stepInBar % 2 === 0) {
-            triggerSkrillexFMGrowl(ctx, time, 77.78, 140, 1600, 0.8, 0.2);
+          // French House Punchy 4/4 Kick (steps 0, 4, 8, 12)
+          if (stepInBar % 4 === 0) {
+            triggerKick(ctx, time, 155, 42, 0.95);
           }
-        } else if (s >= 220 && s <= 285) {
-          if (stepInBar === 0) triggerZimmerBraam(ctx, time, 35, 0.85, 2.0);
+          // French House Open Hi-Hat on off-beats (steps 2, 6, 10, 14)
+          if (stepInBar % 4 === 2) {
+            triggerNoise(ctx, time, 0.35, 5500, 0.08);
+          }
+          // Sinuous Zimmer Clock Ticks with micropan (every step)
+          const pan = Math.sin(tickerStep * 0.4) * 0.6;
+          triggerZimmerTick(ctx, time, pan);
+
+          // Daft Punk Sweeping Disco Chord Stabs with Sidechain Ducking
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+            const chords = [
+              [130.81, 155.56, 196.00, 233.08], // Cm7
+              [103.83, 130.81, 155.56, 196.00], // Abmaj7
+              [87.31, 103.83, 130.81, 155.56],  // Fm7
+              [98.00, 123.47, 146.83, 174.61]   // G7
+            ];
+            const chordIdx = Math.floor(tickerStep / 16) % chords.length;
+            const filterSweep = 600 + Math.sin(tickerStep * 0.2) * 2200;
+            chords[chordIdx].forEach(f => triggerSaw(ctx, time, f, 0.22, filterSweep, 0.18));
+          }
+
+          // Funky Octave Bass Bounce
+          if (stepInBar % 2 === 0) {
+            const bassNotes = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
+            const bFreq = bassNotes[(tickerStep / 2) % bassNotes.length];
+            triggerAcid(ctx, time, bFreq, 1400, 0.38, 0.1);
+          }
+        }
+
+        // ACTO 2: Breakbeat Híbrido & Drop-D Industrial (Linkin Park) (01:05 - 02:00)
+        else if (s >= 65 && s < 120) {
+          // Syncopated Linkin Park Breakbeat Kick (steps 0, 3, 6, 10)
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
+            triggerKick(ctx, time, 165, 38, 1.0);
+          }
+          // Heavy Snare Layer + Clap (steps 4, 12)
+          if (stepInBar === 4 || stepInBar === 12) {
+            triggerNoise(ctx, time, 0.65, 3200, 0.12);
+            triggerKick(ctx, time, 190, 75, 0.4);
+          }
+          // Ghost Snares (steps 7, 11, 15)
+          if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
+            triggerNoise(ctx, time, 0.22, 2800, 0.04);
+          }
+          // Polyrhythmic Hi-Hats & Ride (every odd step)
+          if (stepInBar % 2 === 1) {
+            triggerNoise(ctx, time, 0.25, 6200, 0.025);
+          }
+          // Heavy Industrial Drop-D Reese Saw
+          if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
+            const reeseNotes = [65.41, 77.78, 87.31, 92.50]; // C2, Eb2, F2, F#2
+            const rFreq = reeseNotes[Math.floor(stepInBar / 4) % reeseNotes.length];
+            triggerSaw(ctx, time, rFreq, 0.48, 2600, 0.28);
+          }
+          // Industrial Guitar-Synth Hook
+          if (stepInBar === 2 || stepInBar === 6 || stepInBar === 14) {
+            triggerSaw(ctx, time, 261.63, 0.32, 3800, 0.14);
+          }
+        }
+
+        // ACTO 3: Brutalist Digital Dropout & Harsh Feedback (Code Orange) (02:00 - 02:50)
+        else if (s >= 120 && s < 170) {
+          // Stochastic dropouts: Silence on bar steps 8-11 every 2 bars
+          const isBarDropout = (Math.floor(tickerStep / 16) % 2 === 1) && (stepInBar >= 8 && stepInBar <= 11);
+          if (!isBarDropout) {
+            // Abrasive C-F# Tritone Clipping Square Riff
+            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 12) {
+              triggerSquare(ctx, time, 92.50, 0.65, 0.14);
+              triggerSquare(ctx, time, 65.41, 0.65, 0.14);
+            }
+            // Industrial Metal Percussion Clang
+            if (stepInBar === 4 || stepInBar === 14) {
+              triggerNoise(ctx, time, 0.55, 1600, 0.09);
+              triggerSquare(ctx, time, 466.16, 0.3, 0.06);
+            }
+            // H100 Server Room Hum (60Hz)
+            if (stepInBar === 0) {
+              triggerSaw(ctx, time, 60, 0.35, 140, 1.8);
+            }
+          }
+        }
+
+        // ACTO 4: Surgical FM Neuro Growl Drop (Skrillex / Noisia) (02:50 - 03:40 // 140 BPM Half-time)
+        else if (s >= 170 && s < 220) {
+          // Half-Time Stomp Kick (step 0, 10)
+          if (stepInBar === 0 || stepInBar === 10) {
+            triggerKick(ctx, time, 170, 32, 1.1);
+          }
+          // Massive Half-Time Snare (step 8)
+          if (stepInBar === 8) {
+            triggerNoise(ctx, time, 0.75, 2400, 0.18);
+            triggerKick(ctx, time, 200, 90, 0.6);
+          }
+          // Skrillex Talking FM Neuro Growl (formant sweeps)
+          if (stepInBar % 2 === 0) {
+            const growlNotes = [65.41, 77.78, 92.50, 98.00, 116.54, 130.81];
+            const gFreq = growlNotes[(tickerStep / 2) % growlNotes.length];
+            const modF = 120 + ((tickerStep * 23) % 280);
+            const filtF = 800 + Math.sin(tickerStep * 0.7) * 3200;
+            triggerSkrillexFMGrowl(ctx, time, gFreq, modF, filtF, 0.75, 0.22);
+          }
+          // 32nd-note Laser Glitch Arps
+          if (stepInBar % 2 === 1) {
+            const laserF = 523.25 + ((tickerStep * 67) % 800);
+            triggerTriangle(ctx, time, laserF, 0.28, 0.04);
+            triggerNoise(ctx, time, 0.18, 7000, 0.02);
+          }
+        }
+
+        // ACTO 5: Zimmer Monumental Braam x Daft Punk Sidechain Fade (03:40 - 04:45)
+        else if (s >= 220 && s <= 285) {
+          // Massive 35Hz Hans Zimmer Braam (step 0 of every bar)
+          if (stepInBar === 0) {
+            triggerZimmerBraam(ctx, time, 35, 0.9, 2.2);
+          }
+          // Daft Punk Pumping Sidechain Pad
+          if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+            const padChords = [
+              [130.81, 196.00, 261.63, 311.13], // Cm9
+              [116.54, 174.61, 233.08, 293.66], // Bb
+              [103.83, 155.56, 207.65, 261.63], // Abmaj7
+              [98.00, 146.83, 196.00, 246.94]   // Gsus
+            ];
+            const padIdx = Math.floor(tickerStep / 16) % padChords.length;
+            padChords[padIdx].forEach(f => triggerSaw(ctx, time, f, 0.18, 1400, 0.4));
+          }
+          // Ocarina Ancestral Bell Notes in Deep Convolution Space
+          if (tickerStep % 4 === 0) {
+            const bells = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
+            const bFreq = bells[(tickerStep / 4) % bells.length];
+            triggerSine(ctx, time, bFreq, 0.25, 0.6);
+          }
+          // Distant Sub-Kick pulse
+          if (stepInBar % 4 === 0) {
+            triggerKick(ctx, time, 90, 30, 0.4);
+          }
         }
       }
 
@@ -1768,6 +1909,33 @@ DM, CP, SD, AE: Aplicar las directivas anteriores sobre el rango temporal [${for
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+  }
+
+  .tab-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .gov-badge {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .gov-dg {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid #10b981;
+    color: #6ee7b7;
+  }
+
+  .gov-challenger {
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid #38bdf8;
+    color: #7dd3fc;
   }
 
   .tab-title {

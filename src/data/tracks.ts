@@ -238,18 +238,30 @@ export const SPLINTERNET_SECTIONS: SongSection[] = [
     endSec: 65,
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
-    instruments: ['Hans Zimmer Ticking Rimshot', 'Sub-Braam 35Hz', 'Daft Punk 4-Pole LP Filter Sweep', 'Granular Vocoder Lead'],
-    description: 'El reloj implacable de Hans Zimmer marca los segundos antes de que RuNet y los cortafuegos aíslen los nodos. Entran acordes con filtro pasabajos dinámico estilo French Touch (Daft Punk) y un vocoder granulado que recita datos de red obsoletos.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Reloj Zimmer x French Touch Daft Punk
+    instruments: ['Hans Zimmer Ticking Rimshot', 'Sub-Braam 35Hz', 'Daft Punk 4-Pole LP Filter Sweep', 'French House 4/4 Kick', 'Off-beat Open Hats', 'Funky Octave Slap Bass'],
+    description: 'AUTONOMÍA L1 (80%): El reloj implacable de Hans Zimmer marca la cuenta regresiva antes de que los cortafuegos aíslen los nodos. Entra un bombo 4/4 francés de pegada implacable, acordes con filtro pasabajos dinámico estilo Daft Punk bombeados por sidechain, hi-hats sincopados en contratiempo y un slap-bassline con rebotes de octava.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Zimmer Ticking Clock x Daft Punk French Touch
+// Autonomía Agéntica L1: 80% — Ensamble de 6 canales multicapa studio
 stack(
-  s("rim*16").gain(0.7).pan(sine.range(0.3, 0.7).slow(4)),
-  note("<[c3,eb3,g3,bb3] [ab2,c3,eb3,g3] [f2,ab2,c3,eb3] [g2,b2,d3,f3]>")
+  // Capa 1: Reloj Zimmer a semicorcheas con micropan y variaciones métricas
+  s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
+  // Capa 2: Bombo francés 4/4 con pegada de transitorio y sidechain natural
+  s("bd*4").bank("RolandTR909").gain(1.0),
+  // Capa 3: Hi-hats franceses con apertura en contratiempo sincopado
+  s("~ hh:open ~ hh:open").gain(0.8).decay(0.12).hpf(4800),
+  s("hh*16").euclid(11,16).gain("<0.3 0.65 0.45 0.8>*4").hpf(5500),
+  // Capa 4: Acordes French House (Daft Punk) con barrido LPF resonante y ducking
+  note("<[c3,eb3,g3,bb3,d4] [ab2,c3,eb3,g3,c4] [f2,ab2,c3,eb3,g3] [g2,b2,d3,f3,b3]>")
     .s("sawtooth")
-    .lpf(sine.range(400, 3200).slow(8))
-    .resonance(12)
-    .gain(0.85),
-  note("<c1 ab0 f0 g0>").s("sine").gain(0.9),
-  note("c4 eb4 g4 f4").s("triangle").fast(2).delay(0.3).gain(0.4)
+    .lpf(sine.range(380, 3600).slow(8))
+    .resonance(14)
+    .gain("<0.25 0.95 0.4 0.95>*4")
+    .jux(rev),
+  // Capa 5: Slap-bassline funky filtrado con rebotes en octavas
+  note("c2 [~ c2] [eb2!2] [~ f2] [fs2!2] g2 [bb1 c2]")
+    .s("sawtooth").lpf(1600).resonance(12).gain(0.85),
+  // Capa 6: Vocoder analógico y micro-arpegio cristalino
+  note("c4 eb4 g4 f4 bb4 c5").fast(2.25).s("triangle").room(0.7).gain(0.38)
 )`
   },
   {
@@ -262,17 +274,29 @@ stack(
     endSec: 120,
     bpm: 115,
     keyCenter: 'C menor Drop-D / 115 BPM',
-    instruments: ['Linkin Park Hybrid Breakbeat', 'Ghost Snare 16ths', 'Drop-D Industrial Saw Crunch', 'Dither Crackle'],
-    description: 'Inspiración Linkin Park (Reanimation / Meteora): la rotura de las conexiones transoceánicas se traduce en un breakbeat agresivo con redobles fantasma de caja, guitarras industriales cortadas y bajo comprimido al límite.',
-    strudelCode: `// SECCIÓN 02 (01:05 - 02:00): Hybrid Breakbeat Linkin Park
+    instruments: ['Linkin Park Hybrid Breakbeat', 'Ghost Snare 16ths', 'Drop-D Industrial Saw Crunch', 'Ride Cymbal Polyrhythm', 'Parallel Distorted Bass'],
+    description: 'AUTONOMÍA L1 (80%): Inspiración Linkin Park (Reanimation / Meteora). La rotura de cables transoceánicos detona un breakbeat sincopado con redobles fantasma de caja, hi-hats polirrítmicos, guitarras industriales cortadas en ping-pong delay y un bajo Drop-D comprimido al límite.',
+    strudelCode: `// SECCIÓN 02 (01:05 - 02:00): Hybrid Breakbeat & Industrial Slams (Linkin Park)
+// Autonomía Agéntica L1: 80% — Polirritmia, redobles fantasma y compresión paralela
 stack(
-  s("bd [~ bd] [~ sd] [bd ~] ~ [bd:2 ~] sd [~ sd:3]").gain(1.0),
-  s("hh*16").gain("<0.3 0.8 0.5 0.9 0.4 0.7 0.4 0.95>*2").hpf(4200),
-  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] c2 ~")
+  // Capa 1: Bombo híbrido sincopado y caja con capas de clap/acoustic
+  s("bd:3 [~ bd:1] [~ sd:2] [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").gain(1.05),
+  // Capa 2: Ghost snares a semicorcheas con acentos variables
+  s("~ sn:1*4 ~ sn:1*2").gain("<0.2 0.5 0.3 0.7>*4").pan(sine.range(0.35, 0.65).slow(2)),
+  // Capa 3: Hi-hats industriales cortantes y ride polirrítmico
+  s("hh*16").gain("<0.35 0.85 0.4 0.95 0.5 0.8 0.4 1.0>*2").hpf(4200),
+  s("ride(5,8)").gain(0.42).decay(0.3),
+  // Capa 4: Drop-D Industrial Reese Bass distorsionado con saturación de tubo
+  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] [c2!2] [bb1 c2]")
     .s("sawtooth")
-    .distort(0.75)
-    .gain(0.9),
-  s("crackle*8").gain(0.3).hpf(2500)
+    .distort(0.82)
+    .lpf(sine.range(500, 2800).slow(4))
+    .resonance(16)
+    .gain(0.92),
+  // Capa 5: Guitarras industriales procesadas en ping-pong delay y vinyl crackle
+  note("<[c4,g4,c5] [eb4,bb4,eb5] [f4,c5,f5] [fs4,c5,fs5]>")
+    .s("sawtooth").distort(0.7).chop(8).delay(0.333).delayfeedback(0.5).gain(0.6),
+  s("crackle*16").gain(perlin.range(0.15, 0.4)).hpf(3000)
 )`
   },
   {
@@ -285,17 +309,25 @@ stack(
     endSec: 170,
     bpm: 115,
     keyCenter: 'Disonancia Tritono C-F# / 115 BPM',
-    instruments: ['Instant 0ms Dropout', 'Square Wave Clipping', '945 TWh Server Hum', 'Microphonic Screams'],
-    description: 'Inspiración Code Orange: la música sufre cortes a cero absoluto (dropout digital puro sin reverb tail), emulando los apagones nacionales. Entre el vacío se escucha el zumbido de servidores de IA antes de detonar en clipping abrasivo.',
+    instruments: ['Instant 0ms Dropout', 'Square Wave Clipping', '945 TWh Server Hum', 'Noise Bursts BPF', 'Metal Percussion Clangs'],
+    description: 'AUTONOMÍA L1 (80%): Inspiración Code Orange. La música sufre caídas a cero absoluto (dropout digital puro de 0ms sin reverb tail), emulando apagones y desconexiones de infraestructura. Entre el vacío zumban servidores de IA a 60 Hz antes de estallar en clipping abrasivo y percusiones de chatarra industrial.',
     strudelCode: `// SECCIÓN 03 (02:00 - 02:50): Code Orange Digital Dropout & Harsh Feedback
+// Autonomía Agéntica L1: 80% — Caídas a 0ms sin reverb, clipping abrasivo y percusión metálica
 stack(
-  note("<[c2,fs2,c3] ~ [eb2,a2,eb3] ~ ~ [fs2,c3,fs3] ~>")
+  // Capa 1: Riff brutalista tritono C-F# con cortes estocásticos a silencio puro (0ms)
+  note("<[c2,fs2,c3] ~ [eb2,a2,eb3] ~ ~ [fs2,c3,fs3] [~ c2] ~>")
     .s("square")
-    .distort(0.95)
+    .distort(0.96)
+    .decay(0.18)
     .gain(1.0)
-    .decay(0.15),
-  s("noise*4").gain(0.35).bpf(120, 2),
-  s("glitch:2*3").gain(0.6).pan("<0.1 0.9 0.5>")
+    .sometimesBy(0.25, silence),
+  // Capa 2: Zumbido de servidores H100 (945 TWh) en 60Hz y modulación en anillo
+  note("<c1 fs1>").s("sawtooth").lpf(120).gain(0.9).slow(2),
+  // Capa 3: Noise bursts y glitch micro-stutters
+  s("noise*8").gain(perlin.range(0.2, 0.65)).bpf(sine.range(400, 3200).fast(4), 3),
+  s("glitch:2*5").gain(0.75).pan("<0.1 0.9 0.3 0.8 0.5>"),
+  // Capa 4: Percusiones industriales metálicas y clangs de chatarra digital
+  s("industrial:3*4").gain("<0.8 0 0.9 0>*2").delay(0.15).delayfeedback(0.4)
 )`
   },
   {
@@ -307,20 +339,28 @@ stack(
     startSec: 170,
     endSec: 220,
     bpm: 140,
-    keyCenter: 'C menor Bass Music / 140 BPM',
-    instruments: ['Skrillex Surgical FM Growl', 'Sub-Bass 32Hz', 'Off-beat Snare Claps', 'Micro-stutter 32nds'],
-    description: 'Inspiración Skrillex: salto a 140 BPM emulando a la IA devorando y procesando la memoria cultural humana en clusters H100. Bajo FM neuro con modulación formántica ultrarrápida, tresillos cortantes y bombos secos de impacto.',
-    strudelCode: `// SECCIÓN 04 (02:50 - 03:40): Skrillex Surgical FM Neuro Growl
+    keyCenter: 'C menor Bass Music / 140 BPM (Half-time Stomp)',
+    instruments: ['Skrillex Surgical FM Growl', 'Sub-Bass 32Hz', 'Off-beat Snare Claps', 'Micro-stutter 32nds', 'Laser Micro-Arps', 'Euclidean Hats'],
+    description: 'AUTONOMÍA L1 (80%): Inspiración Skrillex y Noisia. Salto de tempo a 140 BPM en ritmo half-time brutal. El bajo FM neuro utiliza modulación formántica ultrarrápida (resonancia 26) con separación estricta de subgrave puro a 32 Hz, arpegios láser a 32avos y bombos secos con snare reverberado.',
+    strudelCode: `// SECCIÓN 04 (02:50 - 03:40): Skrillex Surgical FM Neuro Growl Drop (140 BPM)
+// Autonomía Agéntica L1: 80% — Frecuencia modulada formántica, sub-bass 32Hz y half-time
 stack(
-  s("bd ~ ~ ~ sd ~ ~ ~ bd ~ bd ~ sd ~ [~ sd*2]").bank("RolandTR909").gain(1.0),
-  s("hh*8").gain(0.6).hpf(5000),
-  note("c1 [c1 c2] [eb2 d2] [fs1 g1] [bb1 c2] [~ c1]")
+  // Capa 1: Bombo de impacto ultra seco + Snare masivo con reverb gate
+  s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.1),
+  // Capa 2: Sub-bass puro a 32 Hz separado de los medios
+  note("<c1 eb1 fs1 g1>").s("sine").gain(1.0),
+  // Capa 3: Skrillex Neuro Talking Growl (Sawtooth con filtro de formantes resonante a 26)
+  note("c2 [c2 eb2] [fs2 g2] [bb2 c3] [~ c2] [eb2 c2]")
     .s("sawtooth")
-    .lpf(perlin.range(300, 4800).fast(4))
-    .resonance(24)
-    .distort(0.8)
-    .gain(0.95),
-  note("c5 eb5 fs5 g5 bb5 c6").fast(3.5).s("sine").gain(0.4).delay(0.2)
+    .lpf(perlin.range(350, 4900).fast(6))
+    .resonance(26)
+    .distort(0.85)
+    .gain(0.96),
+  // Capa 4: Micro-stutter de agudos y arpegios láser a 32avos
+  note("c5 eb5 fs5 g5 bb5 c6").fast(4).s("triangle").decay(0.04).pan(sine.range(0.1, 0.9).fast(3)).gain(0.55),
+  // Capa 5: Hi-hats quirúrgicos cerrados y open hats en tresillo
+  s("hh*16").euclid(13,16).gain("<0.4 0.9 0.6 1.0>*4").hpf(5500),
+  s("~ [hh:open, rim] ~ [hh:open]").gain(0.75).hpf(4800)
 )`
   },
   {
@@ -333,16 +373,25 @@ stack(
     endSec: 285,
     bpm: 105,
     keyCenter: 'C menor / Eb mayor / 105 BPM',
-    instruments: ['Zimmer Massive Braam 35Hz', 'French Touch Sidechain Pump Pad', 'Archaeological Ocarina Bells', 'Deep Space Reverb'],
-    description: 'Hans Zimmer y Daft Punk unidos en la catarsis final del single: un braam descomunal de 35 Hz sostiene la caída de la vieja internet mientras sintetizadores bombeados por sidechain y campanas de Ocarina of Time se desvanecen hacia una nueva línea temporal.',
+    instruments: ['Zimmer Massive Braam 35Hz', 'French Touch Sidechain Pump Pad', 'Archaeological Ocarina Bells', 'Deep Space Reverb', 'Distant 909 Sub-Kick'],
+    description: 'AUTONOMÍA L1 (80%): Hans Zimmer y Daft Punk unidos en la catarsis final del single. Un braam descomunal de 35 Hz con armónicos de metal sostiene la caída de la vieja internet mientras sintetizadores analógicos bombeados por sidechain y campanas místicas de Ocarina of Time reverberan hacia la nueva línea temporal.',
     strudelCode: `// SECCIÓN 05 (03:40 - 04:45): Zimmer Monumental Braam x Daft Punk Sidechain Fade
+// Autonomía Agéntica L1: 80% — Braam descomunal 35Hz, bombeo sidechain y melodía arqueológica
 stack(
-  note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(180).gain(1.0).slow(2),
-  note("<[c3,g3,c4] [eb3,bb3,eb4] [f3,c4,f4] [g3,d4,g4]>")
-    .s("triangle")
-    .gain("<0.9 0.2 0.8 0.15>*4")
+  // Capa 1: Hans Zimmer Massive Braam a 35Hz con resonancia de bronce
+  note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
+  // Capa 2: Daft Punk French Touch synth pads bombeados rítmicamente por sidechain
+  note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
+    .s("sawtooth")
+    .lpf(sine.range(500, 2400).slow(6))
+    .gain("<0.15 0.95 0.3 0.95>*4")
     .room(0.85),
-  note("c5 eb5 g5 fs5 bb5").slow(3).s("sine").delay(0.5).delayfeedback(0.75).gain(0.35)
+  // Capa 3: Campanas ancestrales de Ocarina of Time con ping-pong delay sideral
+  note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.42),
+  // Capa 4: Pulso de sub-kick distante desvaneciéndose hacia el vacío cuántico
+  s("bd*4").bank("RolandTR909").lpf(sine.range(400, 120).slow(8)).gain(0.65),
+  // Capa 5: Textura analógica de cinta y dither espacial
+  s("crackle*8").gain(perlin.range(0.08, 0.25)).hpf(3500)
 )`
   }
 ];
@@ -376,11 +425,19 @@ cat(
     bpm: 115,
     description: 'Núcleo rítmico aprobado de Splinternet. Combina la urgencia implacable del reloj Zimmer a semicorcheas con el groove sincopado de batería híbrida Linkin Park.',
     code: `// :Mutacion — Splinternet Base Loop (02:00)
+// Autonomía Agéntica L1: 80% — Zimmer Ticking Clock x Linkin Park Hybrid Breakbeat
 stack(
-  s("rim*16").gain(0.7).pan(sine.range(0.3, 0.7).slow(4)),
-  s("bd [~ bd] [~ sd] [bd ~] ~ [bd:2 ~] sd [~ sd:3]").gain(1.0),
-  s("hh*16").gain("<0.3 0.8 0.5 0.9>*4").hpf(4200),
-  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] c2 ~").s("sawtooth").distort(0.7).gain(0.85)
+  s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
+  s("bd:3 [~ bd:1] [~ sd:2] [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").gain(1.05),
+  s("~ sn:1*4 ~ sn:1*2").gain("<0.2 0.5 0.3 0.7>*4").pan(sine.range(0.35, 0.65).slow(2)),
+  s("hh*16").gain("<0.35 0.85 0.4 0.95 0.5 0.8 0.4 1.0>*2").hpf(4200),
+  s("ride(5,8)").gain(0.42).decay(0.3),
+  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] [c2!2] [bb1 c2]")
+    .s("sawtooth")
+    .distort(0.82)
+    .lpf(sine.range(500, 2800).slow(4))
+    .resonance(16)
+    .gain(0.92)
 )`
   },
   {
@@ -392,10 +449,19 @@ stack(
     runtime: 'strudel',
     bpm: 140,
     description: 'Boceto de laboratorio para el drop más agresivo del single a 140 BPM.',
-    code: `// :Experimentacion — Neuro Skrillex Lab
+    code: `// :Experimentacion — Neuro Skrillex Lab (140 BPM Half-Time)
+// Autonomía Agéntica L1: 80% — Frecuencia modulada, sub-bass 32Hz y half-time
 stack(
-  s("bd ~ ~ ~ sd ~ ~ ~ bd ~ bd ~ sd ~").gain(1.0),
-  note("c1 [c1 c2] [eb2 d2] [fs1 g1]").s("sawtooth").lpf(perlin.range(400, 4000).fast(4)).resonance(20).gain(0.95)
+  s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.1),
+  note("<c1 eb1 fs1 g1>").s("sine").gain(1.0),
+  note("c2 [c2 eb2] [fs2 g2] [bb2 c3] [~ c2] [eb2 c2]")
+    .s("sawtooth")
+    .lpf(perlin.range(350, 4900).fast(6))
+    .resonance(26)
+    .distort(0.85)
+    .gain(0.96),
+  note("c5 eb5 fs5 g5 bb5 c6").fast(4).s("triangle").decay(0.04).pan(sine.range(0.1, 0.9).fast(3)).gain(0.55),
+  s("hh*16").euclid(13,16).gain("<0.4 0.9 0.6 1.0>*4").hpf(5500)
 )`
   }
 ];
