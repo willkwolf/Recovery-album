@@ -58,6 +58,47 @@
       ]
     },
     {
+      "id": "track-02-splinternet",
+      "type": "track",
+      "title": "Splinternet // Rewired",
+      "medium": "Electrónica Experimental / Multi-Influencia Geopolítica",
+      "status": "candidate",
+      "lifecycle": ":Challenger",
+      "humanApproval": {
+        "approved": true,
+        "signoff": "Human Creator",
+        "date": "2026-10-18",
+        "scope": "5-act-experimental-suite-proposal",
+        "mediumDefinition": "Single experimental multi-influencia (Zimmer, Linkin Park, Code Orange, Skrillex, Daft Punk)"
+      },
+      "sourceFiles": [
+        "src/data/tracks.ts"
+      ],
+      "variations": [
+        {
+          "name": "splinternet-suite",
+          "lifecycle": ":Challenger",
+          "concept": "Splinternet // Rewired (Suite 5 Actos)",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
+          "name": "splinternet-fork",
+          "lifecycle": ":Mutacion",
+          "concept": "Splinternet // Mutación Base (Reloj + Breakbeat)",
+          "runtime": "strudel",
+          "approved": true
+        },
+        {
+          "name": "splinternet-skrillex",
+          "lifecycle": ":Experimentacion",
+          "concept": "Splinternet // Neuro Skrillex Drop",
+          "runtime": "strudel",
+          "approved": true
+        }
+      ]
+    },
+    {
       "id": "doc-architecture",
       "type": "documentation",
       "title": "System Architecture",

@@ -1,22 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { SONG_SECTIONS, TRACK_VARIATIONS } from '../data/tracks';
+import { SONG_SECTIONS, TRACK_VARIATIONS, SPLINTERNET_SECTIONS, SPLINTERNET_VARIATIONS, TRACKS } from '../data/tracks';
 
-const sections = SONG_SECTIONS;
-const variations = TRACK_VARIATIONS;
+const tracksData = TRACKS;
 ---
 
 <Layout
-  title="RECOVERY // Single 01: Backup — Audio Preview & HITL Lab"
-  description="Mesa de audición minimalista y laboratorio de ciclo de vida HITL (:Experimentacion, :Mutacion, :Challenger, :Victory)."
+  title="RECOVERY // Studio Deck & HITL Life-Cycle Lab"
+  description="Mesa de audición minimalista de producción musical, genealogía HITL (:Experimentacion, :Mutacion, :Challenger, :Victory) y herramienta de selección inteligente de prompts para Antigravity."
 >
   <div class="studio-container">
     <!-- Header -->
     <header class="studio-header">
       <div class="studio-title-group">
         <h1 class="studio-title">RECOVERY</h1>
-        <span class="studio-tag">SINGLE 01 // BACKUP</span>
+        <span class="studio-tag" id="current-track-tag">SINGLE 01 // BACKUP</span>
       </div>
+
+      <!-- Track Switcher -->
+      <div class="track-switcher">
+        <button type="button" class="btn btn-sm btn-active" id="track-btn-1" data-track-index="0">
+          <span class="mono font-bold">01</span>
+          <span>Backup (05:15)</span>
+        </button>
+        <button type="button" class="btn btn-sm" id="track-btn-2" data-track-index="1">
+          <span class="mono font-bold">02</span>
+          <span>Splinternet // Rewired (04:45)</span>
+        </button>
+      </div>
+
       <a
         href="https://github.com/willkwolf/Recovery-album"
         target="_blank"
@@ -29,19 +41,23 @@ const variations = TRACK_VARIATIONS;
 
     <!-- Lifecycle State Bar (HITL Memory & Genealogía) -->
     <div class="lifecycle-bar">
-      <span class="mono label-muted">LINEA DE TIEMPO / ESTADO:</span>
-      <div class="lifecycle-nav">
+      <div class="lifecycle-label-group">
+        <span class="mono label-muted">ESTADO DE CICLO DE VIDA HITL:</span>
+        <span class="mono active-track-badge" id="active-track-name">Track 01: Backup</span>
+      </div>
+      <div class="lifecycle-nav" id="lifecycle-nav-container">
+        <!-- Rendered based on active track -->
         <button type="button" class="btn btn-sm btn-active" id="tab-mutacion" data-mode="mutacion">
           <span class="status-indicator ind-mutacion"></span>
-          <span>:Mutacion (Base Fork C)</span>
+          <span id="tab-mutacion-label">:Mutacion (Base Fork C)</span>
         </button>
         <button type="button" class="btn btn-sm" id="tab-challenger" data-mode="challenger">
           <span class="status-indicator ind-challenger"></span>
-          <span>:Challenger (Suite Trojan 05:15)</span>
+          <span id="tab-challenger-label">:Challenger (Suite Trojan 05:15)</span>
         </button>
         <button type="button" class="btn btn-sm" id="tab-exp" data-mode="exp">
           <span class="status-indicator ind-exp"></span>
-          <span>:Experimentacion (Bocetos A/B)</span>
+          <span id="tab-exp-label">:Experimentacion (Bocetos)</span>
         </button>
       </div>
     </div>
@@ -76,45 +92,139 @@ const variations = TRACK_VARIATIONS;
         </div>
       </div>
 
-      <!-- Scrubber & Waveform visualizer -->
-      <div class="waveform-container" id="waveform-track" title="Haz clic en cualquier punto para mover el cabezal">
-        <canvas id="waveform-canvas" height="60"></canvas>
+      <!-- Scrubber & Waveform visualizer with Selection Overlay -->
+      <div class="waveform-container" id="waveform-track" title="Haz clic en cualquier punto para mover el cabezal o ajustar selección">
+        <canvas id="waveform-canvas" height="64"></canvas>
+        <div class="selection-overlay" id="selection-overlay"></div>
         <div class="playhead" id="playhead"></div>
       </div>
 
-      <!-- Section blocks (Arranger row for Challenger mode) -->
+      <!-- Arranger Section Strip (Challenger Suite Mode) -->
       <div class="sections-strip" id="challenger-strip" style="display: none;">
-        {sections.map((sec, idx) => {
-          const widthPct = ((sec.endSec - sec.startSec) / 315) * 100;
-          return (
-            <button
-              type="button"
-              class={`section-block ${idx === 0 ? 'selected' : ''}`}
-              style={`width: ${widthPct}%;`}
-              data-idx={idx}
-              data-start={sec.startSec}
-              data-end={sec.endSec}
-              title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
-            >
-              <span class="sec-num mono">0{idx + 1}</span>
-              <span class="sec-name">{sec.name.split('(')[0]}</span>
-              <span class="sec-range mono">{sec.startTime}</span>
-            </button>
-          );
-        })}
+        <!-- Populated dynamically via JS according to active track -->
       </div>
 
       <!-- Single block strip for Mutacion mode -->
       <div class="mutation-strip" id="mutation-strip">
         <div class="mutation-info-bar">
-          <span class="mono sec-num">:Mutacion Aprobada</span>
-          <span class="sec-name font-medium">Variación C — Fork (ADN Inmutable: Polirritmia 1.75 + Disonancia F# + TR-909)</span>
-          <span class="mono sec-range">00:00 ── 01:15 (Loop puro)</span>
+          <span class="mono sec-num" id="mutation-badge-title">:Mutacion Aprobada</span>
+          <span class="sec-name font-medium" id="mutation-badge-name">Variación C — Fork (ADN Inmutable: Polirritmia 1.75 + Disonancia F# + TR-909)</span>
+          <span class="mono sec-range" id="mutation-badge-time">00:00 ── 01:15 (Loop puro)</span>
         </div>
       </div>
     </section>
 
-    <!-- Section / Variation Drawer (Feedback & Inspection Deck) -->
+    <!-- SMART SECTION SELECTION & FEEDBACK PROMPT TOOL -->
+    <section class="smart-tool-card" id="smart-selection-tool">
+      <div class="tool-header">
+        <div class="tool-title-group">
+          <div class="tool-badge-row">
+            <span class="tool-badge mono">PRODUCER HITL TOOL</span>
+            <span class="mono text-xs text-muted" id="tool-active-track-label">Target: Track 01 (Backup)</span>
+          </div>
+          <h2 class="tool-heading">Selector de Secciones & Generador de Prompt Inteligente</h2>
+          <p class="tool-subheading">
+            Selecciona el corte temporal, activa directivas estilísticas y copia el prompt formateado para continuar la orquestación en Antigravity.
+          </p>
+        </div>
+        <div class="tool-header-actions">
+          <button type="button" class="btn btn-sm" id="btn-preview-range" title="Reproducir sólo el rango temporal seleccionado">
+            <span>▶</span>
+            <span>Preescuchar Rango</span>
+          </button>
+          <button type="button" class="btn btn-primary btn-copy-prompt" id="btn-copy-smart-prompt" title="Copiar bloque de prompt estructurado para pegar en Antigravity">
+            <span>📋</span>
+            <span id="copy-prompt-btn-text">Copiar Prompt Inteligente</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tool-body">
+        <!-- Interactive Range Scrubbers -->
+        <div class="tool-range-grid">
+          <div class="range-field">
+            <div class="range-field-top">
+              <label for="range-start-slider" class="mono label-muted">PUNTO DE ENTRADA (INICIO):</label>
+              <span id="label-start-time" class="mono time-badge">00:00</span>
+            </div>
+            <input type="range" id="range-start-slider" min="0" max="315" value="0" step="1" class="time-range-slider" />
+          </div>
+
+          <div class="range-divider-box mono">
+            <span class="label-muted">DURACIÓN</span>
+            <span id="label-range-dur" class="font-bold text-accent">65s</span>
+          </div>
+
+          <div class="range-field">
+            <div class="range-field-top">
+              <label for="range-end-slider" class="mono label-muted">PUNTO DE SALIDA (FIN):</label>
+              <span id="label-end-time" class="mono time-badge">01:05</span>
+            </div>
+            <input type="range" id="range-end-slider" min="0" max="315" value="65" step="1" class="time-range-slider" />
+          </div>
+        </div>
+
+        <!-- Quick Section Chips -->
+        <div class="tool-section-chips-row">
+          <span class="mono label-muted">SALTO RÁPIDO A SECCIÓN:</span>
+          <div class="section-quick-chips" id="section-quick-chips">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Directive Style Pills (Inspirations & Directives) -->
+        <div class="tool-directives-row">
+          <span class="mono label-muted">DIRECTIVAS ESTILÍSTICAS // INSPIRACIONES:</span>
+          <div class="directive-pills" id="directive-pills">
+            <button type="button" class="pill-btn" data-tag="[+ Reloj Hans Zimmer]">⏱ Reloj Zimmer</button>
+            <button type="button" class="pill-btn" data-tag="[+ Breakbeat Linkin Park]">🥁 Breakbeat Linkin Park</button>
+            <button type="button" class="pill-btn" data-tag="[+ Dropout Brutal Code Orange]">⚡ Dropout Code Orange</button>
+            <button type="button" class="pill-btn" data-tag="[+ Neuro Growl Skrillex]">👾 Neuro Growl Skrillex</button>
+            <button type="button" class="pill-btn" data-tag="[+ French Touch Daft Punk]">🎛 French Touch Daft Punk</button>
+            <button type="button" class="pill-btn" data-tag="[+ Sub-Bass 35Hz]">🔊 Sub-Bass 35Hz</button>
+            <button type="button" class="pill-btn" data-tag="[+ Silencio Puro 0ms]">🔇 Silencio Puro 0ms</button>
+            <button type="button" class="pill-btn" data-tag="[+ Más Disonancia F#]">⚠️ Disonancia Tritono F#</button>
+            <button type="button" class="pill-btn" data-tag="[+ Acelerar BPM]">⏩ Subir Tempo / BPM</button>
+            <button type="button" class="pill-btn" data-tag="[+ Reducir BPM]">⏪ Bajar Tempo / BPM</button>
+            <button type="button" class="pill-btn" data-tag="[+ Mutar a Challenger]">🧬 Mutar a :Challenger</button>
+          </div>
+        </div>
+
+        <!-- Target Crew Agent Routing -->
+        <div class="tool-routing-row">
+          <span class="mono label-muted">DESTINATARIOS AGÉNTICOS (CREW):</span>
+          <div class="crew-pills" id="crew-pills">
+            <button type="button" class="pill-crew pill-crew-active" data-role="DM">L1 · DM (Dirección Musical)</button>
+            <button type="button" class="pill-crew pill-crew-active" data-role="CP">L2 · CP (Composición)</button>
+            <button type="button" class="pill-crew pill-crew-active" data-role="SD">L2 · SD (Diseño Sonoro)</button>
+            <button type="button" class="pill-crew" data-role="AE">L2 · AE (Ingeniería Audio)</button>
+            <button type="button" class="pill-crew" data-role="QA">L3 · QA (Auditoría Gate)</button>
+          </div>
+        </div>
+
+        <!-- Producer Note Textarea -->
+        <div class="tool-note-row">
+          <label for="tool-producer-note" class="mono label-muted">DIRECCIÓN TÁCTICA DEL DIRECTOR GENERAL (DG):</label>
+          <textarea
+            id="tool-producer-note"
+            rows="2"
+            class="producer-textarea mono"
+            placeholder="Escribe tus observaciones para esta sección (ej: 'El solo entra tarde, quiero que el bombo tenga más pegada y que el corte glitch sea más abrupto')..."
+          ></textarea>
+        </div>
+
+        <!-- Live Formatted Prompt Preview -->
+        <div class="tool-prompt-preview">
+          <div class="preview-header">
+            <span class="mono label-muted">PROMPT ESTRUCTURADO PARA ANTIGRAVITY (VISTA PREVIA):</span>
+            <span class="mono text-xs text-muted">Se sincroniza automáticamente</span>
+          </div>
+          <pre class="prompt-preview-block mono"><code id="prompt-preview-code">Generando prompt...</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section / Variation Detail Drawer (Inspection Deck) -->
     <section class="drawer-card">
       <div class="drawer-header">
         <div class="drawer-title-group">
@@ -122,9 +232,9 @@ const variations = TRACK_VARIATIONS;
           <h2 class="drawer-name" id="drawer-name">Variación C — Fork (Base Original)</h2>
           <span class="mono drawer-time" id="drawer-time">00:00 ── 01:15</span>
         </div>
-        <button type="button" class="btn btn-sm btn-active" id="btn-copy-ref" title="Copiar referencia para pegar en Antigravity">
+        <button type="button" class="btn btn-sm btn-active" id="btn-copy-ref" title="Copiar referencia al portapapeles">
           <span>📋</span>
-          <span id="copy-ref-text">Copiar ref para Antigravity</span>
+          <span id="copy-ref-text">Copiar ref al portapapeles</span>
         </button>
       </div>
 
@@ -145,7 +255,7 @@ const variations = TRACK_VARIATIONS;
         </div>
 
         <p class="drawer-desc" id="drawer-desc">
-          LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7. Este es el ADN inmutable sobre el cual se construyen los experimentos.
+          LÍNEA BASE MUTANTE APROBADA. Acordes dyad Sawtooth con filtro LFO, melodía rápida en delay ping-pong, Roland TR-909 y polirritmia hi-hat 3 contra 7.
         </p>
 
         <!-- Collapsible Strudel Code View -->
@@ -154,7 +264,7 @@ const variations = TRACK_VARIATIONS;
             <span>Ver código Strudel</span>
             <a
               id="drawer-repl-link"
-              href={`https://strudel.cc/#${encodeURIComponent(variations[0].code)}`}
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               class="mono repl-link"
@@ -162,28 +272,37 @@ const variations = TRACK_VARIATIONS;
               Abrir en Strudel REPL ↗
             </a>
           </summary>
-          <pre class="code-block mono"><code id="drawer-code">{variations[0].code}</code></pre>
+          <pre class="code-block mono"><code id="drawer-code"></code></pre>
         </details>
       </div>
     </section>
 
     <!-- Footer minimal -->
     <footer class="studio-footer mono">
-      <span>RECOVERY // ARTISTIC SYSTEM</span>
+      <span>RECOVERY // ARTISTIC MULTI-AGENT SYSTEM</span>
       <span>Genealogía HITL: :Experimentacion → :Mutacion → :Challenger → :Victory</span>
     </footer>
   </div>
 </Layout>
 
-<script define:vars={{ sections, variations }}>
-  // Minimalist Contiguous Audio Player Engine with HITL Lifecycle Navigation
+<script define:vars={{ tracksData }}>
+  // State variables
+  let currentTrackIdx = 0; // 0: Backup, 1: Splinternet
   let currentMode = 'mutacion'; // 'mutacion' | 'challenger' | 'exp'
   let isPlaying = false;
   let isLoopingSection = false;
+  let isPreviewingRange = false;
   let activeSectionIndex = 0;
   let trackSeconds = 0;
-  let totalDuration = 75; // Default for Fork :Mutacion (01:15)
+  let totalDuration = 75;
 
+  // Smart Selection Tool State
+  let selectionStart = 0;
+  let selectionEnd = 65;
+  let activeDirectives = new Set();
+  let activeCrewRoles = new Set(['DM', 'CP', 'SD']);
+
+  // Web Audio Context & Nodes
   let audioCtx = null;
   let analyser = null;
   let masterGain = null;
@@ -193,11 +312,24 @@ const variations = TRACK_VARIATIONS;
   let feedbackGain = null;
 
   // DOM Elements
+  const trackBtn1 = document.getElementById('track-btn-1');
+  const trackBtn2 = document.getElementById('track-btn-2');
+  const currentTrackTag = document.getElementById('current-track-tag');
+  const activeTrackName = document.getElementById('active-track-name');
+  const toolActiveTrackLabel = document.getElementById('tool-active-track-label');
+
   const tabMutacion = document.getElementById('tab-mutacion');
   const tabChallenger = document.getElementById('tab-challenger');
   const tabExp = document.getElementById('tab-exp');
+  const tabMutacionLabel = document.getElementById('tab-mutacion-label');
+  const tabChallengerLabel = document.getElementById('tab-challenger-label');
+  const tabExpLabel = document.getElementById('tab-exp-label');
+
   const challengerStrip = document.getElementById('challenger-strip');
   const mutationStrip = document.getElementById('mutation-strip');
+  const mutationBadgeTitle = document.getElementById('mutation-badge-title');
+  const mutationBadgeName = document.getElementById('mutation-badge-name');
+  const mutationBadgeTime = document.getElementById('mutation-badge-time');
 
   const playBtn = document.getElementById('btn-play');
   const stopBtn = document.getElementById('btn-stop');
@@ -211,9 +343,24 @@ const variations = TRACK_VARIATIONS;
   const volVal = document.getElementById('vol-val');
   const waveformTrack = document.getElementById('waveform-track');
   const playhead = document.getElementById('playhead');
+  const selectionOverlay = document.getElementById('selection-overlay');
   const canvas = document.getElementById('waveform-canvas');
   const canvasCtx = canvas.getContext('2d');
-  const sectionBtns = document.querySelectorAll('.section-block');
+
+  // Tool Elements
+  const rangeStartSlider = document.getElementById('range-start-slider');
+  const rangeEndSlider = document.getElementById('range-end-slider');
+  const labelStartTime = document.getElementById('label-start-time');
+  const labelEndTime = document.getElementById('label-end-time');
+  const labelRangeDur = document.getElementById('label-range-dur');
+  const sectionQuickChips = document.getElementById('section-quick-chips');
+  const directivePills = document.querySelectorAll('.pill-btn');
+  const crewPills = document.querySelectorAll('.pill-crew');
+  const producerNoteTextarea = document.getElementById('tool-producer-note');
+  const promptPreviewCode = document.getElementById('prompt-preview-code');
+  const btnCopySmartPrompt = document.getElementById('btn-copy-smart-prompt');
+  const copyPromptBtnText = document.getElementById('copy-prompt-btn-text');
+  const btnPreviewRange = document.getElementById('btn-preview-range');
 
   // Drawer Elements
   const drawerTag = document.getElementById('drawer-tag');
@@ -227,6 +374,18 @@ const variations = TRACK_VARIATIONS;
   const drawerReplLink = document.getElementById('drawer-repl-link');
   const btnCopyRef = document.getElementById('btn-copy-ref');
   const copyRefText = document.getElementById('copy-ref-text');
+
+  function getActiveTrack() {
+    return tracksData[currentTrackIdx];
+  }
+
+  function getActiveSections() {
+    return getActiveTrack().sections || [];
+  }
+
+  function getActiveVariations() {
+    return getActiveTrack().variations || [];
+  }
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -277,49 +436,25 @@ const variations = TRACK_VARIATIONS;
   }
 
   const distortionCurve = makeDistortionCurve(50);
-  const santanaNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16, 349.23, 293.66];
-  const forkMelodyNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25];
+  const heavyDistortionCurve = makeDistortionCurve(120);
+
+  // Notes and Dyads
   const forkDyads = [
     [65.41, 98.00],   // [C2, G2]
     [77.78, 116.54],  // [Eb2, Bb2]
     [87.31, 130.81],  // [F2, C3]
     [92.50, 130.81]   // [F#2, C3]
   ];
+  const forkMelodyNotes = [261.63, 311.13, 392.00, 369.99, 466.16, 587.33, 523.25];
+  const santanaNotes = [587.33, 440.00, 349.23, 523.25, 392.00, 329.63, 466.16, 349.23, 293.66];
+  const daftPunkChords = [
+    [130.81, 155.56, 196.00, 233.08], // C minor 7
+    [103.83, 130.81, 155.56, 196.00], // Ab major 7
+    [87.31, 103.83, 130.81, 155.56],  // F minor 7
+    [98.00, 123.47, 146.83, 174.61]   // G dominant 7
+  ];
 
-  function triggerForkMelody(ctx, time, freq, vol = 0.38) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, time);
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
-    osc.connect(g);
-    g.connect(masterGain);
-    if (delayNode) g.connect(delayNode);
-    osc.start(time);
-    osc.stop(time + 0.25);
-  }
-
-  function triggerForkChord(ctx, time, freq1, freq2, filterFreq, dur) {
-    [freq1, freq2].forEach((freq) => {
-      const osc = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
-      const g = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(freq, time);
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(filterFreq, time);
-      filter.Q.value = 5;
-      g.gain.setValueAtTime(0.35, time);
-      g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-      osc.connect(filter);
-      filter.connect(g);
-      g.connect(masterGain);
-      osc.start(time);
-      osc.stop(time + dur);
-    });
-  }
-
+  // Synth Primitives
   function triggerKick(ctx, time, startF, endF, vol) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
@@ -354,6 +489,32 @@ const variations = TRACK_VARIATIONS;
     src.stop(time + dur);
   }
 
+  function triggerSine(ctx, time, freq, vol, dur) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(time);
+    osc.stop(time + dur);
+  }
+
+  function triggerSquare(ctx, time, freq, vol, dur) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(time);
+    osc.stop(time + dur);
+  }
+
   function triggerTriangle(ctx, time, freq, vol, dur) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
@@ -379,32 +540,6 @@ const variations = TRACK_VARIATIONS;
     g.gain.exponentialRampToValueAtTime(0.001, time + dur);
     osc.connect(f);
     f.connect(g);
-    g.connect(masterGain);
-    osc.start(time);
-    osc.stop(time + dur);
-  }
-
-  function triggerSine(ctx, time, freq, vol, dur) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, time);
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-    osc.connect(g);
-    g.connect(masterGain);
-    osc.start(time);
-    osc.stop(time + dur);
-  }
-
-  function triggerSquare(ctx, time, freq, vol, dur) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(freq, time);
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-    osc.connect(g);
     g.connect(masterGain);
     osc.start(time);
     osc.stop(time + dur);
@@ -448,6 +583,221 @@ const variations = TRACK_VARIATIONS;
     osc.stop(time + dur);
   }
 
+  // Influences Primitives (Zimmer, Linkin Park, Code Orange, Skrillex, Daft Punk)
+  function triggerZimmerTick(ctx, time, panVal = 0) {
+    const osc = ctx.createOscillator();
+    const filter = ctx.createBiquadFilter();
+    const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    const g = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(2400, time);
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2400, time);
+    filter.Q.value = 8;
+    g.gain.setValueAtTime(0.25, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.02);
+    osc.connect(filter);
+    filter.connect(g);
+    if (panner) {
+      panner.pan.setValueAtTime(panVal, time);
+      g.connect(panner);
+      panner.connect(masterGain);
+    } else {
+      g.connect(masterGain);
+    }
+    osc.start(time);
+    osc.stop(time + 0.025);
+  }
+
+  function triggerZimmerBraam(ctx, time, baseFreq = 35, vol = 0.85, dur = 2.0) {
+    [baseFreq, baseFreq * 1.015, baseFreq * 2].forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = i === 2 ? 'sawtooth' : 'triangle';
+      osc.frequency.setValueAtTime(f, time);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(220, time);
+      filter.Q.value = 6;
+      g.gain.setValueAtTime(0.001, time);
+      g.gain.linearRampToValueAtTime(vol * 0.45, time + 0.08);
+      g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc.connect(filter);
+      filter.connect(g);
+      g.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + dur);
+    });
+  }
+
+  function triggerDropDIndustrial(ctx, time, freq, vol = 0.7, dur = 0.28) {
+    const osc = ctx.createOscillator();
+    const shaper = ctx.createWaveShaper();
+    const filter = ctx.createBiquadFilter();
+    const g = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, time);
+    shaper.curve = heavyDistortionCurve;
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(3200, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+    osc.connect(shaper);
+    shaper.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+    osc.start(time);
+    osc.stop(time + dur);
+  }
+
+  function triggerSkrillexFMGrowl(ctx, time, carrierFreq, modFreq, filterFreq, vol = 0.8, dur = 0.3) {
+    const carrier = ctx.createOscillator();
+    const modulator = ctx.createOscillator();
+    const modGain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    const shaper = ctx.createWaveShaper();
+    const g = ctx.createGain();
+
+    carrier.type = 'sawtooth';
+    carrier.frequency.setValueAtTime(carrierFreq, time);
+
+    modulator.type = 'sine';
+    modulator.frequency.setValueAtTime(modFreq, time);
+    modGain.gain.setValueAtTime(carrierFreq * 2.5, time);
+
+    modulator.connect(modGain);
+    modGain.connect(carrier.frequency);
+
+    shaper.curve = distortionCurve;
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(filterFreq, time);
+    filter.Q.value = 16;
+
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+    carrier.connect(shaper);
+    shaper.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+
+    carrier.start(time);
+    modulator.start(time);
+    carrier.stop(time + dur);
+    modulator.stop(time + dur);
+  }
+
+  function triggerForkMelody(ctx, time, freq, vol = 0.38) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
+    osc.connect(g);
+    g.connect(masterGain);
+    if (delayNode) g.connect(delayNode);
+    osc.start(time);
+    osc.stop(time + 0.25);
+  }
+
+  function triggerForkChord(ctx, time, freq1, freq2, filterFreq, dur) {
+    [freq1, freq2].forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, time);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(filterFreq, time);
+      filter.Q.value = 5;
+      g.gain.setValueAtTime(0.35, time);
+      g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc.connect(filter);
+      filter.connect(g);
+      g.connect(masterGain);
+      osc.start(time);
+      osc.stop(time + dur);
+    });
+  }
+
+  // Track & Section Switchers
+  function setTrack(idx) {
+    stopPlayback();
+    currentTrackIdx = idx;
+    const track = getActiveTrack();
+
+    trackBtn1.classList.toggle('btn-active', idx === 0);
+    trackBtn2.classList.toggle('btn-active', idx === 1);
+
+    currentTrackTag.textContent = idx === 0 ? 'SINGLE 01 // BACKUP' : 'SINGLE 02 // SPLINTERNET';
+    activeTrackName.textContent = `${track.title} (${track.duration})`;
+    toolActiveTrackLabel.textContent = `Target: ${track.title}`;
+
+    if (idx === 0) {
+      tabMutacionLabel.textContent = ':Mutacion (Base Fork C)';
+      tabChallengerLabel.textContent = ':Challenger (Suite Trojan 05:15)';
+      tabExpLabel.textContent = ':Experimentacion (Bocetos A/B)';
+      totalDuration = 75;
+      selectionStart = 0;
+      selectionEnd = 75;
+    } else {
+      tabMutacionLabel.textContent = ':Mutacion (Base Reloj/Breakbeat)';
+      tabChallengerLabel.textContent = ':Challenger (Suite 5 Actos 04:45)';
+      tabExpLabel.textContent = ':Experimentacion (Skrillex Lab)';
+      totalDuration = 285;
+      selectionStart = 0;
+      selectionEnd = 65;
+    }
+
+    renderArrangerStrip();
+    renderQuickSectionChips();
+    updateToolScrubbers();
+    setMode(idx === 0 ? 'mutacion' : 'challenger');
+  }
+
+  function renderArrangerStrip() {
+    const sections = getActiveSections();
+    challengerStrip.innerHTML = '';
+    const trackDur = currentTrackIdx === 0 ? 315 : 285;
+
+    sections.forEach((sec, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `section-block ${idx === activeSectionIndex ? 'selected' : ''}`;
+      const widthPct = ((sec.endSec - sec.startSec) / trackDur) * 100;
+      btn.style.width = `${widthPct}%`;
+      btn.title = `${sec.name} (${sec.startTime} - ${sec.endTime})`;
+      btn.innerHTML = `
+        <span class="sec-num mono">0${idx + 1}</span>
+        <span class="sec-name">${sec.name.split('(')[0].trim()}</span>
+        <span class="sec-range mono">${sec.startTime}</span>
+      `;
+      btn.addEventListener('click', () => {
+        selectSection(idx, true);
+        setSelectionRange(sec.startSec, sec.endSec);
+      });
+      challengerStrip.appendChild(btn);
+    });
+  }
+
+  function renderQuickSectionChips() {
+    const sections = getActiveSections();
+    sectionQuickChips.innerHTML = '';
+
+    sections.forEach((sec, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `quick-chip-btn ${idx === activeSectionIndex ? 'quick-chip-active' : ''}`;
+      btn.innerHTML = `<span class="mono font-bold">0${idx + 1}</span> ${sec.name.split('(')[0].trim()} (${sec.startTime} - ${sec.endTime})`;
+      btn.addEventListener('click', () => {
+        selectSection(idx, true);
+        setSelectionRange(sec.startSec, sec.endSec);
+      });
+      sectionQuickChips.appendChild(btn);
+    });
+  }
+
   function setMode(mode) {
     stopPlayback();
     currentMode = mode;
@@ -457,55 +807,78 @@ const variations = TRACK_VARIATIONS;
     tabChallenger.classList.toggle('btn-active', mode === 'challenger');
     tabExp.classList.toggle('btn-active', mode === 'exp');
 
+    const vars = getActiveVariations();
+    const sections = getActiveSections();
+
     if (mode === 'mutacion') {
-      totalDuration = 75; // 01:15
+      totalDuration = currentTrackIdx === 0 ? 75 : 120;
       challengerStrip.style.display = 'none';
       mutationStrip.style.display = 'block';
-      activeSecBadge.textContent = ':Mutacion // Fork Base C';
-      
-      const forkVar = variations.find(v => v.id === 'fork');
+      activeSecBadge.textContent = currentTrackIdx === 0 ? ':Mutacion // Fork Base C' : ':Mutacion // Reloj + Breakbeat';
+
+      const baseVar = vars.find(v => v.lifecycle === ':Mutacion') || vars[0];
+      mutationBadgeTitle.textContent = ':Mutacion Aprobada';
+      mutationBadgeName.textContent = baseVar.name;
+      mutationBadgeTime.textContent = currentTrackIdx === 0 ? '00:00 ── 01:15' : '00:00 ── 02:00';
+
       drawerTag.textContent = ':Mutacion // BASE';
-      drawerName.textContent = forkVar.name;
-      drawerTime.textContent = '00:00 ── 01:15';
+      drawerName.textContent = baseVar.name;
+      drawerTime.textContent = mutationBadgeTime.textContent;
       drawerLifecycle.textContent = ':Mutacion (Aprobada)';
-      drawerTempo.textContent = `${forkVar.bpm} BPM // C menor (F# persistente)`;
-      drawerInst.textContent = 'Sawtooth Chords LFO, Fast 1.75 Melody, Roland TR-909, Rimshot 5-tuplet, 3v7 Hats';
-      drawerDesc.textContent = forkVar.description;
-      drawerCode.textContent = forkVar.code;
-      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(forkVar.code)}`;
+      drawerTempo.textContent = `${baseVar.bpm} BPM // C menor`;
+      drawerInst.textContent = currentTrackIdx === 0 ? 'Sawtooth Chords LFO, Melody 1.75, TR-909, 3v7 Hats' : 'Zimmer Ticking Clock, Linkin Park Breakbeat, Drop-D Saw';
+      drawerDesc.textContent = baseVar.description;
+      drawerCode.textContent = baseVar.code;
+      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(baseVar.code)}`;
+      setSelectionRange(0, totalDuration);
     } else if (mode === 'challenger') {
-      totalDuration = 315; // 05:15
+      totalDuration = currentTrackIdx === 0 ? 315 : 285;
       challengerStrip.style.display = 'flex';
       mutationStrip.style.display = 'none';
       selectSection(0, false);
+      if (sections[0]) {
+        setSelectionRange(sections[0].startSec, sections[0].endSec);
+      }
     } else if (mode === 'exp') {
       totalDuration = 90;
       challengerStrip.style.display = 'none';
       mutationStrip.style.display = 'block';
-      activeSecBadge.textContent = ':Experimentacion // Bocetos A & B';
-      
-      const museoVar = variations.find(v => v.id === 'museo');
-      drawerTag.textContent = ':Experimentacion // ARCHIVADA';
-      drawerName.textContent = 'Variaciones A & B (Bocetos Iniciales)';
+      activeSecBadge.textContent = ':Experimentacion // Bocetos de Laboratorio';
+
+      const expVar = vars.find(v => v.lifecycle === ':Experimentacion') || vars[vars.length - 1];
+      mutationBadgeTitle.textContent = ':Experimentacion Archivada/Boceto';
+      mutationBadgeName.textContent = expVar.name;
+      mutationBadgeTime.textContent = '00:00 ── 01:30';
+
+      drawerTag.textContent = ':Experimentacion // LAB';
+      drawerName.textContent = expVar.name;
       drawerTime.textContent = '00:00 ── 01:30';
       drawerLifecycle.textContent = ':Experimentacion';
-      drawerTempo.textContent = '72 BPM (Museo) / 124 BPM (Tránsito)';
-      drawerInst.textContent = 'Sine pads, TR-808, Square leads';
-      drawerDesc.textContent = 'Bocetos originales exploratorios archivados tras la selección de Fork como Mutante base.';
-      drawerCode.textContent = museoVar.code;
-      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(museoVar.code)}`;
+      drawerTempo.textContent = `${expVar.bpm} BPM`;
+      drawerInst.textContent = 'Exploración de síntesis FM, glitch y filtros resonantes';
+      drawerDesc.textContent = expVar.description;
+      drawerCode.textContent = expVar.code;
+      drawerReplLink.href = `https://strudel.cc/#${encodeURIComponent(expVar.code)}`;
+      setSelectionRange(0, 90);
     }
 
+    rangeStartSlider.max = totalDuration;
+    rangeEndSlider.max = totalDuration;
     updateUI();
+    generateSmartPrompt();
   }
 
   function selectSection(index, seek = false) {
     activeSectionIndex = index;
+    const sections = getActiveSections();
     const sec = sections[index];
+    if (!sec) return;
 
-    sectionBtns.forEach((b, i) => {
-      b.classList.toggle('selected', i === index);
-    });
+    const allBlocks = challengerStrip.querySelectorAll('.section-block');
+    allBlocks.forEach((b, i) => b.classList.toggle('selected', i === index));
+
+    const allChips = sectionQuickChips.querySelectorAll('.quick-chip-btn');
+    allChips.forEach((c, i) => c.classList.toggle('quick-chip-active', i === index));
 
     if (currentMode === 'challenger') {
       activeSecBadge.textContent = `SEC 0${index + 1}: ${sec.name.split('(')[0].trim()}`;
@@ -523,6 +896,34 @@ const variations = TRACK_VARIATIONS;
     if (seek) {
       seekTo(sec.startSec);
     }
+    generateSmartPrompt();
+  }
+
+  function setSelectionRange(start, end) {
+    selectionStart = Math.max(0, Math.min(start, totalDuration));
+    selectionEnd = Math.max(selectionStart + 1, Math.min(end, totalDuration));
+    updateToolScrubbers();
+    updateSelectionOverlay();
+    generateSmartPrompt();
+  }
+
+  function updateToolScrubbers() {
+    rangeStartSlider.max = totalDuration;
+    rangeEndSlider.max = totalDuration;
+    rangeStartSlider.value = selectionStart;
+    rangeEndSlider.value = selectionEnd;
+    labelStartTime.textContent = formatTime(selectionStart);
+    labelEndTime.textContent = formatTime(selectionEnd);
+    labelRangeDur.textContent = `${Math.round(selectionEnd - selectionStart)}s`;
+  }
+
+  function updateSelectionOverlay() {
+    if (!selectionOverlay) return;
+    const leftPct = (selectionStart / totalDuration) * 100;
+    const widthPct = Math.max(0.5, ((selectionEnd - selectionStart) / totalDuration) * 100);
+    selectionOverlay.style.left = `${leftPct}%`;
+    selectionOverlay.style.width = `${widthPct}%`;
+    selectionOverlay.style.display = 'block';
   }
 
   function seekTo(sec) {
@@ -536,27 +937,82 @@ const variations = TRACK_VARIATIONS;
     playhead.style.left = `${pct}%`;
 
     if (currentMode === 'challenger') {
+      const sections = getActiveSections();
       const curIdx = sections.findIndex((s) => trackSeconds >= s.startSec && trackSeconds < s.endSec);
-      if (curIdx !== -1 && curIdx !== activeSectionIndex && !isLoopingSection) {
+      if (curIdx !== -1 && curIdx !== activeSectionIndex && !isLoopingSection && !isPreviewingRange) {
         selectSection(curIdx, false);
       }
     }
+    updateSelectionOverlay();
   }
 
+  // Intelligent Prompt Generator
+  function generateSmartPrompt() {
+    const track = getActiveTrack();
+    const sections = getActiveSections();
+    const activeSec = sections[activeSectionIndex] || sections[0];
+
+    const formattedStart = formatTime(selectionStart);
+    const formattedEnd = formatTime(selectionEnd);
+    const durSec = Math.round(selectionEnd - selectionStart);
+
+    const tagsArray = Array.from(activeDirectives);
+    const tagsString = tagsArray.length > 0 ? tagsArray.join(' ') : '[Sin directivas adicionales seleccionadas]';
+    const crewString = Array.from(activeCrewRoles).join(', ');
+    const userNote = producerNoteTextarea.value.trim() || 'Sin observaciones adicionales del DG. Proceder con el refinamiento técnico según las rúbricas.';
+
+    const currentCode = (currentMode === 'challenger' && activeSec)
+      ? activeSec.strudelCode
+      : (getActiveVariations()[0]?.code || '// Sin código');
+
+    const promptText = `### FEEDBACK TÁCTICO // SELECCIÓN DE TIMELINE
+- **Track Objetivo:** ${track.title} (${track.id})
+- **Rango Seleccionado:** ${formattedStart} ── ${formattedEnd} (${durSec} segundos)
+- **Modo de Ciclo de Vida:** ${currentMode.toUpperCase()}
+- **Sección en Foco:** ${activeSec ? `${activeSec.tag} — ${activeSec.name}` : 'Rango Continuo Personalizado'}
+- **Tempo / Tonalidad:** ${activeSec ? `${activeSec.bpm} BPM // ${activeSec.keyCenter}` : '115 BPM'}
+- **Directivas Tácticas Seleccionadas:** ${tagsString}
+- **Destinatarios Agénticos:** ${crewString}
+
+#### 1. Dirección del Director General (DG):
+"${userNote}"
+
+#### 2. Código Strudel Actual de la Sección:
+\`\`\`javascript
+${currentCode.trim()}
+\`\`\`
+
+#### 3. Mandato para el Crew Multiagente:
+DM, CP, SD, AE: Aplicar las directivas anteriores sobre el rango temporal [${formattedStart} ── ${formattedEnd}] respetando los límites de mezcla (-14.0 LUFS ± 0.5, True Peak < -1.0 dBTP) y los invariantes del manifiesto de Seed.md (Restauración ↔ Fuga, nada de nostalgia pasiva). Consolidar informe en L3 QA.`;
+
+    promptPreviewCode.textContent = promptText;
+  }
+
+  // Playback & Sound Engine
   let tickerStep = 0;
-  function startPlayback() {
+  function startPlayback(isRangePreview = false) {
     getAudioContext();
     isPlaying = true;
+    isPreviewingRange = isRangePreview;
     playIcon.textContent = '⏸';
     playLabel.textContent = 'Pause';
     stopBtn.disabled = false;
 
+    if (isRangePreview) {
+      trackSeconds = selectionStart;
+    }
+
     clockInterval = setInterval(() => {
       trackSeconds += 0.5;
 
-      if (isLoopingSection && currentMode === 'challenger') {
+      if (isPreviewingRange) {
+        if (trackSeconds >= selectionEnd) {
+          trackSeconds = selectionStart;
+        }
+      } else if (isLoopingSection && currentMode === 'challenger') {
+        const sections = getActiveSections();
         const curSec = sections[activeSectionIndex];
-        if (trackSeconds >= curSec.endSec) {
+        if (curSec && trackSeconds >= curSec.endSec) {
           trackSeconds = curSec.startSec;
         }
       } else {
@@ -573,41 +1029,9 @@ const variations = TRACK_VARIATIONS;
       const time = ctx.currentTime;
       const s = trackSeconds;
 
-      // MODE 1: :MUTACION (FORK C PURO)
-      if (currentMode === 'mutacion') {
-        const stepInBar = tickerStep % 16;
-        const barIdx = Math.floor(tickerStep / 16) % 4;
-        const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
-
-        if (stepInBar === 0) {
-          const dyad = forkDyads[barIdx];
-          triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
-        }
-
-        if (tickerStep % 2 === 0 || tickerStep % 7 === 3) {
-          const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
-          triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.38);
-        }
-
-        if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12 || stepInBar === 14) {
-          const kickVol = (stepInBar === 0 || stepInBar === 12) ? 0.85 : 0.65;
-          triggerKick(ctx, time, 135, 36, kickVol);
-        }
-
-        if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
-          triggerNoise(ctx, time, 0.28, 2200, 0.035);
-        }
-
-        if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
-          const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
-          triggerNoise(ctx, time, hatVol, 3200, 0.025);
-        }
-      }
-
-      // MODE 2: :CHALLENGER (TROJAN SANDBOX SUITE)
-      else if (currentMode === 'challenger') {
-        // Sec 01: Fork Suspense (0:00 - 1:15)
-        if (s >= 0 && s < 75) {
+      // TRACK 01: BACKUP (FORK BASE & TROJAN SUITE)
+      if (currentTrackIdx === 0) {
+        if (currentMode === 'mutacion') {
           const stepInBar = tickerStep % 16;
           const barIdx = Math.floor(tickerStep / 16) % 4;
           const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
@@ -627,94 +1051,204 @@ const variations = TRACK_VARIATIONS;
           if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 13) {
             triggerNoise(ctx, time, 0.28, 2200, 0.035);
           }
-          if (stepInBar % 5 === 0 || stepInBar % 2 === 1) {
-            const hatVol = (stepInBar % 4 === 2) ? 0.25 : 0.14;
-            triggerNoise(ctx, time, hatVol, 3200, 0.025);
+          if (tickerStep % 4 === 1) {
+            triggerNoise(ctx, time, 0.18, 4800, 0.02);
           }
         }
-        // Sec 02: Caballo de Troya (1:15 - 2:00)
-        else if (s >= 75 && s < 120) {
+        else if (currentMode === 'challenger') {
           const stepInBar = tickerStep % 16;
           const barIdx = Math.floor(tickerStep / 16) % 4;
-          const lfoFilterFreq = 1400 + Math.sin(tickerStep * 0.15) * 800;
 
-          if (stepInBar === 0) {
-            const dyad = forkDyads[barIdx];
-            triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+          // Sec 01: Fork Suspense (0:00 - 1:15)
+          if (s < 75) {
+            const lfoFilterFreq = 1350 + Math.sin(tickerStep * 0.15) * 850;
+            if (stepInBar === 0) {
+              const dyad = forkDyads[barIdx];
+              triggerForkChord(ctx, time, dyad[0], dyad[1], lfoFilterFreq, 2.0);
+            }
+            if (tickerStep % 2 === 0) {
+              const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
+              triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.32);
+            }
+            if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
+              triggerKick(ctx, time, 135, 36, 0.8);
+            }
+            if (stepInBar % 2 === 1) {
+              triggerNoise(ctx, time, 0.18, 3000, 0.03);
+            }
           }
-          if (tickerStep % 3 === 0) {
-            const mIdx = Math.floor(tickerStep * 1.75) % forkMelodyNotes.length;
-            triggerForkMelody(ctx, time, forkMelodyNotes[mIdx], 0.26);
+          // Sec 02: Trojan Chimes (1:15 - 2:00)
+          else if (s >= 75 && s < 120) {
+            if (stepInBar === 0) {
+              const dyad = forkDyads[barIdx];
+              triggerForkChord(ctx, time, dyad[0], dyad[1], 1200, 2.0);
+            }
+            if (tickerStep % 2 === 0) {
+              const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
+              triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.22, 0.2);
+            }
+            if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
+              triggerKick(ctx, time, 135, 36, 0.8);
+            }
+            if (stepInBar % 2 === 1) {
+              triggerNoise(ctx, time, 0.16, 3200, 0.03);
+            }
           }
-          if (tickerStep % 2 === 0) {
-            const brightFreqs = [523.25, 659.25, 783.99, 987.77, 1046.50, 1174.66];
-            triggerTriangle(ctx, time, brightFreqs[(tickerStep / 2) % brightFreqs.length], 0.2, 0.2);
+          // Sec 03: Marcha Totalitaria (2:00 - 2:45)
+          else if (s >= 120 && s < 165) {
+            const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
+            triggerNoise(ctx, time, snareVol, 1400, 0.05);
+            if (tickerStep % 4 === 0) {
+              triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
+            }
           }
-          if (stepInBar === 0 || stepInBar === 5 || stepInBar === 12) {
-            triggerKick(ctx, time, 135, 36, 0.8);
+          // Sec 04: Flatline & 56k Modem (2:45 - 3:25)
+          else if (s >= 165 && s < 205) {
+            if (tickerStep % 8 === 0) {
+              triggerSine(ctx, time, 1046.50, 0.35, 0.07);
+            }
+            if (tickerStep % 4 === 2) {
+              const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
+              triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
+            }
           }
-          if (stepInBar % 2 === 1) {
-            triggerNoise(ctx, time, 0.16, 3200, 0.03);
+          // Sec 05: Solo Rock Santana (3:25 - 4:05)
+          else if (s >= 205 && s < 245) {
+            if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
+              const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
+              triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
+            }
           }
-        }
-        // Sec 03: Marcha Totalitaria (2:00 - 2:45)
-        else if (s >= 120 && s < 165) {
-          const snareVol = (tickerStep % 4 === 0) ? 0.65 : 0.35;
-          triggerNoise(ctx, time, snareVol, 1400, 0.05);
-          if (tickerStep % 4 === 0) {
-            triggerSaw(ctx, time, 130.81, 0.35, 1600, 0.18);
-          }
-          if (tickerStep % 16 === 14) {
-            triggerNoise(ctx, time, 0.4, 800, 0.08);
-          }
-        }
-        // Sec 04: Flatline & Modem (2:45 - 3:25)
-        else if (s >= 165 && s < 205) {
-          if (tickerStep % 8 === 0) {
-            triggerSine(ctx, time, 1046.50, 0.35, 0.07);
-          }
-          if (tickerStep % 4 === 2) {
-            const chirpFreq = 1600 + Math.sin(tickerStep * 4) * 800;
-            triggerSquare(ctx, time, chirpFreq, 0.09, 0.05);
-          }
-        }
-        // Sec 05: Solo Rock Santana (3:25 - 4:05)
-        else if (s >= 205 && s < 245) {
-          if (tickerStep % 3 === 0 || tickerStep % 7 === 0) {
-            const gFreq = santanaNotes[(tickerStep / 3) % santanaNotes.length];
-            triggerGuitar(ctx, time, gFreq, 0.3, 0.4);
-          }
-        }
-        // Sec 06: Rave Techno (4:05 - 5:15)
-        else if (s >= 245 && s <= 315) {
-          if (tickerStep % 4 === 0) {
-            triggerKick(ctx, time, 160, 38, 0.95);
-          }
-          if (tickerStep % 4 === 2) {
-            triggerNoise(ctx, time, 0.45, 6000, 0.08);
-          }
-          if (tickerStep % 2 === 0) {
-            const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
-            const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
-            const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
-            triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
-          }
-          if (tickerStep % 8 === 4) {
-            triggerGuitar(ctx, time, 587.33, 0.2, 0.3);
+          // Sec 06: Rave Techno (4:05 - 5:15)
+          else if (s >= 245 && s <= 315) {
+            if (tickerStep % 4 === 0) {
+              triggerKick(ctx, time, 160, 38, 0.95);
+            }
+            if (tickerStep % 4 === 2) {
+              triggerNoise(ctx, time, 0.45, 6000, 0.08);
+            }
+            if (tickerStep % 2 === 0) {
+              const acidNotes = [73.42, 87.31, 98.00, 116.54, 138.59, 146.83];
+              const acidFreq = acidNotes[(tickerStep / 2) % acidNotes.length];
+              const filterFreq = 800 + Math.sin(tickerStep * 0.4) * 1600;
+              triggerAcid(ctx, time, acidFreq, filterFreq, 0.35, 0.14);
+            }
           }
         }
       }
 
-      // MODE 3: :EXPERIMENTACION (MUSEO / TRANSITO BOCETOS)
-      else if (currentMode === 'exp') {
-        if (s < 45) {
-          // Museo (Lo-fi 72 bpm)
-          if (tickerStep % 8 === 0) triggerSine(ctx, time, 261.63, 0.3, 0.5);
-          if (tickerStep % 4 === 0) triggerKick(ctx, time, 110, 32, 0.6);
-        } else {
-          // Tránsito (124 bpm)
-          if (tickerStep % 4 === 0) triggerKick(ctx, time, 140, 35, 0.8);
-          if (tickerStep % 2 === 1) triggerNoise(ctx, time, 0.2, 4000, 0.03);
+      // TRACK 02: SPLINTERNET // REWIRED (ZIMMER, LINKIN PARK, CODE ORANGE, SKRILLEX, DAFT PUNK)
+      else if (currentTrackIdx === 1) {
+        const stepInBar = tickerStep % 16;
+        const barIdx = Math.floor(tickerStep / 16) % 4;
+
+        // Act 1: Ticking Clock Zimmer x French Sweep Daft Punk (0:00 - 1:05)
+        if (s < 65) {
+          // Zimmer 16th Ticking
+          const panVal = Math.sin(tickerStep * 0.3) * 0.6;
+          triggerZimmerTick(ctx, time, panVal);
+
+          // Daft Punk French Touch chord sweep on bar start
+          if (stepInBar === 0) {
+            const chord = daftPunkChords[barIdx];
+            const lpfSweep = 500 + Math.sin(tickerStep * 0.1) * 2200;
+            chord.forEach(f => triggerSaw(ctx, time, f, 0.18, lpfSweep, 1.8));
+          }
+
+          // Sub drone
+          if (stepInBar === 0) {
+            triggerSine(ctx, time, 35, 0.6, 2.0);
+          }
+        }
+
+        // Act 2: Hybrid Breakbeat & Drop-D Crunch (1:05 - 2:00)
+        else if (s >= 65 && s < 120) {
+          // Linkin Park Breakbeat
+          if (stepInBar === 0 || stepInBar === 5 || stepInBar === 8 || stepInBar === 10) {
+            triggerKick(ctx, time, 150, 42, 0.9);
+          }
+          if (stepInBar === 4 || stepInBar === 12) {
+            triggerNoise(ctx, time, 0.55, 1200, 0.08); // Snare hit
+          }
+          if (stepInBar === 7 || stepInBar === 15) {
+            triggerNoise(ctx, time, 0.25, 2400, 0.04); // Ghost snare
+          }
+          if (stepInBar % 2 === 1) {
+            triggerNoise(ctx, time, 0.18, 4500, 0.02);
+          }
+
+          // Industrial Drop-D riff
+          if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 11) {
+            const riffNotes = [65.41, 65.41, 77.78, 87.31]; // C2, C2, Eb2, F2
+            triggerDropDIndustrial(ctx, time, riffNotes[stepInBar % riffNotes.length], 0.6, 0.25);
+          }
+        }
+
+        // Act 3: Dropout Digital Brutalista & Clipping (2:00 - 2:50)
+        else if (s >= 120 && s < 170) {
+          // Code Orange Digital Dropout
+          const isSilentHole = (stepInBar >= 4 && stepInBar <= 7) || (stepInBar >= 12 && stepInBar <= 14);
+
+          if (isSilentHole) {
+            // Absolute silence / 120Hz Server hum
+            if (tickerStep % 8 === 0) {
+              triggerSine(ctx, time, 120, 0.08, 0.5);
+            }
+          } else {
+            // Harsh clipping bursts
+            if (stepInBar === 0 || stepInBar === 8) {
+              triggerSquare(ctx, time, 92.50, 0.75, 0.14); // Tritono F#
+              triggerNoise(ctx, time, 0.6, 800, 0.1);
+            }
+            if (stepInBar === 2 || stepInBar === 10) {
+              triggerSquare(ctx, time, 65.41, 0.7, 0.12);
+            }
+          }
+        }
+
+        // Act 4: Skrillex Surgical FM Neuro Growl (2:50 - 3:40)
+        else if (s >= 170 && s < 220) {
+          // 140 BPM Heavy Kick & Snare
+          if (stepInBar % 8 === 0) {
+            triggerKick(ctx, time, 160, 38, 1.0);
+          }
+          if (stepInBar % 8 === 4) {
+            triggerNoise(ctx, time, 0.65, 1800, 0.08); // Snare slap
+          }
+          if (stepInBar % 2 === 1) {
+            triggerNoise(ctx, time, 0.22, 5000, 0.02);
+          }
+
+          // FM Neuro Growl Modulations
+          if (stepInBar % 2 === 0) {
+            const growlCarrier = [65.41, 77.78, 92.50, 116.54][(tickerStep / 2) % 4];
+            const growlFilter = 800 + Math.sin(tickerStep * 0.8) * 2800;
+            triggerSkrillexFMGrowl(ctx, time, growlCarrier, 140, growlFilter, 0.85, 0.22);
+          }
+
+          // Micro-stutters
+          if (stepInBar === 6 || stepInBar === 14) {
+            triggerSquare(ctx, time, 523.25, 0.3, 0.04);
+          }
+        }
+
+        // Act 5: Monumental Braam 35Hz & Sidechain Fade (3:40 - 4:45)
+        else if (s >= 220 && s <= 285) {
+          // Zimmer Braam
+          if (stepInBar === 0) {
+            triggerZimmerBraam(ctx, time, 35, 0.85, 2.2);
+          }
+
+          // French Touch Sidechain pump pad
+          if (stepInBar % 4 === 1 || stepInBar % 4 === 2) {
+            const padChords = [261.63, 311.13, 392.00];
+            padChords.forEach(f => triggerTriangle(ctx, time, f, 0.2, 0.25));
+          }
+
+          // Archaeological bell decay
+          if (stepInBar === 0 && barIdx % 2 === 0) {
+            triggerSine(ctx, time, 1046.50, 0.25, 0.8);
+          }
         }
       }
 
@@ -728,6 +1262,7 @@ const variations = TRACK_VARIATIONS;
     if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
     if (soundTicker) { clearInterval(soundTicker); soundTicker = null; }
     isPlaying = false;
+    isPreviewingRange = false;
     playIcon.textContent = '▶';
     playLabel.textContent = 'Play';
     stopBtn.disabled = true;
@@ -756,8 +1291,8 @@ const variations = TRACK_VARIATIONS;
     const timeData = new Uint8Array(bufferLength);
     analyser.getByteTimeDomainData(timeData);
 
-    canvasCtx.lineWidth = 1.5;
-    canvasCtx.strokeStyle = currentMode === 'mutacion' ? '#34d399' : (currentMode === 'challenger' ? '#38bdf8' : '#fbbf24');
+    canvasCtx.lineWidth = 1.6;
+    canvasCtx.strokeStyle = currentTrackIdx === 1 ? '#38bdf8' : (currentMode === 'mutacion' ? '#34d399' : '#fbbf24');
     canvasCtx.beginPath();
 
     const sliceWidth = width / bufferLength;
@@ -774,10 +1309,13 @@ const variations = TRACK_VARIATIONS;
     requestAnimationFrame(drawWaveform);
   }
 
-  // Event Handlers
+  // Event Listeners
+  trackBtn1.addEventListener('click', () => setTrack(0));
+  trackBtn2.addEventListener('click', () => setTrack(1));
+
   playBtn.addEventListener('click', () => {
     if (isPlaying) stopPlayback();
-    else startPlayback();
+    else startPlayback(false);
   });
 
   stopBtn.addEventListener('click', () => {
@@ -803,12 +1341,6 @@ const variations = TRACK_VARIATIONS;
   tabChallenger.addEventListener('click', () => setMode('challenger'));
   tabExp.addEventListener('click', () => setMode('exp'));
 
-  sectionBtns.forEach((btn, idx) => {
-    btn.addEventListener('click', () => {
-      selectSection(idx, true);
-    });
-  });
-
   waveformTrack.addEventListener('click', (e) => {
     const rect = waveformTrack.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -816,21 +1348,96 @@ const variations = TRACK_VARIATIONS;
     seekTo(pct * totalDuration);
   });
 
-  btnCopyRef.addEventListener('click', async () => {
-    let textToCopy = '';
-    if (currentMode === 'mutacion') {
-      textToCopy = `[FEEDBACK :Mutacion] Variación C (Fork Base): `;
-    } else if (currentMode === 'challenger') {
-      const sec = sections[activeSectionIndex];
-      textToCopy = `[FEEDBACK :Challenger] Sección 0${activeSectionIndex + 1} (${sec.startTime} - ${sec.endTime}) - ${sec.name.split('(')[0].trim()}: `;
+  // Range Slider Listeners
+  rangeStartSlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    if (val >= selectionEnd) {
+      selectionStart = Math.max(0, selectionEnd - 1);
+      rangeStartSlider.value = selectionStart;
     } else {
-      textToCopy = `[FEEDBACK :Experimentacion] Bocetos: `;
+      selectionStart = val;
     }
+    updateToolScrubbers();
+    updateSelectionOverlay();
+    generateSmartPrompt();
+  });
 
+  rangeEndSlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    if (val <= selectionStart) {
+      selectionEnd = Math.min(totalDuration, selectionStart + 1);
+      rangeEndSlider.value = selectionEnd;
+    } else {
+      selectionEnd = val;
+    }
+    updateToolScrubbers();
+    updateSelectionOverlay();
+    generateSmartPrompt();
+  });
+
+  btnPreviewRange.addEventListener('click', () => {
+    if (isPlaying && isPreviewingRange) {
+      stopPlayback();
+    } else {
+      stopPlayback();
+      startPlayback(true);
+    }
+  });
+
+  directivePills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const tag = pill.getAttribute('data-tag');
+      if (activeDirectives.has(tag)) {
+        activeDirectives.delete(tag);
+        pill.classList.remove('pill-btn-active');
+      } else {
+        activeDirectives.add(tag);
+        pill.classList.add('pill-btn-active');
+      }
+      generateSmartPrompt();
+    });
+  });
+
+  crewPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const role = pill.getAttribute('data-role');
+      if (activeCrewRoles.has(role)) {
+        activeCrewRoles.delete(role);
+        pill.classList.remove('pill-crew-active');
+      } else {
+        activeCrewRoles.add(role);
+        pill.classList.add('pill-crew-active');
+      }
+      generateSmartPrompt();
+    });
+  });
+
+  producerNoteTextarea.addEventListener('input', () => {
+    generateSmartPrompt();
+  });
+
+  btnCopySmartPrompt.addEventListener('click', async () => {
+    const promptText = promptPreviewCode.textContent;
     try {
-      await navigator.clipboard.writeText(textToCopy);
+      await navigator.clipboard.writeText(promptText);
+      const originalText = copyPromptBtnText.textContent;
+      copyPromptBtnText.textContent = '✅ ¡PROMPT COPIADO AL PORTAPAPELES!';
+      btnCopySmartPrompt.classList.add('btn-success-glow');
+      setTimeout(() => {
+        copyPromptBtnText.textContent = originalText;
+        btnCopySmartPrompt.classList.remove('btn-success-glow');
+      }, 2500);
+    } catch (e) {
+      console.warn('Clipboard write error:', e);
+    }
+  });
+
+  btnCopyRef.addEventListener('click', async () => {
+    const promptText = promptPreviewCode.textContent;
+    try {
+      await navigator.clipboard.writeText(promptText);
       const originalText = copyRefText.textContent;
-      copyRefText.textContent = '¡Copiado al portapapeles!';
+      copyRefText.textContent = '¡Copiado!';
       setTimeout(() => { copyRefText.textContent = originalText; }, 2000);
     } catch (e) {
       console.warn(e);
@@ -838,58 +1445,136 @@ const variations = TRACK_VARIATIONS;
   });
 
   // Init
-  setMode('mutacion');
+  setTrack(0);
   drawWaveform();
 </script>
 
 <style>
-  /* Lifecycle Navigation Bar */
+  /* Layout & Container */
+  .studio-container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    color: #e2e8f0;
+  }
+
+  /* Header */
+  .studio-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #1f232b;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .studio-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .studio-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #f8fafc;
+    margin: 0;
+  }
+
+  .studio-tag {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    background: #1e293b;
+    color: #38bdf8;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .track-switcher {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .studio-repo-link {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .studio-repo-link:hover {
+    color: #38bdf8;
+  }
+
+  /* Lifecycle Bar */
   .lifecycle-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    background: #14171f;
+    border: 1px solid #1f2430;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .lifecycle-label-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .active-track-badge {
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    color: #f1f5f9;
+  }
+
+  .lifecycle-nav {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .ind-mutacion { background: #34d399; box-shadow: 0 0 6px #34d399; }
+  .ind-challenger { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+  .ind-exp { background: #fbbf24; }
+
+  /* Deck Card */
+  .deck-card {
+    background: #141720;
+    border: 1px solid #232836;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .deck-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.75rem;
-    padding: 0.5rem 0.75rem;
-    background: var(--studio-panel);
-    border: 1px solid var(--studio-border);
-    border-radius: 6px;
-  }
-
-  .lifecycle-nav {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .status-indicator {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-
-  .ind-mutacion { background: var(--studio-success); box-shadow: 0 0 5px var(--studio-success); }
-  .ind-challenger { background: var(--studio-accent); box-shadow: 0 0 5px var(--studio-accent); }
-  .ind-exp { background: #fbbf24; box-shadow: 0 0 5px #fbbf24; }
-
-  /* Producer Deck Card */
-  .deck-card {
-    background: var(--studio-panel);
-    border: 1px solid var(--studio-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .deck-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
   }
 
   .transport-controls {
@@ -906,17 +1591,18 @@ const variations = TRACK_VARIATIONS;
 
   .time-display {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--studio-text);
+    font-weight: 700;
+    color: #f8fafc;
+    letter-spacing: 0.05em;
   }
 
   .active-sec-badge {
     font-size: 0.75rem;
-    background: var(--studio-panel-subtle);
-    border: 1px solid var(--studio-border);
-    color: var(--studio-accent);
-    padding: 3px 8px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 0.2rem 0.6rem;
     border-radius: 4px;
+    color: #38bdf8;
   }
 
   .volume-control {
@@ -927,37 +1613,19 @@ const variations = TRACK_VARIATIONS;
   }
 
   .volume-control input[type="range"] {
-    accent-color: var(--studio-accent);
-    cursor: pointer;
-    width: 80px;
-    height: 4px;
-    background: var(--studio-border);
-    border-radius: 2px;
+    width: 70px;
+    accent-color: #38bdf8;
   }
 
-  .label-muted {
-    color: var(--studio-text-muted);
-    font-size: 0.75rem;
-  }
-
-  .font-medium {
-    font-weight: 500;
-  }
-
-  .font-bold {
-    font-weight: 700;
-    color: var(--studio-text);
-  }
-
-  /* Waveform scrubber */
+  /* Waveform & Scrubber */
   .waveform-container {
     position: relative;
-    background: #101217;
-    border: 1px solid var(--studio-border);
+    background: #0d0f14;
+    border: 1px solid #1c202a;
     border-radius: 4px;
-    height: 60px;
-    cursor: pointer;
+    height: 64px;
     overflow: hidden;
+    cursor: pointer;
   }
 
   #waveform-canvas {
@@ -966,189 +1634,487 @@ const variations = TRACK_VARIATIONS;
     display: block;
   }
 
+  .selection-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: rgba(56, 189, 248, 0.18);
+    border-left: 1px solid #38bdf8;
+    border-right: 1px solid #38bdf8;
+    pointer-events: none;
+    z-index: 2;
+    display: none;
+  }
+
   .playhead {
     position: absolute;
     top: 0;
     bottom: 0;
+    left: 0;
     width: 2px;
-    background: #ffffff;
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-    left: 0%;
+    background: #f43f5e;
+    box-shadow: 0 0 6px #f43f5e;
     pointer-events: none;
-    z-index: 10;
+    z-index: 3;
+    transition: left 0.1s linear;
   }
 
-  /* Arranger Row / Section Blocks */
+  /* Arranger Section Strip */
   .sections-strip {
     display: flex;
-    height: 46px;
-    background: var(--studio-panel-subtle);
-    border: 1px solid var(--studio-border);
+    gap: 2px;
+    background: #0c0e12;
+    border: 1px solid #1b1f29;
     border-radius: 4px;
+    padding: 2px;
+    overflow-x: auto;
+  }
+
+  .section-block {
+    background: #171b24;
+    border: 1px solid #232938;
+    color: #94a3b8;
+    padding: 0.45rem 0.35rem;
+    font-size: 0.7rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 3px;
+    white-space: nowrap;
     overflow: hidden;
   }
 
+  .section-block:hover {
+    background: #1f2533;
+    color: #f1f5f9;
+  }
+
+  .section-block.selected {
+    background: #1e293b;
+    border-color: #38bdf8;
+    color: #38bdf8;
+  }
+
+  .section-block .sec-num {
+    font-size: 0.65rem;
+    opacity: 0.7;
+  }
+
+  .section-block .sec-name {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .section-block .sec-range {
+    font-size: 0.65rem;
+    opacity: 0.6;
+  }
+
   .mutation-strip {
-    height: 40px;
-    background: var(--studio-panel-subtle);
-    border: 1px solid var(--studio-border);
+    background: #10141d;
+    border: 1px dashed #283244;
     border-radius: 4px;
-    padding: 0 0.75rem;
-    display: flex;
-    align-items: center;
+    padding: 0.6rem 0.85rem;
   }
 
   .mutation-info-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    justify-content: space-between;
     font-size: 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
-  .section-block {
-    appearance: none;
-    background: transparent;
-    border: none;
-    border-right: 1px solid var(--studio-border);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 0.5rem;
-    cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease;
-    text-align: left;
-    overflow: hidden;
-  }
-
-  .section-block:last-child {
-    border-right: none;
-  }
-
-  .section-block:hover {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .section-block.selected {
-    background: var(--studio-accent-dim);
-    border-bottom: 2px solid var(--studio-accent);
-  }
-
-  .sec-num {
-    font-size: 0.65rem;
-    color: var(--studio-accent);
-    line-height: 1;
-    font-weight: 600;
-  }
-
-  .sec-name {
-    font-size: 0.72rem;
-    color: var(--studio-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-
-  .sec-range {
-    font-size: 0.62rem;
-    color: var(--studio-text-muted);
-    line-height: 1;
-  }
-
-  /* Section Drawer (Feedback Card) */
-  .drawer-card {
-    background: var(--studio-panel);
-    border: 1px solid var(--studio-border);
-    border-radius: 6px;
+  /* SMART SECTION SELECTION & FEEDBACK PROMPT TOOL */
+  .smart-tool-card {
+    background: #12151e;
+    border: 1px solid #283042;
+    border-radius: 8px;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
+    gap: 1.1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #1c2230;
+    padding-bottom: 0.85rem;
+  }
+
+  .tool-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tool-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tool-badge {
+    font-size: 0.65rem;
+    background: #0284c7;
+    color: #f0fdf4;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .tool-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0;
+  }
+
+  .tool-subheading {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+  }
+
+  .tool-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-preview-range {
+    background: #1e293b;
+    border-color: #334155;
+    color: #38bdf8;
+  }
+
+  .btn-preview-range:hover {
+    background: #273549;
+  }
+
+  .btn-copy-prompt {
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.85rem;
+    background: #0284c7;
+    border-color: #0369a1;
+  }
+
+  .btn-copy-prompt:hover {
+    background: #0369a1;
+  }
+
+  .btn-success-glow {
+    background: #059669 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  }
+
+  /* Range Grid */
+  .tool-range-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    background: #0d1017;
+    border: 1px solid #1c2230;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+  }
+
+  .range-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .range-field-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.7rem;
+  }
+
+  .time-badge {
+    background: #1e293b;
+    color: #38bdf8;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .time-range-slider {
+    width: 100%;
+    accent-color: #38bdf8;
+    cursor: pointer;
+  }
+
+  .range-divider-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    font-size: 0.7rem;
+    border-left: 1px solid #1e2433;
+    border-right: 1px solid #1e2433;
+  }
+
+  .text-accent {
+    color: #38bdf8;
+    font-size: 0.85rem;
+  }
+
+  /* Quick Chips */
+  .tool-section-chips-row,
+  .tool-directives-row,
+  .tool-routing-row,
+  .tool-note-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+  }
+
+  .section-quick-chips,
+  .directive-pills,
+  .crew-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .quick-chip-btn {
+    background: #151a24;
+    border: 1px solid #232a3b;
+    color: #94a3b8;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .quick-chip-btn:hover {
+    background: #1f2738;
+    color: #f1f5f9;
+  }
+
+  .quick-chip-active {
+    background: #0f2d4a;
+    border-color: #38bdf8;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  /* Directive Pills */
+  .pill-btn {
+    background: #131722;
+    border: 1px solid #252e42;
+    color: #cbd5e1;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .pill-btn:hover {
+    background: #1e273a;
+    border-color: #3b82f6;
+    color: #f8fafc;
+  }
+
+  .pill-btn-active {
+    background: #1e3a5f !important;
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+    font-weight: 600;
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.3);
+  }
+
+  /* Crew Pills */
+  .pill-crew {
+    background: #131722;
+    border: 1px solid #252e42;
+    color: #94a3b8;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .pill-crew:hover {
+    background: #1c2333;
+    color: #e2e8f0;
+  }
+
+  .pill-crew-active {
+    background: #064e3b !important;
+    border-color: #34d399 !important;
+    color: #34d399 !important;
+    font-weight: 600;
+  }
+
+  /* Producer Textarea */
+  .producer-textarea {
+    width: 100%;
+    background: #0d1017;
+    border: 1px solid #232a3b;
+    border-radius: 6px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.78rem;
+    color: #f1f5f9;
+    resize: vertical;
+    transition: border-color 0.15s;
+  }
+
+  .producer-textarea:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+  }
+
+  /* Prompt Preview Box */
+  .tool-prompt-preview {
+    background: #0a0c10;
+    border: 1px solid #1c2230;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.7rem;
+  }
+
+  .prompt-preview-block {
+    background: transparent;
+    padding: 0.25rem 0;
+    margin: 0;
+    font-size: 0.72rem;
+    color: #cbd5e1;
+    white-space: pre-wrap;
+    max-height: 180px;
+    overflow-y: auto;
+    line-height: 1.45;
+  }
+
+  /* Inspection Drawer Card */
+  .drawer-card {
+    background: #141720;
+    border: 1px solid #232836;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .drawer-header {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
+    gap: 1rem;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--studio-border);
+    border-bottom: 1px solid #1d212c;
+    padding-bottom: 0.5rem;
   }
 
   .drawer-title-group {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 
   .drawer-tag {
-    font-size: 0.7rem;
-    background: var(--studio-panel-subtle);
-    border: 1px solid var(--studio-border);
-    color: var(--studio-accent);
-    padding: 2px 6px;
-    border-radius: 3px;
+    font-size: 0.65rem;
+    color: #34d399;
   }
 
   .drawer-name {
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0;
   }
 
   .drawer-time {
-    font-size: 0.8rem;
-    color: var(--studio-text-muted);
+    font-size: 0.7rem;
+    color: #94a3b8;
   }
 
   .drawer-body {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0.65rem;
+    font-size: 0.8rem;
   }
 
   .drawer-meta-row {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    font-size: 0.82rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    background: #0f1218;
+    padding: 0.6rem 0.85rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
   }
 
   .drawer-desc {
-    font-size: 0.85rem;
-    color: var(--studio-text-muted);
+    margin: 0;
+    color: #cbd5e1;
     line-height: 1.5;
   }
 
-  /* Collapsible Code Block */
+  /* Code Details */
   .code-details {
-    background: var(--studio-panel-subtle);
-    border: 1px solid var(--studio-border);
+    background: #0c0e13;
+    border: 1px solid #1c202a;
     border-radius: 4px;
-    overflow: hidden;
+    padding: 0.4rem 0.75rem;
   }
 
   .code-summary {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
-    color: var(--studio-text-muted);
-    cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #94a3b8;
     user-select: none;
   }
 
   .code-summary:hover {
-    color: var(--studio-text);
+    color: #f1f5f9;
   }
 
   .repl-link {
-    color: var(--studio-accent);
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 0.7rem;
   }
 
   .repl-link:hover {
@@ -1156,25 +2122,97 @@ const variations = TRACK_VARIATIONS;
   }
 
   .code-block {
-    margin: 0;
+    background: #08090d;
     padding: 0.75rem;
-    background: #090a0d;
-    border-top: 1px solid var(--studio-border);
-    font-size: 0.78rem;
-    line-height: 1.45;
-    color: #e6edf3;
+    border-radius: 4px;
     overflow-x: auto;
-    max-height: 200px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: #a5f3fc;
+    margin-top: 0.5rem;
   }
 
-  /* Minimal Footer */
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    font-weight: 500;
+    color: #e2e8f0;
+    background: #1c212c;
+    border: 1px solid #2b3242;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: #252c3b;
+    border-color: #3d465c;
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn-sm {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .btn-primary {
+    background: #0284c7;
+    border-color: #0369a1;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #0369a1;
+    border-color: #075985;
+  }
+
+  .btn-active {
+    background: #1e293b;
+    border-color: #38bdf8;
+    color: #38bdf8;
+  }
+
+  /* Typography & Utilities */
+  .mono {
+    font-family: var(--font-mono, monospace);
+  }
+
+  .font-bold { font-weight: 700; }
+  .font-medium { font-weight: 500; }
+  .label-muted { color: #64748b; font-size: 0.68rem; letter-spacing: 0.04em; }
+  .text-muted { color: #64748b; }
+  .text-xs { font-size: 0.65rem; }
+
+  /* Studio Footer */
   .studio-footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 0.72rem;
-    color: var(--studio-text-muted);
-    padding-top: 1rem;
-    border-top: 1px solid var(--studio-border);
+    font-size: 0.7rem;
+    color: #475569;
+    border-top: 1px solid #1a1e27;
+    padding-top: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .tool-range-grid {
+      grid-template-columns: 1fr;
+    }
+    .range-divider-box {
+      border: none;
+      padding: 0.25rem 0;
+    }
   }
 </style>
