@@ -239,6 +239,20 @@ const challengerTrack = TRACKS[1];
           </div>
 
 
+          <!-- Selector de Dimensión de Mutación Explícita -->
+          <div class="mutation-dimension-selector">
+            <span class="mono label-muted" id="label-mut-dim">OPERADOR DE MUTACIÓN:</span>
+            <select class="mutation-select mono" id="select-mutation-dimension" aria-labelledby="label-mut-dim">
+              <option value="CROSSFADE_TRANSITION">🔀 Transición & Crossfader (Curvas Equal-Power)</option>
+              <option value="ORCHESTRAL_ETHNIC_LAYER">🎻 Capa Transcultural 2026 (Guzheng, Duduk, Gamelan)</option>
+              <option value="BASS_FM_SYNTH">⚡ Bajo Neuro FM (Growls & Saturación)</option>
+              <option value="DRUMS_RHYTHM">🥁 Ritmo & Breakbeat (Síncopa & Ghost Snares)</option>
+              <option value="VOCAL_CORAL_FORMANT">🎙️ Coro Polifónico IA (Modulaciones Vocálicas)</option>
+              <option value="TEMPO_METRIC_MODULATION">⏱️ Modulación Métrica & Acelerando</option>
+              <option value="MASTER_DSP_LOUDNESS">🎚️ Master DSP & Loudness (-14 LUFS EBU R128)</option>
+            </select>
+          </div>
+
           <!-- Rescue Protocol // Lyra Reverse Engineering (A Demanda) -->
           <div class="vibe-rescue-box">
             <span class="mono label-muted" id="label-rescue-sel">PROTOCOLO DE RESCATE:</span>
@@ -252,6 +266,22 @@ const challengerTrack = TRACKS[1];
             >
               <span class="rescue-icon" aria-hidden="true">🚨</span>
               <span class="rescue-text" id="rescue-pill-label">Lyra Reverse-Engineering: Inactivo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fila de Veredicto de Selección Champion vs Challenger (Decisión HITL) -->
+        <div class="console-verdict-row">
+          <span class="mono label-muted" id="label-verdict-sel">DECISIÓN DE GOBERNANZA HITL:</span>
+          <div class="verdict-button-group" role="group" aria-labelledby="label-verdict-sel">
+            <button type="button" class="btn-verdict btn-verdict-iterate active-verdict" id="btn-verdict-iterate" data-verdict="REQUEST_ITERATION" aria-pressed="true">
+              <span>🔄 Solicitar Iteración</span>
+            </button>
+            <button type="button" class="btn-verdict btn-verdict-promote" id="btn-verdict-promote" data-verdict="PROMOTE_TO_CHAMPION" aria-pressed="false">
+              <span>🏆 Promover a Champion</span>
+            </button>
+            <button type="button" class="btn-verdict btn-verdict-reject" id="btn-verdict-reject" data-verdict="REJECT_CHALLENGER" aria-pressed="false">
+              <span>🚫 Rechazar Challenger</span>
             </button>
           </div>
         </div>
@@ -420,6 +450,8 @@ const challengerTrack = TRACKS[1];
   let selEnd = 65;
   let includeCountdownAnchor = true;
   let isLyraRescueActive = false;
+  let selectedMutationDimension = 'CROSSFADE_TRANSITION';
+  let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
 
   // Web Audio Context & Synthesizer State
@@ -478,6 +510,12 @@ const challengerTrack = TRACKS[1];
   const previewRangeBadge = document.getElementById('preview-range-badge');
   const btnCopyVibePrompt = document.getElementById('btn-copy-vibe-prompt');
   const btnCopyText = document.getElementById('btn-copy-text');
+
+  // Evolution & Governance DOM Cache
+  const selectMutationDimension = document.getElementById('select-mutation-dimension');
+  const btnVerdictIterate = document.getElementById('btn-verdict-iterate');
+  const btnVerdictPromote = document.getElementById('btn-verdict-promote');
+  const btnVerdictReject = document.getElementById('btn-verdict-reject');
 
   // Annotation Tooling DOM Cache
   const annotationPopover = document.getElementById('annotation-popover');
@@ -1367,6 +1405,22 @@ const challengerTrack = TRACKS[1];
       annotationsXml += '  </director_timeline_annotations>\n';
     }
 
+    const mutationDescriptions = {
+      CROSSFADE_TRANSITION: 'Transición & Crossfader (Curvas Equal-Power / S-Curve para evitar saltos o cortes abruptos)',
+      ORCHESTRAL_ETHNIC_LAYER: 'Capa Transcultural 2026 (Guzheng, Duduk, Gamelan, Polirritmia sinfónica)',
+      BASS_FM_SYNTH: 'Bajo Neuro FM (Growls hipermodulados, 12 LFOs, saturación multicapa)',
+      DRUMS_RHYTHM: 'Ritmo & Breakbeat (Síncopa agresiva, ghost snares, micro-edits 16avos)',
+      VOCAL_CORAL_FORMANT: 'Coro Polifónico IA (Modulaciones vocálicas sintéticas y texturas corales místicas)',
+      TEMPO_METRIC_MODULATION: 'Modulación Métrica & Acelerando (Ajuste gradual de tempo y métrica)',
+      MASTER_DSP_LOUDNESS: 'Master DSP & Loudness (-14 LUFS EBU R128, saturación analógica ChowTape)'
+    };
+
+    const verdictDescriptions = {
+      REQUEST_ITERATION: 'Continuar mutando el Challenger actual con las directivas especificadas sin promover aún.',
+      PROMOTE_TO_CHAMPION: 'El Challenger ha superado al Champion actual. Promover a nuevo Baseline Ground Truth y fijar como referencia.',
+      REJECT_CHALLENGER: 'El Challenger no cumplió los objetivos estéticos/técnicos. Descartar mutación y restaurar último Champion estable.'
+    };
+
     const xmlOutput = `<?xml version="1.0" encoding="UTF-8"?>
 <vibe_dispatch version="1.0">
   <metadata>
@@ -1381,6 +1435,15 @@ const challengerTrack = TRACKS[1];
       ${anchorText}
     </vibe_anchor>
   </metadata>
+
+  <evolution_gate>
+    <mutation_operator dimension="${selectedMutationDimension}" status="PENDING">
+      ${escapeXml(mutationDescriptions[selectedMutationDimension] || selectedMutationDimension)}
+    </mutation_operator>
+    <governance_verdict decision="${activeVerdictDecision}">
+      ${escapeXml(verdictDescriptions[activeVerdictDecision] || activeVerdictDecision)}
+    </governance_verdict>
+  </evolution_gate>
 
   <director_intent>
     ${escapeXml(userNote)}
@@ -1713,6 +1776,37 @@ ${strudelCode}
       generateVibePrompt();
     });
   }
+
+  // Mutation Dimension Operator Listener
+  if (selectMutationDimension) {
+    selectMutationDimension.addEventListener('change', (e) => {
+      selectedMutationDimension = e.target.value;
+      generateVibePrompt();
+    });
+  }
+
+  // HITL Governance Verdict Buttons
+  const verdictButtons = [
+    { btn: btnVerdictIterate, val: 'REQUEST_ITERATION' },
+    { btn: btnVerdictPromote, val: 'PROMOTE_TO_CHAMPION' },
+    { btn: btnVerdictReject, val: 'REJECT_CHALLENGER' }
+  ];
+
+  verdictButtons.forEach(({ btn, val }) => {
+    if (btn) {
+      btn.addEventListener('click', () => {
+        activeVerdictDecision = val;
+        verdictButtons.forEach(item => {
+          if (item.btn) {
+            const isActive = item.val === val;
+            item.btn.classList.toggle('active-verdict', isActive);
+            item.btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          }
+        });
+        generateVibePrompt();
+      });
+    }
+  });
 
   // Render & Download Reference WAV
   if (btnExportReferenceWav) {
@@ -2362,6 +2456,114 @@ ${strudelCode}
 
   html[data-theme="dark"] .anchor-pill-active {
     color: #fbbf24 !important;
+  }
+
+  /* Mutation Dimension Operator */
+  .mutation-dimension-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mutation-select {
+    padding: 0.4rem 0.65rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 0.72rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    max-width: 100%;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .mutation-select:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+  }
+
+  /* Governance HITL Verdict Row */
+  .console-verdict-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .verdict-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+    font-family: inherit;
+    border-radius: 6px;
+    border: 1px solid var(--border-strong);
+    background: var(--btn-bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-verdict:hover {
+    background: var(--btn-hover);
+    color: var(--text-primary);
+  }
+
+  .btn-verdict.active-verdict.btn-verdict-iterate {
+    background: rgba(2, 132, 199, 0.15);
+    border-color: #0284c7;
+    color: #0284c7;
+    font-weight: 700;
+  }
+
+  html[data-theme="dark"] .btn-verdict.active-verdict.btn-verdict-iterate {
+    background: rgba(56, 189, 248, 0.18);
+    border-color: #38bdf8;
+    color: #38bdf8;
+  }
+
+  .btn-verdict.active-verdict.btn-verdict-promote {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    color: #059669;
+    font-weight: 700;
+  }
+
+  html[data-theme="dark"] .btn-verdict.active-verdict.btn-verdict-promote {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #34d399;
+    color: #34d399;
+  }
+
+  .btn-verdict.active-verdict.btn-verdict-reject {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #dc2626;
+    font-weight: 700;
+  }
+
+  html[data-theme="dark"] .btn-verdict.active-verdict.btn-verdict-reject {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #f87171;
+    color: #f87171;
   }
 
   /* Rescue Protocol Button & Box */
