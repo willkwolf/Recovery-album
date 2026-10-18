@@ -139,6 +139,62 @@ const challengerTrack = TRACKS[1];
         <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
       </div>
 
+      <!-- FLOATING SELECTION & FAST PROMPT DOCK (INSPIRADO EN SUNO STUDIO) -->
+      <div class="challenger-floating-dock" id="challenger-floating-dock" role="region" aria-label="Dock flotante de prompt y edición rápida">
+        <div class="floating-dock-inner">
+          <div class="dock-selection-chip" id="dock-selection-chip" title="Rango seleccionado en el Challenger">
+            <span class="dock-chip-icon" aria-hidden="true">🌊</span>
+            <span class="dock-chip-text mono" id="dock-chip-text">00:00 - 01:05 (65s) · c. 1.1</span>
+            <button type="button" class="dock-chip-dismiss" id="btn-dock-clear-sel" aria-label="Limpiar rango seleccionado" title="Restaurar sección por defecto">✕</button>
+          </div>
+
+          <div class="dock-prompt-input-group">
+            <input
+              type="text"
+              class="dock-prompt-input mono"
+              id="dock-quick-prompt-input"
+              placeholder="Dicta prompt in-situ para esta selección (ej: 'build acelerando y sweep blanco')..."
+              aria-label="Prompt rápido para la selección activa"
+            />
+          </div>
+
+          <div class="dock-engine-badge mono" title="Motor activo de síntesis">
+            <span class="engine-dot" aria-hidden="true"></span>
+            <span>Surge XT / Cardinal</span>
+          </div>
+
+          <button
+            type="button"
+            class="btn-dock-submit"
+            id="btn-dock-quick-submit"
+            aria-label="Inyectar en prompt maestro y copiar"
+            title="Inyectar en prompt maestro y copiar al portapapeles"
+          >
+            <span aria-hidden="true">↑</span>
+            <span>Despachar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Menú Contextual Rápido de Timeline (Estilo DAW) -->
+      <div class="timeline-context-menu" id="timeline-context-menu" style="display: none;" role="menu" aria-label="Opciones rápidas de selección">
+        <button type="button" class="ctx-item" id="ctx-btn-split" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">✂️</span>
+          <span>Aislar Rango Activo</span>
+          <span class="ctx-shortcut mono">Ctrl+E</span>
+        </button>
+        <button type="button" class="ctx-item" id="ctx-btn-annotate" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">📝</span>
+          <span>Anotar para Agentes</span>
+          <span class="ctx-shortcut mono">Ctrl+N</span>
+        </button>
+        <button type="button" class="ctx-item" id="ctx-btn-quick-play" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">▶️</span>
+          <span>Reproducir Selección</span>
+          <span class="ctx-shortcut mono">Espacio</span>
+        </button>
+      </div>
+
       <!-- Popover de Anotación Flotante para el Director General -->
       <div class="annotation-popover" id="annotation-popover" style="display: none;" role="dialog" aria-modal="false" aria-labelledby="popover-title">
         <div class="popover-arrow"></div>
@@ -239,18 +295,32 @@ const challengerTrack = TRACKS[1];
           </div>
 
 
-          <!-- Selector de Dimensión de Mutación Explícita -->
-          <div class="mutation-dimension-selector">
-            <span class="mono label-muted" id="label-mut-dim">OPERADOR DE MUTACIÓN:</span>
-            <select class="mutation-select mono" id="select-mutation-dimension" aria-labelledby="label-mut-dim">
-              <option value="CROSSFADE_TRANSITION">🔀 Transición & Crossfader (Curvas Equal-Power)</option>
-              <option value="ORCHESTRAL_ETHNIC_LAYER">🎻 Capa Transcultural 2026 (Guzheng, Duduk, Gamelan)</option>
-              <option value="BASS_FM_SYNTH">⚡ Bajo Neuro FM (Growls & Saturación)</option>
-              <option value="DRUMS_RHYTHM">🥁 Ritmo & Breakbeat (Síncopa & Ghost Snares)</option>
-              <option value="VOCAL_CORAL_FORMANT">🎙️ Coro Polifónico IA (Modulaciones Vocálicas)</option>
-              <option value="TEMPO_METRIC_MODULATION">⏱️ Modulación Métrica & Acelerando</option>
-              <option value="MASTER_DSP_LOUDNESS">🎚️ Master DSP & Loudness (-14 LUFS EBU R128)</option>
-            </select>
+          <!-- Paleta de Tags de Mutación Pegables a los Agentes -->
+          <div class="mutation-palette-container" id="mutation-palette-container">
+            <span class="mono label-muted" id="label-mut-tags">TAGS DE MUTACIÓN (HAZ CLIC O ARRASTRA AL AGENTE):</span>
+            <div class="mutation-tags-cloud" id="mutation-tags-cloud" role="group" aria-labelledby="label-mut-tags">
+              <button type="button" class="tag-chip" data-tag-id="CROSSFADE_TRANSITION" data-tag-label="🔀 Transición & Crossfader" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>🔀 Transición & Crossfader</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="ORCHESTRAL_ETHNIC_LAYER" data-tag-label="🎻 Capa Transcultural 2026" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>🎻 Capa Transcultural 2026</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="BASS_FM_SYNTH" data-tag-label="⚡ Bajo Neuro FM" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>⚡ Bajo Neuro FM</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="DRUMS_RHYTHM" data-tag-label="🥁 Ritmo & Breakbeat" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>🥁 Ritmo & Breakbeat</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="VOCAL_CORAL_FORMANT" data-tag-label="🎙️ Coro Polifónico IA" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>🎙️ Coro Polifónico IA</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="TEMPO_METRIC_MODULATION" data-tag-label="⏱️ Modulación Métrica" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>⏱️ Modulación Métrica</span>
+              </button>
+              <button type="button" class="tag-chip" data-tag-id="MASTER_DSP_LOUDNESS" data-tag-label="🎚️ Master -14 LUFS" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
+                <span>🎚️ Master -14 LUFS</span>
+              </button>
+            </div>
           </div>
 
           <!-- Rescue Protocol // Lyra Reverse Engineering (A Demanda) -->
@@ -325,6 +395,10 @@ const challengerTrack = TRACKS[1];
                 <span class="role-tag mono">L1 · DM (Dirección Musical)</span>
                 <span class="role-badge-tier mono">Estrategia</span>
               </div>
+              <div class="role-tags-container" data-role="DM">
+                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                <div class="role-tags-list" id="role-tags-dm"></div>
+              </div>
               <input
                 type="text"
                 class="role-text-input mono"
@@ -340,6 +414,10 @@ const challengerTrack = TRACKS[1];
               <div class="role-card-top">
                 <span class="role-tag mono">L2 · CP (Composición)</span>
                 <span class="role-badge-tier mono">LMMS / DAW</span>
+              </div>
+              <div class="role-tags-container" data-role="CP">
+                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                <div class="role-tags-list" id="role-tags-cp"></div>
               </div>
               <input
                 type="text"
@@ -357,6 +435,10 @@ const challengerTrack = TRACKS[1];
                 <span class="role-tag mono">L2 · SD (Diseño Sonoro)</span>
                 <span class="role-badge-tier mono">Surge XT / FM</span>
               </div>
+              <div class="role-tags-container" data-role="SD">
+                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                <div class="role-tags-list" id="role-tags-sd"></div>
+              </div>
               <input
                 type="text"
                 class="role-text-input mono"
@@ -373,6 +455,10 @@ const challengerTrack = TRACKS[1];
                 <span class="role-tag mono">L2 · AE (Ingeniería de Audio)</span>
                 <span class="role-badge-tier mono">DSP / Master</span>
               </div>
+              <div class="role-tags-container" data-role="AE">
+                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                <div class="role-tags-list" id="role-tags-ae"></div>
+              </div>
               <input
                 type="text"
                 class="role-text-input mono"
@@ -388,6 +474,10 @@ const challengerTrack = TRACKS[1];
               <div class="role-card-top">
                 <span class="role-tag mono">L3 · QA (Auditoría & Gate)</span>
                 <span class="role-badge-tier mono">Auditoría</span>
+              </div>
+              <div class="role-tags-container" data-role="QA">
+                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                <div class="role-tags-list" id="role-tags-qa"></div>
               </div>
               <input
                 type="text"
@@ -450,9 +540,27 @@ const challengerTrack = TRACKS[1];
   let selEnd = 65;
   let includeCountdownAnchor = true;
   let isLyraRescueActive = false;
-  let selectedMutationDimension = 'CROSSFADE_TRANSITION';
   let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
+
+  // Mutation Tags System State (tags assigned per agent role)
+  const agentMutationTags = {
+    DM: new Set(['CROSSFADE_TRANSITION']),
+    CP: new Set(['ORCHESTRAL_ETHNIC_LAYER']),
+    SD: new Set(['BASS_FM_SYNTH']),
+    AE: new Set(['MASTER_DSP_LOUDNESS']),
+    QA: new Set()
+  };
+
+  const tagDefinitions = {
+    CROSSFADE_TRANSITION: { label: '🔀 Transición & Crossfader', desc: 'Curvas Equal-Power / S-Curve para evitar saltos' },
+    ORCHESTRAL_ETHNIC_LAYER: { label: '🎻 Capa Transcultural 2026', desc: 'Guzheng, Duduk, Gamelan, Polirritmia sinfónica' },
+    BASS_FM_SYNTH: { label: '⚡ Bajo Neuro FM', desc: 'Growls hipermodulados, 12 LFOs, saturación multicapa' },
+    DRUMS_RHYTHM: { label: '🥁 Ritmo & Breakbeat', desc: 'Síncopa agresiva, ghost snares, micro-edits 16avos' },
+    VOCAL_CORAL_FORMANT: { label: '🎙️ Coro Polifónico IA', desc: 'Modulaciones vocálicas sintéticas y texturas corales místicas' },
+    TEMPO_METRIC_MODULATION: { label: '⏱️ Modulación Métrica', desc: 'Acelerando gradual de tempo y métrica' },
+    MASTER_DSP_LOUDNESS: { label: '🎚️ Master -14 LUFS', desc: 'Saturación analógica ChowTape + Airwindows Slew' }
+  };
 
   // Web Audio Context & Synthesizer State
   let audioCtx = null;
@@ -511,11 +619,31 @@ const challengerTrack = TRACKS[1];
   const btnCopyVibePrompt = document.getElementById('btn-copy-vibe-prompt');
   const btnCopyText = document.getElementById('btn-copy-text');
 
+  // Floating Selection Dock & Context Menu DOM Cache
+  const challengerFloatingDock = document.getElementById('challenger-floating-dock');
+  const dockChipText = document.getElementById('dock-chip-text');
+  const dockQuickPromptInput = document.getElementById('dock-quick-prompt-input');
+  const btnDockQuickSubmit = document.getElementById('btn-dock-quick-submit');
+  const btnDockClearSel = document.getElementById('btn-dock-clear-sel');
+  const timelineContextMenu = document.getElementById('timeline-context-menu');
+  const ctxBtnSplit = document.getElementById('ctx-btn-split');
+  const ctxBtnAnnotate = document.getElementById('ctx-btn-annotate');
+  const ctxBtnQuickPlay = document.getElementById('ctx-btn-quick-play');
+
   // Evolution & Governance DOM Cache
-  const selectMutationDimension = document.getElementById('select-mutation-dimension');
   const btnVerdictIterate = document.getElementById('btn-verdict-iterate');
   const btnVerdictPromote = document.getElementById('btn-verdict-promote');
   const btnVerdictReject = document.getElementById('btn-verdict-reject');
+
+  // Mutation Tags Containers DOM Cache
+  const mutationTagsCloud = document.getElementById('mutation-tags-cloud');
+  const roleTagsContainers = {
+    DM: document.getElementById('role-tags-dm'),
+    CP: document.getElementById('role-tags-cp'),
+    SD: document.getElementById('role-tags-sd'),
+    AE: document.getElementById('role-tags-ae'),
+    QA: document.getElementById('role-tags-qa')
+  };
 
   // Annotation Tooling DOM Cache
   const annotationPopover = document.getElementById('annotation-popover');
@@ -1191,7 +1319,12 @@ const challengerTrack = TRACKS[1];
   function updateDeckUI(deckId) {
     const d = decks[deckId];
     const dom = deckDOM[deckId];
-    dom.timeDisplay.textContent = `${formatTime(d.currentSec)} / ${formatTime(d.duration)}`;
+    const curSec = d.sections[d.activeSecIdx];
+    const bpm = curSec ? curSec.bpm : (deckId === 0 ? 138 : 118);
+    const barNum = Math.floor(d.currentSec / (60 / bpm * 4)) + 1;
+    const beatNum = Math.floor((d.currentSec % (60 / bpm * 4)) / (60 / bpm)) + 1;
+
+    dom.timeDisplay.textContent = `${formatTime(d.currentSec)} / ${formatTime(d.duration)} (c.${barNum}.${beatNum}.1)`;
     const pct = (d.currentSec / d.duration) * 100;
     dom.playhead.style.left = `${pct}%`;
     dom.waveformTrack.setAttribute('aria-valuenow', Math.round(d.currentSec));
@@ -1228,6 +1361,17 @@ const challengerTrack = TRACKS[1];
       }
     });
     previewRangeBadge.textContent = `${formatTime(selStart)} ── ${formatTime(selEnd)} (${Math.round(selEnd - selStart)}s)`;
+
+    // Update Floating Dock Chip (Estilo DAW Suno Studio)
+    if (dockChipText) {
+      const d1 = decks[1];
+      const curSec = d1.sections[d1.activeSecIdx];
+      const bpm = curSec ? curSec.bpm : 118;
+      const barNum = Math.floor(selStart / (60 / bpm * 4)) + 1;
+      const beatNum = Math.floor((selStart % (60 / bpm * 4)) / (60 / bpm)) + 1;
+      const durSec = Math.round(selEnd - selStart);
+      dockChipText.textContent = `${formatTime(selStart)} - ${formatTime(selEnd)} (${durSec}s) · c.${barNum}.${beatNum}.1`;
+    }
   }
 
   function updateTargetDeckUI() {
@@ -1366,12 +1510,28 @@ const challengerTrack = TRACKS[1];
     };
 
     let directivesXml = '';
+    const allAssignedTagsSet = new Set();
+
     ['DM', 'CP', 'SD', 'AE', 'QA'].forEach(role => {
       if (!activeCrewRoles.has(role)) return;
       const inputEl = roleInputs[role];
       const instr = (inputEl && inputEl.value.trim()) ? inputEl.value.trim() : 'Ejecutar según rúbrica y brief de dominio.';
       const meta = roleMeta[role] || { name: 'Agent' };
+      const roleTags = agentMutationTags[role] || new Set();
+
+      let tagsXml = '';
+      if (roleTags.size > 0) {
+        tagsXml = '      <assigned_mutation_tags>\n';
+        roleTags.forEach(tId => {
+          allAssignedTagsSet.add(tId);
+          const tDef = tagDefinitions[tId] || { label: tId, desc: tId };
+          tagsXml += `        <tag id="${tId}" label="${escapeXml(tDef.label)}">${escapeXml(tDef.desc)}</tag>\n`;
+        });
+        tagsXml += '      </assigned_mutation_tags>\n';
+      }
+
       directivesXml += `    <role id="${role}" name="${meta.name}">\n`;
+      if (tagsXml) directivesXml += tagsXml;
       directivesXml += `      <instruction>${escapeXml(instr)}</instruction>\n`;
       if (meta.policy) directivesXml += `      <transition_policy>${meta.policy}</transition_policy>\n`;
       if (meta.daw) directivesXml += `      <daw_target>${meta.daw}</daw_target>\n`;
@@ -1405,15 +1565,11 @@ const challengerTrack = TRACKS[1];
       annotationsXml += '  </director_timeline_annotations>\n';
     }
 
-    const mutationDescriptions = {
-      CROSSFADE_TRANSITION: 'Transición & Crossfader (Curvas Equal-Power / S-Curve para evitar saltos o cortes abruptos)',
-      ORCHESTRAL_ETHNIC_LAYER: 'Capa Transcultural 2026 (Guzheng, Duduk, Gamelan, Polirritmia sinfónica)',
-      BASS_FM_SYNTH: 'Bajo Neuro FM (Growls hipermodulados, 12 LFOs, saturación multicapa)',
-      DRUMS_RHYTHM: 'Ritmo & Breakbeat (Síncopa agresiva, ghost snares, micro-edits 16avos)',
-      VOCAL_CORAL_FORMANT: 'Coro Polifónico IA (Modulaciones vocálicas sintéticas y texturas corales místicas)',
-      TEMPO_METRIC_MODULATION: 'Modulación Métrica & Acelerando (Ajuste gradual de tempo y métrica)',
-      MASTER_DSP_LOUDNESS: 'Master DSP & Loudness (-14 LUFS EBU R128, saturación analógica ChowTape)'
-    };
+    let tagsSummaryXml = '';
+    allAssignedTagsSet.forEach(tId => {
+      const tDef = tagDefinitions[tId] || { label: tId, desc: tId };
+      tagsSummaryXml += `      <mutation_operator dimension="${tId}" label="${escapeXml(tDef.label)}">\n        ${escapeXml(tDef.desc)}\n      </mutation_operator>\n`;
+    });
 
     const verdictDescriptions = {
       REQUEST_ITERATION: 'Continuar mutando el Challenger actual con las directivas especificadas sin promover aún.',
@@ -1437,9 +1593,8 @@ const challengerTrack = TRACKS[1];
   </metadata>
 
   <evolution_gate>
-    <mutation_operator dimension="${selectedMutationDimension}" status="PENDING">
-      ${escapeXml(mutationDescriptions[selectedMutationDimension] || selectedMutationDimension)}
-    </mutation_operator>
+    <active_mutation_tags count="${allAssignedTagsSet.size}">
+${tagsSummaryXml || '      <tag id="NONE">Sin tags asignados</tag>\n'}    </active_mutation_tags>
     <governance_verdict decision="${activeVerdictDecision}">
       ${escapeXml(verdictDescriptions[activeVerdictDecision] || activeVerdictDecision)}
     </governance_verdict>
@@ -1777,11 +1932,197 @@ ${strudelCode}
     });
   }
 
-  // Mutation Dimension Operator Listener
-  if (selectMutationDimension) {
-    selectMutationDimension.addEventListener('change', (e) => {
-      selectedMutationDimension = e.target.value;
+  // Mutation Tags Rendering & Drag/Drop System
+  let lastFocusedRole = 'CP'; // Agente objetivo por defecto
+
+  function renderAgentMutationTags() {
+    Object.keys(roleTagsContainers).forEach(role => {
+      const container = roleTagsContainers[role];
+      if (!container) return;
+      container.innerHTML = '';
+      const tags = agentMutationTags[role] || new Set();
+      if (tags.size === 0) {
+        const emptySpan = document.createElement('span');
+        emptySpan.className = 'mono text-xs text-muted role-tag-empty';
+        emptySpan.textContent = 'Sin tags asignados';
+        container.appendChild(emptySpan);
+        return;
+      }
+      tags.forEach(tId => {
+        const def = tagDefinitions[tId] || { label: tId };
+        const badge = document.createElement('span');
+        badge.className = 'role-tag-badge mono';
+        badge.innerHTML = `<span>${def.label}</span><button type="button" class="btn-remove-tag" data-role="${role}" data-tag="${tId}" aria-label="Remover tag ${tId}">✕</button>`;
+        container.appendChild(badge);
+      });
+    });
+
+    // Actualizar estados visuales de la paleta
+    const allAssigned = new Set();
+    Object.values(agentMutationTags).forEach(s => s.forEach(t => allAssigned.add(t)));
+    document.querySelectorAll('.tag-chip').forEach(chip => {
+      const tId = chip.getAttribute('data-tag-id');
+      const isAssigned = allAssigned.has(tId);
+      chip.classList.toggle('tag-chip-assigned', isAssigned);
+      chip.setAttribute('aria-pressed', isAssigned ? 'true' : 'false');
+    });
+  }
+
+  // Delegación de eventos para remover tags
+  document.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.btn-remove-tag');
+    if (removeBtn) {
+      const role = removeBtn.getAttribute('data-role');
+      const tag = removeBtn.getAttribute('data-tag');
+      if (agentMutationTags[role]) {
+        agentMutationTags[role].delete(tag);
+        renderAgentMutationTags();
+        generateVibePrompt();
+      }
+    }
+  });
+
+  // Configurar tarjetas de roles para Drag & Drop y foco táctico
+  Object.keys(roleCards).forEach(role => {
+    const card = roleCards[role];
+    if (card) {
+      card.addEventListener('click', () => {
+        lastFocusedRole = role;
+        Object.values(roleCards).forEach(c => c && c.classList.remove('role-card-focused'));
+        card.classList.add('role-card-focused');
+      });
+
+      card.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        card.classList.add('role-card-dragover');
+      });
+
+      card.addEventListener('dragleave', () => {
+        card.classList.remove('role-card-dragover');
+      });
+
+      card.addEventListener('drop', (e) => {
+        e.preventDefault();
+        card.classList.remove('role-card-dragover');
+        const tagId = e.dataTransfer.getData('text/plain');
+        if (tagId && tagDefinitions[tagId]) {
+          if (!agentMutationTags[role]) agentMutationTags[role] = new Set();
+          agentMutationTags[role].add(tagId);
+          renderAgentMutationTags();
+          generateVibePrompt();
+        }
+      });
+    }
+  });
+
+  // Configurar chips de la paleta de mutación (Click para asignar al agente enfocado, o Drag)
+  document.querySelectorAll('.tag-chip').forEach(chip => {
+    chip.addEventListener('dragstart', (e) => {
+      const tId = chip.getAttribute('data-tag-id');
+      e.dataTransfer.setData('text/plain', tId);
+    });
+
+    chip.addEventListener('click', () => {
+      const tId = chip.getAttribute('data-tag-id');
+      if (!agentMutationTags[lastFocusedRole]) agentMutationTags[lastFocusedRole] = new Set();
+      if (agentMutationTags[lastFocusedRole].has(tId)) {
+        agentMutationTags[lastFocusedRole].delete(tId);
+      } else {
+        agentMutationTags[lastFocusedRole].add(tId);
+      }
+      renderAgentMutationTags();
       generateVibePrompt();
+    });
+  });
+
+  // FLOATING SELECTION DOCK (Inspirado en Suno Studio)
+  if (dockQuickPromptInput) {
+    dockQuickPromptInput.addEventListener('input', (e) => {
+      vibeDirectorNote.value = e.target.value;
+      generateVibePrompt();
+    });
+  }
+
+  if (vibeDirectorNote) {
+    vibeDirectorNote.addEventListener('input', (e) => {
+      if (dockQuickPromptInput) {
+        dockQuickPromptInput.value = e.target.value;
+      }
+    });
+  }
+
+  if (btnDockQuickSubmit) {
+    btnDockQuickSubmit.addEventListener('click', () => {
+      generateVibePrompt();
+      if (btnCopyVibePrompt) {
+        btnCopyVibePrompt.click();
+      }
+      btnDockQuickSubmit.classList.add('btn-dock-copied');
+      btnDockQuickSubmit.innerHTML = '<span>✅ Copiado</span>';
+      setTimeout(() => {
+        btnDockQuickSubmit.classList.remove('btn-dock-copied');
+        btnDockQuickSubmit.innerHTML = '<span aria-hidden="true">↑</span><span>Despachar</span>';
+      }, 1500);
+    });
+  }
+
+  if (btnDockClearSel) {
+    btnDockClearSel.addEventListener('click', () => {
+      const d1 = decks[1];
+      const sec = d1.sections[d1.activeSecIdx] || d1.sections[0];
+      selStart = sec.startSec;
+      selEnd = sec.endSec;
+      updateSelectionOverlays();
+      generateVibePrompt();
+    });
+  }
+
+  // TIMELINE CONTEXT MENU (Estilo DAW)
+  const challengerTrackEl = deckDOM[1].waveformTrack;
+  if (challengerTrackEl && timelineContextMenu) {
+    challengerTrackEl.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const rect = challengerTrackEl.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      const clickTime = pct * decks[1].duration;
+
+      timelineContextMenu.style.left = `${Math.min(window.innerWidth - 220, e.clientX)}px`;
+      timelineContextMenu.style.top = `${e.clientY + 5}px`;
+      timelineContextMenu.style.display = 'flex';
+      timelineContextMenu.dataset.clickTime = String(clickTime);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!timelineContextMenu.contains(e.target) && e.target !== challengerTrackEl) {
+        timelineContextMenu.style.display = 'none';
+      }
+    });
+  }
+
+  if (ctxBtnSplit) {
+    ctxBtnSplit.addEventListener('click', () => {
+      const t = parseFloat(timelineContextMenu?.dataset.clickTime || String(selStart));
+      selStart = Math.max(0, t - 15);
+      selEnd = Math.min(decks[1].duration, t + 15);
+      updateSelectionOverlays();
+      generateVibePrompt();
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+    });
+  }
+
+  if (ctxBtnAnnotate) {
+    ctxBtnAnnotate.addEventListener('click', () => {
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+      openAnnotationPopover(selStart, selEnd, window.innerWidth / 2);
+    });
+  }
+
+  if (ctxBtnQuickPlay) {
+    ctxBtnQuickPlay.addEventListener('click', () => {
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+      seekDeck(1, selStart);
+      startDeckPlayback(1);
     });
   }
 
@@ -1928,6 +2269,7 @@ ${strudelCode}
   updateTargetDeckUI();
   updateSelectionOverlays();
   updateRoleCardsVisibility();
+  renderAgentMutationTags();
   generateVibePrompt();
   drawWaveforms();
 </script>
@@ -2458,34 +2800,295 @@ ${strudelCode}
     color: #fbbf24 !important;
   }
 
-  /* Mutation Dimension Operator */
-  .mutation-dimension-selector {
+  /* Mutation Tags Palette System */
+  .mutation-palette-container {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.35rem;
     width: 100%;
     box-sizing: border-box;
   }
 
-  .mutation-select {
-    padding: 0.4rem 0.65rem;
+  .mutation-tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.32rem 0.65rem;
+    font-size: 0.72rem;
+    font-family: inherit;
+    border-radius: 6px;
+    border: 1px dashed var(--border-strong);
+    background: var(--btn-bg);
+    color: var(--text-secondary);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s ease;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tag-chip:hover {
+    background: var(--btn-hover);
+    color: var(--text-primary);
+    border-style: solid;
+    border-color: #0284c7;
+    transform: translateY(-1px);
+  }
+
+  .tag-chip:active {
+    cursor: grabbing;
+  }
+
+  .tag-chip-assigned {
+    background: rgba(2, 132, 199, 0.18) !important;
+    border-color: #0284c7 !important;
+    border-style: solid !important;
+    color: #0284c7 !important;
+    font-weight: 600;
+  }
+
+  html[data-theme="dark"] .tag-chip-assigned {
+    background: rgba(56, 189, 248, 0.18) !important;
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+  }
+
+  /* Role Tags Container inside Agent Cards */
+  .role-tags-container {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 24px;
+    padding: 0.15rem 0;
+  }
+
+  .role-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .role-tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    background: var(--deck-challenger-bg);
+    border: 1px solid var(--deck-challenger-accent);
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .btn-remove-tag {
+    background: none;
+    border: none;
+    padding: 0 0.15rem;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-remove-tag:hover {
+    color: #ef4444;
+  }
+
+  .role-card-focused {
+    border-color: var(--border-focus) !important;
+    box-shadow: 0 0 0 2px var(--deck-challenger-bg);
+  }
+
+  .role-card-dragover {
+    border-color: #0284c7 !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+  }
+
+  /* FLOATING SELECTION DOCK (Inspirado en Suno Studio) */
+  .challenger-floating-dock {
+    width: 100%;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .floating-dock-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0.75rem;
     background: var(--bg-surface-elevated);
     border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .dock-selection-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.55rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
     border-radius: 6px;
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .dock-chip-dismiss {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.65rem;
+    padding: 0 0.15rem;
+  }
+
+  .dock-chip-dismiss:hover {
+    color: #ef4444;
+  }
+
+  .dock-prompt-input-group {
+    flex: 1;
+    min-width: 200px;
+    box-sizing: border-box;
+  }
+
+  .dock-prompt-input {
+    width: 100%;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-primary);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+  }
+
+  .dock-prompt-input:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+  }
+
+  .dock-engine-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .engine-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    display: inline-block;
+  }
+
+  .btn-dock-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    background: #0284c7;
+    color: #ffffff;
+    border: 1px solid #38bdf8;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-dock-submit:hover {
+    background: #0ea5e9;
+    transform: translateY(-1px);
+  }
+
+  .btn-dock-copied {
+    background: #059669 !important;
+    border-color: #10b981 !important;
+  }
+
+  /* TIMELINE CONTEXT MENU */
+  .timeline-context-menu {
+    position: fixed;
+    z-index: 1000;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 190px;
+    box-sizing: border-box;
+  }
+
+  .ctx-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.38rem 0.65rem;
+    background: none;
+    border: none;
+    border-radius: 4px;
     color: var(--text-primary);
     font-size: 0.72rem;
     font-family: inherit;
     cursor: pointer;
-    transition: all 0.15s ease;
-    max-width: 100%;
-    outline: none;
+    text-align: left;
+    transition: background 0.1s ease;
     box-sizing: border-box;
   }
 
-  .mutation-select:focus {
-    border-color: #0284c7;
-    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+  .ctx-item:hover {
+    background: var(--btn-hover);
+    color: #0284c7;
+  }
+
+  html[data-theme="dark"] .ctx-item:hover {
+    color: #38bdf8;
+  }
+
+  .ctx-shortcut {
+    font-size: 0.62rem;
+    color: var(--text-muted);
   }
 
   /* Governance HITL Verdict Row */
