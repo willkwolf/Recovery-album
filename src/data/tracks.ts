@@ -347,7 +347,7 @@ export const NEUROGENESIS_SECTIONS: SongSection[] = [
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
     instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz', 'Ocarina Modal Chimes', 'Warm Analog Drift Pad', 'Filter Sweep Lookahead'],
-    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 01): Comienzo ambient cinemático envolvente. El reloj de cuenta regresiva palpita a 16avos con micropaneo estéreo, sostenido por un subgrave puro a 35 Hz, campanas modales ancestrales y un barrido de filtro que asciende preparando la aceleración métrica progresiva.',
+    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 01 CONSERVADA): Comienzo ambient cinemático envolvente. El reloj de cuenta regresiva palpita a 16avos con micropaneo estéreo, sostenido por un subgrave puro a 35 Hz, campanas modales ancestrales y un barrido de filtro que asciende preparando la aceleración métrica progresiva.',
     strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Ambient Cinemático & Reloj Inmersivo (105 BPM)
 // Mutación Seed 01 conservada: Pulso continuo y atmósfera espacial
 stack(
@@ -361,18 +361,18 @@ stack(
   },
   {
     id: 'sec-ng-02',
-    tag: '[SECCIÓN 02 // BREAKBEAT PROGRESIVO & LÍNEA DE BAJO MODULAR]',
-    name: 'Acelerando Modular & Breakbeat (1:05 - 1:55)',
+    tag: '[SECCIÓN 02 // BREAKBEAT PROGRESIVO & GUZHENG GRANULAR]',
+    name: 'Acelerando Modular & Cuerdas de Seda (1:05 - 2:15)',
     startTime: '01:05',
-    endTime: '01:55',
+    endTime: '02:15',
     startSec: 65,
-    endSec: 115,
+    endSec: 135,
     bpm: 118,
     keyCenter: 'C menor / Eb mayor (118 BPM)',
-    instruments: ['Syncopated Modular Breakbeat', 'Ghost Snare Rolls', 'Surge XT FM Modular Bass', 'Euclidean Ride 5/8', 'Analog Arpeggiator'],
-    description: 'NUEVO CHALLENGER (CONEXIÓN PROGRESIVA): Aceleración métrica a 118 BPM. Batería breakbeat fluida y sincopada con redobles fantasma, bajo sintético modular en Surge XT y arpegios armónicos progresivos sin cortes abruptos.',
-    strudelCode: `// SECCIÓN 02 (01:05 - 01:55): Breakbeat Progresivo & Bajo Modular (118 BPM)
-// Conexión fluida con rampa de tempo y polirritmia
+    instruments: ['Granular Guzheng Arpeggios', 'Syncopated Modular Breakbeat', 'Ghost Snare Rolls', 'Surge XT FM Modular Bass', 'Euclidean Ride 5/8'],
+    description: 'NUEVO CHALLENGER (TRANSCULTURAL ASIA ORIENTAL): Aceleración a 118 BPM. Batería breakbeat fluida y sincopada con redobles fantasma, arpegios granulares de Guzheng y Koto procesados con micro-delays estéreo y bajo modular Surge XT.',
+    strudelCode: `// SECCIÓN 02 (01:05 - 02:15): Breakbeat Progresivo & Guzheng Granular (118 BPM)
+// Polirritmia breakbeat y cuerdas de seda orientales
 stack(
   s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").gain(1.05),
   s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
@@ -380,47 +380,78 @@ stack(
   s("ride(5,8)").gain(0.4).decay(0.28),
   note("c2 [~ c2] [eb2!2] [~ f2] [fs2!2] g2 [bb1 c2]")
     .s("sawtooth").lpf(1800).resonance(14).gain(0.88),
-  note("c4 eb4 g4 bb4 d5").fast(2.5).s("triangle").decay(0.12).gain(0.35)
+  // Guzheng granular arpeggios
+  note("c4 eb4 f4 g4 bb4 c5 eb5").fast(3).s("triangle").decay(0.08).gain(0.42).pan(sine.range(0.15, 0.85).fast(2))
 )`
   },
   {
     id: 'sec-ng-03',
-    tag: '[SECCIÓN 03 // FURIA INDUSTRIAL & RESPIRACIÓN DE 1 COMPÁS]',
-    name: 'Tensión Industrial & Zero Mute Gate (1:55 - 2:45)',
-    startTime: '01:55',
-    endTime: '02:45',
-    startSec: 115,
-    endSec: 165,
-    bpm: 124,
-    keyCenter: 'Tritono C - F# Disonancia Cuántica (124 BPM)',
-    instruments: ['Metal Scrap Percussion', 'Distorted Square Wave Riff', 'Server Hum 60Hz', '1-Beat Zero Silence Gate', 'Sub-Braam Anticipation'],
-    description: 'NUEVO CHALLENGER (CONEXIÓN INDUSTRIAL): Riffs industriales abrasivos y percusiones de chatarra con saturación ChowTapeModel. Al final de la sección ocurre una respiración de 1 compás (silencio puro de 0ms) que suspende la energía antes del impacto del neuro drop.',
-    strudelCode: `// SECCIÓN 03 (01:55 - 02:45): Tensión Industrial & Respiración 1-Beat (124 BPM)
-// Saturación armónica y caída a silencio de 0ms antes del drop
+    tag: '[SECCIÓN 03 // CORO POLIFÓNICO IA 2026 & DUDUK SINTÉTICO]',
+    name: 'Resonancia Coral & Vientos del Éufrates (2:15 - 3:30)',
+    startTime: '02:15',
+    endTime: '03:30',
+    startSec: 135,
+    endSec: 210,
+    bpm: 118,
+    keyCenter: 'C menor armónico / Modulación modal (118 BPM)',
+    instruments: ['AI Polyphonic Formant Choir', 'Microtonal Synthetic Duduk', 'Sub-Bass 35Hz Spine', 'Granular Vocal Textures', 'Server Hum 60Hz'],
+    description: 'NUEVO CHALLENGER (CORAL Y PROGRESIVO 2026): El mundo del año 2026 emerge en coros polifónicos de formantes procesados por IA y vientos microtonales de Duduk sintético con respiración de ruido. El pulso del reloj se mantiene como ancla biológica mientras las capas vocales se entrelazan.',
+    strudelCode: `// SECCIÓN 03 (02:15 - 03:30): Coro Polifónico IA 2026 & Duduk Sintético (118 BPM)
+// Arreglo coral de formantes y vientos del Cercano Oriente
 stack(
-  note("<[c2,fs2,c3] ~ [eb2,a2,eb3] ~ [fs2,c3,fs3] [~ c2]>")
-    .s("square").distort(0.92).decay(0.2).gain(0.95),
-  s("industrial:3*4").gain("<0.85 0 0.9 0>*2").delay(0.18).delayfeedback(0.35),
-  s("noise*8").gain(perlin.range(0.2, 0.6)).bpf(sine.range(400, 3400).fast(4), 3),
-  note("<c1 fs1>").s("sawtooth").lpf(130).gain(0.88).slow(2)
+  // Coro polifónico IA con formantes abiertos
+  note("<[c3,g3,c4,eb4] [ab2,eb3,ab3,c4] [bb2,f3,bb3,d4] [g2,d3,g3,b3]>")
+    .s("sawtooth").lpf(sine.range(600, 2600).slow(4)).resonance(16).gain(0.7).room(0.9),
+  // Solo melódico microtonal Duduk
+  note("c4 [d4 eb4] [f4 g4] [ab4 g4] [f4 eb4] d4 c4")
+    .slow(2).s("sine").lpf(1400).delay(0.4).delayfeedback(0.65).gain(0.45),
+  // Reloj de cuenta regresiva continuo
+  s("rim*16").pan(sine.range(0.25, 0.75).slow(4)).gain("<0.6 0.8 0.65 0.9>*4"),
+  // Sub-bass 35Hz
+  note("<c1 ab0 bb0 g0>").s("sine").gain(0.95).slow(2)
 )`
   },
   {
     id: 'sec-ng-04',
-    tag: '[SECCIÓN 04 // SURGICAL FM NEURO DROP (140 BPM HALF-TIME)]',
-    name: 'Impacto FM Neuro Growl & Formantes (2:45 - 3:45)',
-    startTime: '02:45',
-    endTime: '03:45',
-    startSec: 165,
-    endSec: 225,
+    tag: '[SECCIÓN 04 // PERCUSIÓN GAMELAN & FURIA INDUSTRIAL]',
+    name: 'Metalurgia Microtonal & Lookahead Sweep (3:30 - 4:40)',
+    startTime: '03:30',
+    endTime: '04:40',
+    startSec: 210,
+    endSec: 280,
+    bpm: 124,
+    keyCenter: 'Tritono C - F# Disonancia Cuántica (124 BPM)',
+    instruments: ['Microtonal Gamelan Metallophones', 'Scrap Metal Percussion', 'Distorted Reese Bass', 'ChowTape Saturation', '1-Beat Zero Silence Gate'],
+    description: 'NUEVO CHALLENGER (SURESTE ASIÁTICO & INDUSTRIAL): Metalófonos microtonales inspirados en Gamelan javanés colisionan con percusiones de chatarra industrial y saturación ChowTapeModel. Modulación métrica a 124 BPM y barrido de filtro exponencial antes del corte a silencio de 1 compás (0ms gate a 04:39.2).',
+    strudelCode: `// SECCIÓN 04 (03:30 - 04:40): Percusión Gamelan & Furia Industrial (124 BPM)
+// Metalurgia microtonal y lookahead sweep hacia el breath gate
+stack(
+  // Gamelan microtonal
+  note("c5 fs5 g5 bb5 cs6 eb6").fast(2).s("triangle").decay(0.18).gain(0.48).delay(0.25),
+  // Riff industrial distorsionado
+  note("<[c2,fs2,c3] ~ [eb2,a2,eb3] ~ [fs2,c3,fs3] [~ c2]>")
+    .s("square").distort(0.92).decay(0.2).gain(0.95),
+  // Percusión metálica industrial
+  s("industrial:3*4").gain("<0.85 0 0.9 0>*2").delay(0.18).delayfeedback(0.35),
+  s("noise*8").gain(perlin.range(0.2, 0.6)).bpf(sine.range(400, 3400).fast(4), 3)
+)`
+  },
+  {
+    id: 'sec-ng-05',
+    tag: '[SECCIÓN 05 // SURGICAL FM NEURO DROP (140 BPM HALF-TIME)]',
+    name: 'Impacto FM Neurofunk & Arpegios Láser (4:40 - 5:45)',
+    startTime: '04:40',
+    endTime: '05:45',
+    startSec: 280,
+    endSec: 345,
     bpm: 140,
     keyCenter: 'C menor Bass Music (140 BPM Half-time)',
     instruments: ['Surgical FM Neuro Growl 12 LFOs', 'Pure Sub-Bass 32Hz', 'Heavy Snare Reverb Gate', 'Laser Arpeggios 32nds', 'Euclidean Open Hats'],
-    description: 'NUEVO CHALLENGER (DROP DE IMPACTO): Tras la respiración de 1 compás, estalla el drop a 140 BPM en ritmo half-time contundente. El bajo FM neuro utiliza síntesis en Surge XT con modulación formántica ultrarrápida (Q=26) y subgrave aislado a 32 Hz.',
-    strudelCode: `// SECCIÓN 04 (02:45 - 03:45): Surgical FM Neuro Growl Drop (140 BPM Half-time)
-// Síntesis Surge XT con 12 LFOs enrutados a formantes y subgrave puro
+    description: 'NUEVO CHALLENGER (DROP DE IMPACTO): Tras la respiración de 1 compás a 0ms, estalla el drop a 140 BPM en half-time stomp. Bajo FM neuro con modulación formántica ultrarrápida (Q=26), subgrave puro a 32 Hz y arpegios láser a 32avos.',
+    strudelCode: `// SECCIÓN 05 (04:40 - 05:45): Surgical FM Neuro Drop (140 BPM Half-time)
+// Modulación Surge XT con 12 LFOs en formantes y subgrave 32Hz
 stack(
-  s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.12),
+  s("bd:2 ~ ~ ~ [sd:3, cp:2] ~ ~ ~ bd:2 ~ bd:2 ~ [sd:3, cp:2] ~ [~ sd*2]").gain(1.15),
   note("<c1 eb1 fs1 g1>").s("sine").gain(1.05),
   note("c2 [c2 eb2] [fs2 g2] [bb2 c3] [~ c2] [eb2 c2]")
     .s("sawtooth")
@@ -433,18 +464,45 @@ stack(
 )`
   },
   {
-    id: 'sec-ng-05',
-    tag: '[SECCIÓN 05 // MONUMENTAL SUB-BRAAM 35HZ & CATARSIS (SEED 05)]',
-    name: 'Braam Monumental & Fuga Sideral (3:45 - 4:50)',
-    startTime: '03:45',
-    endTime: '04:50',
-    startSec: 225,
-    endSec: 290,
+    id: 'sec-ng-06',
+    tag: '[SECCIÓN 06 // CONVERGENCIA TRANSCULTURAL & POLY-CLIMAX]',
+    name: 'Polifonía Global & Catarsis Breakbeat (5:45 - 6:55)',
+    startTime: '05:45',
+    endTime: '06:55',
+    startSec: 345,
+    endSec: 415,
+    bpm: 120,
+    keyCenter: 'C menor / Polirritmia Coral Global (120 BPM)',
+    instruments: ['Combined Global Choir', 'Afro-Cuban Industrial Polyrhythm', 'Massive Reese Bass', 'Guzheng + Duduk Stabs', 'ChowTape Master Bus'],
+    description: 'NUEVO CHALLENGER (CONVERGENCIA CLÍMAX 2026): El clímax coral del single une todas las culturas: los coros polifónicos de IA, las cuerdas de Guzheng, los solos de Duduk y una batería breakbeat polirrítmica a 120 BPM con saturación ChowTape y ecualización de potencia constante (Equal-Power Crossfader).',
+    strudelCode: `// SECCIÓN 06 (05:45 - 06:55): Convergencia Transcultural & Poly-Climax (120 BPM)
+// Síntesis coral global, breakbeat y todas las culturas convergiendo
+stack(
+  s("bd*2 [~ bd] [sd:2, cp] ~ [bd:3 ~] [sd:2, sn:1*2]").gain(1.1),
+  s("hh*16").gain("<0.35 0.85 0.5 0.95>*4").hpf(4800),
+  // Reese masivo con saturación analógica
+  note("c2 c2 [c2 eb2] ~ f2 [fs2 g2] [c2!2]")
+    .s("sawtooth").distort(0.8).lpf(sine.range(600, 3200).slow(4)).resonance(18).gain(0.95),
+  // Coro global polifónico
+  note("<[c4,g4,c5] [eb4,bb4,eb5] [f4,c5,f5] [g4,d5,g5]>")
+    .s("sawtooth").lpf(2200).gain("<0.3 0.8 0.5 0.9>*2").room(0.85),
+  // Cuerdas de seda + viento
+  note("c5 eb5 g5 bb5 c6").fast(2).s("triangle").decay(0.06).gain(0.4)
+)`
+  },
+  {
+    id: 'sec-ng-07',
+    tag: '[SECCIÓN 07 // MONUMENTAL SUB-BRAAM 35HZ & CATARSIS (SEED 05)]',
+    name: 'Braam Monumental & Fuga Sideral (6:55 - 8:00)',
+    startTime: '06:55',
+    endTime: '08:00',
+    startSec: 415,
+    endSec: 480,
     bpm: 105,
     keyCenter: 'C menor / Eb mayor (105 BPM)',
     instruments: ['Monumental Sub-Braam 35Hz', 'Sidechain Pumped Analog Pads', 'Ancestral Ocarina Bells', 'Deep Space Reverb', 'Distal TR-909 Fade'],
-    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 05 CONSERVADA): La catarsis final preserva la semilla de cierre del single. Un braam descomunal de 35 Hz con armónicos metálicos sostiene el espacio sonoro mientras sintetizadores bombeados por sidechain y campanas ancestrales resuenan hacia el infinito.',
-    strudelCode: `// SECCIÓN 05 (03:45 - 04:50): Monumental Sub-Braam 35Hz & Catarsis (Seed 05)
+    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 05 CONSERVADA): La catarsis final preserva la semilla de cierre del single. Un braam descomunal de 35 Hz con armónicos metálicos sostiene la disolución de la internet dividida mientras sintetizadores bombeados por sidechain y campanas ancestrales de Ocarina of Time resuenan en un fundido sideral.',
+    strudelCode: `// SECCIÓN 07 (06:55 - 08:00): Monumental Sub-Braam 35Hz & Catarsis (Seed 05)
 // Braam descomunal de 35Hz, bombeo sidechain y disolución cósmica
 stack(
   note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
@@ -513,19 +571,20 @@ export const TRACKS: Track[] = [
     medium: 'Electrónica Modular / Síntesis FM & Industrial',
     status: 'candidate',
     lifecycle: ':Challenger',
-    duration: '04:50 (5-Act Progressive Suite)',
-    summary: 'NUEVO SINGLE CHALLENGER propuesto por el Crew Multiagente tras el despacho XML del DG. Conserva las mutaciones clave (Seed 01 Ambient y Seed 05 Braam Catarsis), re-maquetando los actos intermedios con breakbeat modular a 118 BPM, disonancia industrial con respiración de 1 compás (0ms gate) y drop neurofunk quirúrgico a 140 BPM.',
+    duration: '08:00 (7-Act Epic Progressive Suite)',
+    summary: 'NUEVO SINGLE CHALLENGER (EXPANSIÓN ÉPICA A 8 MINUTOS): Producido por el Crew Multiagente tras el mandato del DG de transformar el single en una experiencia inmersiva de 7-9 minutos. Conserva las mutaciones maestras (Seed 01 Ambient y Seed 05/07 Braam Catarsis), expandiendo el viaje sonoro con Guzheng granular oriental, coros polifónicos de IA del año 2026, vientos microtonales de Duduk, metalurgia Gamelan javanés, y transiciones con crossfaders de potencia constante (Equal-Power).',
     humanApproval: {
       approved: false,
       signoff: 'Multi-Agent Crew L3 QA (Pending Human Signoff)',
       date: '2026-10-18',
-      scope: 'new-challenger-progressive-suite-proposal',
-      notes: 'Crew de 9 agentes completó Ronda 1 con veredicto VERDE. Pendiente de audición y firma del Director General.'
+      scope: '8-minute-7-act-transcultural-suite-proposal',
+      notes: 'Crew de 9 agentes completó la Iteración 2 con veredicto VERDE de QA para crossfaders y suite de 8 minutos. Pendiente de audición final del DG.'
     },
     publicNotes: [
-      'Innovaciones estructurales: Ambient cinemático -> Breakbeat progresivo (118 BPM) -> Furia industrial -> Surgical FM Drop (140 BPM) -> Braam Catarsis.',
-      'Técnicas de transición: Lookahead filter sweeps (4-8 compases), 1-beat silence gate antes del drop y espina continua de reloj.',
-      'Stack de herramientas abiertas: LMMS (.mmp project XML), Surge XT (12 LFOs) y Chowdhury DSP.'
+      'Duración expandida: 08:00 (480s) distribuida en 7 actos continuos.',
+      'Instrumentación transcultural: Guzheng/Koto oriental, Duduk del Éufrates, metalurgia Gamelan, coros polifónicos IA 2026 y bajos Neuro FM.',
+      'Transiciones certificadas: Crossfaders de potencia constante (Equal-Power), S-Curve sigmoidal, lookahead sweeps y 1-beat silence gate antes del drop.',
+      'Stack de herramientas abiertas: LMMS (.mmp project XML), Surge XT (12 LFOs), Chowdhury DSP y Airwindows.'
     ],
     sections: NEUROGENESIS_SECTIONS,
     variations: NEUROGENESIS_VARIATIONS

@@ -116,8 +116,8 @@
         "approved": true,
         "signoff": "Human Creator (Pending Final Audition)",
         "date": "2026-10-18",
-        "scope": "new-challenger-progressive-suite-proposal",
-        "mediumDefinition": "Single Challenger progresivo multicapa (Ambient Inmersivo, Breakbeat Modular, Tensión Industrial, Surgical Neuro Drop, Braam Sideral)"
+        "scope": "8-minute-7-act-transcultural-suite-proposal",
+        "mediumDefinition": "Single Challenger progresivo de 8 minutos (Ambient Inmersivo, Breakbeat con Guzheng, Coro Polifónico IA 2026, Metalurgia Gamelan, Surgical Neuro Drop, Poly-Climax, Braam Sideral)"
       },
       "sourceFiles": [
         "src/data/tracks.ts"

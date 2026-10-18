@@ -204,7 +204,7 @@ async function runVibiumTests() {
     assert(componentsPresence.hasConsole, 'Vibe Console Docked presente');
     assert(componentsPresence.hasBaselinePlay && componentsPresence.hasChallengerPlay, 'Botones de reproducción independientes para ambos Decks');
     assert(componentsPresence.baselineSections === 5, 'Deck 1 contiene exactamente sus 5 secciones');
-    assert(componentsPresence.challengerSections === 5, 'Deck 2 contiene exactamente sus 5 actos de single');
+    assert(componentsPresence.challengerSections === 7, 'Deck 2 contiene sus 7 actos de single de la suite expandida (8 min)');
     assert(componentsPresence.crewChipsCount === 5, 'Selector de enrutamiento con los 5 roles agénticos (DM, CP, SD, AE, QA)');
 
     // TEST SUITE 4: Accesibilidad (a11y-tree) y Semántica WCAG AA
