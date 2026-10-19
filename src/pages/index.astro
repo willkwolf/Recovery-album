@@ -122,6 +122,48 @@ const challengerTrack = TRACKS[1];
           <p class="deck-track-sub mono">
             01: Ambient Inmersivo (105 BPM) ──► 02: Puente Continuo Equal-Power & Morfología Afro-Neuro (118 BPM) ──► 03: Braam Monumental 35Hz & Catarsis (105 BPM)
           </p>
+          <!-- Presentación Narrativa del Challenger & Tesis del Álbum RECOVERY -->
+          <details class="challenger-thesis-details mono" id="challenger-thesis-details">
+            <summary class="challenger-thesis-summary" aria-label="Expandir o colapsar presentación del single y dictamen del Crew">
+              <span class="thesis-pill">📖 SOBRE EL SINGLE // DICTAMEN DEL CREW & TESIS DEL ÁLBUM</span>
+              <span class="text-xs text-muted">(Clic para leer propósito narrativo)</span>
+            </summary>
+            <div class="challenger-thesis-content">
+              <div class="thesis-grid">
+                <div class="thesis-card thesis-album">
+                  <div class="thesis-card-title">🌌 TESIS DEL ÁLBUM // RECOVERY</div>
+                  <p class="thesis-text">
+                    La recuperación de la memoria humana en tránsito hacia una línea temporal alternativa. En <strong>RECOVERY</strong>, el <em>Fork</em> no es un triunfo complaciente ni un regreso nostálgico al pasado: es una fuga deliberada y de alto riesgo donde lo humano se reconstruye mediante fragmentos rescatados en pugna con la maquinaria digital.
+                  </p>
+                </div>
+                <div class="thesis-card thesis-single">
+                  <div class="thesis-card-title">⚡ QUÉ ES ESTE SINGLE // REWIRED [DECK 2]</div>
+                  <p class="thesis-text">
+                    Una suite cinematográfica continua de <strong>07:15</strong> unificada alrededor del clímax aprobado por el Director General (04:46 - 05:32). Expone la tensión entre el reloj de cuenta regresiva implacable (2400Hz) y la catarsis emocional de un sub-braam monumental a 35Hz que despierta progresivamente, sufre una ruptura a los 2 minutos, y culmina en una gran fuga sideral transcultural.
+                  </p>
+                </div>
+              </div>
+              <!-- Dictamen por Rol Agéntico -->
+              <div class="crew-dictum-grid">
+                <div class="crew-dictum-item">
+                  <span class="crew-role-badge badge-dm">L1 · DM (Music Director)</span>
+                  <span class="crew-role-verdict">"Supervisa el arco macro: transición de 105 a 118 BPM mediante curvas continuas y 'tension breath' antes de la catarsis."</span>
+                </div>
+                <div class="crew-dictum-item">
+                  <span class="crew-role-badge badge-cp">L2 · CP (Composer)</span>
+                  <span class="crew-role-verdict">"Articula la progresión modal C menor / Eb mayor. A los 2 min silencia el bajo para que la melodía OoT y la capa étnica respiren."</span>
+                </div>
+                <div class="crew-dictum-item">
+                  <span class="crew-role-badge badge-sd">L2 · SD (Sound Designer)</span>
+                  <span class="crew-role-verdict">"Esculpe en Surge XT los FM growls sincopados y el braam 35Hz con resonancia de bronce para una experiencia física subacuática."</span>
+                </div>
+                <div class="crew-dictum-item">
+                  <span class="crew-role-badge badge-ae">L2 · AE (Audio Engineer)</span>
+                  <span class="crew-role-verdict">"Garantiza el estándar de sonoridad (-14 LUFS) aplicando ChowTapeModel analógico y Airwindows Slew para pulir los transitorios."</span>
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
         <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Challenger">
           <button type="button" class="btn btn-challenger-play" id="btn-play-1" aria-label="Reproducir o pausar Challenger">
@@ -3548,6 +3590,145 @@ ${codeBlocksXml}
     margin: 0;
     line-height: 1.4;
     word-break: break-word;
+  }
+
+  /* Challenger Narrative & Thesis Collapsible Container */
+  .challenger-thesis-details {
+    margin-top: 0.35rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface-elevated);
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+
+  .challenger-thesis-details[open] {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .challenger-thesis-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.35rem 0.65rem;
+    background: var(--bg-surface);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    list-style: none;
+  }
+
+  .challenger-thesis-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .challenger-thesis-summary:hover {
+    background: var(--btn-hover);
+  }
+
+  .thesis-pill {
+    color: #38bdf8;
+    letter-spacing: 0.03em;
+  }
+
+  .challenger-thesis-content {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--bg-surface-elevated);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .thesis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 700px) {
+    .thesis-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .thesis-card {
+    padding: 0.65rem 0.75rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-canvas);
+  }
+
+  .thesis-card-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.04em;
+  }
+
+  .thesis-album .thesis-card-title {
+    color: #10b981;
+  }
+
+  .thesis-single .thesis-card-title {
+    color: #38bdf8;
+  }
+
+  .thesis-text {
+    font-size: 0.7rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .thesis-text strong {
+    color: var(--text-primary);
+  }
+
+  .crew-dictum-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .crew-dictum-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .crew-dictum-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.45rem 0.6rem;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+  }
+
+  .crew-role-badge {
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    width: fit-content;
+  }
+
+  .badge-dm { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+  .badge-cp { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+  .badge-sd { background: rgba(249, 115, 22, 0.18); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35); }
+  .badge-ae { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+
+  .crew-role-verdict {
+    font-size: 0.65rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+    font-style: italic;
   }
 
   .deck-transport {
