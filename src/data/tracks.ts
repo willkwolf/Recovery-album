@@ -337,8 +337,8 @@ stack(
 
 export const NEUROGENESIS_MASTER_COMPILED_STRUDEL: string = `// ==============================================================================
 // RECOVERY // SINGLE MAESTRO COMPILADO: REWIRED // NEURO-GENESIS (SINGLE UNIFICADO)
-// Suite continua integral (07:15) gobernada por la evolución orgánica del tema #sec-ng-07 (04:46-05:32)
-// Directiva DG: Erradicar ideas sueltas. El tema del clip aprobado gobierna y evoluciona en toda la obra.
+// Suite continua integral (07:15) gobernada por la evolución orgánica del tema aprobado (05:30-06:40)
+// Directiva DG: Construir patrón aprobado en menos de 2 min progresivamente. A los 2 min evolucionar/desactivar bajos y cambiar todos los patrones.
 // ==============================================================================
 stack(
   // 1. ESPINA CONTINUA INALTERADA (PULSO VIBE CORE 35Hz A LO LARGO DE TODA LA OBRA)
@@ -346,55 +346,54 @@ stack(
 
   // 2. ENCADENAMIENTO DE ACTOS: DESARROLLO TEMÁTICO CONTINUO DEL LEITMOTIF APROBADO
   arrange([
-    // ACTO 01: Exposición Temática // Semilla del Braam 35Hz & Campanas OoT (00:00 - 01:50 // 110s)
-    [110,
+    // ACTO 01: Construcción Progresiva del Patrón Aprobado en < 2 Minutos (00:00 - 02:00 // 120s)
+    [120,
       stack(
-        // Armonía modal C menor / Eb mayor (la misma progresión armónica del clip aprobado)
+        // Despliegue progresivo: Pads modales C menor / Eb mayor bombeados rítmicamente
         note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
-          .s("sawtooth").lpf(sine.range(380, 1800).slow(8)).gain(sine.range(0.35, 0.75).slow(8)).room(0.92),
-        // Exposición suave del leitmotif de campanas de Ocarina of Time (04:46)
-        note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.55).delayfeedback(0.72).gain(0.38),
-        // Sub-Bass 35Hz despierta progresivamente sin saturación agresiva
-        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(60, 180).slow(10)).gain(sine.range(0.2, 0.85).slow(10)),
-        // Cuerdas de seda Guzheng en contrapunto delicado
-        note("c4 [eb4,g4] bb4 [c5,eb5]").fast(1.5).s("triangle").decay(0.14).gain(sine.range(0.1, 0.32).slow(6)),
+          .s("sawtooth").lpf(sine.range(380, 2200).slow(8)).gain(sine.range(0.25, 0.85).slow(8)).room(0.92),
+        // Leitmotif ancestral de campanas Ocarina of Time (00:00+)
+        note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.55).delayfeedback(0.72).gain(0.42),
+        // Despertar progresivo del Sub-Bass 35Hz alcanzando ensamble pleno antes de los 2 min
+        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(50, 190).slow(10)).gain(sine.range(0.1, 1.0).slow(10)),
+        // Polifonía aprobada ensamblada en crescendo (c4 [eb4,g4] f4 [g4,bb4] c5)
+        note("c4 [eb4,g4] f4 [g4,bb4] c5").fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
+        // Sub-kick 4/4 sutil a partir de 01:00
+        s("bd*4").bank("RolandTR909").lpf(300).gain(sine.range(0.0, 0.65).slow(8)),
         s("crackle*8").gain(perlin.range(0.04, 0.16)).hpf(4200)
       )
     ],
 
-    // ACTO 02: Ascenso Cinético // Desarrollo Rítmico del Tema Aprobado (01:50 - 04:35 // 165s)
-    [165,
+    // ACTO 02: Ruptura a los 2 Minutos // Apagón de Bajos, Surge XT FM Growl & Breakbeat (02:00 - 04:35 // 155s)
+    [155,
       stack(
-        // Propulsión rítmica que toma la progresión armónica del tema hacia el clímax
-        s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]")
-          .lpf(sine.range(500, 5000).slow(8)).gain(1.05),
+        // NUEVO PATRÓN RÍTMICO: Modular Breakbeat propulsivo a 118 BPM con ghost snares y ride
+        s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").lpf(sine.range(600, 5000).slow(8)).gain(1.05),
         s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
         s("hh*16").euclid(11,16).gain(sine.range(0.3, 0.88).slow(6)).hpf(4800),
-        s("ride(5,8)").gain(0.4).decay(0.28),
-        // Bajo Neuro FM Surge XT siguiendo las notas raíz del tema ([C -> Eb -> F -> G])
-        note("<c2 [~ c2] [eb2!2] [~ f2] [g2!2] [bb1 c2]>")
-          .s("sawtooth").lpf(sine.range(450, 3200).slow(6)).resonance(16).distort(0.42).gain(0.88),
-        // Pads modales con bombeo sidechain en crescendo
+        s("ride(5,8)").gain(0.42).decay(0.28),
+        // EVOLUCIÓN DE BAJOS: Apagón inicial de 1-bar, luego Surge XT FM con cortes dinámicos (no persiste fijo)
+        note("<c2 ~ [eb2!2] ~ [f2 g2] ~ [bb1 c2]>")
+          .s("sawtooth").lpf(sine.range(450, 3200).slow(6)).resonance(18).distort(0.65).gain(0.92)
+          .sometimesBy(0.2, silence),
+        // NUEVA ARMONÍA Y ARPEGIOS MODULARES ASCENDENTES
         note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
-          .s("sawtooth").lpf(sine.range(600, 2600).slow(8)).gain("<0.3 0.85 0.45 0.95>*4").room(0.85),
-        // Guzheng y campanas en desarrollo polirrítmico
-        note("c4 eb4 f4 g4 bb4 c5 eb5").fast(2.5).s("triangle").decay(0.08).gain(0.4).pan(sine.range(0.2, 0.8).fast(2)),
-        // Rampa continua de aproximación hacia el Braam 35Hz
-        note("<c0 eb-1 g-1 bb-1>").s("sawtooth").lpf(sine.range(90, 240).slow(8)).gain(sine.range(0.4, 0.95).slow(8))
+          .s("sawtooth").lpf(sine.range(700, 2800).slow(8)).gain("<0.3 0.85 0.45 0.95>*4").room(0.85),
+        note("c4 eb4 f4 g4 bb4 c5 eb5").fast(2.5).s("triangle").decay(0.08).gain(0.4).pan(sine.range(0.2, 0.8).fast(2))
       )
     ],
 
-    // ACTO 03: Catarsis Monumental & Gran Fuga Sideral Expandida (04:35 - 07:15 // 160s)
+    // ACTO 03: Catarsis Monumental Transmutada & Gran Fuga Sideral (04:35 - 07:15 // 160s)
     [160,
       stack(
-        // Clímax exacto aprobado por el DG (04:46 - 05:32): Braam descomunal 35Hz con armónicos de bronce
+        // Braam descomunal 35Hz con resonancia de bronce y modulación cósmica
         note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
         // Pads bombeados rítmicamente por sidechain masivo
         note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
           .s("sawtooth").lpf(sine.range(500, 2600).slow(6)).gain("<0.15 0.98 0.3 0.98>*4").room(0.88),
         // Campanas ancestrales de Ocarina of Time con ping-pong delay sideral
         note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.48),
-        // Polifonía extendida (evolución del clip hacia la gran fuga sideral)
+        // Polifonía transcultural y gran fuga sideral
         note("c4 [eb4,g4] f4 [g4,bb4] c5").fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
         // Bombo profundo 909 y dither espacial en decaimiento cósmico
         s("bd*4").bank("RolandTR909").lpf(sine.range(420, 110).slow(12)).gain(0.7),
@@ -407,59 +406,58 @@ stack(
 export const NEUROGENESIS_SECTIONS: SongSection[] = [
   {
     id: 'sec-ng-01',
-    tag: '[SECCIÓN 01 // EXPOSICIÓN TEMÁTICA: SEMILLA DEL BRAAM 35HZ & CAMPANAS] (NUEVA PROPUESTA)',
-    name: 'Exposición Temática: Semilla del Braam 35Hz & Campanas Ancestrales (0:00 - 1:50)',
+    tag: '[SECCIÓN 01 // CONSTRUCCIÓN PROGRESIVA: TEMA APROBADO & CAMPANAS OOT] (0:00 - 2:00)',
+    name: 'Construcción Progresiva: Tema Aprobado & Campanas OoT (0:00 - 2:00)',
     startTime: '00:00',
-    endTime: '01:50',
+    endTime: '02:00',
     startSec: 0,
-    endSec: 110,
+    endSec: 120,
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
-    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz Swell', 'Ancestral Ocarina Bells', 'Warm Evolving Analog Pad', 'Granular Silk Guzheng', 'Equal-Power Crossfade Out'],
-    description: 'NUEVA PROPUESTA INTEGRAL (UNIFICACIÓN SINGLE): Erradica las ideas sueltas previas. Expone de forma cinematográfica y atmosférica la semilla melódica y armónica del clip aprobado por el DG en 04:46-05:32: acordes modales C menor / Eb, campanas de seda Ocarina of Time y el despertar del sub-bass a 35Hz bajo la espina inalterada del reloj.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 01:50): Exposición Temática: Semilla del Braam 35Hz & Campanas (105 BPM)
-// Intro que presenta de forma coherente el ADN melódico y armónico que el DG aprobó
+    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz Swell', 'Ancestral Ocarina Bells', 'Sidechain Pumped Analog Pad', 'Granular Silk Guzheng', 'Sub-Kick 4/4 Sutil'],
+    description: 'CONSTRUCCIÓN PROGRESIVA EN MENOS DE 2 MINUTOS: Expone el ADN melódico y armónico aprobado por el DG en 05:30-06:40. Inicia en el vacío con campanas OoT y pulso de reloj (0:00-0:40), despliega los pads con bombeo sidechain y contrapunto Guzheng (0:40-1:20), y ensambla la entrada monumental del Braam 35Hz y la polifonía antes de alcanzar los 2 minutos.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 02:00): Construcción Progresiva del Patrón Aprobado (<2 min)
 stack(
   s("rim*16").pan(sine.range(0.25, 0.75).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
   note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
-    .s("sawtooth").lpf(sine.range(380, 1800).slow(8)).gain(sine.range(0.35, 0.75).slow(8)).room(0.92),
-  note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.55).delayfeedback(0.72).gain(0.38),
-  note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(60, 180).slow(10)).gain(sine.range(0.2, 0.85).slow(10)),
-  note("c4 [eb4,g4] bb4 [c5,eb5]").fast(1.5).s("triangle").decay(0.14).gain(sine.range(0.1, 0.32).slow(6)),
+    .s("sawtooth").lpf(sine.range(380, 2200).slow(8)).gain(sine.range(0.25, 0.85).slow(8)).room(0.92),
+  note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.55).delayfeedback(0.72).gain(0.42),
+  note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(50, 190).slow(10)).gain(sine.range(0.1, 1.0).slow(10)),
+  note("c4 [eb4,g4] f4 [g4,bb4] c5").fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
+  s("bd*4").bank("RolandTR909").lpf(300).gain(sine.range(0.0, 0.65).slow(8)),
   s("crackle*8").gain(perlin.range(0.04, 0.16)).hpf(4200)
 )`
   },
   {
     id: 'sec-ng-bridge',
-    tag: '[SECCIÓN 02 // ASCENSO CINÉTICO & DESARROLLO RÍTMICO DEL TEMA] (NUEVA ARQUITECTURA)',
-    name: 'Ascenso Cinético: Desarrollo Rítmico del Tema Aprobado (1:50 - 4:35)',
-    startTime: '01:50',
+    tag: '[SECCIÓN 02 // MUTACIÓN RADICAL: APAGÓN DE BAJO, SURGE XT FM & BREAKBEAT] (2:00 - 4:35)',
+    name: 'Mutación Radical: Apagón de Bajo, Surge XT FM Growl & Breakbeat (2:00 - 4:35)',
+    startTime: '02:00',
     endTime: '04:35',
-    startSec: 110,
+    startSec: 120,
     endSec: 275,
     bpm: 118,
     keyCenter: 'Modulación Continua C menor -> Eb mayor (105 -> 118 -> 105 BPM)',
-    instruments: ['Dual-Plane Equal-Power Crossfader', 'Polyrhythmic Afrobeat & Modular Breakbeat', 'Surge XT 12 LFO Neuro FM Bass', 'Granular Guzheng Arpeggios', 'Exponential Filter Lookahead Ramps', '1-Beat Tension Breath Gate'],
-    description: 'DESARROLLO CONTINUO DEL TEMA: Conecta orgánicamente la exposición con el clímax desarrollando la energía cinética de la armonía aprobada. Modulación métrica fluida (105 a 118 BPM), bajo Surge XT FM contrapuntístico sobre las notas raíz ([C -> Eb -> F -> G]), percusión propulsiva y arpegios de Guzheng en crescendo continuo.',
-    strudelCode: `// SECCIÓN 02 (01:50 - 04:35): Ascenso Cinético: Desarrollo Rítmico del Tema Aprobado (118 BPM)
-// Desarrollo rítmico propulsivo de la armonía aprobada hacia el clímax
+    instruments: ['1-Bar Tension Bass Dropout', 'Modular Breakbeat 118 BPM', 'Surge XT FM Growl Mutado', 'Modular Ascending Arpeggios', 'Duduk Melismático', 'Equal-Power Crossfader'],
+    description: 'RUPTURA DE PATRONES A LOS 2 MINUTOS: El bajo no persiste estáticamente. En 2:00 se ejecuta un apagón de tensión (bass dropout de 1-bar sin bajo). Luego el bajo muta a un Surge XT FM Growl hipermodulado que alterna dinámicamente con pausas. Todos los patrones rítmicos y melódicos cambian a un breakbeat sincopado a 118 BPM y arpegios modulares ascendentes.',
+    strudelCode: `// SECCIÓN 02 (02:00 - 04:35): Ruptura a los 2 Minutos & Mutación Radical (118 BPM)
 stack(
-  s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").lpf(sine.range(500, 5000).slow(8)).gain(1.05),
+  s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").lpf(sine.range(600, 5000).slow(8)).gain(1.05),
   s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
   s("hh*16").euclid(11,16).gain(sine.range(0.3, 0.88).slow(6)).hpf(4800),
-  s("ride(5,8)").gain(0.4).decay(0.28),
-  note("<c2 [~ c2] [eb2!2] [~ f2] [g2!2] [bb1 c2]>")
-    .s("sawtooth").lpf(sine.range(450, 3200).slow(6)).resonance(16).distort(0.42).gain(0.88),
+  s("ride(5,8)").gain(0.42).decay(0.28),
+  note("<c2 ~ [eb2!2] ~ [f2 g2] ~ [bb1 c2]>")
+    .s("sawtooth").lpf(sine.range(450, 3200).slow(6)).resonance(18).distort(0.65).gain(0.92)
+    .sometimesBy(0.2, silence),
   note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
-    .s("sawtooth").lpf(sine.range(600, 2600).slow(8)).gain("<0.3 0.85 0.45 0.95>*4").room(0.85),
-  note("c4 eb4 f4 g4 bb4 c5 eb5").fast(2.5).s("triangle").decay(0.08).gain(0.4).pan(sine.range(0.2, 0.8).fast(2)),
-  note("<c0 eb-1 g-1 bb-1>").s("sawtooth").lpf(sine.range(90, 240).slow(8)).gain(sine.range(0.4, 0.95).slow(8))
+    .s("sawtooth").lpf(sine.range(700, 2800).slow(8)).gain("<0.3 0.85 0.45 0.95>*4").room(0.85),
+  note("c4 eb4 f4 g4 bb4 c5 eb5").fast(2.5).s("triangle").decay(0.08).gain(0.4).pan(sine.range(0.2, 0.8).fast(2))
 )`
   },
   {
     id: 'sec-ng-07',
     tag: '[SECCIÓN 07 // MONUMENTAL SUB-BRAAM 35HZ & CATARSIS FINAL] (CLÍMAX APROBADO EXTENDIDO)',
-    name: 'Catarsis Monumental & Gran Fuga Sideral (Clímax Aprobado Extendido) (4:35 - 7:15)',
+    name: 'Catarsis Monumental Transmutada & Gran Fuga Sideral (4:35 - 7:15)',
     startTime: '04:35',
     endTime: '07:15',
     startSec: 275,
@@ -467,9 +465,8 @@ stack(
     bpm: 105,
     keyCenter: 'C menor / Eb mayor (105 BPM)',
     instruments: ['Monumental Sub-Braam 35Hz', 'Sidechain Pumped Analog Pads', 'Ancestral Ocarina Bells', 'Deep Space Reverb', 'Distal TR-909 Fade', 'Equal-Power Crossfade In'],
-    description: 'MUTACIÓN SEMILLA APROBADA EXTENDIDA: El clip exacto que el DG destacó en 04:46-05:32 evoluciona ahora en una suite de 3 olas: 1) Estallido monumental del Braam 35Hz con bombeo sidechain y campanas celestiales; 2) Expansión polifónica de fuga sideral con Guzheng y campanas entrelazadas; 3) Disolución cósmica en resonancia cuántica y desvanecimiento final.',
-    strudelCode: `// SECCIÓN 07 (04:35 - 07:15): Catarsis Monumental & Gran Fuga Sideral (Clímax Aprobado Extendido)
-// Clímax aprobado por el DG extendido con polifonía transcultural y disolución cósmica
+    description: 'CLÍMAX APROBADO Y GRAN FUGA SIDERAL: Retorno transmutado del patrón aprobado con pitch-bend sideral y polifonía transcultural completa antes de disolverse gradualmente en resonancia cuántica y dither de cinta analógica.',
+    strudelCode: `// SECCIÓN 07 (04:35 - 07:15): Catarsis Monumental Transmutada & Gran Fuga Sideral
 stack(
   note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
   note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
