@@ -177,34 +177,29 @@ const challengerTrack = TRACKS[1];
           <button type="button" class="btn-daw-tool mono btn-unmute-all" id="btn-unmute-all" aria-label="Restaurar todos los canales activos" title="Activar todos los canales">
             🔊 Todos ON
           </button>
-          <!-- Add Channel Button in Toolbar -->
-          <button type="button" class="btn-daw-tool mono btn-add-channel-toolbar" id="btn-add-track-toolbar" aria-label="Añadir nuevo canal" title="Añadir una nueva pista al arreglo">
-            ➕ Canal
-          </button>
         </div>
       </div>
 
-      <!-- Arranger Layout: Left Track Headers (Mute, Solo, Vol, Delete) + Right Timeline Canvas -->
-      <div class="daw-arranger-layout" id="daw-arranger-layout">
-        <!-- Far Left: Interactive Channel Headers -->
-        <div class="daw-channel-sidebar mono" id="daw-channel-sidebar" role="region" aria-label="Cabezales de pistas">
-          <div class="channel-sidebar-top-ruler">
-            <span class="sidebar-top-title">PISTAS (<span id="sidebar-tracks-count">09</span>)</span>
-            <button type="button" class="btn-add-channel-side" id="btn-add-channel-side" aria-label="Añadir nuevo canal al secuenciador" title="Añadir canal">+</button>
-          </div>
-          <div class="channel-headers-container" id="channel-headers-container" role="list" aria-label="Lista de canales activos">
-            <!-- Renderizado dinámicamente con controles funcionales ON/OFF, Solo, Volumen y Delete -->
-          </div>
-        </div>
+      <!-- Quick 9-Channel Interactive Mute / Solo Strip -->
+      <div class="channels-strip-container mono" id="channels-strip-container" role="group" aria-label="Interruptores de activación ON/OFF por canal">
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="0" aria-pressed="true" title="Clic para mutear/activar Sub-Bass 35Hz"><span class="ch-led" style="background: #ef4444"></span><span class="ch-num">01</span><span class="ch-name">Sub-Bass</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="1" aria-pressed="true" title="Clic para mutear/activar Neuro FM Bass"><span class="ch-led" style="background: #f97316"></span><span class="ch-num">02</span><span class="ch-name">Neuro FM</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="2" aria-pressed="true" title="Clic para mutear/activar Lead Poly Synth"><span class="ch-led" style="background: #06b6d4"></span><span class="ch-num">03</span><span class="ch-name">Lead Poly</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="3" aria-pressed="true" title="Clic para mutear/activar Campanas OoT"><span class="ch-led" style="background: #3b82f6"></span><span class="ch-num">04</span><span class="ch-name">Campanas</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="4" aria-pressed="true" title="Clic para mutear/activar Coro Polifónico IA"><span class="ch-led" style="background: #a855f7"></span><span class="ch-num">05</span><span class="ch-name">Coro IA</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="5" aria-pressed="true" title="Clic para mutear/activar Capa Étnica 2026"><span class="ch-led" style="background: #10b981"></span><span class="ch-num">06</span><span class="ch-name">Étnica</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="6" aria-pressed="true" title="Clic para mutear/activar Reloj Continuo"><span class="ch-led" style="background: #f59e0b"></span><span class="ch-num">07</span><span class="ch-name">Reloj Vibe</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="7" aria-pressed="true" title="Clic para mutear/activar Batería Breakbeat"><span class="ch-led" style="background: #e11d48"></span><span class="ch-num">08</span><span class="ch-name">Batería</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="8" aria-pressed="true" title="Clic para mutear/activar Texturas Granulares & FX"><span class="ch-led" style="background: #ec4899"></span><span class="ch-num">09</span><span class="ch-name">FX & Sweeps</span><span class="ch-state">ON</span></button>
+      </div>
 
-        <!-- Right Side: Scrubber & Waveform Canvas Challenger (Ableton Arrangement View) -->
-        <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, usa rueda para zoom o haz clic para mover el cabezal">
-          <canvas id="waveform-canvas-1" height="440" aria-hidden="true"></canvas>
-          <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
-          <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
-          <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
-          <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
-        </div>
+      <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View 9 Tracks) -->
+      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, usa rueda para zoom o haz clic para mover el cabezal">
+        <canvas id="waveform-canvas-1" height="440" aria-hidden="true"></canvas>
+        <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
+        <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
+        <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
+        <div class="playhead playhead-challenger" id="playhead-1" aria-hidden="true"></div>
       </div>
 
       <!-- FLOATING SELECTION & FAST PROMPT DOCK (INSPIRADO EN SUNO STUDIO) -->
@@ -637,7 +632,7 @@ const challengerTrack = TRACKS[1];
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
 
   // 9-Track Ableton / Suno Multitrack Architecture Definition (Single Unificado)
-  let abletonTracks = [
+  const abletonTracks = [
     {
       id: 'sub',
       num: '01',
@@ -754,20 +749,14 @@ const challengerTrack = TRACKS[1];
     }
   ];
 
-  // Dynamic Multitrack Mute, Volume & Solo States
-  let tracksMuted = abletonTracks.map(() => false);
-  let trackVolumes = abletonTracks.map(() => 0.85);
+  // 9-Channel Mute & Solo States
+  const tracksMuted = [false, false, false, false, false, false, false, false, false];
   let soloTrackIdx = null;
-  let selectedTrackIdx = 0; // Pista activa seleccionada (0..abletonTracks.length-1)
+  let selectedTrackIdx = 0; // Pista activa seleccionada (0..8)
 
   function isTrackAudible(tIdx) {
     if (soloTrackIdx !== null) return soloTrackIdx === tIdx;
     return !tracksMuted[tIdx];
-  }
-
-  function getTrackVol(tIdx) {
-    if (!isTrackAudible(tIdx)) return 0;
-    return (trackVolumes[tIdx] !== undefined ? trackVolumes[tIdx] : 0.85);
   }
 
   // Zoom & Pan State (Arranger Canvas)
@@ -874,11 +863,7 @@ const challengerTrack = TRACKS[1];
   const zoomLevelBadge = document.getElementById('zoom-level-badge');
   const btnUnmuteAll = document.getElementById('btn-unmute-all');
   const dawBarCounter = document.getElementById('daw-bar-counter');
-  const dawChannelsCountBadge = document.getElementById('daw-channels-count-badge');
-  const btnAddChannelSide = document.getElementById('btn-add-channel-side');
-  const btnAddTrackToolbar = document.getElementById('btn-add-track-toolbar');
-  const channelHeadersContainer = document.getElementById('channel-headers-container');
-  const sidebarTracksCount = document.getElementById('sidebar-tracks-count');
+  const channelToggleButtons = document.querySelectorAll('.btn-channel-toggle');
 
   // Evolution & Governance DOM Cache
   const btnVerdictIterate = document.getElementById('btn-verdict-iterate');
@@ -1322,8 +1307,7 @@ const challengerTrack = TRACKS[1];
         }
 
         // CANAL 07: RELOJ VIBE (Pulso 16avos Vibe Anchor)
-        const vClock = getTrackVol(6);
-        if (vClock > 0.001) {
+        if (isTrackAudible(6)) {
           const pan = Math.sin(tickerStep * 0.35) * 0.55;
           playCountdownTick(ctx, time, pan);
         }
@@ -1361,50 +1345,44 @@ const challengerTrack = TRACKS[1];
         // --- CAPA ACTO 1: CONSTRUCCIÓN PROGRESIVA EN < 2 MINUTOS (0:00 - 2:00 // g1) ---
         if (g1 > 0.001) {
           // Canal 04: CAMPANAS OoT (Leitmotif ancestral expuesto desde el inicio)
-          const vChimes = getTrackVol(3);
-          if (vChimes > 0.001) {
+          if (isTrackAudible(3)) {
             if (tickerStep % 4 === 0) {
               const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
-              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g1 * vChimes, 0.65);
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g1, 0.65);
             }
           }
           // Canal 05: CORO IA / PADS (Entran progresivamente a partir de s >= 40)
-          const vChoir = getTrackVol(4);
-          if (vChoir > 0.001 && s >= 40) {
+          if (isTrackAudible(4) && s >= 40) {
             if (stepInBar === 0 || stepInBar === 4 || stepInBar === 8 || stepInBar === 12) {
               const filterSweep = 400 + Math.sin(tickerStep * 0.12) * 1600;
               const padVol = Math.min(0.28, 0.12 + ((s - 40) / 60) * 0.16);
-              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, padVol * g1 * vChoir, filterSweep, 0.35));
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, padVol * g1, filterSweep, 0.35));
             }
           }
           // Canal 06: CAPA ÉTNICA (Guzheng granular delicado sobre el tema a partir de s >= 40)
-          const vEthnic = getTrackVol(5);
-          if (vEthnic > 0.001 && s >= 40) {
+          if (isTrackAudible(5) && s >= 40) {
             if (tickerStep % 2 === 0) {
               const gzNotes = [261.63, 311.13, 392.00, 466.16, 523.25];
-              playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.2 * g1 * vEthnic, 0.12);
+              playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.2 * g1, 0.12);
             }
           }
           // Canal 08: BATERÍA (Sub-kick 4/4 sutil a partir de s >= 60)
-          const vDrums = getTrackVol(7);
-          if (vDrums > 0.001 && s >= 60) {
-            if (stepInBar === 0) playKick(ctx, time, 120, 36, 0.65 * g1 * vDrums);
-            if (stepInBar % 8 === 4) playNoise(ctx, time, 0.18 * g1 * vDrums, 5800, 0.05);
+          if (isTrackAudible(7) && s >= 60) {
+            if (stepInBar === 0) playKick(ctx, time, 120, 36, 0.65 * g1);
+            if (stepInBar % 8 === 4) playNoise(ctx, time, 0.18 * g1, 5800, 0.05);
           }
           // Canal 01: SUB-BASS (Despertar gradual del Braam 35Hz a partir de s >= 75, pleno antes de 2min)
-          const vSub = getTrackVol(0);
-          if (vSub > 0.001) {
+          if (isTrackAudible(0)) {
             if (s >= 75 && stepInBar === 0) {
               const subVol = Math.min(0.9, 0.35 + ((s - 75) / 35) * 0.55);
-              playMonumentalBraam(ctx, time, 35, subVol * g1 * vSub, 2.4);
+              playMonumentalBraam(ctx, time, 35, subVol * g1, 2.4);
             }
           }
           // Canal 03: LEAD SYNTH (Polifonía aprobada ensamblada a partir de s >= 80)
-          const vLead = getTrackVol(2);
-          if (vLead > 0.001 && s >= 80) {
+          if (isTrackAudible(2) && s >= 80) {
             if (tickerStep % 2 === 0) {
               const polyNotes = [261.63, 311.13, 349.23, 392.00, 523.25];
-              playTriangle(ctx, time, polyNotes[(tickerStep / 2) % polyNotes.length], 0.25 * g1 * vLead, 0.14);
+              playTriangle(ctx, time, polyNotes[(tickerStep / 2) % polyNotes.length], 0.25 * g1, 0.14);
             }
           }
         }
@@ -1415,80 +1393,73 @@ const challengerTrack = TRACKS[1];
           const isBassDropout = (s >= 120 && s < 135);
 
           // Canal 08: BATERÍA (NUEVO PATRÓN: Modular Breakbeat a 118 BPM con ghost snares y ride)
-          const vDrums = getTrackVol(7);
-          if (vDrums > 0.001) {
+          if (isTrackAudible(7)) {
             if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
-              playKick(ctx, time, 160, 36, 1.05 * g2 * vDrums);
+              playKick(ctx, time, 160, 36, 1.05 * g2);
             }
             if (stepInBar === 4 || stepInBar === 12) {
-              playNoise(ctx, time, 0.62 * g2 * vDrums, 3400, 0.1);
-              playKick(ctx, time, 180, 70, 0.4 * g2 * vDrums);
+              playNoise(ctx, time, 0.62 * g2, 3400, 0.1);
+              playKick(ctx, time, 180, 70, 0.4 * g2);
             }
             if (stepInBar % 2 === 1) {
-              playNoise(ctx, time, 0.22 * g2 * vDrums, 5400, 0.03);
+              playNoise(ctx, time, 0.22 * g2, 5400, 0.03);
             }
             if (stepInBar % 4 === 2) {
-              playNoise(ctx, time, 0.18 * g2 * vDrums, 7000, 0.08); // Ride sizzle
+              playNoise(ctx, time, 0.18 * g2, 7000, 0.08); // Ride sizzle
             }
           }
 
           // Canal 02: NEURO BASS (Surge XT FM: APAGADO durante 120-135s, luego entra mutado con pausas)
-          const vNeuro = getTrackVol(1);
-          if (vNeuro > 0.001 && !isBassDropout) {
+          if (isTrackAudible(1) && !isBassDropout) {
             // El bajo NO persiste continuo: hits sincopados con pausas
             if (stepInBar === 0 || stepInBar === 3 || stepInBar === 10) {
               const rootNotes = [65.41, 77.78, 87.31, 98.00];
               const rF = rootNotes[chordIdx];
               const modF = 130 + ((tickerStep * 19) % 240);
               const filtF = 900 + Math.sin(tickerStep * 0.4) * 2600;
-              playNeuroFMGrowl(ctx, time, rF, modF, filtF, 0.82 * g2 * vNeuro, 0.26);
+              playNeuroFMGrowl(ctx, time, rF, modF, filtF, 0.82 * g2, 0.26);
             }
           }
 
           // Canal 01: SUB-BASS (Sub 35Hz sincronizado pero con pausas, APAGADO en dropout)
-          const vSub = getTrackVol(0);
-          if (vSub > 0.001 && !isBassDropout) {
+          if (isTrackAudible(0) && !isBassDropout) {
             if (stepInBar === 0) {
-              playSine(ctx, time, 35.0, 0.32 * g2 * vSub, 0.6);
+              playSine(ctx, time, 35.0, 0.32 * g2, 0.6);
             }
           }
 
           // Canal 03: LEAD SYNTH (NUEVO PATRÓN: Arpegios Modulares Ascendentes)
-          const vLead = getTrackVol(2);
-          if (vLead > 0.001) {
+          if (isTrackAudible(2)) {
             if (tickerStep % 2 === 0) {
               const arpScale = [392.00, 466.16, 523.25, 622.25, 783.99, 932.33];
               const arpNote = arpScale[(tickerStep / 2) % arpScale.length];
-              playSaw(ctx, time, arpNote, 0.22 * g2 * vLead, 2800, 0.12);
+              playSaw(ctx, time, arpNote, 0.22 * g2, 2800, 0.12);
             }
           }
 
           // Canal 05: CORO IA / PADS (NUEVO PATRÓN: Formantes A-E-I modulantes con staccato)
-          const vChoir = getTrackVol(4);
-          if (vChoir > 0.001) {
+          if (isTrackAudible(4)) {
             if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.26 * g2 * vChoir, 1800, 0.32));
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.26 * g2, 1800, 0.32));
             }
           }
 
           // Canal 06: CAPA ÉTNICA (NUEVO PATRÓN: Duduk Melismático & Gamelan)
-          const vEthnic = getTrackVol(5);
-          if (vEthnic > 0.001) {
+          if (isTrackAudible(5)) {
             if (tickerStep % 4 === 0) {
               const dudukNotes = [311.13, 349.23, 392.00, 466.16, 523.25, 587.33];
               const dNote = dudukNotes[(tickerStep / 4) % dudukNotes.length];
-              playTriangle(ctx, time, dNote, 0.3 * g2 * vEthnic, 0.35);
+              playTriangle(ctx, time, dNote, 0.3 * g2, 0.35);
             }
           }
 
           // Canal 09: TEXTURAS / FX (Noise Risers y Glitch Bursts hacia la frontera)
-          const vFx = getTrackVol(8);
-          if (vFx > 0.001) {
+          if (isTrackAudible(8)) {
             if (s >= 250 && s < 275) {
               const progress = (s - 250) / 25;
               const fSweep = 1000 + progress * 5500;
               if (tickerStep % 2 === 0) {
-                playNoise(ctx, time, (0.15 + progress * 0.5) * g2 * vFx, fSweep, 0.09);
+                playNoise(ctx, time, (0.15 + progress * 0.5) * g2, fSweep, 0.09);
               }
             }
           }
@@ -1497,53 +1468,38 @@ const challengerTrack = TRACKS[1];
         // --- CAPA ACTO 3: CATARSIS MONUMENTAL TRANSMUTADA & GRAN FUGA SIDERAL (04:35 - 07:15 // g3) ---
         if (g3 > 0.001) {
           // Canal 01: SUB-BASS (Monumental Braam 35Hz con resonancia de bronce)
-          const vSub = getTrackVol(0);
-          if (vSub > 0.001) {
+          if (isTrackAudible(0)) {
             if (stepInBar === 0) {
               const braamIntensity = s < 332 ? 1.15 : (s < 390 ? 0.95 : Math.max(0.2, 0.95 - (s - 390) / 45));
-              playMonumentalBraam(ctx, time, 35, braamIntensity * g3 * vSub, 3.4);
+              playMonumentalBraam(ctx, time, 35, braamIntensity * g3, 3.4);
             }
           }
           // Canal 05: CORO IA / PADS (Bombeo sidechain catártico)
-          const vChoir = getTrackVol(4);
-          if (vChoir > 0.001) {
+          if (isTrackAudible(4)) {
             if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
               const padVol = s < 390 ? 0.32 : Math.max(0.08, 0.32 - (s - 390) / 40);
-              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, padVol * g3 * vChoir, 2200, 0.5));
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, padVol * g3, 2200, 0.5));
             }
           }
           // Canal 04: CAMPANAS OoT (Campanas celestiales del leitmotif aprobado)
-          const vChimes = getTrackVol(3);
-          if (vChimes > 0.001) {
+          if (isTrackAudible(3)) {
             if (tickerStep % 4 === 0) {
               const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50, 1174.66, 1046.50];
-              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.35 * g3 * vChimes, 0.7);
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.35 * g3, 0.7);
             }
           }
           // Canal 06: CAPA ÉTNICA (Evolución de Fuga Transcultural extendida a partir de 05:32)
-          const vEthnic = getTrackVol(5);
-          if (vEthnic > 0.001) {
+          if (isTrackAudible(5)) {
             if (s >= 332 && tickerStep % 2 === 0) {
               const fugaNotes = [261.63, 311.13, 392.00, 466.16, 523.25, 622.25, 783.99];
-              playTriangle(ctx, time, fugaNotes[(tickerStep / 2) % fugaNotes.length], 0.28 * g3 * vEthnic, 0.14);
+              playTriangle(ctx, time, fugaNotes[(tickerStep / 2) % fugaNotes.length], 0.28 * g3, 0.14);
             }
           }
           // Canal 08: BATERÍA (Bombo profundo espaciado que decae gradualmente)
-          const vDrums = getTrackVol(7);
-          if (vDrums > 0.001) {
+          if (isTrackAudible(7)) {
             if (s < 390 && stepInBar % 4 === 0) {
-              playKick(ctx, time, 85, 28, 0.55 * g3 * vDrums);
+              playKick(ctx, time, 85, 28, 0.55 * g3);
             }
-          }
-        }
-
-        // SÍNTESIS PARA CANALES ADICIONALES DINÁMICOS (> 9 CANALES)
-        for (let t = 9; t < abletonTracks.length; t++) {
-          const vExtra = getTrackVol(t);
-          if (vExtra > 0.001 && tickerStep % 2 === 0) {
-            const extraHarmonics = [220.00, 277.18, 329.63, 440.00];
-            const extraF = extraHarmonics[(tickerStep / 2 + t) % extraHarmonics.length];
-            playSaw(ctx, time, extraF, 0.2 * vExtra, 1600, 0.15);
           }
         }
       }
@@ -1597,8 +1553,8 @@ const challengerTrack = TRACKS[1];
 
   function getChallengerLayoutMetrics(trackWidth) {
     const w = trackWidth || (deckDOM[1].waveformTrack ? deckDOM[1].waveformTrack.clientWidth : 800);
-    const headerW = 0; // El sidebar de canales está en HTML en el panel izquierdo
-    const timelineW = Math.max(1, w);
+    const headerW = Math.min(130, Math.floor(w * 0.17));
+    const timelineW = Math.max(1, w - headerW);
     const visibleDur = decks[1].duration / zoomLevel;
     return { headerW, timelineW, visibleDur };
   }
@@ -1748,11 +1704,11 @@ const challengerTrack = TRACKS[1];
       // DECK 2 (CHALLENGER): VISTA MULTIPISTA ESTILO ABLETON LIVE (6 LANES)
       // ====================================================================
       if (idx === 1) {
-        const numTracks = abletonTracks.length; // Canales dinámicos
+        const numTracks = abletonTracks.length; // 9 Canales
         const rulerH = 24;
-        const laneH = (h - rulerH) / Math.max(1, numTracks);
-        const headerW = 0; // Sidebar en HTML a la izquierda
-        const timelineW = w;
+        const laneH = (h - rulerH) / numTracks; // 34px aprox
+        const headerW = Math.min(130, Math.floor(w * 0.17));
+        const timelineW = w - headerW;
         const totalDuration = decks[1].duration;
         const visibleDur = totalDuration / zoomLevel;
         const curSec = decks[1].currentSec || 0;
@@ -1765,7 +1721,7 @@ const challengerTrack = TRACKS[1];
 
         // Helper tiempo a píxel X en el timeline
         const timeToX = (sec) => {
-          return ((sec - scrollOffsetSec) / visibleDur) * timelineW;
+          return headerW + ((sec - scrollOffsetSec) / visibleDur) * timelineW;
         };
 
         // Fondo del Canvas
@@ -1784,6 +1740,10 @@ const challengerTrack = TRACKS[1];
         ctx2d.lineTo(w, rulerH);
         ctx2d.stroke();
 
+        ctx2d.font = 'bold 8.5px monospace';
+        ctx2d.fillStyle = isLight ? '#475569' : '#94a3b8';
+        ctx2d.fillText('PISTAS (09)', 8, 15);
+
         // Marcas de compás y tiempo en el Ruler
         const bpmEst = 118;
         const barSec = (60 / bpmEst) * 4;
@@ -1794,7 +1754,7 @@ const challengerTrack = TRACKS[1];
         for (let b = 1; b <= totalBars; b += barStep) {
           const bSec = (b - 1) * barSec;
           const bx = timeToX(bSec);
-          if (bx >= -5 && bx <= w + 5) {
+          if (bx >= headerW - 5 && bx <= w + 5) {
             ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.14)';
             ctx2d.beginPath();
             ctx2d.moveTo(bx, 10);
@@ -1810,15 +1770,15 @@ const challengerTrack = TRACKS[1];
         // Pointers de Selección / Loop Brace en el Ruler (Punteros triangulares azules estilo Suno Studio)
         const selLeftX = timeToX(selStart);
         const selRightX = timeToX(selEnd);
-        if (selRightX >= 0 && selLeftX <= w) {
-          const clampedLeft = Math.max(0, selLeftX);
+        if (selRightX >= headerW && selLeftX <= w) {
+          const clampedLeft = Math.max(headerW, selLeftX);
           const clampedRight = Math.min(w, selRightX);
 
           ctx2d.fillStyle = 'rgba(56, 189, 248, 0.2)';
           ctx2d.fillRect(clampedLeft, 0, Math.max(2, clampedRight - clampedLeft), rulerH);
 
           // Puntero izquierdo hacia abajo
-          if (selLeftX >= 0 && selLeftX <= w) {
+          if (selLeftX >= headerW && selLeftX <= w) {
             ctx2d.fillStyle = '#38bdf8';
             ctx2d.beginPath();
             ctx2d.moveTo(selLeftX - 5, 0);
@@ -1829,7 +1789,7 @@ const challengerTrack = TRACKS[1];
           }
 
           // Puntero derecho hacia abajo
-          if (selRightX >= 0 && selRightX <= w) {
+          if (selRightX >= headerW && selRightX <= w) {
             ctx2d.fillStyle = '#38bdf8';
             ctx2d.beginPath();
             ctx2d.moveTo(selRightX - 5, 0);
@@ -1849,7 +1809,7 @@ const challengerTrack = TRACKS[1];
         };
 
         // ====================================================================
-        // RENDER DE LAS PISTAS DEL ARREGLO (CLIPS EN TIMELINE)
+        // RENDER DE LAS 9 PISTAS DEL ARREGLO
         // ====================================================================
         abletonTracks.forEach((track, tIdx) => {
           const laneY = rulerH + tIdx * laneH;
@@ -1878,7 +1838,77 @@ const challengerTrack = TRACKS[1];
           ctx2d.stroke();
 
           // ------------------------------------------------------------------
-          // Clips de Arreglo en el Timeline (0 -> w)
+          // Columna de Cabecera Izquierda (0 -> headerW)
+          // ------------------------------------------------------------------
+          ctx2d.fillStyle = isLight ? '#e2e8f0' : '#141b27';
+          ctx2d.fillRect(0, laneY, headerW, laneH);
+
+          // Barra de acento de color de pista (4px)
+          ctx2d.fillStyle = track.color;
+          ctx2d.fillRect(0, laneY, 4, laneH);
+
+          if (isSolo) {
+            ctx2d.fillStyle = '#f59e0b';
+            ctx2d.fillRect(4, laneY, 2, laneH);
+          }
+
+          // Separador vertical derecho de la cabecera
+          ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#222d3d';
+          ctx2d.beginPath();
+          ctx2d.moveTo(headerW, laneY);
+          ctx2d.lineTo(headerW, laneY + laneH);
+          ctx2d.stroke();
+
+          // Número y Nombre de la pista
+          ctx2d.font = 'bold 8.5px monospace';
+          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#475569') : track.color;
+          ctx2d.fillText(track.num, 7, laneY + 12);
+
+          ctx2d.font = 'bold 8.5px monospace';
+          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#64748b') : (isLight ? '#0f172a' : '#f8fafc');
+          const maxNameChars = headerW < 100 ? 5 : 8;
+          ctx2d.fillText(track.name.slice(0, maxNameChars), 23, laneY + 12);
+
+          // Subtítulo del motor de síntesis
+          if (headerW > 85) {
+            ctx2d.font = '7px monospace';
+            ctx2d.fillStyle = isLight ? '#64748b' : '#64748b';
+            ctx2d.fillText(track.sub.slice(0, 14), 7, laneY + 23);
+          }
+
+          // Botón interactivo Mute en cabecera [ON] / [M]
+          const muteBoxX = headerW - 38;
+          const muteBoxY = laneY + 4;
+          const muteBoxW = 18;
+          const muteBoxH = 13;
+          ctx2d.fillStyle = isMuted ? (isLight ? '#ef4444' : '#7f1d1d') : (isLight ? '#10b981' : '#064e3b');
+          ctx2d.fillRect(muteBoxX, muteBoxY, muteBoxW, muteBoxH);
+          ctx2d.font = 'bold 7px monospace';
+          ctx2d.fillStyle = '#ffffff';
+          ctx2d.fillText(isMuted ? 'M' : 'ON', muteBoxX + (isMuted ? 6 : 3), muteBoxY + 9.5);
+
+          // Botón interactivo Solo [S]
+          const soloBoxX = headerW - 17;
+          const soloBoxY = laneY + 4;
+          const soloBoxW = 14;
+          const soloBoxH = 13;
+          ctx2d.fillStyle = isSolo ? '#f59e0b' : (isLight ? '#cbd5e1' : '#1e293b');
+          ctx2d.fillRect(soloBoxX, soloBoxY, soloBoxW, soloBoxH);
+          ctx2d.fillStyle = isSolo ? '#000000' : (isLight ? '#64748b' : '#94a3b8');
+          ctx2d.fillText('S', soloBoxX + 4.5, soloBoxY + 9.5);
+
+          // Indicador LED / VU Meter animado
+          const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
+          const isTrackActive = isChallengerPlaying && activeClip && activeClip.active && isTrackAudible(tIdx);
+          const ledX = headerW - 8;
+          const ledY = laneY + 24;
+          ctx2d.beginPath();
+          ctx2d.arc(ledX, ledY, 2.5, 0, Math.PI * 2);
+          ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#1e293b');
+          ctx2d.fill();
+
+          // ------------------------------------------------------------------
+          // Clips de Arreglo en el Timeline (Columna Derecha: headerW -> w)
           // ------------------------------------------------------------------
           track.clips.forEach(clip => {
             const clipStartX = timeToX(clip.startSec);
@@ -1888,9 +1918,9 @@ const challengerTrack = TRACKS[1];
             const clipH = laneH - 4;
             const isClipCurrent = isChallengerPlaying && (curSec >= clip.startSec && curSec < clip.endSec) && isTrackAudible(tIdx);
 
-            if (clipEndX < 0 || clipStartX > w) return;
+            if (clipEndX < headerW || clipStartX > w) return;
 
-            const visibleClipStartX = Math.max(0, clipStartX);
+            const visibleClipStartX = Math.max(headerW, clipStartX);
             const visibleClipW = Math.min(clipW, w - visibleClipStartX);
 
             if (clip.active && !isMuted) {
@@ -2493,16 +2523,56 @@ ${codeBlocksXml}
       if (timelineContextMenu) timelineContextMenu.style.display = 'none';
 
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const { timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
       const rulerH = 24;
       const numTracks = abletonTracks.length;
-      const laneH = (rect.height - rulerH) / Math.max(1, numTracks);
+      const laneH = (rect.height - rulerH) / numTracks;
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
 
+      // Clic dentro de la columna de cabecera de pistas (Header lateral izquierdo)
+      if (clickX < headerW) {
+        if (clickY < rulerH) {
+          // Esquina superior "PISTAS 09": reset/toggle zoom fit
+          zoomLevel = (zoomLevel === 1.0) ? 2.0 : 1.0;
+          scrollOffsetSec = 0;
+          if (zoomLevelBadge) zoomLevelBadge.textContent = `${Math.round(zoomLevel * 100)}%`;
+          drawWaveforms();
+          updateSelectionOverlays();
+          updateDeckUI(1);
+          renderAnnotationMarkers();
+          return;
+        }
+
+        const tIdx = Math.max(0, Math.min(numTracks - 1, Math.floor((clickY - rulerH) / laneH)));
+        selectedTrackIdx = tIdx;
+
+        // Botón Mute en cabecera [ON] / [M] (headerW - 38 .. headerW - 20)
+        if (clickX >= headerW - 38 && clickX <= headerW - 20) {
+          tracksMuted[tIdx] = !tracksMuted[tIdx];
+          syncChannelStripUI();
+          drawWaveforms();
+          return;
+        }
+
+        // Botón Solo en cabecera [S] (headerW - 17 .. headerW - 3)
+        if (clickX >= headerW - 17 && clickX <= headerW - 3) {
+          soloTrackIdx = (soloTrackIdx === tIdx ? null : tIdx);
+          syncChannelStripUI();
+          drawWaveforms();
+          return;
+        }
+
+        // Clic en el nombre o color: seleccionar pista
+        syncChannelStripUI();
+        updateSelectionOverlays();
+        drawWaveforms();
+        return;
+      }
+
       // Clic en el Ruler superior (Seek inmediato del cabezal)
       if (clickY < rulerH) {
-        const targetTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (clickX / timelineW) * visibleDur));
+        const targetTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + ((clickX - headerW) / timelineW) * visibleDur));
         seekDeck(1, targetTime);
         return;
       }
@@ -2510,14 +2580,13 @@ ${codeBlocksXml}
       // Clic dentro de los carriles (lanes) de las pistas
       const tIdx = Math.max(0, Math.min(numTracks - 1, Math.floor((clickY - rulerH) / laneH)));
       selectedTrackIdx = tIdx;
-      renderTrackHeaders();
 
       isSelecting = true;
-      selectStartPx = Math.max(0, Math.min(timelineW, clickX));
+      selectStartPx = Math.max(0, Math.min(timelineW, clickX - headerW));
       selectStartTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (selectStartPx / timelineW) * visibleDur));
 
       if (selectionDraftOverlay) {
-        selectionDraftOverlay.style.left = `${selectStartPx}px`;
+        selectionDraftOverlay.style.left = `${headerW + selectStartPx}px`;
         selectionDraftOverlay.style.width = '0px';
         selectionDraftOverlay.style.display = 'block';
       }
@@ -2526,14 +2595,14 @@ ${codeBlocksXml}
     window.addEventListener('mousemove', (e) => {
       if (!isSelecting) return;
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const { timelineW } = getChallengerLayoutMetrics(rect.width);
+      const { headerW, timelineW } = getChallengerLayoutMetrics(rect.width);
       const currentX = e.clientX - rect.left;
-      const currentPx = Math.max(0, Math.min(timelineW, currentX));
+      const currentPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const leftPx = Math.min(selectStartPx, currentPx);
       const widthPx = Math.abs(currentPx - selectStartPx);
 
       if (selectionDraftOverlay) {
-        selectionDraftOverlay.style.left = `${leftPx}px`;
+        selectionDraftOverlay.style.left = `${headerW + leftPx}px`;
         selectionDraftOverlay.style.width = `${Math.max(1, widthPx)}px`;
       }
     });
@@ -2543,9 +2612,15 @@ ${codeBlocksXml}
       isSelecting = false;
 
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const { timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
       const currentX = e.clientX - rect.left;
-      const endPx = Math.max(0, Math.min(timelineW, currentX));
+
+      if (currentX < headerW && selectStartPx === 0) {
+        if (selectionDraftOverlay) selectionDraftOverlay.style.display = 'none';
+        return;
+      }
+
+      const endPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const widthPx = Math.abs(endPx - selectStartPx);
 
       // Si el arrastre es muy corto (< 6px), tratar como click de selección de clip o seek habitual
@@ -2888,14 +2963,14 @@ ${codeBlocksXml}
     challengerTrackEl.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       const rect = challengerTrackEl.getBoundingClientRect();
-      const { timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
       const rulerH = 24;
       const numTracks = abletonTracks.length;
-      const laneH = (rect.height - rulerH) / Math.max(1, numTracks);
+      const laneH = (rect.height - rulerH) / numTracks;
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
 
-      const clickTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (Math.max(0, clickX) / timelineW) * visibleDur));
+      const clickTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (Math.max(0, clickX - headerW) / timelineW) * visibleDur));
       const clickedTrackIdx = Math.max(0, Math.min(numTracks - 1, Math.floor(Math.max(0, clickY - rulerH) / laneH)));
 
       selectedTrackIdx = clickedTrackIdx;
@@ -2981,195 +3056,42 @@ ${codeBlocksXml}
     });
   }
 
-  // DAW Left Channel Sidebar & Multitrack Header Engine
-  function renderTrackHeaders() {
-    if (!channelHeadersContainer) return;
-    channelHeadersContainer.innerHTML = '';
-
-    const numTracks = abletonTracks.length;
-    if (sidebarTracksCount) {
-      sidebarTracksCount.textContent = `(${String(numTracks).padStart(2, '0')})`;
-    }
-    if (dawChannelsCountBadge) {
-      dawChannelsCountBadge.textContent = `${numTracks} Canales Activos`;
-    }
-
-    abletonTracks.forEach((track, tIdx) => {
+  // DAW Multitrack Toolbar & Channel Strip Event Handlers
+  function syncChannelStripUI() {
+    channelToggleButtons.forEach((btn, idx) => {
+      const tIdx = parseInt(btn.getAttribute('data-channel-idx') || String(idx), 10);
       const isMuted = tracksMuted[tIdx];
       const isSolo = (soloTrackIdx === tIdx);
-      const isSelected = (selectedTrackIdx === tIdx);
-      const curVol = (trackVolumes[tIdx] !== undefined ? trackVolumes[tIdx] : 0.85);
-
-      const row = document.createElement('div');
-      row.className = `channel-header-row ${isSelected ? 'selected' : ''} ${isMuted ? 'muted' : ''} ${isSolo ? 'solo' : ''}`;
-      row.dataset.trackIdx = String(tIdx);
-
-      // Color accent strip
-      const colorStrip = document.createElement('div');
-      colorStrip.className = 'ch-color-strip';
-      colorStrip.style.backgroundColor = track.color;
-      row.appendChild(colorStrip);
-
-      // Track Number
-      const numSpan = document.createElement('span');
-      numSpan.className = 'ch-num mono';
-      numSpan.textContent = track.num || String(tIdx + 1).padStart(2, '0');
-      row.appendChild(numSpan);
-
-      // Track Info (Name & Subtitle)
-      const infoDiv = document.createElement('div');
-      infoDiv.className = 'ch-info';
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'ch-name';
-      nameSpan.textContent = track.name;
-      nameSpan.title = track.name;
-      infoDiv.appendChild(nameSpan);
-      row.appendChild(infoDiv);
-
-      // Track Controls (Mute, Solo, Volume Slider, Delete)
-      const ctrlDiv = document.createElement('div');
-      ctrlDiv.className = 'ch-controls';
-
-      // Mute Button
-      const muteBtn = document.createElement('button');
-      muteBtn.type = 'button';
-      muteBtn.className = `btn-ch-mute mono ${isMuted ? 'muted' : ''}`;
-      muteBtn.setAttribute('aria-label', `Alternar silencio pista ${track.name}`);
-      muteBtn.setAttribute('aria-pressed', (!isMuted).toString());
-      muteBtn.textContent = isMuted ? 'M' : 'ON';
-      muteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        tracksMuted[tIdx] = !tracksMuted[tIdx];
-        renderTrackHeaders();
-        drawWaveforms();
-      });
-      ctrlDiv.appendChild(muteBtn);
-
-      // Solo Button
-      const soloBtn = document.createElement('button');
-      soloBtn.type = 'button';
-      soloBtn.className = `btn-ch-solo mono ${isSolo ? 'solo' : ''}`;
-      soloBtn.setAttribute('aria-label', `Alternar solo pista ${track.name}`);
-      soloBtn.setAttribute('aria-pressed', isSolo.toString());
-      soloBtn.textContent = 'S';
-      soloBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        soloTrackIdx = (soloTrackIdx === tIdx ? null : tIdx);
-        renderTrackHeaders();
-        drawWaveforms();
-      });
-      ctrlDiv.appendChild(soloBtn);
-
-      // Volume Slider
-      const volSlider = document.createElement('input');
-      volSlider.type = 'range';
-      volSlider.min = '0';
-      volSlider.max = '100';
-      volSlider.value = String(Math.round(curVol * 100));
-      volSlider.className = 'ch-vol-slider';
-      volSlider.setAttribute('aria-label', `Volumen pista ${track.name}`);
-      volSlider.title = `Vol: ${Math.round(curVol * 100)}%`;
-      volSlider.addEventListener('input', (e) => {
-        e.stopPropagation();
-        trackVolumes[tIdx] = parseInt(volSlider.value, 10) / 100;
-        volSlider.title = `Vol: ${volSlider.value}%`;
-      });
-      volSlider.addEventListener('click', (e) => e.stopPropagation());
-      ctrlDiv.appendChild(volSlider);
-
-      // Delete Channel Button (permitir eliminar si hay más de 1 canal)
-      const delBtn = document.createElement('button');
-      delBtn.type = 'button';
-      delBtn.className = 'btn-ch-delete mono';
-      delBtn.setAttribute('aria-label', `Eliminar pista ${track.name}`);
-      delBtn.textContent = '✕';
-      delBtn.title = `Eliminar canal ${track.name}`;
-      if (abletonTracks.length <= 1) {
-        delBtn.disabled = true;
-        delBtn.style.opacity = '0.3';
+      btn.classList.toggle('muted-channel', isMuted);
+      btn.classList.toggle('solo-channel', isSolo);
+      btn.setAttribute('aria-pressed', (!isMuted).toString());
+      const labelSpan = btn.querySelector('.btn-channel-label');
+      if (labelSpan) {
+        const trk = abletonTracks[tIdx];
+        labelSpan.textContent = isMuted ? `Mute ${trk.name}` : (isSolo ? `Solo ${trk.name}` : trk.name);
       }
-      delBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        removeTrack(tIdx);
-      });
-      ctrlDiv.appendChild(delBtn);
-
-      row.appendChild(ctrlDiv);
-
-      // Clic en la fila para seleccionar la pista
-      row.addEventListener('click', () => {
-        selectedTrackIdx = tIdx;
-        renderTrackHeaders();
-        updateSelectionOverlays();
-        drawWaveforms();
-      });
-
-      channelHeadersContainer.appendChild(row);
     });
-
     if (ctxMuteLabel) {
       ctxMuteLabel.textContent = tracksMuted[selectedTrackIdx] ? 'Desmutear Pista' : 'Silenciar Pista (Mute)';
     }
   }
 
-  function addNewTrack() {
-    const nextIdx = abletonTracks.length + 1;
-    const numStr = String(nextIdx).padStart(2, '0');
-    const trackPalette = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#14b8a6', '#e11d48'];
-    const chosenColor = trackPalette[(nextIdx - 1) % trackPalette.length];
-
-    const newTrack = {
-      id: `ch_${Date.now()}`,
-      num: numStr,
-      name: `CANAL ${numStr}`,
-      sub: 'Surge XT / Sintetizador Modular',
-      color: chosenColor,
-      clips: [
-        { startSec: 0, endSec: 120, label: `Clip Modular 01`, active: true, type: 'melody' },
-        { startSec: 120, endSec: 275, label: `Clip Modular 02`, active: true, type: 'arp' },
-        { startSec: 275, endSec: 435, label: `Clip Modular 03`, active: true, type: 'sub' }
-      ]
-    };
-
-    abletonTracks.push(newTrack);
-    tracksMuted.push(false);
-    trackVolumes.push(0.85);
-    selectedTrackIdx = abletonTracks.length - 1;
-
-    renderTrackHeaders();
-    drawWaveforms();
-    generateVibePrompt();
-  }
-
-  function removeTrack(tIdx) {
-    if (abletonTracks.length <= 1) return;
-    abletonTracks.splice(tIdx, 1);
-    tracksMuted.splice(tIdx, 1);
-    trackVolumes.splice(tIdx, 1);
-    if (soloTrackIdx === tIdx) {
-      soloTrackIdx = null;
-    } else if (soloTrackIdx !== null && soloTrackIdx > tIdx) {
-      soloTrackIdx--;
-    }
-    selectedTrackIdx = Math.max(0, Math.min(abletonTracks.length - 1, selectedTrackIdx));
-
-    renderTrackHeaders();
-    drawWaveforms();
-    generateVibePrompt();
-  }
-
-  if (btnAddChannelSide) {
-    btnAddChannelSide.addEventListener('click', addNewTrack);
-  }
-  if (btnAddTrackToolbar) {
-    btnAddTrackToolbar.addEventListener('click', addNewTrack);
-  }
+  channelToggleButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tIdx = parseInt(btn.getAttribute('data-channel-idx'), 10);
+      selectedTrackIdx = tIdx;
+      tracksMuted[tIdx] = !tracksMuted[tIdx];
+      syncChannelStripUI();
+      updateSelectionOverlays();
+      drawWaveforms();
+    });
+  });
 
   if (btnUnmuteAll) {
     btnUnmuteAll.addEventListener('click', () => {
       tracksMuted.fill(false);
       soloTrackIdx = null;
-      renderTrackHeaders();
+      syncChannelStripUI();
       drawWaveforms();
     });
   }
@@ -3348,7 +3270,6 @@ ${codeBlocksXml}
       b.classList.remove('active-act');
       b.setAttribute('aria-pressed', 'false');
     });
-    renderTrackHeaders();
     generateVibePrompt();
     drawWaveforms();
   }
@@ -3376,7 +3297,7 @@ ${codeBlocksXml}
   // Init
   const initialTheme = getCurrentTheme();
   applyTheme(initialTheme);
-  renderTrackHeaders();
+  syncChannelStripUI();
   updateTargetDeckUI();
   updateSelectionOverlays();
   updateRoleCardsVisibility();
@@ -3674,8 +3595,8 @@ ${codeBlocksXml}
   .waveform-box-challenger {
     height: 440px;
     background: var(--canvas-bg);
-    border: none;
-    border-radius: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
     user-select: none;
   }
 
@@ -3808,244 +3729,100 @@ ${codeBlocksXml}
     font-weight: 600;
   }
 
-  /* DAW Multitrack Arranger Layout: Left Sidebar + Right Waveform Timeline */
-  .daw-arranger-layout {
+  /* 9-Channel Interactive Mute / Solo Strip */
+  .channels-strip-container {
     display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 0;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 0.3rem;
     width: 100%;
-    border: 1px solid var(--border-strong);
-    border-radius: 6px;
-    overflow: hidden;
-    background: var(--canvas-bg);
     box-sizing: border-box;
     margin-bottom: 0.4rem;
   }
 
-  @media (max-width: 768px) {
-    .daw-arranger-layout {
-      grid-template-columns: 165px 1fr;
+  @media (max-width: 900px) {
+    .channels-strip-container {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
 
-  @media (max-width: 500px) {
-    .daw-arranger-layout {
-      grid-template-columns: 120px 1fr;
+  @media (max-width: 550px) {
+    .channels-strip-container {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
-  .daw-channel-sidebar {
-    background: var(--bg-surface-elevated);
-    border-right: 1px solid var(--border-strong);
-    display: flex;
-    flex-direction: column;
-    height: 440px;
-    overflow: hidden;
-    box-sizing: border-box;
-    user-select: none;
-  }
-
-  .channel-sidebar-top-ruler {
-    height: 24px;
-    min-height: 24px;
+  .btn-channel-toggle {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 0.5rem;
-    background: var(--bg-surface);
-    border-bottom: 1px solid var(--border-subtle);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    box-sizing: border-box;
-  }
-
-  .btn-add-channel-side {
-    background: var(--btn-bg);
+    gap: 0.25rem;
+    padding: 0.25rem 0.4rem;
+    background: var(--bg-surface-elevated);
     border: 1px solid var(--border-subtle);
-    border-radius: 3px;
-    color: #38bdf8;
-    font-weight: 700;
-    font-size: 0.72rem;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.15s ease;
-    padding: 0;
-    line-height: 1;
-  }
-
-  .btn-add-channel-side:hover {
-    background: rgba(56, 189, 248, 0.2);
-    border-color: #38bdf8;
-    color: #ffffff;
-  }
-
-  .btn-add-channel-toolbar {
-    color: #38bdf8;
-    font-weight: 600;
-  }
-
-  .channel-headers-container {
-    display: flex;
-    flex-direction: column;
-    height: 416px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  .channel-header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 0.4rem;
-    border-bottom: 1px solid var(--border-subtle);
-    box-sizing: border-box;
-    gap: 0.25rem;
-    transition: background 0.15s ease;
-    background: var(--bg-surface-elevated);
-    min-width: 0;
-  }
-
-  .channel-header-row:nth-child(even) {
-    background: var(--bg-surface);
-  }
-
-  .channel-header-row.is-selected {
-    border-left: 3px solid #38bdf8;
-    background: rgba(56, 189, 248, 0.08);
-  }
-
-  .channel-header-row.is-muted {
-    opacity: 0.5;
-  }
-
-  .channel-header-row.is-solo {
-    border-right: 3px solid #f59e0b;
-    box-shadow: inset 0 0 6px rgba(245, 158, 11, 0.15);
-  }
-
-  .ch-row-left {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    cursor: pointer;
-    min-width: 0;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .ch-color-strip {
-    width: 3px;
-    height: 14px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  .ch-num {
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    flex-shrink: 0;
-  }
-
-  .ch-name {
+    font-family: inherit;
     font-size: 0.62rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+    overflow: hidden;
+    text-align: left;
     white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .btn-channel-toggle:hover {
+    border-color: var(--border-strong);
+    background: var(--btn-hover);
+    color: var(--text-primary);
+  }
+
+  .btn-channel-toggle .ch-led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 5px currentColor;
+  }
+
+  .btn-channel-toggle .ch-num {
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  .btn-channel-toggle .ch-name {
+    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .ch-row-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.18rem;
-    flex-shrink: 0;
-  }
-
-  .btn-ch-mute {
-    font-size: 0.52rem;
+  .btn-channel-toggle .ch-state {
     font-weight: 800;
-    padding: 0.12rem 0.25rem;
+    font-size: 0.58rem;
+    padding: 0.08rem 0.25rem;
     border-radius: 3px;
-    border: 1px solid var(--border-subtle);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    font-family: inherit;
-    line-height: 1.1;
-  }
-
-  .btn-ch-mute.ch-on {
-    background: rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.15);
     color: #10b981;
-    border-color: rgba(16, 185, 129, 0.4);
   }
 
-  .btn-ch-mute.ch-off {
+  .btn-channel-toggle.muted-channel {
+    opacity: 0.45;
+    background: var(--bg-canvas);
+    border-color: var(--border-subtle);
+  }
+
+  .btn-channel-toggle.muted-channel .ch-led {
+    background: #64748b !important;
+    box-shadow: none;
+  }
+
+  .btn-channel-toggle.muted-channel .ch-state {
     background: rgba(239, 68, 68, 0.15);
     color: #ef4444;
-    border-color: rgba(239, 68, 68, 0.35);
   }
 
-  .btn-ch-solo {
-    font-size: 0.52rem;
-    font-weight: 800;
-    padding: 0.12rem 0.25rem;
-    border-radius: 3px;
-    border: 1px solid var(--border-subtle);
-    background: var(--btn-bg);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    font-family: inherit;
-    line-height: 1.1;
-  }
-
-  .btn-ch-solo:hover {
-    color: var(--text-primary);
-    border-color: #f59e0b;
-  }
-
-  .btn-ch-solo.ch-solo-active {
-    background: rgba(245, 158, 11, 0.25);
-    color: #f59e0b;
-    border-color: #f59e0b;
-  }
-
-  .ch-vol-slider {
-    width: 32px;
-    height: 4px;
-    accent-color: #38bdf8;
-    cursor: pointer;
-    vertical-align: middle;
-  }
-
-  @media (max-width: 640px) {
-    .ch-vol-slider {
-      display: none;
-    }
-  }
-
-  .btn-ch-delete {
-    font-size: 0.55rem;
-    color: var(--text-muted);
-    background: transparent;
-    border: none;
-    padding: 0.1rem 0.18rem;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.15s ease;
-    line-height: 1;
-  }
-
-  .btn-ch-delete:hover {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.15);
+  .btn-channel-toggle.solo-channel {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
   }
 
   .dock-engine-select {
