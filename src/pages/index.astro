@@ -432,7 +432,7 @@ const challengerTrack = TRACKS[1];
             rows="2"
             class="director-textarea mono"
             placeholder="Escribe lo que sientes o deseas cambiar (ej: 'El paso de la sección 1 a la 2 necesita un build de caja acelerando y un sweep blanco de 4 compases antes de caer en el drop')..."
-          ></textarea>
+          >2/5 Aun no hay single solo ideas sueltas.</textarea>
         </div>
 
         <!-- Per-Role Dedicated XML Directives Inputs -->
@@ -597,14 +597,14 @@ const challengerTrack = TRACKS[1];
     }
   ];
 
-  // Selection Range & Prompt Parameters
-  let selStart = 0;
-  let selEnd = 110;
+  // Selection Range & Prompt Parameters (Enfocado en el clip aprobado por el DG: 04:46 - 05:32)
+  let selStart = 286;
+  let selEnd = 332;
   let includeCountdownAnchor = true;
   let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
 
-  // 9-Track Ableton / Suno Multitrack Architecture Definition
+  // 9-Track Ableton / Suno Multitrack Architecture Definition (Single Unificado)
   const abletonTracks = [
     {
       id: 'sub',
@@ -613,10 +613,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Sub 35Hz & Sine Sub-Braam',
       color: '#ef4444',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Silencio (Intro Coral)', active: false, type: 'silence' },
-        { startSec: 40, endSec: 110, label: 'Swell Braam 35Hz #sec-ng-07', active: true, type: 'sub' },
-        { startSec: 110, endSec: 275, label: 'Sub Continuo 35Hz Espina', active: true, type: 'sub' },
-        { startSec: 275, endSec: 435, label: 'Monumental Bronze Braam 35Hz', active: true, type: 'sub' }
+        { startSec: 0, endSec: 110, label: 'Semilla Sub 35Hz (Tema 04:46)', active: true, type: 'sub' },
+        { startSec: 110, endSec: 275, label: 'Ascenso Tensión Sub-Bass (Rampa)', active: true, type: 'sub' },
+        { startSec: 275, endSec: 332, label: 'Monumental Braam 35Hz [DG Aprobado]', active: true, type: 'sub' },
+        { startSec: 332, endSec: 435, label: 'Gran Fuga Sideral & Resonancia', active: true, type: 'sub' }
       ]
     },
     {
@@ -626,10 +626,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Surge XT 12-LFO FM Growl',
       color: '#f97316',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Silencio (Intro Coral)', active: false, type: 'silence' },
-        { startSec: 40, endSec: 110, label: 'Bass Growl Sutil 80Hz', active: true, type: 'reese' },
-        { startSec: 110, endSec: 275, label: 'Drop-D Neuro FM (12 LFOs)', active: true, type: 'reese' },
-        { startSec: 275, endSec: 435, label: 'Catarsis Reese Sideral', active: true, type: 'reese' }
+        { startSec: 0, endSec: 110, label: 'Warm Sub-Harmonic Hum', active: true, type: 'reese' },
+        { startSec: 110, endSec: 275, label: 'Surge XT FM Contrapunto Temático', active: true, type: 'reese' },
+        { startSec: 275, endSec: 332, label: 'Reese Sideral 35Hz Refuerzo', active: true, type: 'reese' },
+        { startSec: 332, endSec: 435, label: 'Sub-Drone en Decaimiento', active: true, type: 'reese' }
       ]
     },
     {
@@ -639,10 +639,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Analog Detune & Poly Saws',
       color: '#06b6d4',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Swell Filtrado 400Hz', active: true, type: 'melody' },
-        { startSec: 40, endSec: 110, label: 'Leitmotif Arqueológico', active: true, type: 'melody' },
-        { startSec: 110, endSec: 275, label: 'Arpegios Láser Modulares', active: true, type: 'arp' },
-        { startSec: 275, endSec: 435, label: 'Melodía Catarsis en C menor', active: true, type: 'melody' }
+        { startSec: 0, endSec: 110, label: 'Swell Analógico Tema C menor', active: true, type: 'melody' },
+        { startSec: 110, endSec: 275, label: 'Arpegios Modulares Ascendentes', active: true, type: 'arp' },
+        { startSec: 275, endSec: 332, label: 'Lead Poly Clímax Sideral', active: true, type: 'melody' },
+        { startSec: 332, endSec: 435, label: 'Disolución en Vacío Cuántico', active: true, type: 'melody' }
       ]
     },
     {
@@ -652,10 +652,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Temple Chimes & Ping-Pong',
       color: '#3b82f6',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Campanas de Seda OoT', active: true, type: 'bells' },
-        { startSec: 40, endSec: 110, label: 'Ping-Pong Delay Sideral', active: true, type: 'bells' },
-        { startSec: 110, endSec: 275, label: 'Glockenspiel Modal 118 BPM', active: true, type: 'bells' },
-        { startSec: 275, endSec: 435, label: 'Campanas Ancestrales Outro', active: true, type: 'bells' }
+        { startSec: 0, endSec: 110, label: 'Leitmotif OoT Semilla (Eco Suave)', active: true, type: 'bells' },
+        { startSec: 110, endSec: 275, label: 'Desarrollo Rítmico Ping-Pong', active: true, type: 'bells' },
+        { startSec: 275, endSec: 332, label: 'Campanas Ancestrales Clímax [DG]', active: true, type: 'bells' },
+        { startSec: 332, endSec: 435, label: 'Eco Sideral & Disolución', active: true, type: 'bells' }
       ]
     },
     {
@@ -665,10 +665,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Voces Formantes A-E-I & Pads',
       color: '#a855f7',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Inicio Coral Progresivo', active: true, type: 'choral' },
-        { startSec: 40, endSec: 110, label: 'Acordes Analógicos C menor', active: true, type: 'pad' },
-        { startSec: 110, endSec: 275, label: 'Sidechain Formant Pump', active: true, type: 'choral' },
-        { startSec: 275, endSec: 435, label: 'Wall of Sound Polifónico', active: true, type: 'pad' }
+        { startSec: 0, endSec: 110, label: 'Pads C menor / Eb (Armonía 04:46)', active: true, type: 'pad' },
+        { startSec: 110, endSec: 275, label: 'Crescendo Coral & Formantes A-E-I', active: true, type: 'choral' },
+        { startSec: 275, endSec: 332, label: 'Sidechain Pumped Wall of Sound', active: true, type: 'pad' },
+        { startSec: 332, endSec: 435, label: 'Reverb Tail Cósmico Ininterrumpido', active: true, type: 'pad' }
       ]
     },
     {
@@ -678,10 +678,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Guzheng, Duduk & Gamelan',
       color: '#10b981',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Silencio (Espacio Místico)', active: false, type: 'silence' },
-        { startSec: 40, endSec: 110, label: 'Guzheng Granular & Seda', active: true, type: 'ethnic' },
-        { startSec: 110, endSec: 275, label: 'Duduk Melismático + Gamelan', active: true, type: 'ethnic' },
-        { startSec: 275, endSec: 435, label: 'Polirritmia Sinfónica Fuga', active: true, type: 'ethnic' }
+        { startSec: 0, endSec: 110, label: 'Guzheng Granular Tema OoT', active: true, type: 'ethnic' },
+        { startSec: 110, endSec: 275, label: 'Duduk Melismático & Gamelan', active: true, type: 'ethnic' },
+        { startSec: 275, endSec: 332, label: 'Polirritmia Transcultural Fuga', active: true, type: 'ethnic' },
+        { startSec: 332, endSec: 435, label: 'Armónicos de Seda Cósmica', active: true, type: 'ethnic' }
       ]
     },
     {
@@ -691,9 +691,9 @@ const challengerTrack = TRACKS[1];
       sub: 'Pulso 16avos Vibe Anchor',
       color: '#f59e0b',
       clips: [
-        { startSec: 0, endSec: 110, label: 'Ticking Spine 2400Hz Micropan', active: true, type: 'pulse' },
-        { startSec: 110, endSec: 275, label: 'Reloj Transicional Continuo', active: true, type: 'pulse' },
-        { startSec: 275, endSec: 435, label: 'Reloj Cósmico Decaimiento', active: true, type: 'pulse' }
+        { startSec: 0, endSec: 110, label: 'Pulso Reloj 2400Hz (Espina)', active: true, type: 'pulse' },
+        { startSec: 110, endSec: 275, label: 'Reloj Transicional Dinámico', active: true, type: 'pulse' },
+        { startSec: 275, endSec: 435, label: 'Reloj Catártico & Decaimiento', active: true, type: 'pulse' }
       ]
     },
     {
@@ -703,10 +703,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Afrobeats & TR-909 Break',
       color: '#e11d48',
       clips: [
-        { startSec: 0, endSec: 40, label: 'Silencio (Inicio Coral)', active: false, type: 'silence' },
-        { startSec: 40, endSec: 110, label: 'Kick & Snare Espaciado', active: true, type: 'kick' },
-        { startSec: 110, endSec: 275, label: 'Polirritmia Afro-Neuro + 909', active: true, type: 'breakbeat' },
-        { startSec: 275, endSec: 435, label: 'TR-909 Sub-Kick Fade Out', active: true, type: 'kick' }
+        { startSec: 0, endSec: 110, label: 'Sub-Kick Atmosférico & Espacio', active: true, type: 'kick' },
+        { startSec: 110, endSec: 275, label: 'Groove Híbrido 909 + Síncopa', active: true, type: 'breakbeat' },
+        { startSec: 275, endSec: 332, label: 'TR-909 Sub-Kick Profundo', active: true, type: 'kick' },
+        { startSec: 332, endSec: 435, label: 'Fade Rítmico hacia el Silencio', active: true, type: 'kick' }
       ]
     },
     {
@@ -716,9 +716,9 @@ const challengerTrack = TRACKS[1];
       sub: 'Risers, Sweeps & Vinilo',
       color: '#ec4899',
       clips: [
-        { startSec: 0, endSec: 110, label: 'Crackle Vinilo & Ruido Rosa', active: true, type: 'reverb' },
+        { startSec: 0, endSec: 110, label: 'Crackle Analógico & Aire Rosa', active: true, type: 'reverb' },
         { startSec: 110, endSec: 275, label: 'BPF Noise Riser a 255s', active: true, type: 'reverb' },
-        { startSec: 275, endSec: 435, label: 'Resonancia Bronce & Reverb Sideral', active: true, type: 'reverb' }
+        { startSec: 275, endSec: 435, label: 'Resonancia Bronce & Shimmer Sideral', active: true, type: 'reverb' }
       ]
     }
   ];
@@ -868,7 +868,26 @@ const challengerTrack = TRACKS[1];
   const annotationsMarkersLayer = document.getElementById('annotations-layer-1');
 
   // Director Timeline Annotations State (Multi-section with overlap detection)
-  let directorAnnotations = [];
+  let directorAnnotations = [
+    {
+      startSec: 2,
+      endSec: 271,
+      durSec: 269,
+      startStr: '00:02',
+      endStr: '04:31',
+      note: 'Nada de esto me gusta. Nueva propuesta.',
+      hasOverlap: false
+    },
+    {
+      startSec: 286,
+      endSec: 332,
+      durSec: 46,
+      startStr: '04:46',
+      endStr: '05:32',
+      note: 'Esto me gusta y debe sobrevir pero es un corto clip. Necesita más evolcion',
+      hasOverlap: false
+    }
+  ];
   let pendingAnnotationRange = null;
 
   // Deck DOM references
@@ -1311,136 +1330,138 @@ const challengerTrack = TRACKS[1];
           g3 = 1.0;
         }
 
-        // --- CAPA ACTO 1: MASHUP AMBIENT & MUTACIÓN SUB-BRAAM 35HZ (0:00 - 1:50 // g1) ---
+        // Armonía modal de referencia unificada derivada del clip aprobado #sec-ng-07 (04:46 - 05:32)
+        const pChords = [
+          [130.81, 196.00, 261.63, 311.13], // C menor (C3, G3, C4, Eb4)
+          [116.54, 174.61, 233.08, 293.66], // Eb mayor (Eb3, Bb3, Eb4, G4)
+          [103.83, 155.56, 207.65, 261.63], // F menor (F3, C4, F4, Ab4)
+          [98.00, 146.83, 196.00, 246.94]   // G menor (G3, D4, G4, Bb4)
+        ];
+        const chordIdx = Math.floor(tickerStep / 16) % pChords.length;
+
+        // --- CAPA ACTO 1: EXPOSICIÓN TEMÁTICA // SEMILLA 04:46 & CAMPANAS (0:00 - 1:50 // g1) ---
         if (g1 > 0.001) {
-          // Canal 08: BATERÍA
-          if (isTrackAudible(7)) {
-            if (s >= 40 && stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
-            if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35 * g1, 5500, 0.08);
-          }
-          // Canal 05: CORO IA / PADS
+          // Canal 05: CORO IA / PADS (Pads cálidos con la progresión armónica aprobada)
           if (isTrackAudible(4)) {
-            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-              const chords = [
-                [130.81, 155.56, 196.00, 233.08],
-                [103.83, 130.81, 155.56, 196.00],
-                [87.31, 103.83, 130.81, 155.56],
-                [98.00, 123.47, 146.83, 174.61],
-                [116.54, 146.83, 174.61, 220.00],
-                [130.81, 155.56, 196.00, 261.63]
-              ];
-              const chordIdx = Math.floor(tickerStep / 16) % chords.length;
-              const filterSweep = 500 + Math.sin(tickerStep * 0.15) * 2300;
-              chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22 * g1, filterSweep, 0.18));
+            if (stepInBar === 0 || stepInBar === 4 || stepInBar === 8 || stepInBar === 12) {
+              const filterSweep = 400 + Math.sin(tickerStep * 0.12) * 1400;
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.24 * g1, filterSweep, 0.35));
             }
           }
-          // Canal 03: LEAD SYNTH (Acid / Lead)
-          if (isTrackAudible(2)) {
-            if (stepInBar % 2 === 0) {
-              const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
-              playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38 * g1, 0.1);
-            }
-          }
-          // Canal 01: SUB-BASS (Braam a 35Hz despertando)
-          if (isTrackAudible(0)) {
-            if (s >= 30 && stepInBar === 0) {
-              const braamVol = Math.min(0.85, 0.25 + ((s - 30) / 80) * 0.6);
-              playMonumentalBraam(ctx, time, 35, braamVol * g1, 2.2);
-            }
-          }
-          // Canal 04: CAMPANAS OoT
+          // Canal 04: CAMPANAS OoT (Exposición suave del leitmotif de 04:46)
           if (isTrackAudible(3)) {
             if (tickerStep % 4 === 0) {
-              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50, 1174.66];
-              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.22 * g1, 0.55);
+              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.25 * g1, 0.65);
             }
           }
-          // Canal 06: CAPA ÉTNICA (Guzheng granular)
+          // Canal 01: SUB-BASS (Despertar gradual del tono 35Hz sin agresividad ácida)
+          if (isTrackAudible(0)) {
+            if (s >= 35 && stepInBar === 0) {
+              const subVol = Math.min(0.85, 0.2 + ((s - 35) / 75) * 0.65);
+              playMonumentalBraam(ctx, time, 35, subVol * g1, 2.4);
+            }
+          }
+          // Canal 06: CAPA ÉTNICA (Guzheng granular delicado sobre el tema)
           if (isTrackAudible(5)) {
             if (tickerStep % 2 === 0) {
-              const gzNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25];
-              playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.22 * g1, 0.1);
+              const gzNotes = [261.63, 311.13, 392.00, 466.16, 523.25];
+              playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.18 * g1, 0.12);
             }
+          }
+          // Canal 08: BATERÍA (Solo pulso sutil de aire)
+          if (isTrackAudible(7)) {
+            if (s >= 60 && stepInBar === 0) playKick(ctx, time, 120, 36, 0.65 * g1);
+            if (s >= 60 && stepInBar % 8 === 4) playNoise(ctx, time, 0.18 * g1, 5800, 0.05);
           }
         }
 
-        // --- CAPA ACTO 2: PUENTE CONTINUO MORFOGENÉTICO (CREADA // g2) ---
+        // --- CAPA ACTO 2: ASCENSO CINÉTICO // DESARROLLO RÍTMICO DEL TEMA (1:50 - 4:35 // g2) ---
         if (g2 > 0.001) {
-          // Canal 08: BATERÍA (Afrobeats & 909)
+          // Canal 08: BATERÍA (Groove híbrido 909 que propulsa el single hacia el clímax)
           if (isTrackAudible(7)) {
             if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
-              playKick(ctx, time, 165, 38, 1.05 * g2);
+              playKick(ctx, time, 160, 36, 1.05 * g2);
             }
             if (stepInBar === 4 || stepInBar === 12) {
-              playNoise(ctx, time, 0.65 * g2, 3200, 0.12);
-              playKick(ctx, time, 190, 75, 0.45 * g2);
+              playNoise(ctx, time, 0.62 * g2, 3400, 0.1);
+              playKick(ctx, time, 180, 70, 0.4 * g2);
             }
-            if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
-              playNoise(ctx, time, 0.25 * g2, 2800, 0.04);
+            if (stepInBar % 2 === 1) {
+              playNoise(ctx, time, 0.22 * g2, 5400, 0.03);
             }
           }
-          // Canal 02: NEURO BASS (Surge XT 12-LFO growl)
+          // Canal 02: NEURO BASS (Surge XT FM modulado siguiendo las notas raíz [C -> Eb -> F -> G])
           if (isTrackAudible(1)) {
             if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
-              const rNotes = [65.41, 77.78, 87.31, 92.50, 116.54];
-              const gF = rNotes[Math.floor(stepInBar / 3) % rNotes.length];
-              const modF = 110 + ((tickerStep * 19) % 240);
-              const filtF = 900 + Math.sin(tickerStep * 0.4) * 2600;
-              playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.72 * g2, 0.22);
+              const rootNotes = [65.41, 77.78, 87.31, 98.00]; // Raíces C, Eb, F, G
+              const rF = rootNotes[chordIdx];
+              const modF = 110 + ((tickerStep * 17) % 220);
+              const filtF = 800 + Math.sin(tickerStep * 0.35) * 2400;
+              playNeuroFMGrowl(ctx, time, rF, modF, filtF, 0.78 * g2, 0.24);
             }
           }
-          // Canal 06: CAPA ÉTNICA (Guzheng oriental)
+          // Canal 05: CORO IA / PADS (Bombeo sidechain en crescendo rítmico)
+          if (isTrackAudible(4)) {
+            if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.28 * g2, 1600, 0.38));
+            }
+          }
+          // Canal 06: CAPA ÉTNICA (Guzheng & Duduk en desarrollo polirrítmico)
           if (isTrackAudible(5)) {
             if (tickerStep % 2 === 0) {
-              const guzhengNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25, 587.33, 698.46];
-              const gzNote = guzhengNotes[(tickerStep / 2) % guzhengNotes.length];
-              playTriangle(ctx, time, gzNote, 0.35 * g2, 0.12);
+              const gzScale = [261.63, 311.13, 349.23, 392.00, 466.16, 523.25, 622.25];
+              const gzNote = gzScale[(tickerStep / 2) % gzScale.length];
+              playTriangle(ctx, time, gzNote, 0.35 * g2, 0.1);
             }
           }
-          // Canal 09: TEXTURAS / FX (Riser sweep blanco)
+          // Canal 09: TEXTURAS / FX (Rampas continuas de tensión antes del drop de 04:35)
           if (isTrackAudible(8)) {
-            if (s >= 255 && s < 275) {
-              const sweepProgress = (s - 255) / 20;
-              const sweepF = 1200 + sweepProgress * 5000;
+            if (s >= 250 && s < 275) {
+              const progress = (s - 250) / 25;
+              const fSweep = 1000 + progress * 5500;
               if (tickerStep % 2 === 0) {
-                playNoise(ctx, time, (0.2 + sweepProgress * 0.4) * g2, sweepF, 0.08);
+                playNoise(ctx, time, (0.15 + progress * 0.5) * g2, fSweep, 0.09);
               }
             }
           }
         }
 
-        // --- CAPA ACTO 3: MONUMENTAL SUB-BRAAM 35HZ & CATARSIS (CONSERVADA // g3) ---
+        // --- CAPA ACTO 3: CATARSIS MONUMENTAL & GRAN FUGA SIDERAL (04:35 - 07:15 // g3) ---
         if (g3 > 0.001) {
-          // Canal 01: SUB-BASS (Monumental Braam 35Hz)
+          // Fase 1: Clímax exacto aprobado por el DG (04:35 - 05:32 // foco 04:46 - 05:32)
+          // Canal 01: SUB-BASS (Monumental Braam 35Hz con resonancia descomunal)
           if (isTrackAudible(0)) {
             if (stepInBar === 0) {
-              playMonumentalBraam(ctx, time, 35, 0.95 * g3, 3.2);
+              const braamIntensity = s < 332 ? 1.15 : (s < 390 ? 0.95 : Math.max(0.2, 0.95 - (s - 390) / 45));
+              playMonumentalBraam(ctx, time, 35, braamIntensity * g3, 3.4);
             }
           }
-          // Canal 05: CORO IA / PADS
+          // Canal 05: CORO IA / PADS (Bombeo sidechain catártico)
           if (isTrackAudible(4)) {
             if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-              const pChords = [
-                [130.81, 196.00, 261.63, 311.13],
-                [116.54, 174.61, 233.08, 293.66],
-                [103.83, 155.56, 207.65, 261.63],
-                [98.00, 146.83, 196.00, 246.94]
-              ];
-              const padIdx = Math.floor(tickerStep / 16) % pChords.length;
-              pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.2 * g3, 1400, 0.45));
+              const padVol = s < 390 ? 0.32 : Math.max(0.08, 0.32 - (s - 390) / 40);
+              pChords[chordIdx].forEach(f => playSaw(ctx, time, f, padVol * g3, 2200, 0.5));
             }
           }
-          // Canal 04: CAMPANAS OoT
+          // Canal 04: CAMPANAS OoT (Campanas celestiales del leitmotif aprobado)
           if (isTrackAudible(3)) {
             if (tickerStep % 4 === 0) {
-              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
-              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g3, 0.65);
+              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50, 1174.66, 1046.50];
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.35 * g3, 0.7);
             }
           }
-          // Canal 08: BATERÍA
+          // Canal 06: CAPA ÉTNICA (Evolución de Fuga Transcultural extendida a partir de 05:32)
+          if (isTrackAudible(5)) {
+            if (s >= 332 && tickerStep % 2 === 0) {
+              const fugaNotes = [261.63, 311.13, 392.00, 466.16, 523.25, 622.25, 783.99];
+              playTriangle(ctx, time, fugaNotes[(tickerStep / 2) % fugaNotes.length], 0.28 * g3, 0.14);
+            }
+          }
+          // Canal 08: BATERÍA (Bombo profundo espaciado que decae gradualmente)
           if (isTrackAudible(7)) {
-            if (stepInBar % 4 === 0) {
-              playKick(ctx, time, 85, 28, 0.35 * g3);
+            if (s < 390 && stepInBar % 4 === 0) {
+              playKick(ctx, time, 85, 28, 0.55 * g3);
             }
           }
         }
