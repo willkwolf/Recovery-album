@@ -386,17 +386,18 @@ stack(
     // ACTO 03: Catarsis Monumental Transmutada & Gran Fuga Sideral (04:35 - 07:15 // 160s)
     [160,
       stack(
-        // Braam descomunal 35Hz con resonancia de bronce y modulación cósmica
-        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
-        // Pads bombeados rítmicamente por sidechain masivo
+        // Braam monumental 35Hz con afinación armónica modal y modulación cósmica
+        note("<c0 eb-1 f-1 g-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
+        // Pads modales bombeados rítmicamente por sidechain masivo
         note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
           .s("sawtooth").lpf(sine.range(500, 2600).slow(6)).gain("<0.15 0.98 0.3 0.98>*4").room(0.88),
-        // Campanas ancestrales de Ocarina of Time con ping-pong delay sideral
-        note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.48),
-        // Polifonía transcultural y gran fuga sideral
-        note("c4 [eb4,g4] f4 [g4,bb4] c5").fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
-        // Bombo profundo 909 y dither espacial en decaimiento cósmico
-        s("bd*4").bank("RolandTR909").lpf(sine.range(420, 110).slow(12)).gain(0.7),
+        // Campanas ancestrales de Ocarina of Time con ping-pong delay sideral (8 notas puras)
+        note("c5 eb5 g5 bb5 c6 bb5 g5 eb5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.48),
+        // Gran Fuga Sideral: contrapunto polifónico en 8 pasos consonantemente modulado
+        note("<[c4 eb4 g4 c5 bb4 g4 eb4 d4] [eb4 g4 bb4 eb5 d5 bb4 g4 f4] [f4 ab4 c5 f5 eb5 c5 ab4 g4] [g4 bb4 d5 g5 f5 d5 bb4 a4]>")
+          .fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
+        // Bombo profundo 909 en cadencia half-time y dither espacial
+        s("bd:2 ~ bd:2 ~").bank("RolandTR909").lpf(sine.range(420, 110).slow(12)).gain(0.7),
         s("crackle*8").gain(perlin.range(0.06, 0.22)).hpf(3500)
       )
     ]
@@ -468,12 +469,13 @@ stack(
     description: 'CLÍMAX APROBADO Y GRAN FUGA SIDERAL: Retorno transmutado del patrón aprobado con pitch-bend sideral y polifonía transcultural completa antes de disolverse gradualmente en resonancia cuántica y dither de cinta analógica.',
     strudelCode: `// SECCIÓN 07 (04:35 - 07:15): Catarsis Monumental Transmutada & Gran Fuga Sideral
 stack(
-  note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
+  note("<c0 eb-1 f-1 g-1>").s("sawtooth").lpf(165).gain(1.22).slow(2),
   note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
     .s("sawtooth").lpf(sine.range(500, 2600).slow(6)).gain("<0.15 0.98 0.3 0.98>*4").room(0.88),
-  note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.48),
-  note("c4 [eb4,g4] f4 [g4,bb4] c5").fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
-  s("bd*4").bank("RolandTR909").lpf(sine.range(420, 110).slow(12)).gain(0.7),
+  note("c5 eb5 g5 bb5 c6 bb5 g5 eb5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.48),
+  note("<[c4 eb4 g4 c5 bb4 g4 eb4 d4] [eb4 g4 bb4 eb5 d5 bb4 g4 f4] [f4 ab4 c5 f5 eb5 c5 ab4 g4] [g4 bb4 d5 g5 f5 d5 bb4 a4]>")
+    .fast(2).s("triangle").decay(0.12).gain(0.35).pan(sine.range(0.15, 0.85).slow(3)),
+  s("bd:2 ~ bd:2 ~").bank("RolandTR909").lpf(sine.range(420, 110).slow(12)).gain(0.7),
   s("crackle*8").gain(perlin.range(0.06, 0.22)).hpf(3500)
 )`
   }
