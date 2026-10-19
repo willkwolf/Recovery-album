@@ -337,22 +337,6 @@ const challengerTrack = TRACKS[1];
               </button>
             </div>
           </div>
-
-          <!-- Rescue Protocol // Lyra Reverse Engineering (A Demanda) -->
-          <div class="vibe-rescue-box">
-            <span class="mono label-muted" id="label-rescue-sel">PROTOCOLO DE RESCATE:</span>
-            <button
-              type="button"
-              class="rescue-pill"
-              id="btn-toggle-rescue"
-              aria-pressed="false"
-              aria-labelledby="label-rescue-sel"
-              title="Activar solo cuando el Challenger esté estancado o no mute adecuadamente"
-            >
-              <span class="rescue-icon" aria-hidden="true">🚨</span>
-              <span class="rescue-text" id="rescue-pill-label">Lyra Reverse-Engineering: Inactivo</span>
-            </button>
-          </div>
         </div>
 
         <!-- Fila de Veredicto de Selección Champion vs Challenger (Decisión HITL) -->
@@ -562,7 +546,6 @@ const challengerTrack = TRACKS[1];
   let selStart = 0;
   let selEnd = 110;
   let includeCountdownAnchor = true;
-  let isLyraRescueActive = false;
   let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
 
@@ -631,8 +614,6 @@ const challengerTrack = TRACKS[1];
   const btnSelectDeck0 = document.getElementById('btn-select-deck-0');
   const btnSelectDeck1 = document.getElementById('btn-select-deck-1');
   const activeTargetDeckLabel = document.getElementById('active-target-deck-label');
-  const btnToggleRescue = document.getElementById('btn-toggle-rescue');
-  const rescuePillLabel = document.getElementById('rescue-pill-label');
   const btnExportReferenceWav = document.getElementById('btn-export-reference-wav');
   const btnExportText = document.getElementById('btn-export-text');
   const crewChips = document.querySelectorAll('.chip-crew');
@@ -1500,12 +1481,6 @@ const challengerTrack = TRACKS[1];
 
     const strudelCode = sec ? sec.strudelCode.trim() : '// Sin código disponible';
 
-    let rescueXml = '';
-    if (isLyraRescueActive) {
-      rescueXml = `\n  <reverse_engineering_rescue status="ACTIVE" engine="Lyra-SoundStream" action="extract_components_and_reinject">
-    Challenger estancado o con mutación defectuosa. Activar deconstrucción acústica con historial de prompts y concepto para deconstruir componentes y reinyectar en CP y SD.
-  </reverse_engineering_rescue>\n`;
-    }
 
     let annotationsXml = '';
     if (directorAnnotations.length > 0) {
@@ -1614,7 +1589,7 @@ ${tagsSummaryXml || '      <tag id="NONE">Sin tags asignados</tag>\n'}    </acti
 
   <director_intent>
     ${escapeXml(userNote)}
-  </director_intent>${annotationsXml}${rescueXml}
+  </director_intent>${annotationsXml}
   <agent_directives>
     <!-- Mandato para el Crew Multiagente -->
 ${directivesXml}  </agent_directives>
@@ -1944,21 +1919,6 @@ ${codeBlocksXml}
     updateSelectionOverlays();
     generateVibePrompt();
   });
-
-  // Lyra Reverse-Engineering Rescue Toggle (Condicional / A Demanda)
-  if (btnToggleRescue) {
-    btnToggleRescue.addEventListener('click', () => {
-      isLyraRescueActive = !isLyraRescueActive;
-      btnToggleRescue.classList.toggle('rescue-pill-active', isLyraRescueActive);
-      btnToggleRescue.setAttribute('aria-pressed', isLyraRescueActive ? 'true' : 'false');
-      if (rescuePillLabel) {
-        rescuePillLabel.textContent = isLyraRescueActive
-          ? '🚨 Lyra Reverse-Engineering: ACTIVO (Desatasco)'
-          : 'Lyra Reverse-Engineering: Inactivo';
-      }
-      generateVibePrompt();
-    });
-  }
 
   // Mutation Tags Rendering & Drag/Drop System
   let lastFocusedRole = 'CP'; // Agente objetivo por defecto
@@ -3264,49 +3224,6 @@ ${codeBlocksXml}
     color: #f87171;
   }
 
-  /* Rescue Protocol Button & Box */
-  .vibe-rescue-box {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .rescue-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.7rem;
-    font-family: inherit;
-    padding: 0.35rem 0.65rem;
-    background: var(--btn-bg);
-    border: 1px dashed var(--border-strong);
-    border-radius: 5px;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    max-width: 100%;
-    white-space: normal;
-    word-break: break-word;
-  }
-
-  .rescue-pill:hover {
-    background: var(--btn-hover);
-    color: var(--text-primary);
-  }
-
-  .rescue-pill-active {
-    background: rgba(239, 68, 68, 0.15) !important;
-    border-color: #ef4444 !important;
-    border-style: solid !important;
-    color: #ef4444 !important;
-    font-weight: 700;
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
-  }
-
-  html[data-theme="dark"] .rescue-pill-active {
-    color: #f87171 !important;
-  }
 
   .btn-export-wav {
     background: var(--btn-bg);
