@@ -184,7 +184,7 @@ async function runVibiumTests() {
       const baselinePlayBtn = document.getElementById('btn-play-0');
       const challengerPlayBtn = document.getElementById('btn-play-1');
       const baselineSections = document.querySelectorAll('#sections-strip-0 .sec-btn').length;
-      const challengerSections = document.querySelectorAll('#sections-strip-1 .sec-btn').length;
+      const challengerSections = document.querySelectorAll('[data-deck="1"][data-sec-idx]').length;
       const crewChipsCount = document.querySelectorAll('.chip-crew').length;
 
       return {
@@ -236,7 +236,7 @@ async function runVibiumTests() {
 
     // Select Act 2 on Challenger (Puente Continuo Morfogenético)
     const act2Btn = await page.find('[data-deck="1"][data-sec-idx="1"]');
-    assert(act2Btn !== null, 'Botón de Acto 2 en Challenger (#sections-strip-1) encontrado');
+    assert(act2Btn !== null, 'Botón de Acto 2 en Challenger en toolbar secuenciador encontrado');
     await act2Btn.click();
     await page.wait(150);
 

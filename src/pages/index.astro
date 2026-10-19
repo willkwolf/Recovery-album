@@ -82,29 +82,35 @@ const challengerTrack = TRACKS[1];
         <div class="playhead playhead-baseline" id="playhead-0" aria-hidden="true"></div>
       </div>
 
-      <!-- Timeline Sections Strip Baseline -->
-      <div class="sections-row" id="sections-strip-0" role="group" aria-label="Secciones de la pista Baseline">
-        {baselineTrack.sections?.map((sec, idx) => (
-          <button
-            type="button"
-            class={`sec-btn sec-btn-baseline ${idx === 0 ? 'sec-btn-active-0' : ''}`}
-            data-deck="0"
-            data-sec-idx={idx}
-            data-sec-id={sec.id}
-            data-start={sec.startSec}
-            data-end={sec.endSec}
-            aria-label={`Sección 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
-            title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
-          >
-            <div class="sec-btn-header">
-              <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
-              <span class="sec-id-corner mono" title={`ID Inmutable: ${sec.id}`}>#{sec.id}</span>
-            </div>
-            <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
-            <span class="mono sec-time">{sec.startTime}</span>
-          </button>
-        ))}
-      </div>
+      <!-- Baseline Sections Collapsible (Ahorro de Espacio para el Champion) -->
+      <details class="baseline-sections-details mono" id="baseline-sections-details">
+        <summary class="baseline-sections-summary" aria-label="Expandir o colapsar 5 secciones de la Baseline">
+          <span>📂 Secciones Baseline (Ground Truth 04:45)</span>
+          <span class="text-xs text-muted">(Clic para ver)</span>
+        </summary>
+        <div class="sections-row" id="sections-strip-0" role="group" aria-label="Secciones de la pista Baseline">
+          {baselineTrack.sections?.map((sec, idx) => (
+            <button
+              type="button"
+              class={`sec-btn sec-btn-baseline ${idx === 0 ? 'sec-btn-active-0' : ''}`}
+              data-deck="0"
+              data-sec-idx={idx}
+              data-sec-id={sec.id}
+              data-start={sec.startSec}
+              data-end={sec.endSec}
+              aria-label={`Sección 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
+              title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
+            >
+              <div class="sec-btn-header">
+                <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
+                <span class="sec-id-corner mono" title={`ID Inmutable: ${sec.id}`}>#{sec.id}</span>
+              </div>
+              <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
+              <span class="mono sec-time">{sec.startTime}</span>
+            </button>
+          ))}
+        </div>
+      </details>
     </section>
 
     <!-- PANTALLA DIVIDIDA: DECK 2 (CHALLENGER) ABAJO -->
@@ -137,8 +143,27 @@ const challengerTrack = TRACKS[1];
       <!-- Suno Studio + Ableton Multitrack Toolbar & Channel Mute Bar -->
       <div class="daw-multitrack-toolbar mono" role="toolbar" aria-label="Controles del secuenciador multipista">
         <div class="daw-toolbar-left">
-          <span class="multitrack-badge">🎚️ ARREGLO MULTIPISTA // 9 CANALES EN PARALELO</span>
-          <span class="daw-meter-badge" id="daw-meter-display">BPM: 105/118 · 4/4 · Compás <strong id="daw-bar-counter">001.1.1</strong></span>
+          <span class="multitrack-badge">🎚️ 9 CANALES</span>
+          <span class="daw-meter-badge" id="daw-meter-display">BPM: 105/118 · Compás <strong id="daw-bar-counter">001.1.1</strong></span>
+          <!-- Selector de Actos Integrado en Toolbar (Sustituye a la antigua tira #sections-strip-1) -->
+          <div class="daw-acts-selector" id="daw-acts-selector" role="group" aria-label="Actos del single Challenger">
+            {challengerTrack.sections?.map((sec, idx) => (
+              <button
+                type="button"
+                class="btn-act-chip mono"
+                data-deck="1"
+                data-sec-idx={idx}
+                data-sec-id={sec.id}
+                data-start={sec.startSec}
+                data-end={sec.endSec}
+                aria-label={`Acto 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
+                title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
+              >
+                <span class="act-chip-num">0{idx + 1}</span>
+                <span class="act-chip-tag">{sec.id.replace('sec-ng-', '')}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div class="daw-toolbar-right">
           <!-- Zoom Controls -->
@@ -170,7 +195,7 @@ const challengerTrack = TRACKS[1];
 
       <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View 9 Tracks) -->
       <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, usa rueda para zoom o haz clic para mover el cabezal">
-        <canvas id="waveform-canvas-1" height="332" aria-hidden="true"></canvas>
+        <canvas id="waveform-canvas-1" height="440" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
         <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
         <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
@@ -280,30 +305,6 @@ const challengerTrack = TRACKS[1];
         </div>
         <div class="annotations-chips-list" id="annotations-chips-list"></div>
       </div>
-
-      <!-- Timeline Sections Strip Challenger -->
-      <div class="sections-row" id="sections-strip-1" role="group" aria-label="Actos del single Challenger">
-        {challengerTrack.sections?.map((sec, idx) => (
-          <button
-            type="button"
-            class={`sec-btn sec-btn-challenger ${idx === 0 ? 'sec-btn-active-1' : ''}`}
-            data-deck="1"
-            data-sec-idx={idx}
-            data-sec-id={sec.id}
-            data-start={sec.startSec}
-            data-end={sec.endSec}
-            aria-label={`Acto 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
-            title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
-          >
-            <div class="sec-btn-header">
-              <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
-              <span class="sec-id-corner mono" title={`ID Inmutable: ${sec.id}`}>#{sec.id}</span>
-            </div>
-            <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
-            <span class="mono sec-time">{sec.startTime}</span>
-          </button>
-        ))}
-      </div>
     </section>
 
     <!-- DOCKED CONSOLE: VIBE CODING & MULTI-AGENT PROMPT GENERATOR -->
@@ -358,38 +359,57 @@ const challengerTrack = TRACKS[1];
           </div>
 
 
-          <!-- Paleta de Tags de Mutación Pegables a los Agentes -->
-          <div class="mutation-palette-container" id="mutation-palette-container">
-            <span class="mono label-muted" id="label-mut-tags">TAGS DE MUTACIÓN (HAZ CLIC O ARRASTRA AL AGENTE):</span>
-            <div class="mutation-tags-cloud" id="mutation-tags-cloud" role="group" aria-labelledby="label-mut-tags">
-              <button type="button" class="tag-chip" data-tag-id="CROSSFADE_TRANSITION" data-tag-label="🔀 Transición & Crossfader" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>🔀 Transición & Crossfader</span>
-                <span class="tag-id-corner mono">#CROSSFADE</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="ORCHESTRAL_ETHNIC_LAYER" data-tag-label="🎻 Capa Transcultural 2026" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>🎻 Capa Transcultural 2026</span>
-                <span class="tag-id-corner mono">#ETHNIC_2026</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="BASS_FM_SYNTH" data-tag-label="⚡ Bajo Neuro FM" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>⚡ Bajo Neuro FM</span>
-                <span class="tag-id-corner mono">#BASS_FM</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="DRUMS_RHYTHM" data-tag-label="🥁 Ritmo & Breakbeat" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>🥁 Ritmo & Breakbeat</span>
-                <span class="tag-id-corner mono">#BREAKBEAT</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="VOCAL_CORAL_FORMANT" data-tag-label="🎙️ Coro Polifónico IA" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>🎙️ Coro Polifónico IA</span>
-                <span class="tag-id-corner mono">#CHORAL_IA</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="TEMPO_METRIC_MODULATION" data-tag-label="⏱️ Modulación Métrica" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>⏱️ Modulación Métrica</span>
-                <span class="tag-id-corner mono">#TEMPO_MOD</span>
-              </button>
-              <button type="button" class="tag-chip" data-tag-id="MASTER_DSP_LOUDNESS" data-tag-label="🎚️ Master -14 LUFS" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
-                <span>🎚️ Master -14 LUFS</span>
-                <span class="tag-id-corner mono">#LOUDNESS</span>
-              </button>
+          <!-- Tags de Mutación: Formato Compacto con Botón + en la Esquina -->
+          <div class="mutation-compact-bar" id="mutation-compact-bar">
+            <div class="mutation-compact-header">
+              <span class="mono label-muted" id="label-mut-tags">TAGS DE MUTACIÓN ACTIVOS:</span>
+              <div class="mutation-active-pills" id="mutation-active-pills" role="group" aria-label="Tags de mutación activos">
+                <span class="mono text-xs text-muted" id="empty-tags-hint">Sin tags activos (Limpio)</span>
+              </div>
+              <div class="mutation-add-corner">
+                <button
+                  type="button"
+                  class="btn-add-tag-corner mono"
+                  id="btn-add-mutation-tag"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  aria-label="Añadir tag de mutación al agente activo"
+                  title="Añadir tag de mutación (+)"
+                >
+                  <span class="plus-sign" aria-hidden="true">+</span>
+                  <span>Añadir Tag</span>
+                </button>
+                <div class="mutation-dropdown-menu" id="mutation-dropdown-menu" style="display: none;" role="menu" aria-label="Catálogo de tags de mutación">
+                  <button type="button" class="tag-menu-item mono" data-tag-id="CROSSFADE_TRANSITION" role="menuitem">
+                    <span>🔀 Transición &amp; Crossfader</span>
+                    <span class="tag-id-corner mono">#CROSSFADE</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="ORCHESTRAL_ETHNIC_LAYER" role="menuitem">
+                    <span>🎻 Capa Transcultural 2026</span>
+                    <span class="tag-id-corner mono">#ETHNIC_2026</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="BASS_FM_SYNTH" role="menuitem">
+                    <span>⚡ Bajo Neuro FM</span>
+                    <span class="tag-id-corner mono">#BASS_FM</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="DRUMS_RHYTHM" role="menuitem">
+                    <span>🥁 Ritmo &amp; Breakbeat</span>
+                    <span class="tag-id-corner mono">#BREAKBEAT</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="VOCAL_CORAL_FORMANT" role="menuitem">
+                    <span>🎙️ Coro Polifónico IA</span>
+                    <span class="tag-id-corner mono">#CHORAL_IA</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="TEMPO_METRIC_MODULATION" role="menuitem">
+                    <span>⏱️ Modulación Métrica</span>
+                    <span class="tag-id-corner mono">#TEMPO_MOD</span>
+                  </button>
+                  <button type="button" class="tag-menu-item mono" data-tag-id="MASTER_DSP_LOUDNESS" role="menuitem">
+                    <span>🎚️ Master -14 LUFS</span>
+                    <span class="tag-id-corner mono">#LOUDNESS</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -422,7 +442,7 @@ const challengerTrack = TRACKS[1];
           </div>
         </div>
 
-        <!-- Human Director General Natural Language Prompt Input -->
+        <!-- Human Director General Natural Language Prompt Input (Limpio por Defecto) -->
         <div class="console-input-row">
           <label for="vibe-director-note" class="mono label-muted">
             DIRECCIÓN DEL DIRECTOR GENERAL (INTENCIÓN GLOBAL EN LENGUAJE NATURAL):
@@ -432,135 +452,142 @@ const challengerTrack = TRACKS[1];
             rows="2"
             class="director-textarea mono"
             placeholder="Escribe lo que sientes o deseas cambiar (ej: 'El paso de la sección 1 a la 2 necesita un build de caja acelerando y un sweep blanco de 4 compases antes de caer en el drop')..."
-          >2/5 Aun no hay single solo ideas sueltas.</textarea>
+          ></textarea>
         </div>
 
-        <!-- Per-Role Dedicated XML Directives Inputs -->
-        <div class="role-inputs-container" id="role-inputs-container">
-          <div class="role-inputs-header">
-            <span class="mono label-muted">DIRECTIVAS POR ROL AGÉNTICO (ESTRUCTURA XML MULTI-NIVEL):</span>
-            <span class="mono text-xs text-muted">Ajusta cada rol de forma independiente para generar el bloque XML exacto</span>
+        <!-- Per-Role Dedicated XML Directives Inputs (Colapsable para Ahorro de Espacio) -->
+        <details class="role-inputs-details" id="role-inputs-details">
+          <summary class="role-inputs-summary mono" aria-label="Expandir o colapsar directivas agénticas por rol">
+            <span>⚙️ DIRECTIVAS POR ROL AGÉNTICO (XML MULTI-NIVEL)</span>
+            <span class="text-xs text-muted">(Opcional: afinar DM, CP, SD, AE, QA)</span>
+          </summary>
+          <div class="role-inputs-container" id="role-inputs-container">
+            <div class="role-inputs-grid" id="role-inputs-grid">
+              <!-- DM: Dirección Musical -->
+              <div class="role-input-card card-role-dm" id="card-role-dm" data-role="DM">
+                <div class="role-card-top">
+                  <span class="role-tag mono">L1 · DM (Dirección Musical)</span>
+                  <span class="role-badge-tier mono">Estrategia</span>
+                </div>
+                <div class="role-tags-container" data-role="DM">
+                  <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                  <div class="role-tags-list" id="role-tags-dm"></div>
+                </div>
+                <input
+                  type="text"
+                  class="role-text-input mono"
+                  id="role-input-dm"
+                  placeholder="Directiva táctica para DM..."
+                  value="Supervisar modulación de BPM y curvas de tempo sin saltos discretos."
+                  aria-label="Directiva para DM Dirección Musical"
+                />
+              </div>
+
+              <!-- CP: Composición -->
+              <div class="role-input-card card-role-cp" id="card-role-cp" data-role="CP">
+                <div class="role-card-top">
+                  <span class="role-tag mono">L2 · CP (Composición)</span>
+                  <span class="role-badge-tier mono">LMMS / DAW</span>
+                </div>
+                <div class="role-tags-container" data-role="CP">
+                  <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                  <div class="role-tags-list" id="role-tags-cp"></div>
+                </div>
+                <input
+                  type="text"
+                  class="role-text-input mono"
+                  id="role-input-cp"
+                  placeholder="Directiva táctica para CP..."
+                  value="Orquestar estructura en LMMS con curva continua de automatización de filtro cutoff."
+                  aria-label="Directiva para CP Composición"
+                />
+              </div>
+
+              <!-- SD: Diseño Sonoro -->
+              <div class="role-input-card card-role-sd" id="card-role-sd" data-role="SD">
+                <div class="role-card-top">
+                  <span class="role-tag mono">L2 · SD (Diseño Sonoro)</span>
+                  <span class="role-badge-tier mono">Surge XT / FM</span>
+                </div>
+                <div class="role-tags-container" data-role="SD">
+                  <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                  <div class="role-tags-list" id="role-tags-sd"></div>
+                </div>
+                <input
+                  type="text"
+                  class="role-text-input mono"
+                  id="role-input-sd"
+                  placeholder="Directiva táctica para SD..."
+                  value="Configurar Surge XT con 12 LFOs enrutados a cutoff y modulación FM neuro."
+                  aria-label="Directiva para SD Diseño Sonoro"
+                />
+              </div>
+
+              <!-- AE: Ingeniería de Audio -->
+              <div class="role-input-card card-role-ae" id="card-role-ae" data-role="AE">
+                <div class="role-card-top">
+                  <span class="role-tag mono">L2 · AE (Ingeniería de Audio)</span>
+                  <span class="role-badge-tier mono">DSP / Master</span>
+                </div>
+                <div class="role-tags-container" data-role="AE">
+                  <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                  <div class="role-tags-list" id="role-tags-ae"></div>
+                </div>
+                <input
+                  type="text"
+                  class="role-text-input mono"
+                  id="role-input-ae"
+                  placeholder="Directiva táctica para AE..."
+                  value="Aplicar ChowTapeModel en bus y Airwindows Slew para suavizar transitorios (-14 LUFS)."
+                  aria-label="Directiva para AE Ingeniería de Audio"
+                />
+              </div>
+
+              <!-- QA: Auditoría & Gate -->
+              <div class="role-input-card card-role-qa" id="card-role-qa" data-role="QA" style="display: none;">
+                <div class="role-card-top">
+                  <span class="role-tag mono">L3 · QA (Auditoría & Gate)</span>
+                  <span class="role-badge-tier mono">Auditoría</span>
+                </div>
+                <div class="role-tags-container" data-role="QA">
+                  <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
+                  <div class="role-tags-list" id="role-tags-qa"></div>
+                </div>
+                <input
+                  type="text"
+                  class="role-text-input mono"
+                  id="role-input-qa"
+                  placeholder="Directiva táctica para QA..."
+                  value="Auditar que el reloj de cuenta regresiva continúe sin interrupción en la frontera."
+                  aria-label="Directiva para QA Auditoría"
+                />
+              </div>
+            </div>
           </div>
+        </details>
 
-          <div class="role-inputs-grid" id="role-inputs-grid">
-            <!-- DM: Dirección Musical -->
-            <div class="role-input-card card-role-dm" id="card-role-dm" data-role="DM">
-              <div class="role-card-top">
-                <span class="role-tag mono">L1 · DM (Dirección Musical)</span>
-                <span class="role-badge-tier mono">Estrategia</span>
+        <!-- Real-Time Markdown Formatted Prompt Preview (Colapsable para Ahorro de Espacio) -->
+        <details class="preview-details" id="prompt-preview-details">
+          <summary class="preview-summary mono" aria-label="Expandir o colapsar vista previa del código XML">
+            <span>👁️ VISTA PREVIA XML DESPACHADO</span>
+            <span class="text-xs text-muted">(El botón [Copiar Prompt] despacha directamente con 1-clic)</span>
+          </summary>
+          <div class="console-preview-row">
+            <div class="preview-header-bar">
+              <span class="mono label-muted">PROMPT ESTRUCTURADO PARA ANTIGRAVITY (VISTA PREVIA):</span>
+              <div class="preview-mode-toggles" role="group" aria-label="Modo de vista de código">
+                <button type="button" class="btn-preview-toggle active-preview-mode mono" id="btn-toggle-master-code" aria-pressed="true" title="Ver código maestro continuo compilado de la obra completa">
+                  ⚡ Single Compilado Maestro
+                </button>
+                <button type="button" class="btn-preview-toggle mono" id="btn-toggle-section-code" aria-pressed="false" title="Ver sólo el código y foco de la sección seleccionada">
+                  🎯 Sección Foco
+                </button>
               </div>
-              <div class="role-tags-container" data-role="DM">
-                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
-                <div class="role-tags-list" id="role-tags-dm"></div>
-              </div>
-              <input
-                type="text"
-                class="role-text-input mono"
-                id="role-input-dm"
-                placeholder="Directiva táctica para DM..."
-                value="Supervisar modulación de BPM y curvas de tempo sin saltos discretos."
-                aria-label="Directiva para DM Dirección Musical"
-              />
+              <span class="mono text-xs text-muted" id="preview-range-badge" aria-live="polite">00:00 ── 02:00 (120s)</span>
             </div>
-
-            <!-- CP: Composición -->
-            <div class="role-input-card card-role-cp" id="card-role-cp" data-role="CP">
-              <div class="role-card-top">
-                <span class="role-tag mono">L2 · CP (Composición)</span>
-                <span class="role-badge-tier mono">LMMS / DAW</span>
-              </div>
-              <div class="role-tags-container" data-role="CP">
-                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
-                <div class="role-tags-list" id="role-tags-cp"></div>
-              </div>
-              <input
-                type="text"
-                class="role-text-input mono"
-                id="role-input-cp"
-                placeholder="Directiva táctica para CP..."
-                value="Orquestar estructura en LMMS con curva continua de automatización de filtro cutoff."
-                aria-label="Directiva para CP Composición"
-              />
-            </div>
-
-            <!-- SD: Diseño Sonoro -->
-            <div class="role-input-card card-role-sd" id="card-role-sd" data-role="SD">
-              <div class="role-card-top">
-                <span class="role-tag mono">L2 · SD (Diseño Sonoro)</span>
-                <span class="role-badge-tier mono">Surge XT / FM</span>
-              </div>
-              <div class="role-tags-container" data-role="SD">
-                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
-                <div class="role-tags-list" id="role-tags-sd"></div>
-              </div>
-              <input
-                type="text"
-                class="role-text-input mono"
-                id="role-input-sd"
-                placeholder="Directiva táctica para SD..."
-                value="Configurar Surge XT con 12 LFOs enrutados a cutoff y modulación FM neuro."
-                aria-label="Directiva para SD Diseño Sonoro"
-              />
-            </div>
-
-            <!-- AE: Ingeniería de Audio -->
-            <div class="role-input-card card-role-ae" id="card-role-ae" data-role="AE">
-              <div class="role-card-top">
-                <span class="role-tag mono">L2 · AE (Ingeniería de Audio)</span>
-                <span class="role-badge-tier mono">DSP / Master</span>
-              </div>
-              <div class="role-tags-container" data-role="AE">
-                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
-                <div class="role-tags-list" id="role-tags-ae"></div>
-              </div>
-              <input
-                type="text"
-                class="role-text-input mono"
-                id="role-input-ae"
-                placeholder="Directiva táctica para AE..."
-                value="Aplicar ChowTapeModel en bus y Airwindows Slew para suavizar transitorios (-14 LUFS)."
-                aria-label="Directiva para AE Ingeniería de Audio"
-              />
-            </div>
-
-            <!-- QA: Auditoría & Gate -->
-            <div class="role-input-card card-role-qa" id="card-role-qa" data-role="QA" style="display: none;">
-              <div class="role-card-top">
-                <span class="role-tag mono">L3 · QA (Auditoría & Gate)</span>
-                <span class="role-badge-tier mono">Auditoría</span>
-              </div>
-              <div class="role-tags-container" data-role="QA">
-                <span class="mono text-xs label-muted">TAGS MUTACIÓN:</span>
-                <div class="role-tags-list" id="role-tags-qa"></div>
-              </div>
-              <input
-                type="text"
-                class="role-text-input mono"
-                id="role-input-qa"
-                placeholder="Directiva táctica para QA..."
-                value="Auditar que el reloj de cuenta regresiva continúe sin interrupción en la frontera."
-                aria-label="Directiva para QA Auditoría"
-              />
-            </div>
+            <pre class="prompt-code-block mono" tabindex="0" aria-label="Texto formateado del prompt"><code id="prompt-preview-output">Generando prompt...</code></pre>
           </div>
-        </div>
-
-        <!-- Real-Time Markdown Formatted Prompt Preview -->
-        <div class="console-preview-row">
-          <div class="preview-header-bar">
-            <span class="mono label-muted">PROMPT ESTRUCTURADO PARA ANTIGRAVITY (VISTA PREVIA):</span>
-            <div class="preview-mode-toggles" role="group" aria-label="Modo de vista de código">
-              <button type="button" class="btn-preview-toggle active-preview-mode mono" id="btn-toggle-master-code" aria-pressed="true" title="Ver código maestro continuo compilado de la obra completa">
-                ⚡ Single Compilado Maestro
-              </button>
-              <button type="button" class="btn-preview-toggle mono" id="btn-toggle-section-code" aria-pressed="false" title="Ver sólo el código y foco de la sección seleccionada">
-                🎯 Sección Foco
-              </button>
-            </div>
-            <span class="mono text-xs text-muted" id="preview-range-badge" aria-live="polite">00:00 ── 02:00 (120s)</span>
-          </div>
-          <pre class="prompt-code-block mono" tabindex="0" aria-label="Texto formateado del prompt"><code id="prompt-preview-output">Generando prompt...</code></pre>
-        </div>
+        </details>
       </div>
     </section>
 
@@ -597,9 +624,9 @@ const challengerTrack = TRACKS[1];
     }
   ];
 
-  // Selection Range & Prompt Parameters (Enfocado en el clip aprobado por el DG: 04:46 - 05:32)
-  let selStart = 286;
-  let selEnd = 332;
+  // Selection Range & Prompt Parameters (Estado Limpio por Defecto // Cero Contaminación de Prompt)
+  let selStart = 0;
+  let selEnd = 0;
   let includeCountdownAnchor = true;
   let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
@@ -737,12 +764,12 @@ const challengerTrack = TRACKS[1];
   let zoomLevel = 1.0; // 1.0x to 4.0x
   let scrollOffsetSec = 0; // Panning horizontal en segundos
 
-  // Mutation Tags System State (tags assigned per agent role)
+  // Mutation Tags System State (tags assigned per agent role // Limpio por defecto)
   const agentMutationTags = {
-    DM: new Set(['CROSSFADE_TRANSITION']),
-    CP: new Set(['ORCHESTRAL_ETHNIC_LAYER']),
-    SD: new Set(['BASS_FM_SYNTH']),
-    AE: new Set(['MASTER_DSP_LOUDNESS']),
+    DM: new Set(),
+    CP: new Set(),
+    SD: new Set(),
+    AE: new Set(),
     QA: new Set()
   };
 
@@ -844,8 +871,11 @@ const challengerTrack = TRACKS[1];
   const btnVerdictPromote = document.getElementById('btn-verdict-promote');
   const btnVerdictReject = document.getElementById('btn-verdict-reject');
 
-  // Mutation Tags Containers DOM Cache
-  const mutationTagsCloud = document.getElementById('mutation-tags-cloud');
+  // Mutation Tags Compact DOM Cache
+  const btnAddMutationTag = document.getElementById('btn-add-mutation-tag');
+  const mutationDropdownMenu = document.getElementById('mutation-dropdown-menu');
+  const mutationActivePills = document.getElementById('mutation-active-pills');
+  const emptyTagsHint = document.getElementById('empty-tags-hint');
   const roleTagsContainers = {
     DM: document.getElementById('role-tags-dm'),
     CP: document.getElementById('role-tags-cp'),
@@ -867,27 +897,8 @@ const challengerTrack = TRACKS[1];
   const selectionDraftOverlay = document.getElementById('selection-draft-1');
   const annotationsMarkersLayer = document.getElementById('annotations-layer-1');
 
-  // Director Timeline Annotations State (Multi-section with overlap detection)
-  let directorAnnotations = [
-    {
-      startSec: 2,
-      endSec: 271,
-      durSec: 269,
-      startStr: '00:02',
-      endStr: '04:31',
-      note: 'Nada de esto me gusta. Nueva propuesta.',
-      hasOverlap: false
-    },
-    {
-      startSec: 286,
-      endSec: 332,
-      durSec: 46,
-      startStr: '04:46',
-      endStr: '05:32',
-      note: 'Esto me gusta y debe sobrevir pero es un corto clip. Necesita más evolcion',
-      hasOverlap: false
-    }
-  ];
+  // Director Timeline Annotations State (Limpio por Defecto // Cero Contaminación de Prompt)
+  let directorAnnotations = [];
   let pendingAnnotationRange = null;
 
   // Deck DOM references
@@ -918,7 +929,7 @@ const challengerTrack = TRACKS[1];
       playhead: document.getElementById('playhead-1'),
       overlay: document.getElementById('selection-overlay-1'),
       waveformTrack: document.getElementById('waveform-track-1'),
-      stripButtons: document.querySelectorAll('#sections-strip-1 .sec-btn')
+      stripButtons: document.querySelectorAll('.btn-act-chip')
     }
   ];
 
@@ -2715,10 +2726,11 @@ ${codeBlocksXml}
     generateVibePrompt();
   });
 
-  // Mutation Tags Rendering & Drag/Drop System
+  // Mutation Tags Rendering & Compact + Dropdown System
   let lastFocusedRole = 'CP'; // Agente objetivo por defecto
 
   function renderAgentMutationTags() {
+    // 1. Renderizar en las tarjetas de directivas por rol
     Object.keys(roleTagsContainers).forEach(role => {
       const container = roleTagsContainers[role];
       if (!container) return;
@@ -2740,16 +2752,74 @@ ${codeBlocksXml}
       });
     });
 
-    // Actualizar estados visuales de la paleta
+    // 2. Renderizar pills en la barra compacta superior
+    if (mutationActivePills) {
+      mutationActivePills.innerHTML = '';
+      let totalTags = 0;
+      Object.keys(agentMutationTags).forEach(role => {
+        const tags = agentMutationTags[role] || new Set();
+        tags.forEach(tId => {
+          totalTags++;
+          const def = tagDefinitions[tId] || { label: tId };
+          const pill = document.createElement('span');
+          pill.className = 'compact-tag-pill mono';
+          pill.innerHTML = `<span class="pill-role">${role}</span><span>${def.label}</span><button type="button" class="btn-remove-tag" data-role="${role}" data-tag="${tId}" aria-label="Remover tag ${tId}">✕</button>`;
+          mutationActivePills.appendChild(pill);
+        });
+      });
+      if (totalTags === 0) {
+        const hint = document.createElement('span');
+        hint.className = 'mono text-xs text-muted';
+        hint.id = 'empty-tags-hint';
+        hint.textContent = 'Sin tags activos (Limpio)';
+        mutationActivePills.appendChild(hint);
+      }
+    }
+
+    // 3. Actualizar estados visuales del dropdown
     const allAssigned = new Set();
     Object.values(agentMutationTags).forEach(s => s.forEach(t => allAssigned.add(t)));
-    document.querySelectorAll('.tag-chip').forEach(chip => {
-      const tId = chip.getAttribute('data-tag-id');
+    document.querySelectorAll('.tag-menu-item').forEach(item => {
+      const tId = item.getAttribute('data-tag-id');
       const isAssigned = allAssigned.has(tId);
-      chip.classList.toggle('tag-chip-assigned', isAssigned);
-      chip.setAttribute('aria-pressed', isAssigned ? 'true' : 'false');
+      item.classList.toggle('tag-item-active', isAssigned);
+      item.setAttribute('aria-pressed', isAssigned ? 'true' : 'false');
     });
   }
+
+  // Toggle Dropdown de Tags al hacer click en el botón +
+  if (btnAddMutationTag && mutationDropdownMenu) {
+    btnAddMutationTag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isShown = mutationDropdownMenu.style.display !== 'none';
+      mutationDropdownMenu.style.display = isShown ? 'none' : 'flex';
+      btnAddMutationTag.setAttribute('aria-expanded', (!isShown).toString());
+    });
+
+    document.addEventListener('click', (e) => {
+      if (mutationDropdownMenu && !mutationDropdownMenu.contains(e.target) && !btnAddMutationTag.contains(e.target)) {
+        mutationDropdownMenu.style.display = 'none';
+        btnAddMutationTag.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Click en items del menú dropdown de tags
+  document.querySelectorAll('.tag-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tId = item.getAttribute('data-tag-id');
+      const targetRole = lastFocusedRole || 'CP';
+      if (!agentMutationTags[targetRole]) agentMutationTags[targetRole] = new Set();
+      if (agentMutationTags[targetRole].has(tId)) {
+        agentMutationTags[targetRole].delete(tId);
+      } else {
+        agentMutationTags[targetRole].add(tId);
+      }
+      renderAgentMutationTags();
+      generateVibePrompt();
+    });
+  });
 
   // Delegación de eventos para remover tags
   document.addEventListener('click', (e) => {
@@ -2796,26 +2866,6 @@ ${codeBlocksXml}
         }
       });
     }
-  });
-
-  // Configurar chips de la paleta de mutación (Click para asignar al agente enfocado, o Drag)
-  document.querySelectorAll('.tag-chip').forEach(chip => {
-    chip.addEventListener('dragstart', (e) => {
-      const tId = chip.getAttribute('data-tag-id');
-      e.dataTransfer.setData('text/plain', tId);
-    });
-
-    chip.addEventListener('click', () => {
-      const tId = chip.getAttribute('data-tag-id');
-      if (!agentMutationTags[lastFocusedRole]) agentMutationTags[lastFocusedRole] = new Set();
-      if (agentMutationTags[lastFocusedRole].has(tId)) {
-        agentMutationTags[lastFocusedRole].delete(tId);
-      } else {
-        agentMutationTags[lastFocusedRole].add(tId);
-      }
-      renderAgentMutationTags();
-      generateVibePrompt();
-    });
   });
 
   // FLOATING SELECTION DOCK (Inspirado en Suno Studio)
@@ -3178,14 +3228,37 @@ ${codeBlocksXml}
     generateVibePrompt();
   });
 
+  // Protocolo de Caché Limpio al Publicar / Copiar (Cero Contaminación de Prompt)
+  function resetVibeStudioClean() {
+    vibeDirectorNote.value = '';
+    if (dockQuickPromptInput) dockQuickPromptInput.value = '';
+    directorAnnotations = [];
+    pendingAnnotationRange = null;
+    renderAnnotationMarkers();
+    Object.keys(agentMutationTags).forEach(r => agentMutationTags[r].clear());
+    renderAgentMutationTags();
+    selStart = 0;
+    selEnd = 0;
+    updateSelectionOverlays();
+    document.querySelectorAll('.btn-act-chip').forEach(b => {
+      b.classList.remove('active-act');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    generateVibePrompt();
+    drawWaveforms();
+  }
+
   // 1-Click Copy Prompt Button
   btnCopyVibePrompt.addEventListener('click', async () => {
     const textToCopy = promptPreviewOutput.textContent;
     try {
       await navigator.clipboard.writeText(textToCopy);
       const originalText = btnCopyText.textContent;
-      btnCopyText.textContent = '✅ ¡PROMPT COPIADO!';
+      btnCopyText.textContent = '✅ ¡COPIADO & CACHÉ LIMPIO!';
       btnCopyVibePrompt.classList.add('btn-success-glow');
+      setTimeout(() => {
+        resetVibeStudioClean();
+      }, 500);
       setTimeout(() => {
         btnCopyText.textContent = originalText;
         btnCopyVibePrompt.classList.remove('btn-success-glow');
@@ -3492,9 +3565,9 @@ ${codeBlocksXml}
     max-width: 100%;
   }
 
-  /* Ableton-Style Arrangement View Multi-Track Container (332px for 9 lanes + Top Ruler) */
+  /* Ableton-Style Arrangement View Multi-Track Container (440px for 9 lanes + Top Ruler) */
   .waveform-box-challenger {
-    height: 332px;
+    height: 440px;
     background: var(--canvas-bg);
     border: 1px solid var(--border-strong);
     border-radius: 6px;
@@ -3520,7 +3593,7 @@ ${codeBlocksXml}
   .daw-toolbar-left {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.65rem;
     flex-wrap: wrap;
   }
 
@@ -3528,6 +3601,48 @@ ${codeBlocksXml}
     color: var(--deck-challenger-accent);
     font-weight: 700;
     letter-spacing: 0.04em;
+  }
+
+  .daw-acts-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .btn-act-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.18rem 0.45rem;
+    font-size: 0.65rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn-act-chip:hover {
+    background: var(--btn-hover);
+    color: var(--text-primary);
+    border-color: #38bdf8;
+  }
+
+  .btn-act-chip.active-act {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: #38bdf8;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+  .act-chip-num {
+    font-weight: 700;
+  }
+
+  .act-chip-tag {
+    font-size: 0.58rem;
+    opacity: 0.8;
   }
 
   .daw-meter-badge {
@@ -4016,89 +4131,182 @@ ${codeBlocksXml}
     color: #fbbf24 !important;
   }
 
-  /* Mutation Tags Palette System */
-  .mutation-palette-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+  /* Baseline Sections Details (Champion Compacto) */
+  .baseline-sections-details {
     width: 100%;
     box-sizing: border-box;
+    margin-top: 0.2rem;
   }
 
-  .mutation-tags-cloud {
+  .baseline-sections-summary {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.2rem 0;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.4rem;
-    width: 100%;
-    box-sizing: border-box;
+    user-select: none;
   }
 
-  .tag-chip {
-    display: inline-flex;
+  .baseline-sections-summary:hover {
+    color: var(--text-primary);
+  }
+
+  /* Mutation Tags Compact Bar (+ Button in the Corner) */
+  .mutation-compact-bar {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.25rem 0;
+  }
+
+  .mutation-compact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .mutation-active-pills {
+    display: flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.32rem 0.65rem;
-    font-size: 0.72rem;
-    font-family: inherit;
-    border-radius: 6px;
-    border: 1px dashed var(--border-strong);
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    min-width: 140px;
+  }
+
+  .compact-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0.45rem;
+    font-size: 0.65rem;
+    border-radius: 4px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid #38bdf8;
+    color: var(--text-primary);
+  }
+
+  .compact-tag-pill .pill-role {
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 0.05rem 0.25rem;
+    background: #0284c7;
+    color: #ffffff;
+    border-radius: 3px;
+  }
+
+  .mutation-add-corner {
+    position: relative;
+    margin-left: auto;
+  }
+
+  .btn-add-tag-corner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 700;
     background: var(--btn-bg);
-    color: var(--text-secondary);
-    cursor: grab;
-    user-select: none;
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    color: var(--text-primary);
+    cursor: pointer;
     transition: all 0.15s ease;
-    max-width: 100%;
+  }
+
+  .btn-add-tag-corner:hover {
+    background: var(--btn-hover);
+    border-color: #38bdf8;
+    color: #38bdf8;
+  }
+
+  .btn-add-tag-corner .plus-sign {
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #38bdf8;
+    font-weight: 800;
+  }
+
+  .mutation-dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 100;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 220px;
+  }
+
+  .tag-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.68rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.12s ease;
+  }
+
+  .tag-menu-item:hover {
+    background: var(--btn-hover);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+  }
+
+  .tag-menu-item.tag-item-active {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: #38bdf8;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  /* Role Inputs & Preview Collapsible Details */
+  .role-inputs-details,
+  .preview-details {
+    width: 100%;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface-elevated);
+    padding: 0.45rem 0.75rem;
     box-sizing: border-box;
   }
 
-  .tag-chip:hover {
-    background: var(--btn-hover);
+  .role-inputs-summary,
+  .preview-summary {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    user-select: none;
+  }
+
+  .role-inputs-summary:hover,
+  .preview-summary:hover {
     color: var(--text-primary);
-    border-style: solid;
-    border-color: #0284c7;
-    transform: translateY(-1px);
   }
 
-  .tag-chip:active {
-    cursor: grabbing;
-  }
-
-  .tag-chip-assigned {
-    background: rgba(2, 132, 199, 0.18) !important;
-    border-color: #0284c7 !important;
-    border-style: solid !important;
-    color: #0284c7 !important;
-    font-weight: 600;
-  }
-
-  html[data-theme="dark"] .tag-chip-assigned {
-    background: rgba(56, 189, 248, 0.18) !important;
-    border-color: #38bdf8 !important;
-    color: #38bdf8 !important;
-  }
-
-  .tag-id-corner {
-    font-size: 0.55rem;
-    padding: 0.05rem 0.25rem;
-    border-radius: 3px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-muted);
-    margin-left: 0.35rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .tag-chip-assigned .tag-id-corner {
-    background: rgba(2, 132, 199, 0.3);
-    border-color: #0284c7;
-    color: #0284c7;
-  }
-
-  html[data-theme="dark"] .tag-chip-assigned .tag-id-corner {
-    background: rgba(56, 189, 248, 0.3);
-    border-color: #38bdf8;
-    color: #38bdf8;
+  .role-inputs-details[open],
+  .preview-details[open] {
+    padding-bottom: 0.85rem;
   }
 
   /* Role Tags Container inside Agent Cards */
