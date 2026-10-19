@@ -134,9 +134,15 @@ const challengerTrack = TRACKS[1];
         </div>
       </div>
 
-      <!-- Scrubber & Waveform Canvas Challenger -->
-      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre la onda para seleccionar un rango y anotar, o haz clic para mover el cabezal">
-        <canvas id="waveform-canvas-1" height="52" aria-hidden="true"></canvas>
+      <!-- Ableton Multitrack Header Legend -->
+      <div class="multitrack-header-bar mono">
+        <span class="multitrack-badge">🎚️ VISTA MULTIPISTA ABLETON // 6 CANALES EN PARALELO</span>
+        <span class="multitrack-legend text-xs text-muted">01: Bajo · 02: Lead · 03: Armonía · 04: Reloj · 05: Batería · 06: Otros/FX</span>
+      </div>
+
+      <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View) -->
+      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, o haz clic para mover el cabezal">
+        <canvas id="waveform-canvas-1" height="234" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
         <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
         <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
@@ -1070,8 +1076,8 @@ const challengerTrack = TRACKS[1];
         const pan = Math.sin(tickerStep * 0.35) * 0.55;
         playCountdownTick(ctx, time, pan);
 
-        // Sub-Bass 35Hz continuo como espina dorsal estructural
-        if (tickerStep % 8 === 0) {
+        // Sub-Bass 35Hz continuo como espina dorsal estructural (A partir de s >= 40, respetando inicio suave coral)
+        if (s >= 40 && tickerStep % 8 === 0) {
           playSine(ctx, time, 35.0, 0.28, 0.85);
         }
 
@@ -1105,7 +1111,7 @@ const challengerTrack = TRACKS[1];
 
         // --- CAPA ACTO 1: MASHUP AMBIENT & MUTACIÓN SUB-BRAAM 35HZ (0:00 - 1:50 // g1) ---
         if (g1 > 0.001) {
-          if (stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
+          if (s >= 40 && stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
           if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35 * g1, 5500, 0.08);
           // Progresión armónica rica y cambiante que elimina bucles repetitivos
           if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
@@ -1262,8 +1268,16 @@ const challengerTrack = TRACKS[1];
     const beatNum = Math.floor((d.currentSec % (60 / bpm * 4)) / (60 / bpm)) + 1;
 
     dom.timeDisplay.textContent = `${formatTime(d.currentSec)} / ${formatTime(d.duration)} (c.${barNum}.${beatNum}.1)`;
-    const pct = (d.currentSec / d.duration) * 100;
-    dom.playhead.style.left = `${pct}%`;
+    if (deckId === 1 && dom.waveformTrack) {
+      const trackWidth = dom.waveformTrack.clientWidth;
+      const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
+      const timelineW = trackWidth - headerW;
+      const leftPx = headerW + (d.currentSec / d.duration) * timelineW;
+      dom.playhead.style.left = `${leftPx}px`;
+    } else {
+      const pct = (d.currentSec / d.duration) * 100;
+      dom.playhead.style.left = `${pct}%`;
+    }
     dom.waveformTrack.setAttribute('aria-valuenow', Math.round(d.currentSec));
 
     // Detect section changes during playback
@@ -1288,10 +1302,20 @@ const challengerTrack = TRACKS[1];
       const dom = deckDOM[idx];
       if (!dom.overlay) return;
       if (activeTargetDeck === idx) {
-        const leftPct = (selStart / d.duration) * 100;
-        const widthPct = Math.max(0.5, ((selEnd - selStart) / d.duration) * 100);
-        dom.overlay.style.left = `${leftPct}%`;
-        dom.overlay.style.width = `${widthPct}%`;
+        if (idx === 1 && dom.waveformTrack) {
+          const trackWidth = dom.waveformTrack.clientWidth;
+          const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
+          const timelineW = trackWidth - headerW;
+          const leftPx = headerW + (selStart / d.duration) * timelineW;
+          const widthPx = Math.max(2, ((selEnd - selStart) / d.duration) * timelineW);
+          dom.overlay.style.left = `${leftPx}px`;
+          dom.overlay.style.width = `${widthPx}px`;
+        } else {
+          const leftPct = (selStart / d.duration) * 100;
+          const widthPct = Math.max(0.5, ((selEnd - selStart) / d.duration) * 100);
+          dom.overlay.style.left = `${leftPct}%`;
+          dom.overlay.style.width = `${widthPct}%`;
+        }
         dom.overlay.style.display = 'block';
       } else {
         dom.overlay.style.display = 'none';
@@ -1322,53 +1346,347 @@ const challengerTrack = TRACKS[1];
       : 'Target: DECK 2 (Challenger Single)';
   }
 
-  // Waveform Rendering that respects light/dark theme
+  // Waveform Rendering that respects light/dark theme & renders 6-Track Ableton Live View
   function drawWaveforms() {
     const isLight = getCurrentTheme() === 'light';
-    const canvasBg = isLight ? '#f8fafc' : '#07090e';
+    const canvasBg = isLight ? '#f8fafc' : '#080c14';
     const gridLineColor = isLight ? '#e2e8f0' : '#1a2230';
     const baselineColor = isLight ? '#059669' : '#10b981';
-    const challengerColor = isLight ? '#0284c7' : '#38bdf8';
 
     [0, 1].forEach((idx) => {
       const dom = deckDOM[idx];
       const canvas = dom.canvas;
       if (!canvas) return;
+
+      // Si el elemento está oculto (como Deck 1 Baseline compacto), salir de inmediato
+      if (canvas.clientWidth === 0) return;
+
       const ctx2d = canvas.getContext('2d');
       const w = canvas.width = canvas.clientWidth;
       const h = canvas.height = canvas.clientHeight;
 
-      ctx2d.fillStyle = canvasBg;
-      ctx2d.fillRect(0, 0, w, h);
-
-      if (playingDeck !== idx || !analyser) {
-        ctx2d.strokeStyle = gridLineColor;
-        ctx2d.lineWidth = 1;
+      // ====================================================================
+      // DECK 1 (BASELINE CHAMPION COMPACTO)
+      // ====================================================================
+      if (idx === 0) {
+        ctx2d.fillStyle = canvasBg;
+        ctx2d.fillRect(0, 0, w, h);
+        if (playingDeck !== 0 || !analyser) {
+          ctx2d.strokeStyle = gridLineColor;
+          ctx2d.lineWidth = 1;
+          ctx2d.beginPath();
+          ctx2d.moveTo(0, h / 2);
+          ctx2d.lineTo(w, h / 2);
+          ctx2d.stroke();
+          return;
+        }
+        const bufferLen = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLen);
+        analyser.getByteTimeDomainData(dataArray);
+        ctx2d.lineWidth = 1.8;
+        ctx2d.strokeStyle = baselineColor;
         ctx2d.beginPath();
-        ctx2d.moveTo(0, h / 2);
-        ctx2d.lineTo(w, h / 2);
+        const sliceWidth = w / bufferLen;
+        let x = 0;
+        for (let i = 0; i < bufferLen; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = (v * h) / 2;
+          if (i === 0) ctx2d.moveTo(x, y);
+          else ctx2d.lineTo(x, y);
+          x += sliceWidth;
+        }
         ctx2d.stroke();
         return;
       }
 
-      const bufferLen = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLen);
-      analyser.getByteTimeDomainData(dataArray);
+      // ====================================================================
+      // DECK 2 (CHALLENGER): VISTA MULTIPISTA ESTILO ABLETON LIVE (6 LANES)
+      // ====================================================================
+      if (idx === 1) {
+        const abletonTracks = [
+          {
+            id: 'bass',
+            num: '01',
+            name: 'BAJO',
+            sub: 'Sub 35Hz & Neuro FM',
+            color: '#ef4444',
+            clips: [
+              { startSec: 0, endSec: 40, label: 'Muted (Intro Coral)', active: false, type: 'silence' },
+              { startSec: 40, endSec: 110, label: 'Swell Braam 35Hz #sec-ng-07', active: true, type: 'sub' },
+              { startSec: 110, endSec: 275, label: 'Drop-D Neuro FM (12 LFOs)', active: true, type: 'reese' },
+              { startSec: 275, endSec: 435, label: 'Monumental Bronze Braam 35Hz', active: true, type: 'sub' }
+            ]
+          },
+          {
+            id: 'lead',
+            num: '02',
+            name: 'LEAD',
+            sub: 'Melodías & Bells OoT',
+            color: '#06b6d4',
+            clips: [
+              { startSec: 0, endSec: 40, label: 'Campanas de Seda OoT', active: true, type: 'bells' },
+              { startSec: 40, endSec: 110, label: 'Leitmotif Arqueológico', active: true, type: 'melody' },
+              { startSec: 110, endSec: 275, label: 'Arpegios Láser Modulares', active: true, type: 'arp' },
+              { startSec: 275, endSec: 435, label: 'Campanas Ancestrales Ping-Pong', active: true, type: 'bells' }
+            ]
+          },
+          {
+            id: 'chords',
+            num: '03',
+            name: 'ARMONÍA',
+            sub: 'Pads & Coro IA 2026',
+            color: '#a855f7',
+            clips: [
+              { startSec: 0, endSec: 40, label: 'Coro Progresivo Modal', active: true, type: 'choral' },
+              { startSec: 40, endSec: 110, label: 'Acordes Analógicos C menor', active: true, type: 'pad' },
+              { startSec: 110, endSec: 275, label: 'Sidechain Pump & Duduk', active: true, type: 'pad' },
+              { startSec: 275, endSec: 435, label: 'Wall of Sound French Pads', active: true, type: 'pad' }
+            ]
+          },
+          {
+            id: 'clock',
+            num: '04',
+            name: 'RELOJ',
+            sub: 'Pulso 16avos Continuo',
+            color: '#f59e0b',
+            clips: [
+              { startSec: 0, endSec: 110, label: 'Ticking Spine Micropan 2400Hz', active: true, type: 'pulse' },
+              { startSec: 110, endSec: 275, label: 'Reloj Transicional Continuo', active: true, type: 'pulse' },
+              { startSec: 275, endSec: 435, label: 'Reloj Cósmico & Decaimiento', active: true, type: 'pulse' }
+            ]
+          },
+          {
+            id: 'drums',
+            num: '05',
+            name: 'BATERÍA',
+            sub: 'Afrobeats & Modular 909',
+            color: '#10b981',
+            clips: [
+              { startSec: 0, endSec: 110, label: 'Silencio (Espacio Ambient)', active: false, type: 'silence' },
+              { startSec: 110, endSec: 275, label: 'Polirritmia Afro-Neuro + Snares', active: true, type: 'breakbeat' },
+              { startSec: 275, endSec: 435, label: 'Distal TR-909 Sub-Kick Fade', active: true, type: 'kick' }
+            ]
+          },
+          {
+            id: 'fx',
+            num: '06',
+            name: 'OTROS/FX',
+            sub: 'Guzheng, Vinilo & Sweeps',
+            color: '#ec4899',
+            clips: [
+              { startSec: 0, endSec: 110, label: 'Guzheng Granular & Crackle', active: true, type: 'ethnic' },
+              { startSec: 110, endSec: 275, label: 'Guzheng Arpegios & BPF Noise', active: true, type: 'ethnic' },
+              { startSec: 275, endSec: 435, label: 'Resonancia Bronce & Reverb Tail', active: true, type: 'reverb' }
+            ]
+          }
+        ];
 
-      ctx2d.lineWidth = 1.8;
-      ctx2d.strokeStyle = idx === 0 ? baselineColor : challengerColor;
-      ctx2d.beginPath();
+        const numTracks = abletonTracks.length;
+        const laneH = h / numTracks;
+        const headerW = Math.min(115, Math.floor(w * 0.16));
+        const timelineW = w - headerW;
+        const totalDuration = decks[1].duration;
+        const curSec = decks[1].currentSec || 0;
+        const isChallengerPlaying = (playingDeck === 1);
 
-      const sliceWidth = w / bufferLen;
-      let x = 0;
-      for (let i = 0; i < bufferLen; i++) {
-        const v = dataArray[i] / 128.0;
-        const y = (v * h) / 2;
-        if (i === 0) ctx2d.moveTo(x, y);
-        else ctx2d.lineTo(x, y);
-        x += sliceWidth;
+        // Canvas Background
+        ctx2d.fillStyle = isLight ? '#f8fafc' : '#080c14';
+        ctx2d.fillRect(0, 0, w, h);
+
+        // Helper hex -> RGB
+        const hexToRgb = (hex) => {
+          let c = hex.replace('#', '');
+          if (c.length === 3) c = c.split('').map(x => x + x).join('');
+          const num = parseInt(c, 16);
+          return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+        };
+
+        abletonTracks.forEach((track, tIdx) => {
+          const laneY = tIdx * laneH;
+
+          // Lane row background
+          ctx2d.fillStyle = isLight
+            ? (tIdx % 2 === 0 ? '#f8fafc' : '#f1f5f9')
+            : (tIdx % 2 === 0 ? '#0b0f17' : '#0e1420');
+          ctx2d.fillRect(0, laneY, w, laneH);
+
+          // Lane bottom separator
+          ctx2d.strokeStyle = isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.06)';
+          ctx2d.lineWidth = 1;
+          ctx2d.beginPath();
+          ctx2d.moveTo(0, laneY + laneH);
+          ctx2d.lineTo(w, laneY + laneH);
+          ctx2d.stroke();
+
+          // Track Header Column (Left)
+          ctx2d.fillStyle = isLight ? '#e2e8f0' : '#141b27';
+          ctx2d.fillRect(0, laneY, headerW, laneH);
+
+          // Accent color bar on left edge
+          ctx2d.fillStyle = track.color;
+          ctx2d.fillRect(0, laneY, 4, laneH);
+
+          // Header vertical separator line
+          ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#222d3d';
+          ctx2d.beginPath();
+          ctx2d.moveTo(headerW, laneY);
+          ctx2d.lineTo(headerW, laneY + laneH);
+          ctx2d.stroke();
+
+          // Track Number & Name
+          ctx2d.font = 'bold 9px monospace';
+          ctx2d.fillStyle = track.color;
+          ctx2d.fillText(track.num, 8, laneY + 14);
+
+          ctx2d.font = 'bold 9px monospace';
+          ctx2d.fillStyle = isLight ? '#0f172a' : '#f8fafc';
+          const maxNameChars = headerW < 90 ? 6 : 10;
+          ctx2d.fillText(track.name.slice(0, maxNameChars), 26, laneY + 14);
+
+          // Subtitle
+          if (headerW > 85) {
+            ctx2d.font = '7.5px monospace';
+            ctx2d.fillStyle = isLight ? '#64748b' : '#94a3b8';
+            ctx2d.fillText(track.sub.slice(0, 16), 8, laneY + 28);
+          }
+
+          // Active LED / VU meter indicator on right of header
+          const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
+          const isTrackActive = isChallengerPlaying && activeClip && activeClip.active;
+
+          const ledX = headerW - 10;
+          const ledY = laneY + 12;
+          ctx2d.beginPath();
+          ctx2d.arc(ledX, ledY, 3, 0, Math.PI * 2);
+          ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#334155');
+          ctx2d.fill();
+
+          // Timeline Arrangement Clips (Columna Derecha: headerW -> w)
+          track.clips.forEach(clip => {
+            const clipStartX = headerW + (clip.startSec / totalDuration) * timelineW;
+            const clipEndX = headerW + (clip.endSec / totalDuration) * timelineW;
+            const clipW = Math.max(3, clipEndX - clipStartX - 2);
+            const clipY = laneY + 2;
+            const clipH = laneH - 5;
+            const isClipCurrent = isChallengerPlaying && (curSec >= clip.startSec && curSec < clip.endSec);
+
+            if (clip.active) {
+              const rgb = hexToRgb(track.color);
+              ctx2d.fillStyle = isClipCurrent
+                ? `rgba(${rgb}, 0.28)`
+                : `rgba(${rgb}, 0.14)`;
+
+              if (ctx2d.roundRect) {
+                ctx2d.beginPath();
+                ctx2d.roundRect(clipStartX, clipY, clipW, clipH, 4);
+                ctx2d.fill();
+                ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
+                ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
+                ctx2d.stroke();
+              } else {
+                ctx2d.fillRect(clipStartX, clipY, clipW, clipH);
+                ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
+                ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
+                ctx2d.strokeRect(clipStartX, clipY, clipW, clipH);
+              }
+
+              // Clip Header Pill Tag
+              ctx2d.fillStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.75)`;
+              ctx2d.fillRect(clipStartX + 1, clipY + 1, Math.min(clipW - 2, 120), 10);
+
+              ctx2d.font = 'bold 8px monospace';
+              ctx2d.fillStyle = '#ffffff';
+              ctx2d.fillText(clip.label.slice(0, 20), clipStartX + 4, clipY + 9);
+
+              // Waveform / Pattern rendering inside clip
+              ctx2d.strokeStyle = isClipCurrent ? '#ffffff' : `rgba(${rgb}, 0.85)`;
+              ctx2d.lineWidth = 1.2;
+              ctx2d.beginPath();
+
+              const waveYMid = clipY + 11 + (clipH - 11) / 2;
+              const waveSteps = Math.min(48, Math.floor(clipW / 3));
+              const stepW = clipW / Math.max(1, waveSteps);
+
+              for (let ws = 0; ws < waveSteps; ws++) {
+                const wx = clipStartX + ws * stepW;
+                let amp = 0.5;
+
+                if (clip.type === 'sub') {
+                  amp = Math.sin(ws * 0.35 + (isClipCurrent ? Date.now() * 0.008 : 0)) * 0.75;
+                } else if (clip.type === 'reese') {
+                  amp = (Math.sin(ws * 0.8) + Math.cos(ws * 1.6)) * 0.45;
+                } else if (clip.type === 'breakbeat' || clip.type === 'kick') {
+                  amp = (ws % 4 === 0) ? 0.9 : ((ws % 2 === 0) ? 0.45 : 0.15);
+                } else if (clip.type === 'pulse') {
+                  amp = (ws % 2 === 0) ? 0.7 : 0.2;
+                } else if (clip.type === 'bells' || clip.type === 'melody' || clip.type === 'arp') {
+                  amp = Math.sin(ws * 0.5) * 0.6;
+                } else {
+                  amp = (Math.sin(ws * 0.4) * 0.4) + 0.2;
+                }
+
+                if (isClipCurrent) {
+                  amp *= (1.0 + Math.sin(Date.now() * 0.01 + ws) * 0.25);
+                }
+
+                const maxAmpH = (clipH - 14) / 2;
+                const wyTop = waveYMid - amp * maxAmpH;
+                const wyBot = waveYMid + amp * maxAmpH;
+
+                ctx2d.moveTo(wx, wyTop);
+                ctx2d.lineTo(wx, wyBot);
+              }
+              ctx2d.stroke();
+
+            } else {
+              // Muted / Silence section clip
+              ctx2d.fillStyle = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.02)';
+              ctx2d.fillRect(clipStartX, clipY, clipW, clipH);
+              ctx2d.setLineDash([3, 3]);
+              ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.08)';
+              ctx2d.strokeRect(clipStartX, clipY, clipW, clipH);
+              ctx2d.setLineDash([]);
+              ctx2d.font = 'italic 7.5px monospace';
+              ctx2d.fillStyle = isLight ? '#94a3b8' : '#64748b';
+              ctx2d.fillText(clip.label, clipStartX + 6, clipY + 16);
+            }
+          });
+        });
+
+        // Dotted Time Dividers across all 6 lanes (00:40, 01:50, 04:35)
+        [40, 110, 275].forEach(timeMarker => {
+          const mx = headerW + (timeMarker / totalDuration) * timelineW;
+          ctx2d.setLineDash([3, 4]);
+          ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.14)';
+          ctx2d.lineWidth = 1;
+          ctx2d.beginPath();
+          ctx2d.moveTo(mx, 0);
+          ctx2d.lineTo(mx, h);
+          ctx2d.stroke();
+          ctx2d.setLineDash([]);
+        });
+
+        // Ableton Playhead Marker on Canvas
+        const playheadX = headerW + (curSec / totalDuration) * timelineW;
+        ctx2d.strokeStyle = '#38bdf8';
+        ctx2d.lineWidth = 2;
+        ctx2d.shadowColor = '#0284c7';
+        ctx2d.shadowBlur = 6;
+        ctx2d.beginPath();
+        ctx2d.moveTo(playheadX, 0);
+        ctx2d.lineTo(playheadX, h);
+        ctx2d.stroke();
+        ctx2d.shadowBlur = 0;
+
+        // Scrubber Triangle at Top
+        ctx2d.fillStyle = '#38bdf8';
+        ctx2d.beginPath();
+        ctx2d.moveTo(playheadX - 5, 0);
+        ctx2d.lineTo(playheadX + 5, 0);
+        ctx2d.lineTo(playheadX, 6);
+        ctx2d.closePath();
+        ctx2d.fill();
       }
-      ctx2d.stroke();
     });
 
     if (playingDeck !== null) {
@@ -1718,15 +2036,26 @@ ${codeBlocksXml}
     if (!annotationsMarkersLayer) return;
     annotationsMarkersLayer.innerHTML = '';
     const d1Duration = decks[1].duration;
+    const trackWidth = challengerWaveformTrack ? challengerWaveformTrack.clientWidth : 0;
+    const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
+    const timelineW = trackWidth - headerW;
 
     directorAnnotations.forEach((ann, idx) => {
-      const leftPct = (ann.startSec / d1Duration) * 100;
-      const widthPct = Math.max(0.5, ((ann.endSec - ann.startSec) / d1Duration) * 100);
+      let leftStyle, widthStyle;
+      if (trackWidth > 0 && timelineW > 0) {
+        const leftPx = headerW + (ann.startSec / d1Duration) * timelineW;
+        const widthPx = Math.max(4, ((ann.endSec - ann.startSec) / d1Duration) * timelineW);
+        leftStyle = `${leftPx}px`;
+        widthStyle = `${widthPx}px`;
+      } else {
+        leftStyle = `${(ann.startSec / d1Duration) * 100}%`;
+        widthStyle = `${Math.max(0.5, ((ann.endSec - ann.startSec) / d1Duration) * 100)}%`;
+      }
 
       const marker = document.createElement('div');
       marker.className = `annotation-timeline-marker ${ann.hasOverlap ? 'marker-has-overlap' : ''}`;
-      marker.style.left = `${leftPct}%`;
-      marker.style.width = `${widthPct}%`;
+      marker.style.left = leftStyle;
+      marker.style.width = widthStyle;
       marker.title = `[Nota ${idx + 1}] ${ann.startStr} - ${ann.endStr}: ${ann.note}`;
       annotationsMarkersLayer.appendChild(marker);
     });
@@ -1815,12 +2144,21 @@ ${codeBlocksXml}
       if (annotationPopover && annotationPopover.contains(e.target)) return;
       isSelecting = true;
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      selectStartPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-      selectStartTime = (selectStartPx / rect.width) * decks[1].duration;
+      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
+      const timelineW = rect.width - headerW;
+      const clickX = e.clientX - rect.left;
+
+      if (clickX < headerW) {
+        seekDeck(1, 0);
+        return;
+      }
+
+      selectStartPx = Math.max(0, Math.min(timelineW, clickX - headerW));
+      selectStartTime = (selectStartPx / timelineW) * decks[1].duration;
 
       if (selectionDraftOverlay) {
-        selectionDraftOverlay.style.left = `${(selectStartPx / rect.width) * 100}%`;
-        selectionDraftOverlay.style.width = '0%';
+        selectionDraftOverlay.style.left = `${headerW + selectStartPx}px`;
+        selectionDraftOverlay.style.width = '0px';
         selectionDraftOverlay.style.display = 'block';
       }
     });
@@ -1828,13 +2166,16 @@ ${codeBlocksXml}
     window.addEventListener('mousemove', (e) => {
       if (!isSelecting) return;
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const currentPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
+      const timelineW = rect.width - headerW;
+      const currentX = e.clientX - rect.left;
+      const currentPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const leftPx = Math.min(selectStartPx, currentPx);
       const widthPx = Math.abs(currentPx - selectStartPx);
 
       if (selectionDraftOverlay) {
-        selectionDraftOverlay.style.left = `${(leftPx / rect.width) * 100}%`;
-        selectionDraftOverlay.style.width = `${Math.max(0.5, (widthPx / rect.width) * 100)}%`;
+        selectionDraftOverlay.style.left = `${headerW + leftPx}px`;
+        selectionDraftOverlay.style.width = `${Math.max(1, widthPx)}px`;
       }
     });
 
@@ -1843,20 +2184,28 @@ ${codeBlocksXml}
       isSelecting = false;
 
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const endPx = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
+      const timelineW = rect.width - headerW;
+      const currentX = e.clientX - rect.left;
+
+      if (currentX < headerW && selectStartPx === 0) {
+        return;
+      }
+
+      const endPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const widthPx = Math.abs(endPx - selectStartPx);
 
       // Si el arrastre es muy corto (< 6px), tratar como click de seek habitual
       if (widthPx < 6) {
         if (selectionDraftOverlay) selectionDraftOverlay.style.display = 'none';
-        const pct = Math.max(0, Math.min(1, endPx / rect.width));
+        const pct = Math.max(0, Math.min(1, endPx / timelineW));
         seekDeck(1, pct * decks[1].duration);
         return;
       }
 
       // Rango seleccionado válido para anotación
-      const t1 = (Math.min(selectStartPx, endPx) / rect.width) * decks[1].duration;
-      const t2 = (Math.max(selectStartPx, endPx) / rect.width) * decks[1].duration;
+      const t1 = (Math.min(selectStartPx, endPx) / timelineW) * decks[1].duration;
+      const t2 = (Math.max(selectStartPx, endPx) / timelineW) * decks[1].duration;
 
       activeTargetDeck = 1;
       selStart = t1;
@@ -2401,11 +2750,44 @@ ${codeBlocksXml}
 
   .deck-baseline {
     border-left: 5px solid var(--deck-baseline-accent);
+    padding: 0.55rem 0.95rem;
+    gap: 0.35rem;
   }
 
   .deck-baseline:hover {
     border-color: var(--border-strong);
     border-left-color: var(--deck-baseline-accent);
+  }
+
+  /* Compact Champion / Baseline strip styles to maximize space for Challenger multi-track */
+  .deck-baseline .deck-header {
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .deck-baseline .deck-identity {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.65rem;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+  }
+
+  .deck-baseline .deck-track-title {
+    font-size: 0.92rem;
+  }
+
+  .deck-baseline .deck-track-sub {
+    display: none;
+  }
+
+  /* Hide Champion waveform and sections strip while preserving DOM nodes for audio/tests */
+  .deck-baseline .waveform-box {
+    display: none;
+  }
+
+  .deck-baseline .sections-row {
+    display: none;
   }
 
   .deck-challenger {
@@ -2512,6 +2894,39 @@ ${codeBlocksXml}
     height: 100%;
     display: block;
     max-width: 100%;
+  }
+
+  /* Ableton-Style Arrangement View Multi-Track Container (234px for 6 lanes) */
+  .waveform-box-challenger {
+    height: 234px;
+    background: var(--canvas-bg);
+    border: 1px solid var(--border-strong);
+  }
+
+  .multitrack-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    font-size: 0.68rem;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    margin-bottom: 0.15rem;
+  }
+
+  .multitrack-badge {
+    color: var(--deck-challenger-accent);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .multitrack-legend {
+    color: var(--text-muted);
   }
 
   .playhead {
@@ -3413,13 +3828,9 @@ ${codeBlocksXml}
     box-shadow: 0 0 0 2px var(--deck-challenger-bg);
   }
 
-  /* Prompt Preview */
+  /* Prompt Preview (Oculto visualmente para ahorrar espacio vertical masivo; el botón 'Copiar Prompt' sigue copiando el contenido íntegro) */
   .console-preview-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    width: 100%;
-    box-sizing: border-box;
+    display: none !important;
   }
 
   .preview-header-bar {
