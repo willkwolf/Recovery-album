@@ -204,7 +204,7 @@ async function runVibiumTests() {
     assert(componentsPresence.hasConsole, 'Vibe Console Docked presente');
     assert(componentsPresence.hasBaselinePlay && componentsPresence.hasChallengerPlay, 'Botones de reproducción independientes para ambos Decks');
     assert(componentsPresence.baselineSections === 5, 'Deck 1 contiene exactamente sus 5 secciones');
-    assert(componentsPresence.challengerSections === 7, 'Deck 2 contiene sus 7 actos de single de la suite expandida (8 min)');
+    assert(componentsPresence.challengerSections === 3, 'Deck 2 contiene sus 3 actos de single maestro encadenado (#sec-ng-01, #sec-ng-bridge, #sec-ng-07)');
     assert(componentsPresence.crewChipsCount === 5, 'Selector de enrutamiento con los 5 roles agénticos (DM, CP, SD, AE, QA)');
 
     // TEST SUITE 4: Accesibilidad (a11y-tree) y Semántica WCAG AA
@@ -234,7 +234,7 @@ async function runVibiumTests() {
     // TEST SUITE 5: Flujo Interactivo de Co-Pilotaje y Vibe Prompting
     console.log('\n--- [SUITE 5] FLUJO INTERACTIVO DE CO-PILOTAJE & GENERACIÓN DE PROMPTS ---');
 
-    // Select Act 2 on Challenger (Breakbeat Linkin Park)
+    // Select Act 2 on Challenger (Puente Continuo Morfogenético)
     const act2Btn = await page.find('[data-deck="1"][data-sec-idx="1"]');
     assert(act2Btn !== null, 'Botón de Acto 2 en Challenger (#sections-strip-1) encontrado');
     await act2Btn.click();
@@ -249,7 +249,7 @@ async function runVibiumTests() {
     const promptValidation = await evalInPage(page, () => {
       const output = document.getElementById('prompt-preview-output')?.textContent || '';
       const containsDeck2 = output.includes('DECK 2');
-      const containsSecName = output.includes('Breakbeat') || output.includes('SECCIÓN 02');
+      const containsSecName = output.includes('PUENTE CONTINUO') || output.includes('sec-ng-bridge') || output.includes('SECCIÓN 02') || output.includes('Breakbeat');
       const containsNote = output.includes('Añadir redoble accelerando');
       const containsAnchor = output.includes('Reloj de Cuenta Regresiva');
       const containsMandate = output.includes('Mandato para el Crew');

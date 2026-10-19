@@ -47,5 +47,6 @@ export interface Track {
   publicNotes: string[];
   variations: TrackVariation[];
   sections?: SongSection[];
+  masterCompiledStrudelCode?: string;
   humanApproval: HumanApproval;
 }

@@ -114,7 +114,7 @@ const challengerTrack = TRACKS[1];
           <span class="deck-badge deck-badge-challenger mono">⚡ DECK 2: CHALLENGER // 80% AI CREW SINGLE</span>
           <h2 class="deck-track-title" id="deck-2-title">{challengerTrack.title}</h2>
           <p class="deck-track-sub mono">
-            01: Ambient Inmersivo (105 BPM) ──► 02: Breakbeat & Guzheng (118 BPM) ──► 03: Coro Polifónico IA (118 BPM) ──► 04: Gamelan Industrial (124 BPM) ──► 05: Neuro Drop (140 BPM) ──► 06: Poly-Climax (120 BPM) ──► 07: Braam Sideral (105 BPM)
+            01: Ambient Inmersivo (105 BPM) ──► 02: Puente Continuo Equal-Power & Morfología Afro-Neuro (118 BPM) ──► 03: Braam Monumental 35Hz & Catarsis (105 BPM)
           </p>
         </div>
         <div class="deck-transport" role="toolbar" aria-label="Controles de reproducción Challenger">
@@ -130,12 +130,12 @@ const challengerTrack = TRACKS[1];
             <span aria-hidden="true">🔁</span>
             <span id="loop-label-1">Loop: Off</span>
           </button>
-          <div class="time-readout mono" id="time-display-1" aria-live="polite" aria-label="Tiempo actual y duración de Challenger">00:00 / 08:00</div>
+          <div class="time-readout mono" id="time-display-1" aria-live="polite" aria-label="Tiempo actual y duración de Challenger">00:00 / 07:15</div>
         </div>
       </div>
 
       <!-- Scrubber & Waveform Canvas Challenger -->
-      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="480" aria-valuenow="0" title="Arrastra sobre la onda para seleccionar un rango y anotar, o haz clic para mover el cabezal">
+      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre la onda para seleccionar un rango y anotar, o haz clic para mover el cabezal">
         <canvas id="waveform-canvas-1" height="52" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
         <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
@@ -510,7 +510,15 @@ const challengerTrack = TRACKS[1];
         <div class="console-preview-row">
           <div class="preview-header-bar">
             <span class="mono label-muted">PROMPT ESTRUCTURADO PARA ANTIGRAVITY (VISTA PREVIA):</span>
-            <span class="mono text-xs text-muted" id="preview-range-badge" aria-live="polite">00:00 ── 01:05 (65s)</span>
+            <div class="preview-mode-toggles" role="group" aria-label="Modo de vista de código">
+              <button type="button" class="btn-preview-toggle active-preview-mode mono" id="btn-toggle-master-code" aria-pressed="true" title="Ver código maestro continuo compilado de la obra completa">
+                ⚡ Single Compilado Maestro
+              </button>
+              <button type="button" class="btn-preview-toggle mono" id="btn-toggle-section-code" aria-pressed="false" title="Ver sólo el código y foco de la sección seleccionada">
+                🎯 Sección Foco
+              </button>
+            </div>
+            <span class="mono text-xs text-muted" id="preview-range-badge" aria-live="polite">00:00 ── 02:00 (120s)</span>
           </div>
           <pre class="prompt-code-block mono" tabindex="0" aria-label="Texto formateado del prompt"><code id="prompt-preview-output">Generando prompt...</code></pre>
         </div>
@@ -543,7 +551,7 @@ const challengerTrack = TRACKS[1];
     {
       id: 1,
       track: tracksData[1],
-      duration: 480,
+      duration: 435,
       currentSec: 0,
       activeSecIdx: 0,
       sections: tracksData[1].sections || []
@@ -552,7 +560,7 @@ const challengerTrack = TRACKS[1];
 
   // Selection Range & Prompt Parameters
   let selStart = 0;
-  let selEnd = 65;
+  let selEnd = 120;
   let includeCountdownAnchor = true;
   let isLyraRescueActive = false;
   let activeVerdictDecision = 'REQUEST_ITERATION';
@@ -633,6 +641,9 @@ const challengerTrack = TRACKS[1];
   const previewRangeBadge = document.getElementById('preview-range-badge');
   const btnCopyVibePrompt = document.getElementById('btn-copy-vibe-prompt');
   const btnCopyText = document.getElementById('btn-copy-text');
+  const btnToggleMasterCode = document.getElementById('btn-toggle-master-code');
+  const btnToggleSectionCode = document.getElementById('btn-toggle-section-code');
+  let previewCodeMode = 'master'; // 'master' or 'section'
 
   // Floating Selection Dock & Context Menu DOM Cache
   const challengerFloatingDock = document.getElementById('challenger-floating-dock');
@@ -1072,199 +1083,109 @@ const challengerTrack = TRACKS[1];
         }
       }
 
-      // --- DECK 1: CHALLENGER (80% CREW AUTONOMY // REWIRED // NEURO-GENESIS 8-MIN SUITE) ---
+      // --- DECK 1: CHALLENGER (SINGLE MAESTRO COMPILADO // DUAL-PLANE EQUAL-POWER CROSSFADER) ---
       else if (deckId === 1) {
-        // ESPINA CONTINUA: El Reloj de Cuenta Regresiva nunca se corta entre transiciones
+        // ESPINA CONTINUA: El Reloj de Cuenta Regresiva (16avos) nunca se detiene a través de la obra
         const pan = Math.sin(tickerStep * 0.35) * 0.55;
         playCountdownTick(ctx, time, pan);
 
-        // ACTO 01: Ambient Inmersivo & Ticking Clock (00:00 - 01:05 // 105 BPM)
-        if (s < 65) {
-          const isTransitionBreath = s >= 64.2 && s < 65.0; // 1-beat tension breath
-          if (!isTransitionBreath) {
-            if (stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95);
-            if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35, 5500, 0.08);
-            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-              const chords = [
-                [130.81, 155.56, 196.00, 233.08],
-                [103.83, 130.81, 155.56, 196.00],
-                [87.31, 103.83, 130.81, 155.56],
-                [98.00, 123.47, 146.83, 174.61]
-              ];
-              const chordIdx = Math.floor(tickerStep / 16) % chords.length;
-              const filterSweep = 600 + Math.sin(tickerStep * 0.2) * 2200;
-              chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22, filterSweep, 0.18));
-            }
-            if (stepInBar % 2 === 0) {
-              const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
-              playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38, 0.1);
-            }
-          }
-          // Transición Riser 1 -> 2: Snare accelerando y barrido de ruido
-          if (s >= 58 && s < 64.2) {
-            const accelerandoDiv = s >= 62.5 ? 1 : (s >= 61 ? 2 : 4);
-            if (tickerStep % accelerandoDiv === 0) {
-              playNoise(ctx, time, 0.25 + (s - 58) * 0.08, 2500 + (s - 58) * 500, 0.06);
-            }
-          }
+        // Sub-Bass 35Hz continuo como espina dorsal estructural
+        if (tickerStep % 8 === 0) {
+          playSine(ctx, time, 35.0, 0.28, 0.85);
         }
 
-        // ACTO 02: Breakbeat Progresivo & Guzheng Granular (01:05 - 02:15 // 118 BPM)
-        else if (s >= 65 && s < 135) {
-          const isTransitionBreath = s >= 134.2 && s < 135.0; // 1-beat tension breath
-          if (!isTransitionBreath) {
-            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
-              playKick(ctx, time, 165, 38, 1.0);
-            }
-            if (stepInBar === 4 || stepInBar === 12) {
-              playNoise(ctx, time, 0.65, 3200, 0.12);
-              playKick(ctx, time, 190, 75, 0.4);
-            }
-            if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
-              playNoise(ctx, time, 0.22, 2800, 0.04);
-            }
-            if (stepInBar % 2 === 1) playNoise(ctx, time, 0.25, 6200, 0.025);
-            // Modular Bass
-            if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
-              const rNotes = [65.41, 77.78, 87.31, 92.50];
-              playSaw(ctx, time, rNotes[Math.floor(stepInBar / 4) % rNotes.length], 0.48, 2600, 0.28);
-            }
-            // Guzheng Pentatonic Arpeggio (C, D, F, G, Bb pentatonic)
-            if (tickerStep % 2 === 0) {
-              const guzhengNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25, 587.33, 698.46];
-              const gzNote = guzhengNotes[(tickerStep / 2) % guzhengNotes.length];
-              playTriangle(ctx, time, gzNote, 0.32, 0.12);
-            }
-          }
-          // Transición S-Curve 2 -> 3
-          if (s >= 128 && s < 134.2) {
-            if (tickerStep % 2 === 0) {
-              playNoise(ctx, time, 0.18 + (s - 128) * 0.06, 1800 + (s - 128) * 600, 0.08);
-            }
-          }
+        // CÁLCULO DE COEFICIENTES EQUAL-POWER CROSSFADE:
+        // Acto 1: 00:00 - 02:00 (0 - 120s) -> Ambient Inmersivo (Conservada)
+        // Frontera 1: T1 = 120s, Ventana W1 = 16s ([112, 128]s)
+        // Acto 2: 02:00 - 04:45 (120 - 285s) -> Puente Continuo Morfogenético (Creada)
+        // Frontera 2: T2 = 285s, Ventana W2 = 16s ([277, 293]s)
+        // Acto 3: 04:45 - 07:15 (285 - 435s) -> Monumental Sub-Braam 35Hz & Catarsis (Conservada)
+        // Ley de Potencia Constante: g_out^2 + g_in^2 == 1.0 (Sin caída de energía sonora ni saltos de REPL)
+
+        let g1 = 0.0;
+        let g2 = 0.0;
+        let g3 = 0.0;
+
+        if (s < 112) {
+          g1 = 1.0;
+        } else if (s >= 112 && s <= 128) {
+          const p = (s - 112) / 16;
+          g1 = Math.cos(p * Math.PI / 2);
+          g2 = Math.sin(p * Math.PI / 2);
+        } else if (s > 128 && s < 277) {
+          g2 = 1.0;
+        } else if (s >= 277 && s <= 293) {
+          const p = (s - 277) / 16;
+          g2 = Math.cos(p * Math.PI / 2);
+          g3 = Math.sin(p * Math.PI / 2);
+        } else {
+          g3 = 1.0;
         }
 
-        // ACTO 03: Coro Polifónico IA 2026 & Duduk Sintético (02:15 - 03:30 // 118 BPM)
-        else if (s >= 135 && s < 210) {
-          const isTransitionBreath = s >= 209.2 && s < 210.0;
-          if (!isTransitionBreath) {
-            // IA Choral Formants (Vowel-like polyphonic texture)
-            if (stepInBar === 0 || stepInBar === 4 || stepInBar === 8 || stepInBar === 12) {
-              const choirChords = [
-                [261.63, 311.13, 392.00, 466.16], // Cm7
-                [233.08, 293.66, 349.23, 440.00], // Bb9
-                [207.65, 261.63, 311.13, 392.00], // Abmaj7
-                [196.00, 246.94, 293.66, 370.00]  // G7b9
-              ];
-              const cIdx = Math.floor(tickerStep / 16) % choirChords.length;
-              choirChords[cIdx].forEach(f => playSine(ctx, time, f, 0.22, 0.5));
-            }
-            // Duduk Microtonal Winds (Ornaments)
-            if (stepInBar % 4 === 1) {
-              const dudukMelody = [349.23, 370.00, 392.00, 415.30, 392.00, 349.23, 311.13];
-              const dNote = dudukMelody[Math.floor(tickerStep / 4) % dudukMelody.length];
-              playTriangle(ctx, time, dNote, 0.28, 0.35);
-            }
-            // Subdued Heartbeat Kick
-            if (stepInBar === 0 || stepInBar === 8) {
-              playKick(ctx, time, 110, 34, 0.65, 0.22);
-            }
-          }
-          // Transición Lookahead Sweep 3 -> 4
-          if (s >= 202 && s < 209.2) {
-            const sweepF = 500 + Math.pow((s - 202) / 7.2, 2) * 3500;
-            if (tickerStep % 2 === 0) playNoise(ctx, time, 0.25, sweepF, 0.08);
-          }
-        }
-
-        // ACTO 04: Percusión Gamelan & Furia Industrial (03:30 - 04:40 // 124 BPM)
-        else if (s >= 210 && s < 280) {
-          const isTransitionBreath = s >= 279.0 && s < 280.0; // 1-beat silence breath gate before neuro drop
-          if (!isTransitionBreath) {
-            // Heavy Industrial Beat
-            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 12) {
-              playKick(ctx, time, 175, 40, 1.05);
-            }
-            if (stepInBar === 4 || stepInBar === 12) {
-              playNoise(ctx, time, 0.7, 1800, 0.14);
-              playSquare(ctx, time, 110.0, 0.5, 0.08);
-            }
-            // Balinese Gamelan Metallophones (Slendro tuned bells)
-            if (stepInBar % 2 === 1) {
-              const gamelanFrequencies = [520, 595, 680, 790, 895, 1040];
-              const gNote = gamelanFrequencies[(tickerStep * 3) % gamelanFrequencies.length];
-              playSine(ctx, time, gNote, 0.38, 0.09);
-              playTriangle(ctx, time, gNote * 1.5, 0.2, 0.05);
-            }
-            // Industrial Distortion Pulse
-            if (stepInBar === 0 || stepInBar === 8) {
-              playSaw(ctx, time, 65.41, 0.45, 1200, 0.4);
-            }
-          }
-          // Transición Pre-Drop Riser & Final 1-Beat Gate
-          if (s >= 273 && s < 279.0) {
-            const accelerandoDiv = s >= 277 ? 1 : 2;
-            if (tickerStep % accelerandoDiv === 0) {
-              playNoise(ctx, time, 0.35 + (s - 273) * 0.08, 2000 + (s - 273) * 600, 0.06);
-            }
-          }
-        }
-
-        // ACTO 05: Surgical FM Neuro Drop & Arpegios Láser (04:40 - 05:45 // 140 BPM Half-time)
-        else if (s >= 280 && s < 345) {
-          if (stepInBar === 0 || stepInBar === 10) playKick(ctx, time, 170, 32, 1.15);
-          if (stepInBar === 8) {
-            playNoise(ctx, time, 0.8, 2400, 0.18);
-            playKick(ctx, time, 200, 90, 0.65);
+        // --- CAPA ACTO 1: AMBIENT INMERSIVO (CONSERVADA // g1) ---
+        if (g1 > 0.001) {
+          if (stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
+          if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35 * g1, 5500, 0.08);
+          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+            const chords = [
+              [130.81, 155.56, 196.00, 233.08],
+              [103.83, 130.81, 155.56, 196.00],
+              [87.31, 103.83, 130.81, 155.56],
+              [98.00, 123.47, 146.83, 174.61]
+            ];
+            const chordIdx = Math.floor(tickerStep / 16) % chords.length;
+            const filterSweep = 600 + Math.sin(tickerStep * 0.2) * 2200;
+            chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22 * g1, filterSweep, 0.18));
           }
           if (stepInBar % 2 === 0) {
-            const growlNotes = [65.41, 77.78, 92.50, 98.00, 116.54, 130.81];
-            const gF = growlNotes[(tickerStep / 2) % growlNotes.length];
-            const modF = 120 + ((tickerStep * 23) % 280);
-            const filtF = 800 + Math.sin(tickerStep * 0.7) * 3200;
-            playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.8, 0.22);
-          }
-          if (stepInBar % 2 === 1) {
-            const laserF = 523.25 + ((tickerStep * 67) % 800);
-            playTriangle(ctx, time, laserF, 0.32, 0.04);
-            playNoise(ctx, time, 0.22, 7000, 0.02);
-          }
-          // Transición 5 -> 6: Lookahead Reverb Wash
-          if (s >= 340 && s < 345) {
-            if (stepInBar === 0) playMonumentalBraam(ctx, time, 35, 0.6, 2.5);
+            const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
+            playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38 * g1, 0.1);
           }
         }
 
-        // ACTO 06: Convergencia Transcultural & Poly-Climax Breakbeat (05:45 - 06:55 // 120 BPM)
-        else if (s >= 345 && s < 415) {
-          // Fusion of Breakbeat + Guzheng + IA Choral + Gamelan Clangs
+        // --- CAPA ACTO 2: PUENTE CONTINUO MORFOGENÉTICO (CREADA // g2) ---
+        // Síncopa polirrítmica Afrobeat + Guzheng Granular + Modulación Surge XT FM
+        if (g2 > 0.001) {
+          // Batería sincopada no repetitiva
           if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
-            playKick(ctx, time, 168, 38, 1.05);
+            playKick(ctx, time, 165, 38, 1.05 * g2);
           }
           if (stepInBar === 4 || stepInBar === 12) {
-            playNoise(ctx, time, 0.7, 3000, 0.12);
-            playKick(ctx, time, 195, 80, 0.45);
+            playNoise(ctx, time, 0.65 * g2, 3200, 0.12);
+            playKick(ctx, time, 190, 75, 0.45 * g2);
           }
-          if (stepInBar % 2 === 0) {
-            const polyNotes = [130.81, 155.56, 174.61, 196.00, 233.08];
-            playSaw(ctx, time, polyNotes[(tickerStep / 2) % polyNotes.length], 0.38, 3200, 0.18);
+          if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
+            playNoise(ctx, time, 0.25 * g2, 2800, 0.04);
           }
-          if (stepInBar % 2 === 1) {
-            const gamelanClang = [595, 790, 1040];
-            playSine(ctx, time, gamelanClang[tickerStep % gamelanClang.length], 0.3, 0.07);
+          // Bajo Neuro FM modulado con LFO continuo
+          if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
+            const rNotes = [65.41, 77.78, 87.31, 92.50, 116.54];
+            const gF = rNotes[Math.floor(stepInBar / 3) % rNotes.length];
+            const modF = 110 + ((tickerStep * 19) % 240);
+            const filtF = 900 + Math.sin(tickerStep * 0.4) * 2600;
+            playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.72 * g2, 0.22);
           }
-          if (stepInBar === 0 || stepInBar === 8) {
-            playAcid(ctx, time, 65.41, 1800, 0.4, 0.12);
+          // Arpegiador Guzheng / Koto oriental
+          if (tickerStep % 2 === 0) {
+            const guzhengNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25, 587.33, 698.46];
+            const gzNote = guzhengNotes[(tickerStep / 2) % guzhengNotes.length];
+            playTriangle(ctx, time, gzNote, 0.35 * g2, 0.12);
           }
-          // Transición S-Curve 6 -> 7
-          if (s >= 408 && s < 415) {
-            if (stepInBar === 0) playMonumentalBraam(ctx, time, 35, 0.7, 3.0);
+          // Rampa / Riser continuo hacia el clímax
+          if (s >= 265 && s < 285) {
+            const sweepProgress = (s - 265) / 20;
+            const sweepF = 1200 + sweepProgress * 5000;
+            if (tickerStep % 2 === 0) {
+              playNoise(ctx, time, (0.2 + sweepProgress * 0.4) * g2, sweepF, 0.08);
+            }
           }
         }
 
-        // ACTO 07: Monumental 35Hz Sub-Braam & Catarsis Ocarina Fade (06:55 - 08:00 // 105 BPM)
-        else if (s >= 415 && s <= 480) {
-          if (stepInBar === 0) playMonumentalBraam(ctx, time, 35, 0.95, 2.8);
+        // --- CAPA ACTO 3: MONUMENTAL SUB-BRAAM 35HZ & CATARSIS (CONSERVADA // g3) ---
+        if (g3 > 0.001) {
+          if (stepInBar === 0) {
+            playMonumentalBraam(ctx, time, 35, 0.95 * g3, 3.2);
+          }
           if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
             const pChords = [
               [130.81, 196.00, 261.63, 311.13],
@@ -1273,14 +1194,16 @@ const challengerTrack = TRACKS[1];
               [98.00, 146.83, 196.00, 246.94]
             ];
             const padIdx = Math.floor(tickerStep / 16) % pChords.length;
-            pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.18, 1400, 0.45));
+            pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.2 * g3, 1400, 0.45));
           }
-          // Ocarina Ancestral Solo (Pentatonic Fade)
+          // Campanas ancestrales de Ocarina
           if (tickerStep % 4 === 0) {
             const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
-            playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28, 0.65);
+            playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g3, 0.65);
           }
-          if (stepInBar % 4 === 0) playKick(ctx, time, 85, 28, 0.35);
+          if (stepInBar % 4 === 0) {
+            playKick(ctx, time, 85, 28, 0.35 * g3);
+          }
         }
       }
 
@@ -1604,6 +1527,47 @@ const challengerTrack = TRACKS[1];
     const secContentHash = 'sha256-' + (hashVal >>> 0).toString(16).padStart(8, '0');
     const idempotencyKey = `dispatch-${nowIso.replace(/[:.]/g, '')}-${secIdVal}-${durSec}`;
 
+    let singleCompiledArchXml = '';
+    if (activeTargetDeck === 1 || d.track.masterCompiledStrudelCode) {
+      singleCompiledArchXml = `\n  <single_compiled_architecture status="ACTIVE" engine="Strudel-REPL-Arranger">
+    <compilation_mode>CONTINUOUS_CHAINED_SUITE</compilation_mode>
+    <transition_model>DUAL_PLANE_EQUAL_POWER_CROSSFADER (gain_out^2 + gain_in^2 == 1.0)</transition_model>
+    <preserved_sections count="2">
+      <section id="sec-ng-01" role="seed_anchor">Ambient Inmersivo &amp; Ticking Clock (00:00 - 02:00 // 105 BPM)</section>
+      <section id="sec-ng-07" role="seed_anchor">Monumental Sub-Braam 35Hz &amp; Catarsis Final (04:45 - 07:15 // 105 BPM)</section>
+    </preserved_sections>
+    <destroyed_sections count="5">
+      <section id="sec-ng-02" status="DESTROYED">Breakbeat Progresivo &amp; Guzheng Granular (Destruido por corte abrupto // Reemplazado por Puente Morfogenético)</section>
+      <section id="sec-ng-03" status="DESTROYED">Coro Polifónico IA 2026 &amp; Duduk Sintético (Destruido)</section>
+      <section id="sec-ng-04" status="DESTROYED">Percusión Gamelan &amp; Furia Industrial (Destruido)</section>
+      <section id="sec-ng-05" status="DESTROYED">Surgical FM Neuro Drop (Destruido)</section>
+      <section id="sec-ng-06" status="DESTROYED">Convergencia Transcultural (Destruido)</section>
+    </destroyed_sections>
+    <synthesized_bridge id="sec-ng-bridge" status="ACTIVE">
+      Puente Continuo Morfogenético &amp; Equal-Power Crossfade (02:00 - 04:45 // 118 BPM)
+    </synthesized_bridge>
+  </single_compiled_architecture>\n`;
+    }
+
+    const codeToDisplay = (previewCodeMode === 'master' && d.track.masterCompiledStrudelCode)
+      ? d.track.masterCompiledStrudelCode.trim()
+      : strudelCode;
+
+    let codeBlocksXml = '';
+    if (d.track.masterCompiledStrudelCode && previewCodeMode === 'master') {
+      codeBlocksXml = `  <master_compiled_strudel_code engine="Strudel-REPL-Arranger" mode="CHAINED_SUITE">
+<![CDATA[
+${codeToDisplay}
+]]>
+  </master_compiled_strudel_code>`;
+    } else {
+      codeBlocksXml = `  <current_strudel_seed section_id="${secIdVal}" mode="${previewCodeMode}">
+<![CDATA[
+${codeToDisplay}
+]]>
+  </current_strudel_seed>`;
+    }
+
     const xmlOutput = `<?xml version="1.0" encoding="UTF-8"?>
 <vibe_dispatch version="1.0">
   <metadata>
@@ -1644,19 +1608,35 @@ ${directivesXml}  </agent_directives>
     <transition_rules>
       <rule>Exponential parameter ramps (4-8 bars lookahead before transitions)</rule>
       <rule>Continuous ticking clock spine preservation across act boundaries</rule>
+      <rule>Dual-Plane Equal-Power Crossfading: gain_out = cos(p*PI/2), gain_in = sin(p*PI/2)</rule>
       <rule>Reverb tail preservation (never mute outgoing audio abruptly)</rule>
       <rule>Tension breath: 1-beat zero-amplitude silence before primary drop</rule>
     </transition_rules>
-  </open_source_stack>
-
-  <current_strudel_seed>
-<![CDATA[
-${strudelCode}
-]]>
-  </current_strudel_seed>
+  </open_source_stack>${singleCompiledArchXml}
+${codeBlocksXml}
 </vibe_dispatch>`;
 
     promptPreviewOutput.textContent = xmlOutput;
+  }
+
+  // Event Listeners: Preview Mode Toggles (Single Compilado Maestro vs Sección Foco)
+  if (btnToggleMasterCode && btnToggleSectionCode) {
+    btnToggleMasterCode.addEventListener('click', () => {
+      previewCodeMode = 'master';
+      btnToggleMasterCode.classList.add('active-preview-mode');
+      btnToggleMasterCode.setAttribute('aria-pressed', 'true');
+      btnToggleSectionCode.classList.remove('active-preview-mode');
+      btnToggleSectionCode.setAttribute('aria-pressed', 'false');
+      generateVibePrompt();
+    });
+    btnToggleSectionCode.addEventListener('click', () => {
+      previewCodeMode = 'section';
+      btnToggleSectionCode.classList.add('active-preview-mode');
+      btnToggleSectionCode.setAttribute('aria-pressed', 'true');
+      btnToggleMasterCode.classList.remove('active-preview-mode');
+      btnToggleMasterCode.setAttribute('aria-pressed', 'false');
+      generateVibePrompt();
+    });
   }
 
   // Event Listeners for Role Text Inputs
@@ -3515,6 +3495,35 @@ ${strudelCode}
     box-sizing: border-box;
     flex-wrap: wrap;
     gap: 0.4rem;
+  }
+
+  .preview-mode-toggles {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .btn-preview-toggle {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn-preview-toggle:hover {
+    background: var(--btn-hover);
+    color: var(--text-primary);
+  }
+
+  .btn-preview-toggle.active-preview-mode {
+    background: rgba(14, 165, 233, 0.18) !important;
+    border-color: #0ea5e9 !important;
+    color: var(--deck-challenger-accent) !important;
+    font-weight: 700;
   }
 
   .prompt-code-block {
