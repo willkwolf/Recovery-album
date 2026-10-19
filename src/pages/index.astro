@@ -134,15 +134,43 @@ const challengerTrack = TRACKS[1];
         </div>
       </div>
 
-      <!-- Ableton Multitrack Header Legend -->
-      <div class="multitrack-header-bar mono">
-        <span class="multitrack-badge">🎚️ VISTA MULTIPISTA ABLETON // 6 CANALES EN PARALELO</span>
-        <span class="multitrack-legend text-xs text-muted">01: Bajo · 02: Lead · 03: Armonía · 04: Reloj · 05: Batería · 06: Otros/FX</span>
+      <!-- Suno Studio + Ableton Multitrack Toolbar & Channel Mute Bar -->
+      <div class="daw-multitrack-toolbar mono" role="toolbar" aria-label="Controles del secuenciador multipista">
+        <div class="daw-toolbar-left">
+          <span class="multitrack-badge">🎚️ ARREGLO MULTIPISTA // 9 CANALES EN PARALELO</span>
+          <span class="daw-meter-badge" id="daw-meter-display">BPM: 105/118 · 4/4 · Compás <strong id="daw-bar-counter">001.1.1</strong></span>
+        </div>
+        <div class="daw-toolbar-right">
+          <!-- Zoom Controls -->
+          <div class="daw-zoom-group" role="group" aria-label="Controles de zoom">
+            <button type="button" class="btn-daw-tool" id="btn-zoom-out" aria-label="Reducir zoom timeline" title="Zoom Out (-)">🔍−</button>
+            <span class="mono text-xs zoom-level-badge" id="zoom-level-badge" aria-live="polite">100%</span>
+            <button type="button" class="btn-daw-tool" id="btn-zoom-in" aria-label="Aumentar zoom timeline" title="Zoom In (+)">🔍+</button>
+            <button type="button" class="btn-daw-tool mono" id="btn-zoom-fit" aria-label="Ajustar zoom a pantalla completa" title="Zoom Fit (1:1)">1:1 Fit</button>
+          </div>
+          <!-- Reset All Mutes -->
+          <button type="button" class="btn-daw-tool mono btn-unmute-all" id="btn-unmute-all" aria-label="Restaurar todos los canales activos" title="Activar todos los canales">
+            🔊 Todos ON
+          </button>
+        </div>
       </div>
 
-      <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View) -->
-      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, o haz clic para mover el cabezal">
-        <canvas id="waveform-canvas-1" height="234" aria-hidden="true"></canvas>
+      <!-- Quick 9-Channel Interactive Mute / Solo Strip -->
+      <div class="channels-strip-container mono" id="channels-strip-container" role="group" aria-label="Interruptores de activación ON/OFF por canal">
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="0" aria-pressed="true" title="Clic para mutear/activar Sub-Bass 35Hz"><span class="ch-led" style="background: #ef4444"></span><span class="ch-num">01</span><span class="ch-name">Sub-Bass</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="1" aria-pressed="true" title="Clic para mutear/activar Neuro FM Bass"><span class="ch-led" style="background: #f97316"></span><span class="ch-num">02</span><span class="ch-name">Neuro FM</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="2" aria-pressed="true" title="Clic para mutear/activar Lead Poly Synth"><span class="ch-led" style="background: #06b6d4"></span><span class="ch-num">03</span><span class="ch-name">Lead Poly</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="3" aria-pressed="true" title="Clic para mutear/activar Campanas OoT"><span class="ch-led" style="background: #3b82f6"></span><span class="ch-num">04</span><span class="ch-name">Campanas</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="4" aria-pressed="true" title="Clic para mutear/activar Coro Polifónico IA"><span class="ch-led" style="background: #a855f7"></span><span class="ch-num">05</span><span class="ch-name">Coro IA</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="5" aria-pressed="true" title="Clic para mutear/activar Capa Étnica 2026"><span class="ch-led" style="background: #10b981"></span><span class="ch-num">06</span><span class="ch-name">Étnica</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="6" aria-pressed="true" title="Clic para mutear/activar Reloj Continuo"><span class="ch-led" style="background: #f59e0b"></span><span class="ch-num">07</span><span class="ch-name">Reloj Vibe</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="7" aria-pressed="true" title="Clic para mutear/activar Batería Breakbeat"><span class="ch-led" style="background: #e11d48"></span><span class="ch-num">08</span><span class="ch-name">Batería</span><span class="ch-state">ON</span></button>
+        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="8" aria-pressed="true" title="Clic para mutear/activar Texturas Granulares & FX"><span class="ch-led" style="background: #ec4899"></span><span class="ch-num">09</span><span class="ch-name">FX & Sweeps</span><span class="ch-state">ON</span></button>
+      </div>
+
+      <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View 9 Tracks) -->
+      <div class="waveform-box waveform-box-challenger" id="waveform-track-1" tabindex="0" role="slider" aria-label="Navegador de posición en Challenger" aria-valuemin="0" aria-valuemax="435" aria-valuenow="0" title="Arrastra sobre las pistas para seleccionar un rango y anotar, usa rueda para zoom o haz clic para mover el cabezal">
+        <canvas id="waveform-canvas-1" height="332" aria-hidden="true"></canvas>
         <div class="selection-overlay overlay-challenger" id="selection-overlay-1" aria-hidden="true"></div>
         <div class="selection-draft-overlay" id="selection-draft-1" aria-hidden="true"></div>
         <div class="annotations-markers-layer" id="annotations-layer-1" aria-hidden="true"></div>
@@ -154,8 +182,8 @@ const challengerTrack = TRACKS[1];
         <div class="floating-dock-inner">
           <div class="dock-selection-chip" id="dock-selection-chip" title="Rango seleccionado en el Challenger">
             <span class="dock-chip-icon" aria-hidden="true">🌊</span>
-            <span class="dock-chip-text mono" id="dock-chip-text">00:00 - 01:05 (65s) · c. 1.1</span>
-            <button type="button" class="dock-chip-dismiss" id="btn-dock-clear-sel" aria-label="Limpiar rango seleccionado" title="Restaurar sección por defecto">✕</button>
+            <span class="dock-chip-text mono" id="dock-chip-text">00:00 - 01:50 (110s) · Track 01 · c. 1.1</span>
+            <button type="button" class="dock-chip-dismiss" id="btn-dock-clear-sel" aria-label="Limpiar rango seleccionado" title="Restaurar selección por defecto">✕</button>
           </div>
 
           <div class="dock-prompt-input-group">
@@ -163,14 +191,20 @@ const challengerTrack = TRACKS[1];
               type="text"
               class="dock-prompt-input mono"
               id="dock-quick-prompt-input"
-              placeholder="Dicta prompt in-situ para esta selección (ej: 'build acelerando y sweep blanco')..."
+              placeholder="Dicta vibe para esta pista (ej: sweep de filtro, distorsión ChowTape, modulación FM)..."
               aria-label="Prompt rápido para la selección activa"
             />
           </div>
 
           <div class="dock-engine-badge mono" title="Motor activo de síntesis">
             <span class="engine-dot" aria-hidden="true"></span>
-            <span>Surge XT / Cardinal</span>
+            <select class="dock-engine-select mono" id="dock-engine-select" aria-label="Seleccionar motor de síntesis">
+              <option value="Surge XT (12 LFOs)">Surge XT (12 LFOs)</option>
+              <option value="LMMS DAW Project">LMMS DAW Project</option>
+              <option value="Cardinal Modular">Cardinal Modular</option>
+              <option value="Airwindows DSP">Airwindows DSP</option>
+              <option value="Strudel Compiled REPL">Strudel Compiled REPL</option>
+            </select>
           </div>
 
           <button
@@ -186,21 +220,36 @@ const challengerTrack = TRACKS[1];
         </div>
       </div>
 
-      <!-- Menú Contextual Rápido de Timeline (Estilo DAW) -->
+      <!-- Menú Contextual Rápido de Timeline (Estilo DAW Suno Studio) -->
       <div class="timeline-context-menu" id="timeline-context-menu" style="display: none;" role="menu" aria-label="Opciones rápidas de selección">
-        <button type="button" class="ctx-item" id="ctx-btn-split" role="menuitem">
-          <span class="ctx-icon" aria-hidden="true">✂️</span>
-          <span>Aislar Rango Activo</span>
-          <span class="ctx-shortcut mono">Ctrl+E</span>
+        <button type="button" class="ctx-item" id="ctx-btn-copy" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">📋</span>
+          <span>Copiar Selección</span>
+          <span class="ctx-shortcut mono">Ctrl+C</span>
         </button>
         <button type="button" class="ctx-item" id="ctx-btn-annotate" role="menuitem">
           <span class="ctx-icon" aria-hidden="true">📝</span>
           <span>Anotar para Agentes</span>
           <span class="ctx-shortcut mono">Ctrl+N</span>
         </button>
+        <button type="button" class="ctx-item" id="ctx-btn-split" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">✂️</span>
+          <span>Aislar Rango / Split</span>
+          <span class="ctx-shortcut mono">Ctrl+E</span>
+        </button>
+        <button type="button" class="ctx-item" id="ctx-btn-duplicate" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">⚡</span>
+          <span>Duplicar Clip / Mutar</span>
+          <span class="ctx-shortcut mono">Ctrl+D</span>
+        </button>
+        <button type="button" class="ctx-item" id="ctx-btn-mute" role="menuitem">
+          <span class="ctx-icon" aria-hidden="true">🔇</span>
+          <span id="ctx-mute-label">Silenciar Pista (Mute)</span>
+          <span class="ctx-shortcut mono">M</span>
+        </button>
         <button type="button" class="ctx-item" id="ctx-btn-quick-play" role="menuitem">
           <span class="ctx-icon" aria-hidden="true">▶️</span>
-          <span>Reproducir Selección</span>
+          <span>Reproducir Rango</span>
           <span class="ctx-shortcut mono">Espacio</span>
         </button>
       </div>
@@ -555,6 +604,139 @@ const challengerTrack = TRACKS[1];
   let activeVerdictDecision = 'REQUEST_ITERATION';
   let activeCrewRoles = new Set(['DM', 'CP', 'SD', 'AE']);
 
+  // 9-Track Ableton / Suno Multitrack Architecture Definition
+  const abletonTracks = [
+    {
+      id: 'sub',
+      num: '01',
+      name: 'SUB-BASS',
+      sub: 'Sub 35Hz & Sine Sub-Braam',
+      color: '#ef4444',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Silencio (Intro Coral)', active: false, type: 'silence' },
+        { startSec: 40, endSec: 110, label: 'Swell Braam 35Hz #sec-ng-07', active: true, type: 'sub' },
+        { startSec: 110, endSec: 275, label: 'Sub Continuo 35Hz Espina', active: true, type: 'sub' },
+        { startSec: 275, endSec: 435, label: 'Monumental Bronze Braam 35Hz', active: true, type: 'sub' }
+      ]
+    },
+    {
+      id: 'neuro',
+      num: '02',
+      name: 'NEURO BASS',
+      sub: 'Surge XT 12-LFO FM Growl',
+      color: '#f97316',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Silencio (Intro Coral)', active: false, type: 'silence' },
+        { startSec: 40, endSec: 110, label: 'Bass Growl Sutil 80Hz', active: true, type: 'reese' },
+        { startSec: 110, endSec: 275, label: 'Drop-D Neuro FM (12 LFOs)', active: true, type: 'reese' },
+        { startSec: 275, endSec: 435, label: 'Catarsis Reese Sideral', active: true, type: 'reese' }
+      ]
+    },
+    {
+      id: 'lead',
+      num: '03',
+      name: 'LEAD SYNTH',
+      sub: 'Analog Detune & Poly Saws',
+      color: '#06b6d4',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Swell Filtrado 400Hz', active: true, type: 'melody' },
+        { startSec: 40, endSec: 110, label: 'Leitmotif Arqueológico', active: true, type: 'melody' },
+        { startSec: 110, endSec: 275, label: 'Arpegios Láser Modulares', active: true, type: 'arp' },
+        { startSec: 275, endSec: 435, label: 'Melodía Catarsis en C menor', active: true, type: 'melody' }
+      ]
+    },
+    {
+      id: 'chimes',
+      num: '04',
+      name: 'CAMPANAS OoT',
+      sub: 'Temple Chimes & Ping-Pong',
+      color: '#3b82f6',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Campanas de Seda OoT', active: true, type: 'bells' },
+        { startSec: 40, endSec: 110, label: 'Ping-Pong Delay Sideral', active: true, type: 'bells' },
+        { startSec: 110, endSec: 275, label: 'Glockenspiel Modal 118 BPM', active: true, type: 'bells' },
+        { startSec: 275, endSec: 435, label: 'Campanas Ancestrales Outro', active: true, type: 'bells' }
+      ]
+    },
+    {
+      id: 'choir',
+      num: '05',
+      name: 'CORO IA',
+      sub: 'Voces Formantes A-E-I & Pads',
+      color: '#a855f7',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Inicio Coral Progresivo', active: true, type: 'choral' },
+        { startSec: 40, endSec: 110, label: 'Acordes Analógicos C menor', active: true, type: 'pad' },
+        { startSec: 110, endSec: 275, label: 'Sidechain Formant Pump', active: true, type: 'choral' },
+        { startSec: 275, endSec: 435, label: 'Wall of Sound Polifónico', active: true, type: 'pad' }
+      ]
+    },
+    {
+      id: 'ethnic',
+      num: '06',
+      name: 'CAPA ÉTNICA',
+      sub: 'Guzheng, Duduk & Gamelan',
+      color: '#10b981',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Silencio (Espacio Místico)', active: false, type: 'silence' },
+        { startSec: 40, endSec: 110, label: 'Guzheng Granular & Seda', active: true, type: 'ethnic' },
+        { startSec: 110, endSec: 275, label: 'Duduk Melismático + Gamelan', active: true, type: 'ethnic' },
+        { startSec: 275, endSec: 435, label: 'Polirritmia Sinfónica Fuga', active: true, type: 'ethnic' }
+      ]
+    },
+    {
+      id: 'clock',
+      num: '07',
+      name: 'RELOJ VIBE',
+      sub: 'Pulso 16avos Vibe Anchor',
+      color: '#f59e0b',
+      clips: [
+        { startSec: 0, endSec: 110, label: 'Ticking Spine 2400Hz Micropan', active: true, type: 'pulse' },
+        { startSec: 110, endSec: 275, label: 'Reloj Transicional Continuo', active: true, type: 'pulse' },
+        { startSec: 275, endSec: 435, label: 'Reloj Cósmico Decaimiento', active: true, type: 'pulse' }
+      ]
+    },
+    {
+      id: 'drums',
+      num: '08',
+      name: 'BATERÍA',
+      sub: 'Afrobeats & TR-909 Break',
+      color: '#e11d48',
+      clips: [
+        { startSec: 0, endSec: 40, label: 'Silencio (Inicio Coral)', active: false, type: 'silence' },
+        { startSec: 40, endSec: 110, label: 'Kick & Snare Espaciado', active: true, type: 'kick' },
+        { startSec: 110, endSec: 275, label: 'Polirritmia Afro-Neuro + 909', active: true, type: 'breakbeat' },
+        { startSec: 275, endSec: 435, label: 'TR-909 Sub-Kick Fade Out', active: true, type: 'kick' }
+      ]
+    },
+    {
+      id: 'fx',
+      num: '09',
+      name: 'TEXTURAS / FX',
+      sub: 'Risers, Sweeps & Vinilo',
+      color: '#ec4899',
+      clips: [
+        { startSec: 0, endSec: 110, label: 'Crackle Vinilo & Ruido Rosa', active: true, type: 'reverb' },
+        { startSec: 110, endSec: 275, label: 'BPF Noise Riser a 255s', active: true, type: 'reverb' },
+        { startSec: 275, endSec: 435, label: 'Resonancia Bronce & Reverb Sideral', active: true, type: 'reverb' }
+      ]
+    }
+  ];
+
+  // 9-Channel Mute & Solo States
+  const tracksMuted = [false, false, false, false, false, false, false, false, false];
+  let soloTrackIdx = null;
+  let selectedTrackIdx = 0; // Pista activa seleccionada (0..8)
+
+  function isTrackAudible(tIdx) {
+    if (soloTrackIdx !== null) return soloTrackIdx === tIdx;
+    return !tracksMuted[tIdx];
+  }
+
+  // Zoom & Pan State (Arranger Canvas)
+  let zoomLevel = 1.0; // 1.0x to 4.0x
+  let scrollOffsetSec = 0; // Panning horizontal en segundos
+
   // Mutation Tags System State (tags assigned per agent role)
   const agentMutationTags = {
     DM: new Set(['CROSSFADE_TRANSITION']),
@@ -636,12 +818,26 @@ const challengerTrack = TRACKS[1];
   const challengerFloatingDock = document.getElementById('challenger-floating-dock');
   const dockChipText = document.getElementById('dock-chip-text');
   const dockQuickPromptInput = document.getElementById('dock-quick-prompt-input');
+  const dockEngineSelect = document.getElementById('dock-engine-select');
   const btnDockQuickSubmit = document.getElementById('btn-dock-quick-submit');
   const btnDockClearSel = document.getElementById('btn-dock-clear-sel');
   const timelineContextMenu = document.getElementById('timeline-context-menu');
-  const ctxBtnSplit = document.getElementById('ctx-btn-split');
+  const ctxBtnCopy = document.getElementById('ctx-btn-copy');
   const ctxBtnAnnotate = document.getElementById('ctx-btn-annotate');
+  const ctxBtnSplit = document.getElementById('ctx-btn-split');
+  const ctxBtnDuplicate = document.getElementById('ctx-btn-duplicate');
+  const ctxBtnMute = document.getElementById('ctx-btn-mute');
+  const ctxMuteLabel = document.getElementById('ctx-mute-label');
   const ctxBtnQuickPlay = document.getElementById('ctx-btn-quick-play');
+
+  // DAW Multitrack Toolbar & Channel Strip DOM Cache
+  const btnZoomOut = document.getElementById('btn-zoom-out');
+  const btnZoomIn = document.getElementById('btn-zoom-in');
+  const btnZoomFit = document.getElementById('btn-zoom-fit');
+  const zoomLevelBadge = document.getElementById('zoom-level-badge');
+  const btnUnmuteAll = document.getElementById('btn-unmute-all');
+  const dawBarCounter = document.getElementById('daw-bar-counter');
+  const channelToggleButtons = document.querySelectorAll('.btn-channel-toggle');
 
   // Evolution & Governance DOM Cache
   const btnVerdictIterate = document.getElementById('btn-verdict-iterate');
@@ -1072,23 +1268,29 @@ const challengerTrack = TRACKS[1];
 
       // --- DECK 1: CHALLENGER (SINGLE MAESTRO COMPILADO // DUAL-PLANE EQUAL-POWER CROSSFADER) ---
       else if (deckId === 1) {
-        // ESPINA CONTINUA: El Reloj de Cuenta Regresiva (16avos) nunca se detiene a través de la obra
-        const pan = Math.sin(tickerStep * 0.35) * 0.55;
-        playCountdownTick(ctx, time, pan);
+        // Actualizar contador métrico en tiempo real (c. bar.beat.subbeat)
+        const curBpm = s < 110 ? 105 : (s < 275 ? 118 : 105);
+        const bar = Math.floor(s / (60 / curBpm * 4)) + 1;
+        const beat = Math.floor((s % (60 / curBpm * 4)) / (60 / curBpm)) + 1;
+        const subBeat = Math.floor(((s % (60 / curBpm)) / (60 / curBpm)) * 4) + 1;
+        if (dawBarCounter) {
+          dawBarCounter.textContent = `${String(bar).padStart(3, '0')}.${beat}.${subBeat}`;
+        }
 
-        // Sub-Bass 35Hz continuo como espina dorsal estructural (A partir de s >= 40, respetando inicio suave coral)
-        if (s >= 40 && tickerStep % 8 === 0) {
-          playSine(ctx, time, 35.0, 0.28, 0.85);
+        // CANAL 07: RELOJ VIBE (Pulso 16avos Vibe Anchor)
+        if (isTrackAudible(6)) {
+          const pan = Math.sin(tickerStep * 0.35) * 0.55;
+          playCountdownTick(ctx, time, pan);
+        }
+
+        // CANAL 01: SUB-BASS (Sub-Bass 35Hz continuo a partir de s >= 40)
+        if (isTrackAudible(0)) {
+          if (s >= 40 && tickerStep % 8 === 0) {
+            playSine(ctx, time, 35.0, 0.28, 0.85);
+          }
         }
 
         // CÁLCULO DE COEFICIENTES EQUAL-POWER CROSSFADE:
-        // Acto 1: 00:00 - 01:50 (0 - 110s) -> Mashup Ambient & Mutación Sub-Braam 35Hz
-        // Frontera 1: T1 = 110s, Ventana W1 = 16s ([102, 118]s)
-        // Acto 2: 01:50 - 04:35 (110 - 275s) -> Puente Continuo Morfogenético & Síncopa Afro-Neuro
-        // Frontera 2: T2 = 275s, Ventana W2 = 16s ([267, 283]s)
-        // Acto 3: 04:35 - 07:15 (275 - 435s) -> Monumental Sub-Braam 35Hz & Gran Fuga Sideral
-        // Ley de Potencia Constante: g_out^2 + g_in^2 == 1.0 (Sin caída de energía sonora ni saltos de REPL)
-
         let g1 = 0.0;
         let g2 = 0.0;
         let g3 = 0.0;
@@ -1111,103 +1313,135 @@ const challengerTrack = TRACKS[1];
 
         // --- CAPA ACTO 1: MASHUP AMBIENT & MUTACIÓN SUB-BRAAM 35HZ (0:00 - 1:50 // g1) ---
         if (g1 > 0.001) {
-          if (s >= 40 && stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
-          if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35 * g1, 5500, 0.08);
-          // Progresión armónica rica y cambiante que elimina bucles repetitivos
-          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-            const chords = [
-              [130.81, 155.56, 196.00, 233.08], // Cm7
-              [103.83, 130.81, 155.56, 196.00], // Abmaj7
-              [87.31, 103.83, 130.81, 155.56],  // Fm7
-              [98.00, 123.47, 146.83, 174.61],  // G7b9
-              [116.54, 146.83, 174.61, 220.00], // Bb9
-              [130.81, 155.56, 196.00, 261.63]  // Cm(add9)
-            ];
-            const chordIdx = Math.floor(tickerStep / 16) % chords.length;
-            const filterSweep = 500 + Math.sin(tickerStep * 0.15) * 2300;
-            chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22 * g1, filterSweep, 0.18));
+          // Canal 08: BATERÍA
+          if (isTrackAudible(7)) {
+            if (s >= 40 && stepInBar % 4 === 0) playKick(ctx, time, 155, 42, 0.95 * g1);
+            if (stepInBar % 4 === 2) playNoise(ctx, time, 0.35 * g1, 5500, 0.08);
           }
-          if (stepInBar % 2 === 0) {
-            const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
-            playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38 * g1, 0.1);
+          // Canal 05: CORO IA / PADS
+          if (isTrackAudible(4)) {
+            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+              const chords = [
+                [130.81, 155.56, 196.00, 233.08],
+                [103.83, 130.81, 155.56, 196.00],
+                [87.31, 103.83, 130.81, 155.56],
+                [98.00, 123.47, 146.83, 174.61],
+                [116.54, 146.83, 174.61, 220.00],
+                [130.81, 155.56, 196.00, 261.63]
+              ];
+              const chordIdx = Math.floor(tickerStep / 16) % chords.length;
+              const filterSweep = 500 + Math.sin(tickerStep * 0.15) * 2300;
+              chords[chordIdx].forEach(f => playSaw(ctx, time, f, 0.22 * g1, filterSweep, 0.18));
+            }
           }
-          // Mutación de #sec-ng-07: Despertar progresivo del Braam a 35Hz desde el segundo 30
-          if (s >= 30 && stepInBar === 0) {
-            const braamVol = Math.min(0.85, 0.25 + ((s - 30) / 80) * 0.6);
-            playMonumentalBraam(ctx, time, 35, braamVol * g1, 2.2);
+          // Canal 03: LEAD SYNTH (Acid / Lead)
+          if (isTrackAudible(2)) {
+            if (stepInBar % 2 === 0) {
+              const bass = [65.41, 130.81, 77.78, 155.56, 87.31, 174.61, 98.00, 196.00];
+              playAcid(ctx, time, bass[(tickerStep / 2) % bass.length], 1400, 0.38 * g1, 0.1);
+            }
           }
-          // Campanas ancestrales de Ocarina of Time con ping-pong delay sideral
-          if (tickerStep % 4 === 0) {
-            const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50, 1174.66];
-            playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.22 * g1, 0.55);
+          // Canal 01: SUB-BASS (Braam a 35Hz despertando)
+          if (isTrackAudible(0)) {
+            if (s >= 30 && stepInBar === 0) {
+              const braamVol = Math.min(0.85, 0.25 + ((s - 30) / 80) * 0.6);
+              playMonumentalBraam(ctx, time, 35, braamVol * g1, 2.2);
+            }
           }
-          // Cuerdas de seda Guzheng granular
-          if (tickerStep % 2 === 0) {
-            const gzNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25];
-            playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.22 * g1, 0.1);
+          // Canal 04: CAMPANAS OoT
+          if (isTrackAudible(3)) {
+            if (tickerStep % 4 === 0) {
+              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50, 1174.66];
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.22 * g1, 0.55);
+            }
+          }
+          // Canal 06: CAPA ÉTNICA (Guzheng granular)
+          if (isTrackAudible(5)) {
+            if (tickerStep % 2 === 0) {
+              const gzNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25];
+              playTriangle(ctx, time, gzNotes[(tickerStep / 2) % gzNotes.length], 0.22 * g1, 0.1);
+            }
           }
         }
 
         // --- CAPA ACTO 2: PUENTE CONTINUO MORFOGENÉTICO (CREADA // g2) ---
-        // Síncopa polirrítmica Afrobeat + Guzheng Granular + Modulación Surge XT FM
         if (g2 > 0.001) {
-          // Batería sincopada no repetitiva
-          if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
-            playKick(ctx, time, 165, 38, 1.05 * g2);
+          // Canal 08: BATERÍA (Afrobeats & 909)
+          if (isTrackAudible(7)) {
+            if (stepInBar === 0 || stepInBar === 3 || stepInBar === 6 || stepInBar === 10) {
+              playKick(ctx, time, 165, 38, 1.05 * g2);
+            }
+            if (stepInBar === 4 || stepInBar === 12) {
+              playNoise(ctx, time, 0.65 * g2, 3200, 0.12);
+              playKick(ctx, time, 190, 75, 0.45 * g2);
+            }
+            if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
+              playNoise(ctx, time, 0.25 * g2, 2800, 0.04);
+            }
           }
-          if (stepInBar === 4 || stepInBar === 12) {
-            playNoise(ctx, time, 0.65 * g2, 3200, 0.12);
-            playKick(ctx, time, 190, 75, 0.45 * g2);
+          // Canal 02: NEURO BASS (Surge XT 12-LFO growl)
+          if (isTrackAudible(1)) {
+            if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
+              const rNotes = [65.41, 77.78, 87.31, 92.50, 116.54];
+              const gF = rNotes[Math.floor(stepInBar / 3) % rNotes.length];
+              const modF = 110 + ((tickerStep * 19) % 240);
+              const filtF = 900 + Math.sin(tickerStep * 0.4) * 2600;
+              playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.72 * g2, 0.22);
+            }
           }
-          if (stepInBar === 7 || stepInBar === 11 || stepInBar === 15) {
-            playNoise(ctx, time, 0.25 * g2, 2800, 0.04);
-          }
-          // Bajo Neuro FM modulado con LFO continuo
-          if (stepInBar === 0 || stepInBar === 2 || stepInBar === 8 || stepInBar === 13) {
-            const rNotes = [65.41, 77.78, 87.31, 92.50, 116.54];
-            const gF = rNotes[Math.floor(stepInBar / 3) % rNotes.length];
-            const modF = 110 + ((tickerStep * 19) % 240);
-            const filtF = 900 + Math.sin(tickerStep * 0.4) * 2600;
-            playNeuroFMGrowl(ctx, time, gF, modF, filtF, 0.72 * g2, 0.22);
-          }
-          // Arpegiador Guzheng / Koto oriental
-          if (tickerStep % 2 === 0) {
-            const guzhengNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25, 587.33, 698.46];
-            const gzNote = guzhengNotes[(tickerStep / 2) % guzhengNotes.length];
-            playTriangle(ctx, time, gzNote, 0.35 * g2, 0.12);
-          }
-          // Rampa / Riser continuo hacia el clímax
-          if (s >= 255 && s < 275) {
-            const sweepProgress = (s - 255) / 20;
-            const sweepF = 1200 + sweepProgress * 5000;
+          // Canal 06: CAPA ÉTNICA (Guzheng oriental)
+          if (isTrackAudible(5)) {
             if (tickerStep % 2 === 0) {
-              playNoise(ctx, time, (0.2 + sweepProgress * 0.4) * g2, sweepF, 0.08);
+              const guzhengNotes = [261.63, 293.66, 349.23, 392.00, 466.16, 523.25, 587.33, 698.46];
+              const gzNote = guzhengNotes[(tickerStep / 2) % guzhengNotes.length];
+              playTriangle(ctx, time, gzNote, 0.35 * g2, 0.12);
+            }
+          }
+          // Canal 09: TEXTURAS / FX (Riser sweep blanco)
+          if (isTrackAudible(8)) {
+            if (s >= 255 && s < 275) {
+              const sweepProgress = (s - 255) / 20;
+              const sweepF = 1200 + sweepProgress * 5000;
+              if (tickerStep % 2 === 0) {
+                playNoise(ctx, time, (0.2 + sweepProgress * 0.4) * g2, sweepF, 0.08);
+              }
             }
           }
         }
 
         // --- CAPA ACTO 3: MONUMENTAL SUB-BRAAM 35HZ & CATARSIS (CONSERVADA // g3) ---
         if (g3 > 0.001) {
-          if (stepInBar === 0) {
-            playMonumentalBraam(ctx, time, 35, 0.95 * g3, 3.2);
+          // Canal 01: SUB-BASS (Monumental Braam 35Hz)
+          if (isTrackAudible(0)) {
+            if (stepInBar === 0) {
+              playMonumentalBraam(ctx, time, 35, 0.95 * g3, 3.2);
+            }
           }
-          if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
-            const pChords = [
-              [130.81, 196.00, 261.63, 311.13],
-              [116.54, 174.61, 233.08, 293.66],
-              [103.83, 155.56, 207.65, 261.63],
-              [98.00, 146.83, 196.00, 246.94]
-            ];
-            const padIdx = Math.floor(tickerStep / 16) % pChords.length;
-            pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.2 * g3, 1400, 0.45));
+          // Canal 05: CORO IA / PADS
+          if (isTrackAudible(4)) {
+            if (stepInBar === 2 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14) {
+              const pChords = [
+                [130.81, 196.00, 261.63, 311.13],
+                [116.54, 174.61, 233.08, 293.66],
+                [103.83, 155.56, 207.65, 261.63],
+                [98.00, 146.83, 196.00, 246.94]
+              ];
+              const padIdx = Math.floor(tickerStep / 16) % pChords.length;
+              pChords[padIdx].forEach(f => playSaw(ctx, time, f, 0.2 * g3, 1400, 0.45));
+            }
           }
-          // Campanas ancestrales de Ocarina
-          if (tickerStep % 4 === 0) {
-            const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
-            playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g3, 0.65);
+          // Canal 04: CAMPANAS OoT
+          if (isTrackAudible(3)) {
+            if (tickerStep % 4 === 0) {
+              const ocarinaNotes = [523.25, 622.25, 783.99, 739.99, 932.33, 1046.50];
+              playSine(ctx, time, ocarinaNotes[(tickerStep / 4) % ocarinaNotes.length], 0.28 * g3, 0.65);
+            }
           }
-          if (stepInBar % 4 === 0) {
-            playKick(ctx, time, 85, 28, 0.35 * g3);
+          // Canal 08: BATERÍA
+          if (isTrackAudible(7)) {
+            if (stepInBar % 4 === 0) {
+              playKick(ctx, time, 85, 28, 0.35 * g3);
+            }
           }
         }
       }
@@ -1259,6 +1493,14 @@ const challengerTrack = TRACKS[1];
     generateVibePrompt();
   }
 
+  function getChallengerLayoutMetrics(trackWidth) {
+    const w = trackWidth || (deckDOM[1].waveformTrack ? deckDOM[1].waveformTrack.clientWidth : 800);
+    const headerW = Math.min(130, Math.floor(w * 0.17));
+    const timelineW = Math.max(1, w - headerW);
+    const visibleDur = decks[1].duration / zoomLevel;
+    return { headerW, timelineW, visibleDur };
+  }
+
   function updateDeckUI(deckId) {
     const d = decks[deckId];
     const dom = deckDOM[deckId];
@@ -1269,11 +1511,10 @@ const challengerTrack = TRACKS[1];
 
     dom.timeDisplay.textContent = `${formatTime(d.currentSec)} / ${formatTime(d.duration)} (c.${barNum}.${beatNum}.1)`;
     if (deckId === 1 && dom.waveformTrack) {
-      const trackWidth = dom.waveformTrack.clientWidth;
-      const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
-      const timelineW = trackWidth - headerW;
-      const leftPx = headerW + (d.currentSec / d.duration) * timelineW;
-      dom.playhead.style.left = `${leftPx}px`;
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(dom.waveformTrack.clientWidth);
+      const leftPx = headerW + ((d.currentSec - scrollOffsetSec) / visibleDur) * timelineW;
+      const clampedLeft = Math.max(headerW, Math.min(dom.waveformTrack.clientWidth, leftPx));
+      dom.playhead.style.left = `${clampedLeft}px`;
     } else {
       const pct = (d.currentSec / d.duration) * 100;
       dom.playhead.style.left = `${pct}%`;
@@ -1303,12 +1544,13 @@ const challengerTrack = TRACKS[1];
       if (!dom.overlay) return;
       if (activeTargetDeck === idx) {
         if (idx === 1 && dom.waveformTrack) {
-          const trackWidth = dom.waveformTrack.clientWidth;
-          const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
-          const timelineW = trackWidth - headerW;
-          const leftPx = headerW + (selStart / d.duration) * timelineW;
-          const widthPx = Math.max(2, ((selEnd - selStart) / d.duration) * timelineW);
-          dom.overlay.style.left = `${leftPx}px`;
+          const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(dom.waveformTrack.clientWidth);
+          const leftPx = headerW + ((selStart - scrollOffsetSec) / visibleDur) * timelineW;
+          const rightPx = headerW + ((selEnd - scrollOffsetSec) / visibleDur) * timelineW;
+          const clampedLeft = Math.max(headerW, Math.min(dom.waveformTrack.clientWidth, leftPx));
+          const clampedRight = Math.max(headerW, Math.min(dom.waveformTrack.clientWidth, rightPx));
+          const widthPx = Math.max(0, clampedRight - clampedLeft);
+          dom.overlay.style.left = `${clampedLeft}px`;
           dom.overlay.style.width = `${widthPx}px`;
         } else {
           const leftPct = (selStart / d.duration) * 100;
@@ -1332,7 +1574,8 @@ const challengerTrack = TRACKS[1];
       const beatNum = Math.floor((selStart % (60 / bpm * 4)) / (60 / bpm)) + 1;
       const durSec = Math.round(selEnd - selStart);
       const secId = curSec ? curSec.id : 'custom';
-      dockChipText.innerHTML = `<span class="chip-id-badge mono">#${secId}</span><span>${formatTime(selStart)} - ${formatTime(selEnd)} (${durSec}s) · c.${barNum}.${beatNum}.1</span>`;
+      const curTrack = abletonTracks[selectedTrackIdx] || abletonTracks[0];
+      dockChipText.innerHTML = `<span class="chip-id-badge mono" style="background:${curTrack.color}22; color:${curTrack.color}; border: 1px solid ${curTrack.color}44;">P.${curTrack.num} ${curTrack.name}</span><span class="chip-id-badge mono">#${secId}</span><span>${formatTime(selStart)} - ${formatTime(selEnd)} (${durSec}s) · c.${barNum}.${beatNum}.1</span>`;
     }
   }
 
@@ -1403,95 +1646,101 @@ const challengerTrack = TRACKS[1];
       // DECK 2 (CHALLENGER): VISTA MULTIPISTA ESTILO ABLETON LIVE (6 LANES)
       // ====================================================================
       if (idx === 1) {
-        const abletonTracks = [
-          {
-            id: 'bass',
-            num: '01',
-            name: 'BAJO',
-            sub: 'Sub 35Hz & Neuro FM',
-            color: '#ef4444',
-            clips: [
-              { startSec: 0, endSec: 40, label: 'Muted (Intro Coral)', active: false, type: 'silence' },
-              { startSec: 40, endSec: 110, label: 'Swell Braam 35Hz #sec-ng-07', active: true, type: 'sub' },
-              { startSec: 110, endSec: 275, label: 'Drop-D Neuro FM (12 LFOs)', active: true, type: 'reese' },
-              { startSec: 275, endSec: 435, label: 'Monumental Bronze Braam 35Hz', active: true, type: 'sub' }
-            ]
-          },
-          {
-            id: 'lead',
-            num: '02',
-            name: 'LEAD',
-            sub: 'Melodías & Bells OoT',
-            color: '#06b6d4',
-            clips: [
-              { startSec: 0, endSec: 40, label: 'Campanas de Seda OoT', active: true, type: 'bells' },
-              { startSec: 40, endSec: 110, label: 'Leitmotif Arqueológico', active: true, type: 'melody' },
-              { startSec: 110, endSec: 275, label: 'Arpegios Láser Modulares', active: true, type: 'arp' },
-              { startSec: 275, endSec: 435, label: 'Campanas Ancestrales Ping-Pong', active: true, type: 'bells' }
-            ]
-          },
-          {
-            id: 'chords',
-            num: '03',
-            name: 'ARMONÍA',
-            sub: 'Pads & Coro IA 2026',
-            color: '#a855f7',
-            clips: [
-              { startSec: 0, endSec: 40, label: 'Coro Progresivo Modal', active: true, type: 'choral' },
-              { startSec: 40, endSec: 110, label: 'Acordes Analógicos C menor', active: true, type: 'pad' },
-              { startSec: 110, endSec: 275, label: 'Sidechain Pump & Duduk', active: true, type: 'pad' },
-              { startSec: 275, endSec: 435, label: 'Wall of Sound French Pads', active: true, type: 'pad' }
-            ]
-          },
-          {
-            id: 'clock',
-            num: '04',
-            name: 'RELOJ',
-            sub: 'Pulso 16avos Continuo',
-            color: '#f59e0b',
-            clips: [
-              { startSec: 0, endSec: 110, label: 'Ticking Spine Micropan 2400Hz', active: true, type: 'pulse' },
-              { startSec: 110, endSec: 275, label: 'Reloj Transicional Continuo', active: true, type: 'pulse' },
-              { startSec: 275, endSec: 435, label: 'Reloj Cósmico & Decaimiento', active: true, type: 'pulse' }
-            ]
-          },
-          {
-            id: 'drums',
-            num: '05',
-            name: 'BATERÍA',
-            sub: 'Afrobeats & Modular 909',
-            color: '#10b981',
-            clips: [
-              { startSec: 0, endSec: 110, label: 'Silencio (Espacio Ambient)', active: false, type: 'silence' },
-              { startSec: 110, endSec: 275, label: 'Polirritmia Afro-Neuro + Snares', active: true, type: 'breakbeat' },
-              { startSec: 275, endSec: 435, label: 'Distal TR-909 Sub-Kick Fade', active: true, type: 'kick' }
-            ]
-          },
-          {
-            id: 'fx',
-            num: '06',
-            name: 'OTROS/FX',
-            sub: 'Guzheng, Vinilo & Sweeps',
-            color: '#ec4899',
-            clips: [
-              { startSec: 0, endSec: 110, label: 'Guzheng Granular & Crackle', active: true, type: 'ethnic' },
-              { startSec: 110, endSec: 275, label: 'Guzheng Arpegios & BPF Noise', active: true, type: 'ethnic' },
-              { startSec: 275, endSec: 435, label: 'Resonancia Bronce & Reverb Tail', active: true, type: 'reverb' }
-            ]
-          }
-        ];
-
-        const numTracks = abletonTracks.length;
-        const laneH = h / numTracks;
-        const headerW = Math.min(115, Math.floor(w * 0.16));
+        const numTracks = abletonTracks.length; // 9 Canales
+        const rulerH = 24;
+        const laneH = (h - rulerH) / numTracks; // 34px aprox
+        const headerW = Math.min(130, Math.floor(w * 0.17));
         const timelineW = w - headerW;
         const totalDuration = decks[1].duration;
+        const visibleDur = totalDuration / zoomLevel;
         const curSec = decks[1].currentSec || 0;
         const isChallengerPlaying = (playingDeck === 1);
 
-        // Canvas Background
+        // Auto-scroll durante reproducción si el cabezal sobrepasa el 92% visible
+        if (isChallengerPlaying && curSec > scrollOffsetSec + visibleDur * 0.92) {
+          scrollOffsetSec = Math.max(0, Math.min(totalDuration - visibleDur, curSec - visibleDur * 0.2));
+        }
+
+        // Helper tiempo a píxel X en el timeline
+        const timeToX = (sec) => {
+          return headerW + ((sec - scrollOffsetSec) / visibleDur) * timelineW;
+        };
+
+        // Fondo del Canvas
         ctx2d.fillStyle = isLight ? '#f8fafc' : '#080c14';
         ctx2d.fillRect(0, 0, w, h);
+
+        // ====================================================================
+        // RULER SUPERIOR: COMPASES, SEGUNDOS Y POINTERS DE LOOP BRACE (SUNO STUDIO)
+        // ====================================================================
+        ctx2d.fillStyle = isLight ? '#e2e8f0' : '#0f172a';
+        ctx2d.fillRect(0, 0, w, rulerH);
+        ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#1e293b';
+        ctx2d.lineWidth = 1;
+        ctx2d.beginPath();
+        ctx2d.moveTo(0, rulerH);
+        ctx2d.lineTo(w, rulerH);
+        ctx2d.stroke();
+
+        ctx2d.font = 'bold 8.5px monospace';
+        ctx2d.fillStyle = isLight ? '#475569' : '#94a3b8';
+        ctx2d.fillText('PISTAS (09)', 8, 15);
+
+        // Marcas de compás y tiempo en el Ruler
+        const bpmEst = 118;
+        const barSec = (60 / bpmEst) * 4;
+        const totalBars = Math.ceil(totalDuration / barSec);
+        const barStep = zoomLevel >= 2.5 ? 2 : (zoomLevel >= 1.5 ? 4 : 8);
+
+        ctx2d.font = '7.5px monospace';
+        for (let b = 1; b <= totalBars; b += barStep) {
+          const bSec = (b - 1) * barSec;
+          const bx = timeToX(bSec);
+          if (bx >= headerW - 5 && bx <= w + 5) {
+            ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.14)';
+            ctx2d.beginPath();
+            ctx2d.moveTo(bx, 10);
+            ctx2d.lineTo(bx, rulerH);
+            ctx2d.stroke();
+
+            ctx2d.fillStyle = isLight ? '#475569' : '#64748b';
+            ctx2d.fillText(`c.${b}`, bx + 3, 13);
+            ctx2d.fillText(formatTime(bSec), bx + 3, 21);
+          }
+        }
+
+        // Pointers de Selección / Loop Brace en el Ruler (Punteros triangulares azules estilo Suno Studio)
+        const selLeftX = timeToX(selStart);
+        const selRightX = timeToX(selEnd);
+        if (selRightX >= headerW && selLeftX <= w) {
+          const clampedLeft = Math.max(headerW, selLeftX);
+          const clampedRight = Math.min(w, selRightX);
+
+          ctx2d.fillStyle = 'rgba(56, 189, 248, 0.2)';
+          ctx2d.fillRect(clampedLeft, 0, Math.max(2, clampedRight - clampedLeft), rulerH);
+
+          // Puntero izquierdo hacia abajo
+          if (selLeftX >= headerW && selLeftX <= w) {
+            ctx2d.fillStyle = '#38bdf8';
+            ctx2d.beginPath();
+            ctx2d.moveTo(selLeftX - 5, 0);
+            ctx2d.lineTo(selLeftX + 5, 0);
+            ctx2d.lineTo(selLeftX, 8);
+            ctx2d.closePath();
+            ctx2d.fill();
+          }
+
+          // Puntero derecho hacia abajo
+          if (selRightX >= headerW && selRightX <= w) {
+            ctx2d.fillStyle = '#38bdf8';
+            ctx2d.beginPath();
+            ctx2d.moveTo(selRightX - 5, 0);
+            ctx2d.lineTo(selRightX + 5, 0);
+            ctx2d.lineTo(selRightX, 8);
+            ctx2d.closePath();
+            ctx2d.fill();
+          }
+        }
 
         // Helper hex -> RGB
         const hexToRgb = (hex) => {
@@ -1501,16 +1750,28 @@ const challengerTrack = TRACKS[1];
           return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
         };
 
+        // ====================================================================
+        // RENDER DE LAS 9 PISTAS DEL ARREGLO
+        // ====================================================================
         abletonTracks.forEach((track, tIdx) => {
-          const laneY = tIdx * laneH;
+          const laneY = rulerH + tIdx * laneH;
+          const isMuted = tracksMuted[tIdx];
+          const isSolo = (soloTrackIdx === tIdx);
+          const isTrackSelected = (selectedTrackIdx === tIdx);
 
-          // Lane row background
+          // Fondo de fila
           ctx2d.fillStyle = isLight
             ? (tIdx % 2 === 0 ? '#f8fafc' : '#f1f5f9')
             : (tIdx % 2 === 0 ? '#0b0f17' : '#0e1420');
           ctx2d.fillRect(0, laneY, w, laneH);
 
-          // Lane bottom separator
+          // Resaltado sutil si es la pista seleccionada
+          if (isTrackSelected) {
+            ctx2d.fillStyle = isLight ? 'rgba(56, 189, 248, 0.08)' : 'rgba(56, 189, 248, 0.06)';
+            ctx2d.fillRect(0, laneY, w, laneH);
+          }
+
+          // Separador inferior de pista
           ctx2d.strokeStyle = isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.06)';
           ctx2d.lineWidth = 1;
           ctx2d.beginPath();
@@ -1518,97 +1779,132 @@ const challengerTrack = TRACKS[1];
           ctx2d.lineTo(w, laneY + laneH);
           ctx2d.stroke();
 
-          // Track Header Column (Left)
+          // ------------------------------------------------------------------
+          // Columna de Cabecera Izquierda (0 -> headerW)
+          // ------------------------------------------------------------------
           ctx2d.fillStyle = isLight ? '#e2e8f0' : '#141b27';
           ctx2d.fillRect(0, laneY, headerW, laneH);
 
-          // Accent color bar on left edge
+          // Barra de acento de color de pista (4px)
           ctx2d.fillStyle = track.color;
           ctx2d.fillRect(0, laneY, 4, laneH);
 
-          // Header vertical separator line
+          if (isSolo) {
+            ctx2d.fillStyle = '#f59e0b';
+            ctx2d.fillRect(4, laneY, 2, laneH);
+          }
+
+          // Separador vertical derecho de la cabecera
           ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#222d3d';
           ctx2d.beginPath();
           ctx2d.moveTo(headerW, laneY);
           ctx2d.lineTo(headerW, laneY + laneH);
           ctx2d.stroke();
 
-          // Track Number & Name
-          ctx2d.font = 'bold 9px monospace';
-          ctx2d.fillStyle = track.color;
-          ctx2d.fillText(track.num, 8, laneY + 14);
+          // Número y Nombre de la pista
+          ctx2d.font = 'bold 8.5px monospace';
+          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#475569') : track.color;
+          ctx2d.fillText(track.num, 7, laneY + 12);
 
-          ctx2d.font = 'bold 9px monospace';
-          ctx2d.fillStyle = isLight ? '#0f172a' : '#f8fafc';
-          const maxNameChars = headerW < 90 ? 6 : 10;
-          ctx2d.fillText(track.name.slice(0, maxNameChars), 26, laneY + 14);
+          ctx2d.font = 'bold 8.5px monospace';
+          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#64748b') : (isLight ? '#0f172a' : '#f8fafc');
+          const maxNameChars = headerW < 100 ? 5 : 8;
+          ctx2d.fillText(track.name.slice(0, maxNameChars), 23, laneY + 12);
 
-          // Subtitle
+          // Subtítulo del motor de síntesis
           if (headerW > 85) {
-            ctx2d.font = '7.5px monospace';
-            ctx2d.fillStyle = isLight ? '#64748b' : '#94a3b8';
-            ctx2d.fillText(track.sub.slice(0, 16), 8, laneY + 28);
+            ctx2d.font = '7px monospace';
+            ctx2d.fillStyle = isLight ? '#64748b' : '#64748b';
+            ctx2d.fillText(track.sub.slice(0, 14), 7, laneY + 23);
           }
 
-          // Active LED / VU meter indicator on right of header
-          const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
-          const isTrackActive = isChallengerPlaying && activeClip && activeClip.active;
+          // Botón interactivo Mute en cabecera [ON] / [M]
+          const muteBoxX = headerW - 38;
+          const muteBoxY = laneY + 4;
+          const muteBoxW = 18;
+          const muteBoxH = 13;
+          ctx2d.fillStyle = isMuted ? (isLight ? '#ef4444' : '#7f1d1d') : (isLight ? '#10b981' : '#064e3b');
+          ctx2d.fillRect(muteBoxX, muteBoxY, muteBoxW, muteBoxH);
+          ctx2d.font = 'bold 7px monospace';
+          ctx2d.fillStyle = '#ffffff';
+          ctx2d.fillText(isMuted ? 'M' : 'ON', muteBoxX + (isMuted ? 6 : 3), muteBoxY + 9.5);
 
-          const ledX = headerW - 10;
-          const ledY = laneY + 12;
+          // Botón interactivo Solo [S]
+          const soloBoxX = headerW - 17;
+          const soloBoxY = laneY + 4;
+          const soloBoxW = 14;
+          const soloBoxH = 13;
+          ctx2d.fillStyle = isSolo ? '#f59e0b' : (isLight ? '#cbd5e1' : '#1e293b');
+          ctx2d.fillRect(soloBoxX, soloBoxY, soloBoxW, soloBoxH);
+          ctx2d.fillStyle = isSolo ? '#000000' : (isLight ? '#64748b' : '#94a3b8');
+          ctx2d.fillText('S', soloBoxX + 4.5, soloBoxY + 9.5);
+
+          // Indicador LED / VU Meter animado
+          const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
+          const isTrackActive = isChallengerPlaying && activeClip && activeClip.active && isTrackAudible(tIdx);
+          const ledX = headerW - 8;
+          const ledY = laneY + 24;
           ctx2d.beginPath();
-          ctx2d.arc(ledX, ledY, 3, 0, Math.PI * 2);
-          ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#334155');
+          ctx2d.arc(ledX, ledY, 2.5, 0, Math.PI * 2);
+          ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#1e293b');
           ctx2d.fill();
 
-          // Timeline Arrangement Clips (Columna Derecha: headerW -> w)
+          // ------------------------------------------------------------------
+          // Clips de Arreglo en el Timeline (Columna Derecha: headerW -> w)
+          // ------------------------------------------------------------------
           track.clips.forEach(clip => {
-            const clipStartX = headerW + (clip.startSec / totalDuration) * timelineW;
-            const clipEndX = headerW + (clip.endSec / totalDuration) * timelineW;
-            const clipW = Math.max(3, clipEndX - clipStartX - 2);
+            const clipStartX = timeToX(clip.startSec);
+            const clipEndX = timeToX(clip.endSec);
+            const clipW = Math.max(3, clipEndX - clipStartX - 1);
             const clipY = laneY + 2;
-            const clipH = laneH - 5;
-            const isClipCurrent = isChallengerPlaying && (curSec >= clip.startSec && curSec < clip.endSec);
+            const clipH = laneH - 4;
+            const isClipCurrent = isChallengerPlaying && (curSec >= clip.startSec && curSec < clip.endSec) && isTrackAudible(tIdx);
 
-            if (clip.active) {
+            if (clipEndX < headerW || clipStartX > w) return;
+
+            const visibleClipStartX = Math.max(headerW, clipStartX);
+            const visibleClipW = Math.min(clipW, w - visibleClipStartX);
+
+            if (clip.active && !isMuted) {
               const rgb = hexToRgb(track.color);
               ctx2d.fillStyle = isClipCurrent
-                ? `rgba(${rgb}, 0.28)`
-                : `rgba(${rgb}, 0.14)`;
+                ? `rgba(${rgb}, 0.32)`
+                : `rgba(${rgb}, 0.15)`;
 
               if (ctx2d.roundRect) {
                 ctx2d.beginPath();
-                ctx2d.roundRect(clipStartX, clipY, clipW, clipH, 4);
+                ctx2d.roundRect(visibleClipStartX, clipY, visibleClipW, clipH, 3);
                 ctx2d.fill();
                 ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
                 ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
                 ctx2d.stroke();
               } else {
-                ctx2d.fillRect(clipStartX, clipY, clipW, clipH);
+                ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
                 ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
                 ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
-                ctx2d.strokeRect(clipStartX, clipY, clipW, clipH);
+                ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
               }
 
-              // Clip Header Pill Tag
-              ctx2d.fillStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.75)`;
-              ctx2d.fillRect(clipStartX + 1, clipY + 1, Math.min(clipW - 2, 120), 10);
+              // Pastilla de encabezado del clip
+              if (visibleClipW > 35) {
+                ctx2d.fillStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.8)`;
+                ctx2d.fillRect(visibleClipStartX + 1, clipY + 1, Math.min(visibleClipW - 2, 105), 8);
+                ctx2d.font = 'bold 7px monospace';
+                ctx2d.fillStyle = '#ffffff';
+                ctx2d.fillText(clip.label.slice(0, 16), visibleClipStartX + 3, clipY + 7);
+              }
 
-              ctx2d.font = 'bold 8px monospace';
-              ctx2d.fillStyle = '#ffffff';
-              ctx2d.fillText(clip.label.slice(0, 20), clipStartX + 4, clipY + 9);
-
-              // Waveform / Pattern rendering inside clip
+              // Formas de onda dinámicas del clip
               ctx2d.strokeStyle = isClipCurrent ? '#ffffff' : `rgba(${rgb}, 0.85)`;
-              ctx2d.lineWidth = 1.2;
+              ctx2d.lineWidth = 1;
               ctx2d.beginPath();
 
-              const waveYMid = clipY + 11 + (clipH - 11) / 2;
-              const waveSteps = Math.min(48, Math.floor(clipW / 3));
-              const stepW = clipW / Math.max(1, waveSteps);
+              const waveYMid = clipY + 9 + (clipH - 9) / 2;
+              const waveSteps = Math.min(48, Math.floor(visibleClipW / 3));
+              const stepW = visibleClipW / Math.max(1, waveSteps);
 
               for (let ws = 0; ws < waveSteps; ws++) {
-                const wx = clipStartX + ws * stepW;
+                const wx = visibleClipStartX + ws * stepW;
                 let amp = 0.5;
 
                 if (clip.type === 'sub') {
@@ -1629,7 +1925,7 @@ const challengerTrack = TRACKS[1];
                   amp *= (1.0 + Math.sin(Date.now() * 0.01 + ws) * 0.25);
                 }
 
-                const maxAmpH = (clipH - 14) / 2;
+                const maxAmpH = (clipH - 12) / 2;
                 const wyTop = waveYMid - amp * maxAmpH;
                 const wyBot = waveYMid + amp * maxAmpH;
 
@@ -1639,53 +1935,74 @@ const challengerTrack = TRACKS[1];
               ctx2d.stroke();
 
             } else {
-              // Muted / Silence section clip
+              // Clip silenciado o en Mute
               ctx2d.fillStyle = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.02)';
-              ctx2d.fillRect(clipStartX, clipY, clipW, clipH);
-              ctx2d.setLineDash([3, 3]);
+              ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
+              ctx2d.setLineDash([2, 2]);
               ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.08)';
-              ctx2d.strokeRect(clipStartX, clipY, clipW, clipH);
+              ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
               ctx2d.setLineDash([]);
-              ctx2d.font = 'italic 7.5px monospace';
-              ctx2d.fillStyle = isLight ? '#94a3b8' : '#64748b';
-              ctx2d.fillText(clip.label, clipStartX + 6, clipY + 16);
+              if (visibleClipW > 30) {
+                ctx2d.font = 'italic 7px monospace';
+                ctx2d.fillStyle = isLight ? '#94a3b8' : '#64748b';
+                ctx2d.fillText(isMuted ? '[MUTED]' : clip.label, visibleClipStartX + 4, clipY + 14);
+              }
+            }
+
+            // Resaltado de selección activa de clip con drag handles (estilo Suno Studio)
+            if (isTrackSelected && selEnd > clip.startSec && selStart < clip.endSec) {
+              const hlStartX = Math.max(headerW, timeToX(Math.max(clip.startSec, selStart)));
+              const hlEndX = Math.min(w, timeToX(Math.min(clip.endSec, selEnd)));
+              const hlW = Math.max(4, hlEndX - hlStartX);
+              ctx2d.strokeStyle = '#38bdf8';
+              ctx2d.lineWidth = 1.8;
+              ctx2d.strokeRect(hlStartX, clipY - 1, hlW, clipH + 2);
+
+              // Tiradores de esquina estilo DAW
+              ctx2d.fillStyle = '#38bdf8';
+              ctx2d.fillRect(hlStartX - 1, clipY - 2, 4, 4);
+              ctx2d.fillRect(hlStartX + hlW - 3, clipY - 2, 4, 4);
             }
           });
         });
 
-        // Dotted Time Dividers across all 6 lanes (00:40, 01:50, 04:35)
+        // Divisores de Acto en el timeline (00:40, 01:50, 04:35)
         [40, 110, 275].forEach(timeMarker => {
-          const mx = headerW + (timeMarker / totalDuration) * timelineW;
-          ctx2d.setLineDash([3, 4]);
-          ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.14)';
-          ctx2d.lineWidth = 1;
-          ctx2d.beginPath();
-          ctx2d.moveTo(mx, 0);
-          ctx2d.lineTo(mx, h);
-          ctx2d.stroke();
-          ctx2d.setLineDash([]);
+          const mx = timeToX(timeMarker);
+          if (mx >= headerW && mx <= w) {
+            ctx2d.setLineDash([3, 4]);
+            ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.16)';
+            ctx2d.lineWidth = 1;
+            ctx2d.beginPath();
+            ctx2d.moveTo(mx, rulerH);
+            ctx2d.lineTo(mx, h);
+            ctx2d.stroke();
+            ctx2d.setLineDash([]);
+          }
         });
 
-        // Ableton Playhead Marker on Canvas
-        const playheadX = headerW + (curSec / totalDuration) * timelineW;
-        ctx2d.strokeStyle = '#38bdf8';
-        ctx2d.lineWidth = 2;
-        ctx2d.shadowColor = '#0284c7';
-        ctx2d.shadowBlur = 6;
-        ctx2d.beginPath();
-        ctx2d.moveTo(playheadX, 0);
-        ctx2d.lineTo(playheadX, h);
-        ctx2d.stroke();
-        ctx2d.shadowBlur = 0;
+        // Cabezal vertical de reproducción unificado a través de las 9 pistas
+        const playheadX = timeToX(curSec);
+        if (playheadX >= headerW && playheadX <= w) {
+          ctx2d.strokeStyle = '#38bdf8';
+          ctx2d.lineWidth = 2;
+          ctx2d.shadowColor = '#0284c7';
+          ctx2d.shadowBlur = 6;
+          ctx2d.beginPath();
+          ctx2d.moveTo(playheadX, rulerH);
+          ctx2d.lineTo(playheadX, h);
+          ctx2d.stroke();
+          ctx2d.shadowBlur = 0;
 
-        // Scrubber Triangle at Top
-        ctx2d.fillStyle = '#38bdf8';
-        ctx2d.beginPath();
-        ctx2d.moveTo(playheadX - 5, 0);
-        ctx2d.lineTo(playheadX + 5, 0);
-        ctx2d.lineTo(playheadX, 6);
-        ctx2d.closePath();
-        ctx2d.fill();
+          // Triángulo Scrubber en el Ruler
+          ctx2d.fillStyle = '#38bdf8';
+          ctx2d.beginPath();
+          ctx2d.moveTo(playheadX - 5, rulerH - 6);
+          ctx2d.lineTo(playheadX + 5, rulerH - 6);
+          ctx2d.lineTo(playheadX, rulerH);
+          ctx2d.closePath();
+          ctx2d.fill();
+        }
       }
     });
 
@@ -2035,21 +2352,23 @@ ${codeBlocksXml}
   function renderAnnotationMarkers() {
     if (!annotationsMarkersLayer) return;
     annotationsMarkersLayer.innerHTML = '';
-    const d1Duration = decks[1].duration;
     const trackWidth = challengerWaveformTrack ? challengerWaveformTrack.clientWidth : 0;
-    const headerW = Math.min(115, Math.floor(trackWidth * 0.16));
-    const timelineW = trackWidth - headerW;
+    const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(trackWidth);
 
     directorAnnotations.forEach((ann, idx) => {
       let leftStyle, widthStyle;
       if (trackWidth > 0 && timelineW > 0) {
-        const leftPx = headerW + (ann.startSec / d1Duration) * timelineW;
-        const widthPx = Math.max(4, ((ann.endSec - ann.startSec) / d1Duration) * timelineW);
-        leftStyle = `${leftPx}px`;
+        const leftPx = headerW + ((ann.startSec - scrollOffsetSec) / visibleDur) * timelineW;
+        const rightPx = headerW + ((ann.endSec - scrollOffsetSec) / visibleDur) * timelineW;
+        if (rightPx < headerW || leftPx > trackWidth) return;
+        const clampedLeft = Math.max(headerW, Math.min(trackWidth, leftPx));
+        const clampedRight = Math.max(headerW, Math.min(trackWidth, rightPx));
+        const widthPx = Math.max(4, clampedRight - clampedLeft);
+        leftStyle = `${clampedLeft}px`;
         widthStyle = `${widthPx}px`;
       } else {
-        leftStyle = `${(ann.startSec / d1Duration) * 100}%`;
-        widthStyle = `${Math.max(0.5, ((ann.endSec - ann.startSec) / d1Duration) * 100)}%`;
+        leftStyle = `${(ann.startSec / decks[1].duration) * 100}%`;
+        widthStyle = `${Math.max(0.5, ((ann.endSec - ann.startSec) / decks[1].duration) * 100)}%`;
       }
 
       const marker = document.createElement('div');
@@ -2140,21 +2459,73 @@ ${codeBlocksXml}
 
   if (challengerWaveformTrack) {
     challengerWaveformTrack.addEventListener('mousedown', (e) => {
-      // Ignorar clicks dentro del popover si estuviera abierto
+      if (e.button !== 0) return; // Solo click izquierdo
       if (annotationPopover && annotationPopover.contains(e.target)) return;
-      isSelecting = true;
-      const rect = challengerWaveformTrack.getBoundingClientRect();
-      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
-      const timelineW = rect.width - headerW;
-      const clickX = e.clientX - rect.left;
+      if (timelineContextMenu && timelineContextMenu.contains(e.target)) return;
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
 
+      const rect = challengerWaveformTrack.getBoundingClientRect();
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
+      const rulerH = 24;
+      const numTracks = abletonTracks.length;
+      const laneH = (rect.height - rulerH) / numTracks;
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      // Clic dentro de la columna de cabecera de pistas (Header lateral izquierdo)
       if (clickX < headerW) {
-        seekDeck(1, 0);
+        if (clickY < rulerH) {
+          // Esquina superior "PISTAS 09": reset/toggle zoom fit
+          zoomLevel = (zoomLevel === 1.0) ? 2.0 : 1.0;
+          scrollOffsetSec = 0;
+          if (zoomLevelBadge) zoomLevelBadge.textContent = `${Math.round(zoomLevel * 100)}%`;
+          drawWaveforms();
+          updateSelectionOverlays();
+          updateDeckUI(1);
+          renderAnnotationMarkers();
+          return;
+        }
+
+        const tIdx = Math.max(0, Math.min(numTracks - 1, Math.floor((clickY - rulerH) / laneH)));
+        selectedTrackIdx = tIdx;
+
+        // Botón Mute en cabecera [ON] / [M] (headerW - 38 .. headerW - 20)
+        if (clickX >= headerW - 38 && clickX <= headerW - 20) {
+          tracksMuted[tIdx] = !tracksMuted[tIdx];
+          syncChannelStripUI();
+          drawWaveforms();
+          return;
+        }
+
+        // Botón Solo en cabecera [S] (headerW - 17 .. headerW - 3)
+        if (clickX >= headerW - 17 && clickX <= headerW - 3) {
+          soloTrackIdx = (soloTrackIdx === tIdx ? null : tIdx);
+          syncChannelStripUI();
+          drawWaveforms();
+          return;
+        }
+
+        // Clic en el nombre o color: seleccionar pista
+        syncChannelStripUI();
+        updateSelectionOverlays();
+        drawWaveforms();
         return;
       }
 
+      // Clic en el Ruler superior (Seek inmediato del cabezal)
+      if (clickY < rulerH) {
+        const targetTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + ((clickX - headerW) / timelineW) * visibleDur));
+        seekDeck(1, targetTime);
+        return;
+      }
+
+      // Clic dentro de los carriles (lanes) de las pistas
+      const tIdx = Math.max(0, Math.min(numTracks - 1, Math.floor((clickY - rulerH) / laneH)));
+      selectedTrackIdx = tIdx;
+
+      isSelecting = true;
       selectStartPx = Math.max(0, Math.min(timelineW, clickX - headerW));
-      selectStartTime = (selectStartPx / timelineW) * decks[1].duration;
+      selectStartTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (selectStartPx / timelineW) * visibleDur));
 
       if (selectionDraftOverlay) {
         selectionDraftOverlay.style.left = `${headerW + selectStartPx}px`;
@@ -2166,8 +2537,7 @@ ${codeBlocksXml}
     window.addEventListener('mousemove', (e) => {
       if (!isSelecting) return;
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
-      const timelineW = rect.width - headerW;
+      const { headerW, timelineW } = getChallengerLayoutMetrics(rect.width);
       const currentX = e.clientX - rect.left;
       const currentPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const leftPx = Math.min(selectStartPx, currentPx);
@@ -2184,28 +2554,45 @@ ${codeBlocksXml}
       isSelecting = false;
 
       const rect = challengerWaveformTrack.getBoundingClientRect();
-      const headerW = Math.min(115, Math.floor(rect.width * 0.16));
-      const timelineW = rect.width - headerW;
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
       const currentX = e.clientX - rect.left;
 
       if (currentX < headerW && selectStartPx === 0) {
+        if (selectionDraftOverlay) selectionDraftOverlay.style.display = 'none';
         return;
       }
 
       const endPx = Math.max(0, Math.min(timelineW, currentX - headerW));
       const widthPx = Math.abs(endPx - selectStartPx);
 
-      // Si el arrastre es muy corto (< 6px), tratar como click de seek habitual
+      // Si el arrastre es muy corto (< 6px), tratar como click de selección de clip o seek habitual
       if (widthPx < 6) {
         if (selectionDraftOverlay) selectionDraftOverlay.style.display = 'none';
-        const pct = Math.max(0, Math.min(1, endPx / timelineW));
-        seekDeck(1, pct * decks[1].duration);
+        const clickTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (selectStartPx / timelineW) * visibleDur));
+        seekDeck(1, clickTime);
+
+        // Si se hizo click sobre un clip de la pista seleccionada, fijar su rango exacto
+        const track = abletonTracks[selectedTrackIdx];
+        if (track && track.clips) {
+          const foundClip = track.clips.find(c => clickTime >= c.startSec && clickTime < c.endSec);
+          if (foundClip) {
+            activeTargetDeck = 1;
+            selStart = foundClip.startSec;
+            selEnd = foundClip.endSec;
+            updateTargetDeckUI();
+            updateSelectionOverlays();
+            generateVibePrompt();
+            drawWaveforms();
+            return;
+          }
+        }
+        drawWaveforms();
         return;
       }
 
-      // Rango seleccionado válido para anotación
-      const t1 = (Math.min(selectStartPx, endPx) / timelineW) * decks[1].duration;
-      const t2 = (Math.max(selectStartPx, endPx) / timelineW) * decks[1].duration;
+      // Rango seleccionado válido para anotación y edición DAW
+      const t1 = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (Math.min(selectStartPx, endPx) / timelineW) * visibleDur));
+      const t2 = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (Math.max(selectStartPx, endPx) / timelineW) * visibleDur));
 
       activeTargetDeck = 1;
       selStart = t1;
@@ -2213,9 +2600,47 @@ ${codeBlocksXml}
       seekDeck(1, t1);
       updateTargetDeckUI();
       updateSelectionOverlays();
+      drawWaveforms();
 
       openAnnotationPopover(t1, t2, e.clientX);
     });
+
+    // Soporte para Zoom con Ctrl+Rueda y Scroll/Pan horizontal en la pista
+    challengerWaveformTrack.addEventListener('wheel', (e) => {
+      const rect = challengerWaveformTrack.getBoundingClientRect();
+      const { headerW, timelineW } = getChallengerLayoutMetrics(rect.width);
+      const cursorX = e.clientX - rect.left;
+
+      if (e.ctrlKey) {
+        e.preventDefault();
+        const zoomDelta = e.deltaY < 0 ? 0.3 : -0.3;
+        const oldZoom = zoomLevel;
+        zoomLevel = Math.max(1.0, Math.min(4.0, +(zoomLevel + zoomDelta).toFixed(2)));
+        if (zoomLevelBadge) zoomLevelBadge.textContent = `${Math.round(zoomLevel * 100)}%`;
+
+        if (cursorX >= headerW && timelineW > 0) {
+          const cursorTimeRel = ((cursorX - headerW) / timelineW) * (decks[1].duration / oldZoom);
+          const cursorAbsTime = scrollOffsetSec + cursorTimeRel;
+          const newVisibleDur = decks[1].duration / zoomLevel;
+          scrollOffsetSec = Math.max(0, Math.min(decks[1].duration - newVisibleDur, cursorAbsTime - ((cursorX - headerW) / timelineW) * newVisibleDur));
+        }
+
+        drawWaveforms();
+        updateSelectionOverlays();
+        updateDeckUI(1);
+        renderAnnotationMarkers();
+      } else if (e.shiftKey || Math.abs(e.deltaX) > 0 || Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+        const visibleDur = decks[1].duration / zoomLevel;
+        const maxScroll = Math.max(0, decks[1].duration - visibleDur);
+        const panDelta = (e.deltaX || e.deltaY) * 0.04 * (visibleDur / 100);
+        scrollOffsetSec = Math.max(0, Math.min(maxScroll, scrollOffsetSec + panDelta));
+        drawWaveforms();
+        updateSelectionOverlays();
+        updateDeckUI(1);
+        renderAnnotationMarkers();
+      }
+    }, { passive: false });
   }
 
   if (btnPopoverSave) {
@@ -2378,6 +2803,27 @@ ${codeBlocksXml}
       vibeDirectorNote.value = e.target.value;
       generateVibePrompt();
     });
+    dockQuickPromptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (btnDockQuickSubmit) btnDockQuickSubmit.click();
+      }
+    });
+  }
+
+  if (dockEngineSelect) {
+    dockEngineSelect.addEventListener('change', (e) => {
+      const selectedEngine = e.target.value;
+      const curTrack = abletonTracks[selectedTrackIdx];
+      if (curTrack) {
+        curTrack.sub = selectedEngine;
+      }
+      if (roleInputs.SD) {
+        roleInputs.SD.value = `Motor para ${curTrack ? curTrack.name : 'Pista'}: ${selectedEngine}. Formantes y filtros adaptados.`;
+      }
+      drawWaveforms();
+      generateVibePrompt();
+    });
   }
 
   if (vibeDirectorNote) {
@@ -2420,14 +2866,28 @@ ${codeBlocksXml}
     challengerTrackEl.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       const rect = challengerTrackEl.getBoundingClientRect();
+      const { headerW, timelineW, visibleDur } = getChallengerLayoutMetrics(rect.width);
+      const rulerH = 24;
+      const numTracks = abletonTracks.length;
+      const laneH = (rect.height - rulerH) / numTracks;
       const clickX = e.clientX - rect.left;
-      const pct = Math.max(0, Math.min(1, clickX / rect.width));
-      const clickTime = pct * decks[1].duration;
+      const clickY = e.clientY - rect.top;
+
+      const clickTime = Math.max(0, Math.min(decks[1].duration, scrollOffsetSec + (Math.max(0, clickX - headerW) / timelineW) * visibleDur));
+      const clickedTrackIdx = Math.max(0, Math.min(numTracks - 1, Math.floor(Math.max(0, clickY - rulerH) / laneH)));
+
+      selectedTrackIdx = clickedTrackIdx;
+      timelineContextMenu.dataset.clickTime = String(clickTime);
+      timelineContextMenu.dataset.trackIdx = String(clickedTrackIdx);
+
+      if (ctxMuteLabel) {
+        ctxMuteLabel.textContent = tracksMuted[clickedTrackIdx] ? 'Desmutear Pista' : 'Silenciar Pista (Mute)';
+      }
 
       timelineContextMenu.style.left = `${Math.min(window.innerWidth - 220, e.clientX)}px`;
       timelineContextMenu.style.top = `${e.clientY + 5}px`;
       timelineContextMenu.style.display = 'flex';
-      timelineContextMenu.dataset.clickTime = String(clickTime);
+      drawWaveforms();
     });
 
     document.addEventListener('click', (e) => {
@@ -2437,13 +2897,10 @@ ${codeBlocksXml}
     });
   }
 
-  if (ctxBtnSplit) {
-    ctxBtnSplit.addEventListener('click', () => {
-      const t = parseFloat(timelineContextMenu?.dataset.clickTime || String(selStart));
-      selStart = Math.max(0, t - 15);
-      selEnd = Math.min(decks[1].duration, t + 15);
-      updateSelectionOverlays();
+  if (ctxBtnCopy) {
+    ctxBtnCopy.addEventListener('click', () => {
       generateVibePrompt();
+      if (btnCopyVibePrompt) btnCopyVibePrompt.click();
       if (timelineContextMenu) timelineContextMenu.style.display = 'none';
     });
   }
@@ -2455,11 +2912,128 @@ ${codeBlocksXml}
     });
   }
 
+  if (ctxBtnSplit) {
+    ctxBtnSplit.addEventListener('click', () => {
+      const t = parseFloat(timelineContextMenu?.dataset.clickTime || String(selStart));
+      selStart = Math.max(0, t - 15);
+      selEnd = Math.min(decks[1].duration, t + 15);
+      updateSelectionOverlays();
+      generateVibePrompt();
+      drawWaveforms();
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+    });
+  }
+
+  if (ctxBtnDuplicate) {
+    ctxBtnDuplicate.addEventListener('click', () => {
+      const curDur = selEnd - selStart;
+      if (selEnd + curDur <= decks[1].duration) {
+        selStart = selEnd;
+        selEnd = selStart + curDur;
+      } else {
+        selStart = Math.max(0, selStart - curDur);
+        selEnd = selStart + curDur;
+      }
+      updateSelectionOverlays();
+      generateVibePrompt();
+      drawWaveforms();
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+    });
+  }
+
+  if (ctxBtnMute) {
+    ctxBtnMute.addEventListener('click', () => {
+      const tIdx = parseInt(timelineContextMenu?.dataset.trackIdx || String(selectedTrackIdx), 10);
+      tracksMuted[tIdx] = !tracksMuted[tIdx];
+      syncChannelStripUI();
+      drawWaveforms();
+      if (timelineContextMenu) timelineContextMenu.style.display = 'none';
+    });
+  }
+
   if (ctxBtnQuickPlay) {
     ctxBtnQuickPlay.addEventListener('click', () => {
       if (timelineContextMenu) timelineContextMenu.style.display = 'none';
       seekDeck(1, selStart);
       startDeckPlayback(1);
+    });
+  }
+
+  // DAW Multitrack Toolbar & Channel Strip Event Handlers
+  function syncChannelStripUI() {
+    channelToggleButtons.forEach((btn, idx) => {
+      const tIdx = parseInt(btn.getAttribute('data-channel-idx') || String(idx), 10);
+      const isMuted = tracksMuted[tIdx];
+      const isSolo = (soloTrackIdx === tIdx);
+      btn.classList.toggle('muted-channel', isMuted);
+      btn.classList.toggle('solo-channel', isSolo);
+      btn.setAttribute('aria-pressed', (!isMuted).toString());
+      const labelSpan = btn.querySelector('.btn-channel-label');
+      if (labelSpan) {
+        const trk = abletonTracks[tIdx];
+        labelSpan.textContent = isMuted ? `Mute ${trk.name}` : (isSolo ? `Solo ${trk.name}` : trk.name);
+      }
+    });
+    if (ctxMuteLabel) {
+      ctxMuteLabel.textContent = tracksMuted[selectedTrackIdx] ? 'Desmutear Pista' : 'Silenciar Pista (Mute)';
+    }
+  }
+
+  channelToggleButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tIdx = parseInt(btn.getAttribute('data-channel-idx'), 10);
+      selectedTrackIdx = tIdx;
+      tracksMuted[tIdx] = !tracksMuted[tIdx];
+      syncChannelStripUI();
+      updateSelectionOverlays();
+      drawWaveforms();
+    });
+  });
+
+  if (btnUnmuteAll) {
+    btnUnmuteAll.addEventListener('click', () => {
+      tracksMuted.fill(false);
+      soloTrackIdx = null;
+      syncChannelStripUI();
+      drawWaveforms();
+    });
+  }
+
+  if (btnZoomIn) {
+    btnZoomIn.addEventListener('click', () => {
+      zoomLevel = Math.min(4.0, +(zoomLevel + 0.5).toFixed(1));
+      if (zoomLevelBadge) zoomLevelBadge.textContent = `${Math.round(zoomLevel * 100)}%`;
+      const maxScroll = Math.max(0, decks[1].duration - decks[1].duration / zoomLevel);
+      scrollOffsetSec = Math.min(scrollOffsetSec, maxScroll);
+      drawWaveforms();
+      updateSelectionOverlays();
+      updateDeckUI(1);
+      renderAnnotationMarkers();
+    });
+  }
+
+  if (btnZoomOut) {
+    btnZoomOut.addEventListener('click', () => {
+      zoomLevel = Math.max(1.0, +(zoomLevel - 0.5).toFixed(1));
+      if (zoomLevelBadge) zoomLevelBadge.textContent = `${Math.round(zoomLevel * 100)}%`;
+      const maxScroll = Math.max(0, decks[1].duration - decks[1].duration / zoomLevel);
+      scrollOffsetSec = Math.min(scrollOffsetSec, maxScroll);
+      drawWaveforms();
+      updateSelectionOverlays();
+      updateDeckUI(1);
+      renderAnnotationMarkers();
+    });
+  }
+
+  if (btnZoomFit) {
+    btnZoomFit.addEventListener('click', () => {
+      zoomLevel = 1.0;
+      scrollOffsetSec = 0;
+      if (zoomLevelBadge) zoomLevelBadge.textContent = '100%';
+      drawWaveforms();
+      updateSelectionOverlays();
+      updateDeckUI(1);
+      renderAnnotationMarkers();
     });
   }
 
@@ -2603,6 +3177,7 @@ ${codeBlocksXml}
   // Init
   const initialTheme = getCurrentTheme();
   applyTheme(initialTheme);
+  syncChannelStripUI();
   updateTargetDeckUI();
   updateSelectionOverlays();
   updateRoleCardsVisibility();
@@ -2896,27 +3471,36 @@ ${codeBlocksXml}
     max-width: 100%;
   }
 
-  /* Ableton-Style Arrangement View Multi-Track Container (234px for 6 lanes) */
+  /* Ableton-Style Arrangement View Multi-Track Container (332px for 9 lanes + Top Ruler) */
   .waveform-box-challenger {
-    height: 234px;
+    height: 332px;
     background: var(--canvas-bg);
     border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    user-select: none;
   }
 
-  .multitrack-header-bar {
+  .daw-multitrack-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.3rem 0.6rem;
-    background: rgba(255, 255, 255, 0.03);
+    gap: 0.65rem;
+    padding: 0.35rem 0.65rem;
+    background: var(--bg-surface-elevated);
     border: 1px solid var(--border-subtle);
     border-radius: 6px;
     font-size: 0.68rem;
     width: 100%;
     box-sizing: border-box;
     flex-wrap: wrap;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .daw-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .multitrack-badge {
@@ -2925,8 +3509,173 @@ ${codeBlocksXml}
     letter-spacing: 0.04em;
   }
 
-  .multitrack-legend {
-    color: var(--text-muted);
+  .daw-meter-badge {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    background: var(--bg-canvas);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .daw-meter-badge strong {
+    color: #38bdf8;
+  }
+
+  .daw-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .daw-zoom-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px;
+    padding: 0.15rem 0.35rem;
+  }
+
+  .btn-daw-tool {
+    background: var(--btn-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.68rem;
+    padding: 0.18rem 0.45rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn-daw-tool:hover {
+    background: var(--btn-hover);
+    border-color: var(--border-strong);
+  }
+
+  .zoom-level-badge {
+    color: var(--text-secondary);
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  .btn-unmute-all {
+    color: #10b981;
+    font-weight: 600;
+  }
+
+  /* 9-Channel Interactive Mute / Solo Strip */
+  .channels-strip-container {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 0.3rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0.4rem;
+  }
+
+  @media (max-width: 900px) {
+    .channels-strip-container {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 550px) {
+    .channels-strip-container {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .btn-channel-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.4rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.62rem;
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+    overflow: hidden;
+    text-align: left;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .btn-channel-toggle:hover {
+    border-color: var(--border-strong);
+    background: var(--btn-hover);
+    color: var(--text-primary);
+  }
+
+  .btn-channel-toggle .ch-led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 5px currentColor;
+  }
+
+  .btn-channel-toggle .ch-num {
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  .btn-channel-toggle .ch-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-channel-toggle .ch-state {
+    font-weight: 800;
+    font-size: 0.58rem;
+    padding: 0.08rem 0.25rem;
+    border-radius: 3px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+  }
+
+  .btn-channel-toggle.muted-channel {
+    opacity: 0.45;
+    background: var(--bg-canvas);
+    border-color: var(--border-subtle);
+  }
+
+  .btn-channel-toggle.muted-channel .ch-led {
+    background: #64748b !important;
+    box-shadow: none;
+  }
+
+  .btn-channel-toggle.muted-channel .ch-state {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+
+  .btn-channel-toggle.solo-channel {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+  }
+
+  .dock-engine-select {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.68rem;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .dock-engine-select option {
+    background: var(--bg-surface);
+    color: var(--text-primary);
   }
 
   .playhead {
