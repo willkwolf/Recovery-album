@@ -90,12 +90,16 @@ const challengerTrack = TRACKS[1];
             class={`sec-btn sec-btn-baseline ${idx === 0 ? 'sec-btn-active-0' : ''}`}
             data-deck="0"
             data-sec-idx={idx}
+            data-sec-id={sec.id}
             data-start={sec.startSec}
             data-end={sec.endSec}
             aria-label={`Sección 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
-            title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
+            title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
           >
-            <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
+            <div class="sec-btn-header">
+              <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
+              <span class="sec-id-corner mono" title={`ID Inmutable: ${sec.id}`}>#{sec.id}</span>
+            </div>
             <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
             <span class="mono sec-time">{sec.startTime}</span>
           </button>
@@ -230,12 +234,16 @@ const challengerTrack = TRACKS[1];
             class={`sec-btn sec-btn-challenger ${idx === 0 ? 'sec-btn-active-1' : ''}`}
             data-deck="1"
             data-sec-idx={idx}
+            data-sec-id={sec.id}
             data-start={sec.startSec}
             data-end={sec.endSec}
             aria-label={`Acto 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
-            title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
+            title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
           >
-            <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
+            <div class="sec-btn-header">
+              <span class="mono sec-num" aria-hidden="true">0{idx + 1}</span>
+              <span class="sec-id-corner mono" title={`ID Inmutable: ${sec.id}`}>#{sec.id}</span>
+            </div>
             <span class="sec-label">{sec.name.split('(')[0].trim()}</span>
             <span class="mono sec-time">{sec.startTime}</span>
           </button>
@@ -301,24 +309,31 @@ const challengerTrack = TRACKS[1];
             <div class="mutation-tags-cloud" id="mutation-tags-cloud" role="group" aria-labelledby="label-mut-tags">
               <button type="button" class="tag-chip" data-tag-id="CROSSFADE_TRANSITION" data-tag-label="🔀 Transición & Crossfader" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>🔀 Transición & Crossfader</span>
+                <span class="tag-id-corner mono">#CROSSFADE</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="ORCHESTRAL_ETHNIC_LAYER" data-tag-label="🎻 Capa Transcultural 2026" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>🎻 Capa Transcultural 2026</span>
+                <span class="tag-id-corner mono">#ETHNIC_2026</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="BASS_FM_SYNTH" data-tag-label="⚡ Bajo Neuro FM" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>⚡ Bajo Neuro FM</span>
+                <span class="tag-id-corner mono">#BASS_FM</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="DRUMS_RHYTHM" data-tag-label="🥁 Ritmo & Breakbeat" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>🥁 Ritmo & Breakbeat</span>
+                <span class="tag-id-corner mono">#BREAKBEAT</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="VOCAL_CORAL_FORMANT" data-tag-label="🎙️ Coro Polifónico IA" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>🎙️ Coro Polifónico IA</span>
+                <span class="tag-id-corner mono">#CHORAL_IA</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="TEMPO_METRIC_MODULATION" data-tag-label="⏱️ Modulación Métrica" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>⏱️ Modulación Métrica</span>
+                <span class="tag-id-corner mono">#TEMPO_MOD</span>
               </button>
               <button type="button" class="tag-chip" data-tag-id="MASTER_DSP_LOUDNESS" data-tag-label="🎚️ Master -14 LUFS" draggable="true" title="Arrastra al agente o haz clic para asignarlo">
                 <span>🎚️ Master -14 LUFS</span>
+                <span class="tag-id-corner mono">#LOUDNESS</span>
               </button>
             </div>
           </div>
@@ -1370,7 +1385,8 @@ const challengerTrack = TRACKS[1];
       const barNum = Math.floor(selStart / (60 / bpm * 4)) + 1;
       const beatNum = Math.floor((selStart % (60 / bpm * 4)) / (60 / bpm)) + 1;
       const durSec = Math.round(selEnd - selStart);
-      dockChipText.textContent = `${formatTime(selStart)} - ${formatTime(selEnd)} (${durSec}s) · c.${barNum}.${beatNum}.1`;
+      const secId = curSec ? curSec.id : 'custom';
+      dockChipText.innerHTML = `<span class="chip-id-badge mono">#${secId}</span><span>${formatTime(selStart)} - ${formatTime(selEnd)} (${durSec}s) · c.${barNum}.${beatNum}.1</span>`;
     }
   }
 
@@ -1577,13 +1593,25 @@ const challengerTrack = TRACKS[1];
       REJECT_CHALLENGER: 'El Challenger no cumplió los objetivos estéticos/técnicos. Descartar mutación y restaurar último Champion estable.'
     };
 
+    const secIdVal = sec ? sec.id : 'custom';
+    // SHA256 / FNV-1a deterministic hash for section content idempotency
+    let hashVal = 0x811c9dc5;
+    const hashPayload = `${secIdVal}:${bpmVal}:${formattedStart}-${formattedEnd}:${strudelCode.slice(0, 100)}`;
+    for (let i = 0; i < hashPayload.length; i++) {
+      hashVal ^= hashPayload.charCodeAt(i);
+      hashVal = Math.imul(hashVal, 0x01000193);
+    }
+    const secContentHash = 'sha256-' + (hashVal >>> 0).toString(16).padStart(8, '0');
+    const idempotencyKey = `dispatch-${nowIso.replace(/[:.]/g, '')}-${secIdVal}-${durSec}`;
+
     const xmlOutput = `<?xml version="1.0" encoding="UTF-8"?>
 <vibe_dispatch version="1.0">
   <metadata>
     <timestamp>${nowIso}</timestamp>
+    <idempotency_key>${idempotencyKey}</idempotency_key>
     <deck_target id="deck-${activeTargetDeck + 1}" role="${deckRole}">${escapeXml(d.track.title)} [${deckLabel}]</deck_target>
     <selected_range start="${formattedStart}" end="${formattedEnd}" duration_sec="${durSec}"/>
-    <section_focus id="${sec ? sec.id : 'custom'}" bpm="${bpmVal}" key="${escapeXml(keyVal)}">${escapeXml(secTitle)}</section_focus>
+    <section_focus id="${secIdVal}" content_hash="${secContentHash}" bpm="${bpmVal}" key="${escapeXml(keyVal)}">${escapeXml(secTitle)}</section_focus>
     <governance mode="${governanceMode}" crew_autonomy_pct="${governancePct}">
       ${activeTargetDeck === 0 ? '100% DG Ground Truth Feedback' : '80% Autonomía Agéntica en timings, timbres y stems studio'}
     </governance>
@@ -1593,6 +1621,8 @@ const challengerTrack = TRACKS[1];
   </metadata>
 
   <evolution_gate>
+    <medallion_tier target_sec_id="${secIdVal}">${activeVerdictDecision === 'PROMOTE_TO_CHAMPION' ? 'GOLD' : 'SILVER'}</medallion_tier>
+    <idempotent_lifecycle_intent action="${activeVerdictDecision === 'PROMOTE_TO_CHAMPION' ? 'PROMOTE_GOLD' : (activeVerdictDecision === 'REJECT_CHALLENGER' ? 'DESTROY_MUTANT' : 'MUTATE_SILVER')}" target_sec_id="${secIdVal}" content_hash="${secContentHash}"/>
     <active_mutation_tags count="${allAssignedTagsSet.size}">
 ${tagsSummaryXml || '      <tag id="NONE">Sin tags asignados</tag>\n'}    </active_mutation_tags>
     <governance_verdict decision="${activeVerdictDecision}">
@@ -2613,6 +2643,49 @@ ${strudelCode}
     transform: translateY(1px);
   }
 
+  .sec-btn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.15rem;
+  }
+
+  .sec-id-corner {
+    font-size: 0.58rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    font-weight: 600;
+  }
+
+  .sec-btn-active-0 .sec-id-corner {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: var(--deck-baseline-accent);
+    color: var(--deck-baseline-accent);
+  }
+
+  .sec-btn-active-1 .sec-id-corner {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: var(--deck-challenger-accent);
+    color: var(--deck-challenger-accent);
+  }
+
+  .chip-id-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    margin-right: 0.4rem;
+  }
+
   .sec-num {
     font-size: 0.65rem;
     font-weight: 700;
@@ -2859,6 +2932,30 @@ ${strudelCode}
     background: rgba(56, 189, 248, 0.18) !important;
     border-color: #38bdf8 !important;
     color: #38bdf8 !important;
+  }
+
+  .tag-id-corner {
+    font-size: 0.55rem;
+    padding: 0.05rem 0.25rem;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    margin-left: 0.35rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-chip-assigned .tag-id-corner {
+    background: rgba(2, 132, 199, 0.3);
+    border-color: #0284c7;
+    color: #0284c7;
+  }
+
+  html[data-theme="dark"] .tag-chip-assigned .tag-id-corner {
+    background: rgba(56, 189, 248, 0.3);
+    border-color: #38bdf8;
+    color: #38bdf8;
   }
 
   /* Role Tags Container inside Agent Cards */
