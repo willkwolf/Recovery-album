@@ -147,30 +147,39 @@ const challengerTrack = TRACKS[1];
         </div>
       </div>
 
-      <!-- Suno Studio + Ableton Multitrack Toolbar & Channel Mute Bar -->
+      <!-- Línea de Tiempo Superior del Single (Cronología Sin IDs) -->
+      <div class="daw-timeline-header mono" id="daw-timeline-header" role="region" aria-label="Línea de tiempo del Single">
+        <div class="timeline-header-left">
+          <span class="timeline-header-icon" aria-hidden="true">⏱️</span>
+          <span class="timeline-header-label">LÍNEA DE TIEMPO</span>
+        </div>
+        <div class="timeline-acts-container" id="daw-acts-selector" role="group" aria-label="Tramos temporales de la suite">
+          {challengerTrack.sections?.map((sec, idx) => (
+            <button
+              type="button"
+              class={`btn-act-chip btn-timeline-step ${idx === 0 ? 'active-act' : ''}`}
+              data-deck="1"
+              data-sec-idx={idx}
+              data-sec-id={sec.id}
+              data-start={sec.startSec}
+              data-end={sec.endSec}
+              aria-label={`Tramo ${sec.startTime} - ${sec.endTime}: ${sec.name.split('(')[0].trim()}`}
+              title={`${sec.name} (${sec.startTime} - ${sec.endTime})`}
+            >
+              <span class="timeline-step-bullet" aria-hidden="true"></span>
+              <span class="timeline-step-time">{sec.startTime} - {sec.endTime}</span>
+              <span class="timeline-step-name">{idx === 0 ? 'Construcción' : (idx === 1 ? 'Mutación Breakbeat' : 'Catarsis & Gran Fuga')}</span>
+              <span class="timeline-step-dur">({sec.endSec - sec.startSec}s)</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Suno Studio + Ableton Multitrack Toolbar -->
       <div class="daw-multitrack-toolbar mono" role="toolbar" aria-label="Controles del secuenciador multipista">
         <div class="daw-toolbar-left">
           <span class="multitrack-badge">🎚️ 9 CANALES</span>
           <span class="daw-meter-badge" id="daw-meter-display">BPM: 105/118 · Compás <strong id="daw-bar-counter">001.1.1</strong></span>
-          <!-- Selector de Actos Integrado en Toolbar (Sustituye a la antigua tira #sections-strip-1) -->
-          <div class="daw-acts-selector" id="daw-acts-selector" role="group" aria-label="Actos del single Challenger">
-            {challengerTrack.sections?.map((sec, idx) => (
-              <button
-                type="button"
-                class="btn-act-chip mono"
-                data-deck="1"
-                data-sec-idx={idx}
-                data-sec-id={sec.id}
-                data-start={sec.startSec}
-                data-end={sec.endSec}
-                aria-label={`Acto 0${idx + 1}: ${sec.name.split('(')[0].trim()}, inicio ${sec.startTime}, fin ${sec.endTime}`}
-                title={`[ID: ${sec.id}] ${sec.name} (${sec.startTime} - ${sec.endTime})`}
-              >
-                <span class="act-chip-num">0{idx + 1}</span>
-                <span class="act-chip-tag">{sec.id.replace('sec-ng-', '')}</span>
-              </button>
-            ))}
-          </div>
         </div>
         <div class="daw-toolbar-right">
           <!-- Zoom Controls -->
@@ -185,19 +194,6 @@ const challengerTrack = TRACKS[1];
             🔊 Todos ON
           </button>
         </div>
-      </div>
-
-      <!-- Quick 9-Channel Interactive Mute / Solo Strip -->
-      <div class="channels-strip-container mono" id="channels-strip-container" role="group" aria-label="Interruptores de activación ON/OFF por canal">
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="0" aria-pressed="true" title="Clic para mutear/activar Sub-Bass 35Hz"><span class="ch-led" style="background: #ef4444"></span><span class="ch-num">01</span><span class="ch-name">Sub-Bass</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="1" aria-pressed="true" title="Clic para mutear/activar Neuro FM Bass"><span class="ch-led" style="background: #f97316"></span><span class="ch-num">02</span><span class="ch-name">Neuro FM</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="2" aria-pressed="true" title="Clic para mutear/activar Lead Poly Synth"><span class="ch-led" style="background: #06b6d4"></span><span class="ch-num">03</span><span class="ch-name">Lead Poly</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="3" aria-pressed="true" title="Clic para mutear/activar Campanas OoT"><span class="ch-led" style="background: #3b82f6"></span><span class="ch-num">04</span><span class="ch-name">Campanas</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="4" aria-pressed="true" title="Clic para mutear/activar Coro Polifónico IA"><span class="ch-led" style="background: #a855f7"></span><span class="ch-num">05</span><span class="ch-name">Coro IA</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="5" aria-pressed="true" title="Clic para mutear/activar Capa Étnica 2026"><span class="ch-led" style="background: #10b981"></span><span class="ch-num">06</span><span class="ch-name">Étnica</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="6" aria-pressed="true" title="Clic para mutear/activar Reloj Continuo"><span class="ch-led" style="background: #f59e0b"></span><span class="ch-num">07</span><span class="ch-name">Reloj Vibe</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="7" aria-pressed="true" title="Clic para mutear/activar Batería Breakbeat"><span class="ch-led" style="background: #e11d48"></span><span class="ch-num">08</span><span class="ch-name">Batería</span><span class="ch-state">ON</span></button>
-        <button type="button" class="btn-channel-toggle active-channel" data-track-idx="8" aria-pressed="true" title="Clic para mutear/activar Texturas Granulares & FX"><span class="ch-led" style="background: #ec4899"></span><span class="ch-num">09</span><span class="ch-name">FX & Sweeps</span><span class="ch-state">ON</span></button>
       </div>
 
       <!-- Scrubber & Waveform Canvas Challenger (Ableton Arrangement View 9 Tracks) -->
@@ -872,7 +868,6 @@ const challengerTrack = TRACKS[1];
   const zoomLevelBadge = document.getElementById('zoom-level-badge');
   const btnUnmuteAll = document.getElementById('btn-unmute-all');
   const dawBarCounter = document.getElementById('daw-bar-counter');
-  const channelToggleButtons = document.querySelectorAll('.btn-channel-toggle');
 
   // Evolution & Governance DOM Cache
   const btnVerdictIterate = document.getElementById('btn-verdict-iterate');
@@ -1690,420 +1685,445 @@ const challengerTrack = TRACKS[1];
       : 'Target: DECK 2 (Challenger Single)';
   }
 
-  // Waveform Rendering that respects light/dark theme & renders 6-Track Ableton Live View
-  function drawWaveforms() {
-    const isLight = getCurrentTheme() === 'light';
+  // ============================================================================
+  // MODULAR CANVAS COMPONENT ARCHITECTURE (ESTILO REACT)
+  // Desacoplado en componentes puros: <TimelineRuler />, <TrackLane />, <TrackHeader />,
+  // <TrackClip />, <ActMarkers />, <Playhead /> y <BaselineCompact />
+  // ============================================================================
+
+  function renderTimelineRulerComponent(ctx2d, props) {
+    const { w, rulerH, headerW, totalDuration, visibleDur, zoomLevel, isLight, selStart, selEnd, timeToX, formatTime } = props;
+    ctx2d.fillStyle = isLight ? '#e2e8f0' : '#0f172a';
+    ctx2d.fillRect(0, 0, w, rulerH);
+    ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#1e293b';
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.moveTo(0, rulerH);
+    ctx2d.lineTo(w, rulerH);
+    ctx2d.stroke();
+
+    ctx2d.font = 'bold 8.5px monospace';
+    ctx2d.fillStyle = isLight ? '#475569' : '#94a3b8';
+    ctx2d.fillText('PISTAS (09)', 8, 15);
+
+    const bpmEst = 118;
+    const barSec = (60 / bpmEst) * 4;
+    const totalBars = Math.ceil(totalDuration / barSec);
+    const barStep = zoomLevel >= 2.5 ? 2 : (zoomLevel >= 1.5 ? 4 : 8);
+
+    ctx2d.font = '7.5px monospace';
+    for (let b = 1; b <= totalBars; b += barStep) {
+      const bSec = (b - 1) * barSec;
+      const bx = timeToX(bSec);
+      if (bx >= headerW - 5 && bx <= w + 5) {
+        ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.14)';
+        ctx2d.beginPath();
+        ctx2d.moveTo(bx, 10);
+        ctx2d.lineTo(bx, rulerH);
+        ctx2d.stroke();
+
+        ctx2d.fillStyle = isLight ? '#475569' : '#64748b';
+        ctx2d.fillText(`c.${b}`, bx + 3, 13);
+        ctx2d.fillText(formatTime(bSec), bx + 3, 21);
+      }
+    }
+
+    const selLeftX = timeToX(selStart);
+    const selRightX = timeToX(selEnd);
+    if (selRightX >= headerW && selLeftX <= w) {
+      const clampedLeft = Math.max(headerW, selLeftX);
+      const clampedRight = Math.min(w, selRightX);
+      ctx2d.fillStyle = 'rgba(56, 189, 248, 0.2)';
+      ctx2d.fillRect(clampedLeft, 0, Math.max(2, clampedRight - clampedLeft), rulerH);
+
+      if (selLeftX >= headerW && selLeftX <= w) {
+        ctx2d.fillStyle = '#38bdf8';
+        ctx2d.beginPath();
+        ctx2d.moveTo(selLeftX - 5, 0);
+        ctx2d.lineTo(selLeftX + 5, 0);
+        ctx2d.lineTo(selLeftX, 8);
+        ctx2d.closePath();
+        ctx2d.fill();
+      }
+      if (selRightX >= headerW && selRightX <= w) {
+        ctx2d.fillStyle = '#38bdf8';
+        ctx2d.beginPath();
+        ctx2d.moveTo(selRightX - 5, 0);
+        ctx2d.lineTo(selRightX + 5, 0);
+        ctx2d.lineTo(selRightX, 8);
+        ctx2d.closePath();
+        ctx2d.fill();
+      }
+    }
+  }
+
+  function renderTrackHeaderComponent(ctx2d, track, tIdx, laneY, laneH, props) {
+    const { headerW, isLight, isPlaying, curSec, tracksMuted, soloTrackIdx, isTrackAudible } = props;
+    const isMuted = tracksMuted[tIdx];
+    const isSolo = (soloTrackIdx === tIdx);
+
+    ctx2d.fillStyle = isLight ? '#e2e8f0' : '#141b27';
+    ctx2d.fillRect(0, laneY, headerW, laneH);
+
+    ctx2d.fillStyle = track.color;
+    ctx2d.fillRect(0, laneY, 4, laneH);
+
+    if (isSolo) {
+      ctx2d.fillStyle = '#f59e0b';
+      ctx2d.fillRect(4, laneY, 2, laneH);
+    }
+
+    ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#222d3d';
+    ctx2d.beginPath();
+    ctx2d.moveTo(headerW, laneY);
+    ctx2d.lineTo(headerW, laneY + laneH);
+    ctx2d.stroke();
+
+    ctx2d.font = 'bold 8.5px monospace';
+    ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#475569') : track.color;
+    ctx2d.fillText(track.num, 7, laneY + 12);
+
+    ctx2d.font = 'bold 8.5px monospace';
+    ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#64748b') : (isLight ? '#0f172a' : '#f8fafc');
+    const maxNameChars = headerW < 100 ? 5 : 8;
+    ctx2d.fillText(track.name.slice(0, maxNameChars), 23, laneY + 12);
+
+    if (headerW > 85) {
+      ctx2d.font = '7px monospace';
+      ctx2d.fillStyle = isLight ? '#64748b' : '#64748b';
+      ctx2d.fillText(track.sub.slice(0, 14), 7, laneY + 23);
+    }
+
+    const muteBoxX = headerW - 38;
+    const muteBoxY = laneY + 4;
+    const muteBoxW = 18;
+    const muteBoxH = 13;
+    ctx2d.fillStyle = isMuted ? (isLight ? '#ef4444' : '#7f1d1d') : (isLight ? '#10b981' : '#064e3b');
+    ctx2d.fillRect(muteBoxX, muteBoxY, muteBoxW, muteBoxH);
+    ctx2d.font = 'bold 7px monospace';
+    ctx2d.fillStyle = '#ffffff';
+    ctx2d.fillText(isMuted ? 'M' : 'ON', muteBoxX + (isMuted ? 6 : 3), muteBoxY + 9.5);
+
+    const soloBoxX = headerW - 17;
+    const soloBoxY = laneY + 4;
+    const soloBoxW = 14;
+    const soloBoxH = 13;
+    ctx2d.fillStyle = isSolo ? '#f59e0b' : (isLight ? '#cbd5e1' : '#1e293b');
+    ctx2d.fillRect(soloBoxX, soloBoxY, soloBoxW, soloBoxH);
+    ctx2d.fillStyle = isSolo ? '#000000' : (isLight ? '#64748b' : '#94a3b8');
+    ctx2d.fillText('S', soloBoxX + 4.5, soloBoxY + 9.5);
+
+    const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
+    const isTrackActive = isPlaying && activeClip && activeClip.active && isTrackAudible(tIdx);
+    const ledX = headerW - 8;
+    const ledY = laneY + 24;
+    ctx2d.beginPath();
+    ctx2d.arc(ledX, ledY, 2.5, 0, Math.PI * 2);
+    ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#1e293b');
+    ctx2d.fill();
+  }
+
+  function renderTrackLaneComponent(ctx2d, track, tIdx, laneY, laneH, props) {
+    const { w, isLight, selectedTrackIdx } = props;
+    const isTrackSelected = (selectedTrackIdx === tIdx);
+
+    ctx2d.fillStyle = isLight
+      ? (tIdx % 2 === 0 ? '#f8fafc' : '#f1f5f9')
+      : (tIdx % 2 === 0 ? '#0b0f17' : '#0e1420');
+    ctx2d.fillRect(0, laneY, w, laneH);
+
+    if (isTrackSelected) {
+      ctx2d.fillStyle = isLight ? 'rgba(56, 189, 248, 0.08)' : 'rgba(56, 189, 248, 0.06)';
+      ctx2d.fillRect(0, laneY, w, laneH);
+    }
+
+    ctx2d.strokeStyle = isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.06)';
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.moveTo(0, laneY + laneH);
+    ctx2d.lineTo(w, laneY + laneH);
+    ctx2d.stroke();
+  }
+
+  function renderTrackClipComponent(ctx2d, clip, track, tIdx, laneY, laneH, props) {
+    const { headerW, w, curSec, isLight, isPlaying, selStart, selEnd, selectedTrackIdx, tracksMuted, timeToX, hexToRgb, isTrackAudible } = props;
+    const clipStartX = timeToX(clip.startSec);
+    const clipEndX = timeToX(clip.endSec);
+    const clipW = Math.max(3, clipEndX - clipStartX - 1);
+    const clipY = laneY + 2;
+    const clipH = laneH - 4;
+    const isMuted = tracksMuted[tIdx];
+    const isClipCurrent = isPlaying && (curSec >= clip.startSec && curSec < clip.endSec) && isTrackAudible(tIdx);
+    const isTrackSelected = (selectedTrackIdx === tIdx);
+
+    if (clipEndX < headerW || clipStartX > w) return;
+
+    const visibleClipStartX = Math.max(headerW, clipStartX);
+    const visibleClipW = Math.min(clipW, w - visibleClipStartX);
+
+    if (clip.active && !isMuted) {
+      const rgb = hexToRgb(track.color);
+      ctx2d.fillStyle = isClipCurrent
+        ? `rgba(${rgb}, 0.32)`
+        : `rgba(${rgb}, 0.15)`;
+
+      if (ctx2d.roundRect) {
+        ctx2d.beginPath();
+        ctx2d.roundRect(visibleClipStartX, clipY, visibleClipW, clipH, 3);
+        ctx2d.fill();
+        ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
+        ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
+        ctx2d.stroke();
+      } else {
+        ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
+        ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
+        ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
+        ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
+      }
+
+      if (visibleClipW > 35) {
+        ctx2d.fillStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.8)`;
+        ctx2d.fillRect(visibleClipStartX + 1, clipY + 1, Math.min(visibleClipW - 2, 105), 8);
+        ctx2d.font = 'bold 7px monospace';
+        ctx2d.fillStyle = '#ffffff';
+        ctx2d.fillText(clip.label.slice(0, 16), visibleClipStartX + 3, clipY + 7);
+      }
+
+      ctx2d.strokeStyle = isClipCurrent ? '#ffffff' : `rgba(${rgb}, 0.85)`;
+      ctx2d.lineWidth = 1;
+      ctx2d.beginPath();
+
+      const waveYMid = clipY + 9 + (clipH - 9) / 2;
+      const waveSteps = Math.min(48, Math.floor(visibleClipW / 3));
+      const stepW = visibleClipW / Math.max(1, waveSteps);
+
+      for (let ws = 0; ws < waveSteps; ws++) {
+        const wx = visibleClipStartX + ws * stepW;
+        let amp = 0.5;
+
+        if (clip.type === 'sub') {
+          amp = Math.sin(ws * 0.35 + (isClipCurrent ? Date.now() * 0.008 : 0)) * 0.75;
+        } else if (clip.type === 'reese') {
+          amp = (Math.sin(ws * 0.8) + Math.cos(ws * 1.6)) * 0.45;
+        } else if (clip.type === 'breakbeat' || clip.type === 'kick') {
+          amp = (ws % 4 === 0) ? 0.9 : ((ws % 2 === 0) ? 0.45 : 0.15);
+        } else if (clip.type === 'pulse') {
+          amp = (ws % 2 === 0) ? 0.7 : 0.2;
+        } else if (clip.type === 'bells' || clip.type === 'melody' || clip.type === 'arp') {
+          amp = Math.sin(ws * 0.5) * 0.6;
+        } else {
+          amp = (Math.sin(ws * 0.4) * 0.4) + 0.2;
+        }
+
+        if (isClipCurrent) {
+          amp *= (1.0 + Math.sin(Date.now() * 0.01 + ws) * 0.25);
+        }
+
+        const maxAmpH = (clipH - 12) / 2;
+        const wyTop = waveYMid - amp * maxAmpH;
+        const wyBot = waveYMid + amp * maxAmpH;
+
+        ctx2d.moveTo(wx, wyTop);
+        ctx2d.lineTo(wx, wyBot);
+      }
+      ctx2d.stroke();
+
+    } else {
+      ctx2d.fillStyle = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.02)';
+      ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
+      ctx2d.setLineDash([2, 2]);
+      ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.08)';
+      ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
+      ctx2d.setLineDash([]);
+      if (visibleClipW > 30) {
+        ctx2d.font = 'italic 7px monospace';
+        ctx2d.fillStyle = isLight ? '#94a3b8' : '#64748b';
+        ctx2d.fillText(isMuted ? '[MUTED]' : clip.label, visibleClipStartX + 4, clipY + 14);
+      }
+    }
+
+    if (isTrackSelected && selEnd > clip.startSec && selStart < clip.endSec) {
+      const hlStartX = Math.max(headerW, timeToX(Math.max(clip.startSec, selStart)));
+      const hlEndX = Math.min(w, timeToX(Math.min(clip.endSec, selEnd)));
+      const hlW = Math.max(4, hlEndX - hlStartX);
+      ctx2d.strokeStyle = '#38bdf8';
+      ctx2d.lineWidth = 1.8;
+      ctx2d.strokeRect(hlStartX, clipY - 1, hlW, clipH + 2);
+      ctx2d.fillStyle = '#38bdf8';
+      ctx2d.fillRect(hlStartX - 1, clipY - 2, 4, 4);
+      ctx2d.fillRect(hlStartX + hlW - 3, clipY - 2, 4, 4);
+    }
+  }
+
+  function renderActMarkersComponent(ctx2d, props) {
+    const { headerW, w, rulerH, h, isLight, timeToX } = props;
+    [40, 120, 275].forEach(timeMarker => {
+      const mx = timeToX(timeMarker);
+      if (mx >= headerW && mx <= w) {
+        ctx2d.setLineDash([3, 4]);
+        ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.16)';
+        ctx2d.lineWidth = 1;
+        ctx2d.beginPath();
+        ctx2d.moveTo(mx, rulerH);
+        ctx2d.lineTo(mx, h);
+        ctx2d.stroke();
+        ctx2d.setLineDash([]);
+      }
+    });
+  }
+
+  function renderPlayheadComponent(ctx2d, props) {
+    const { headerW, w, rulerH, h, curSec, timeToX } = props;
+    const playheadX = timeToX(curSec);
+
+    if (playheadX >= headerW && playheadX <= w) {
+      ctx2d.strokeStyle = '#38bdf8';
+      ctx2d.lineWidth = 2;
+      ctx2d.shadowColor = '#0284c7';
+      ctx2d.shadowBlur = 6;
+      ctx2d.beginPath();
+      ctx2d.moveTo(playheadX, rulerH);
+      ctx2d.lineTo(playheadX, h);
+      ctx2d.stroke();
+      ctx2d.shadowBlur = 0;
+
+      ctx2d.fillStyle = '#38bdf8';
+      ctx2d.beginPath();
+      ctx2d.moveTo(playheadX - 5, rulerH - 6);
+      ctx2d.lineTo(playheadX + 5, rulerH - 6);
+      ctx2d.lineTo(playheadX, rulerH);
+      ctx2d.closePath();
+      ctx2d.fill();
+    }
+  }
+
+  function renderArrangerCanvas(ctx2d, props) {
+    const { w, h, rulerH, isLight, abletonTracks } = props;
+
+    // 1. Fondo Base
+    ctx2d.fillStyle = isLight ? '#f8fafc' : '#080c14';
+    ctx2d.fillRect(0, 0, w, h);
+
+    // 2. <TimelineRuler />
+    renderTimelineRulerComponent(ctx2d, props);
+
+    // 3. Pistas y Carriles
+    const numTracks = abletonTracks.length;
+    const laneH = (h - rulerH) / numTracks;
+
+    abletonTracks.forEach((track, tIdx) => {
+      const laneY = rulerH + tIdx * laneH;
+      renderTrackLaneComponent(ctx2d, track, tIdx, laneY, laneH, props);
+      renderTrackHeaderComponent(ctx2d, track, tIdx, laneY, laneH, props);
+      track.clips.forEach(clip => {
+        renderTrackClipComponent(ctx2d, clip, track, tIdx, laneY, laneH, props);
+      });
+    });
+
+    // 4. <ActMarkers />
+    renderActMarkersComponent(ctx2d, props);
+
+    // 5. <Playhead />
+    renderPlayheadComponent(ctx2d, props);
+  }
+
+  function renderBaselineCompactCanvas(ctx2d, w, h, analyserNode, isPlaying, isLight) {
     const canvasBg = isLight ? '#f8fafc' : '#080c14';
     const gridLineColor = isLight ? '#e2e8f0' : '#1a2230';
     const baselineColor = isLight ? '#059669' : '#10b981';
 
+    ctx2d.fillStyle = canvasBg;
+    ctx2d.fillRect(0, 0, w, h);
+
+    if (!isPlaying || !analyserNode) {
+      ctx2d.strokeStyle = gridLineColor;
+      ctx2d.lineWidth = 1;
+      ctx2d.beginPath();
+      ctx2d.moveTo(0, h / 2);
+      ctx2d.lineTo(w, h / 2);
+      ctx2d.stroke();
+      return;
+    }
+    const bufferLen = analyserNode.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLen);
+    analyserNode.getByteTimeDomainData(dataArray);
+    ctx2d.lineWidth = 1.8;
+    ctx2d.strokeStyle = baselineColor;
+    ctx2d.beginPath();
+    const sliceWidth = w / bufferLen;
+    let x = 0;
+    for (let i = 0; i < bufferLen; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = (v * h) / 2;
+      if (i === 0) ctx2d.moveTo(x, y);
+      else ctx2d.lineTo(x, y);
+      x += sliceWidth;
+    }
+    ctx2d.stroke();
+  }
+
+  // Waveform Rendering Orchestrator
+  function drawWaveforms() {
+    const isLight = getCurrentTheme() === 'light';
+
     [0, 1].forEach((idx) => {
       const dom = deckDOM[idx];
       const canvas = dom.canvas;
-      if (!canvas) return;
-
-      // Si el elemento está oculto (como Deck 1 Baseline compacto), salir de inmediato
-      if (canvas.clientWidth === 0) return;
+      if (!canvas || canvas.clientWidth === 0) return;
 
       const ctx2d = canvas.getContext('2d');
       const w = canvas.width = canvas.clientWidth;
       const h = canvas.height = canvas.clientHeight;
 
-      // ====================================================================
-      // DECK 1 (BASELINE CHAMPION COMPACTO)
-      // ====================================================================
       if (idx === 0) {
-        ctx2d.fillStyle = canvasBg;
-        ctx2d.fillRect(0, 0, w, h);
-        if (playingDeck !== 0 || !analyser) {
-          ctx2d.strokeStyle = gridLineColor;
-          ctx2d.lineWidth = 1;
-          ctx2d.beginPath();
-          ctx2d.moveTo(0, h / 2);
-          ctx2d.lineTo(w, h / 2);
-          ctx2d.stroke();
-          return;
-        }
-        const bufferLen = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLen);
-        analyser.getByteTimeDomainData(dataArray);
-        ctx2d.lineWidth = 1.8;
-        ctx2d.strokeStyle = baselineColor;
-        ctx2d.beginPath();
-        const sliceWidth = w / bufferLen;
-        let x = 0;
-        for (let i = 0; i < bufferLen; i++) {
-          const v = dataArray[i] / 128.0;
-          const y = (v * h) / 2;
-          if (i === 0) ctx2d.moveTo(x, y);
-          else ctx2d.lineTo(x, y);
-          x += sliceWidth;
-        }
-        ctx2d.stroke();
+        renderBaselineCompactCanvas(ctx2d, w, h, analyser, playingDeck === 0, isLight);
         return;
       }
 
-      // ====================================================================
-      // DECK 2 (CHALLENGER): VISTA MULTIPISTA ESTILO ABLETON LIVE (6 LANES)
-      // ====================================================================
       if (idx === 1) {
-        const numTracks = abletonTracks.length; // 9 Canales
         const rulerH = 24;
-        const laneH = (h - rulerH) / numTracks; // 34px aprox
         const headerW = Math.min(130, Math.floor(w * 0.17));
         const timelineW = w - headerW;
         const totalDuration = decks[1].duration;
         const visibleDur = totalDuration / zoomLevel;
         const curSec = decks[1].currentSec || 0;
-        const isChallengerPlaying = (playingDeck === 1);
+        const isPlaying = (playingDeck === 1);
 
-        // Auto-scroll durante reproducción si el cabezal sobrepasa el 92% visible
-        if (isChallengerPlaying && curSec > scrollOffsetSec + visibleDur * 0.92) {
+        if (isPlaying && curSec > scrollOffsetSec + visibleDur * 0.92) {
           scrollOffsetSec = Math.max(0, Math.min(totalDuration - visibleDur, curSec - visibleDur * 0.2));
         }
 
-        // Helper tiempo a píxel X en el timeline
-        const timeToX = (sec) => {
-          return headerW + ((sec - scrollOffsetSec) / visibleDur) * timelineW;
-        };
+        const timeToX = (sec) => headerW + ((sec - scrollOffsetSec) / visibleDur) * timelineW;
 
-        // Fondo del Canvas
-        ctx2d.fillStyle = isLight ? '#f8fafc' : '#080c14';
-        ctx2d.fillRect(0, 0, w, h);
-
-        // ====================================================================
-        // RULER SUPERIOR: COMPASES, SEGUNDOS Y POINTERS DE LOOP BRACE (SUNO STUDIO)
-        // ====================================================================
-        ctx2d.fillStyle = isLight ? '#e2e8f0' : '#0f172a';
-        ctx2d.fillRect(0, 0, w, rulerH);
-        ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#1e293b';
-        ctx2d.lineWidth = 1;
-        ctx2d.beginPath();
-        ctx2d.moveTo(0, rulerH);
-        ctx2d.lineTo(w, rulerH);
-        ctx2d.stroke();
-
-        ctx2d.font = 'bold 8.5px monospace';
-        ctx2d.fillStyle = isLight ? '#475569' : '#94a3b8';
-        ctx2d.fillText('PISTAS (09)', 8, 15);
-
-        // Marcas de compás y tiempo en el Ruler
-        const bpmEst = 118;
-        const barSec = (60 / bpmEst) * 4;
-        const totalBars = Math.ceil(totalDuration / barSec);
-        const barStep = zoomLevel >= 2.5 ? 2 : (zoomLevel >= 1.5 ? 4 : 8);
-
-        ctx2d.font = '7.5px monospace';
-        for (let b = 1; b <= totalBars; b += barStep) {
-          const bSec = (b - 1) * barSec;
-          const bx = timeToX(bSec);
-          if (bx >= headerW - 5 && bx <= w + 5) {
-            ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.14)';
-            ctx2d.beginPath();
-            ctx2d.moveTo(bx, 10);
-            ctx2d.lineTo(bx, rulerH);
-            ctx2d.stroke();
-
-            ctx2d.fillStyle = isLight ? '#475569' : '#64748b';
-            ctx2d.fillText(`c.${b}`, bx + 3, 13);
-            ctx2d.fillText(formatTime(bSec), bx + 3, 21);
-          }
-        }
-
-        // Pointers de Selección / Loop Brace en el Ruler (Punteros triangulares azules estilo Suno Studio)
-        const selLeftX = timeToX(selStart);
-        const selRightX = timeToX(selEnd);
-        if (selRightX >= headerW && selLeftX <= w) {
-          const clampedLeft = Math.max(headerW, selLeftX);
-          const clampedRight = Math.min(w, selRightX);
-
-          ctx2d.fillStyle = 'rgba(56, 189, 248, 0.2)';
-          ctx2d.fillRect(clampedLeft, 0, Math.max(2, clampedRight - clampedLeft), rulerH);
-
-          // Puntero izquierdo hacia abajo
-          if (selLeftX >= headerW && selLeftX <= w) {
-            ctx2d.fillStyle = '#38bdf8';
-            ctx2d.beginPath();
-            ctx2d.moveTo(selLeftX - 5, 0);
-            ctx2d.lineTo(selLeftX + 5, 0);
-            ctx2d.lineTo(selLeftX, 8);
-            ctx2d.closePath();
-            ctx2d.fill();
-          }
-
-          // Puntero derecho hacia abajo
-          if (selRightX >= headerW && selRightX <= w) {
-            ctx2d.fillStyle = '#38bdf8';
-            ctx2d.beginPath();
-            ctx2d.moveTo(selRightX - 5, 0);
-            ctx2d.lineTo(selRightX + 5, 0);
-            ctx2d.lineTo(selRightX, 8);
-            ctx2d.closePath();
-            ctx2d.fill();
-          }
-        }
-
-        // Helper hex -> RGB
-        const hexToRgb = (hex) => {
-          let c = hex.replace('#', '');
-          if (c.length === 3) c = c.split('').map(x => x + x).join('');
-          const num = parseInt(c, 16);
-          return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
-        };
-
-        // ====================================================================
-        // RENDER DE LAS 9 PISTAS DEL ARREGLO
-        // ====================================================================
-        abletonTracks.forEach((track, tIdx) => {
-          const laneY = rulerH + tIdx * laneH;
-          const isMuted = tracksMuted[tIdx];
-          const isSolo = (soloTrackIdx === tIdx);
-          const isTrackSelected = (selectedTrackIdx === tIdx);
-
-          // Fondo de fila
-          ctx2d.fillStyle = isLight
-            ? (tIdx % 2 === 0 ? '#f8fafc' : '#f1f5f9')
-            : (tIdx % 2 === 0 ? '#0b0f17' : '#0e1420');
-          ctx2d.fillRect(0, laneY, w, laneH);
-
-          // Resaltado sutil si es la pista seleccionada
-          if (isTrackSelected) {
-            ctx2d.fillStyle = isLight ? 'rgba(56, 189, 248, 0.08)' : 'rgba(56, 189, 248, 0.06)';
-            ctx2d.fillRect(0, laneY, w, laneH);
-          }
-
-          // Separador inferior de pista
-          ctx2d.strokeStyle = isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.06)';
-          ctx2d.lineWidth = 1;
-          ctx2d.beginPath();
-          ctx2d.moveTo(0, laneY + laneH);
-          ctx2d.lineTo(w, laneY + laneH);
-          ctx2d.stroke();
-
-          // ------------------------------------------------------------------
-          // Columna de Cabecera Izquierda (0 -> headerW)
-          // ------------------------------------------------------------------
-          ctx2d.fillStyle = isLight ? '#e2e8f0' : '#141b27';
-          ctx2d.fillRect(0, laneY, headerW, laneH);
-
-          // Barra de acento de color de pista (4px)
-          ctx2d.fillStyle = track.color;
-          ctx2d.fillRect(0, laneY, 4, laneH);
-
-          if (isSolo) {
-            ctx2d.fillStyle = '#f59e0b';
-            ctx2d.fillRect(4, laneY, 2, laneH);
-          }
-
-          // Separador vertical derecho de la cabecera
-          ctx2d.strokeStyle = isLight ? '#cbd5e1' : '#222d3d';
-          ctx2d.beginPath();
-          ctx2d.moveTo(headerW, laneY);
-          ctx2d.lineTo(headerW, laneY + laneH);
-          ctx2d.stroke();
-
-          // Número y Nombre de la pista
-          ctx2d.font = 'bold 8.5px monospace';
-          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#475569') : track.color;
-          ctx2d.fillText(track.num, 7, laneY + 12);
-
-          ctx2d.font = 'bold 8.5px monospace';
-          ctx2d.fillStyle = isMuted ? (isLight ? '#94a3b8' : '#64748b') : (isLight ? '#0f172a' : '#f8fafc');
-          const maxNameChars = headerW < 100 ? 5 : 8;
-          ctx2d.fillText(track.name.slice(0, maxNameChars), 23, laneY + 12);
-
-          // Subtítulo del motor de síntesis
-          if (headerW > 85) {
-            ctx2d.font = '7px monospace';
-            ctx2d.fillStyle = isLight ? '#64748b' : '#64748b';
-            ctx2d.fillText(track.sub.slice(0, 14), 7, laneY + 23);
-          }
-
-          // Botón interactivo Mute en cabecera [ON] / [M]
-          const muteBoxX = headerW - 38;
-          const muteBoxY = laneY + 4;
-          const muteBoxW = 18;
-          const muteBoxH = 13;
-          ctx2d.fillStyle = isMuted ? (isLight ? '#ef4444' : '#7f1d1d') : (isLight ? '#10b981' : '#064e3b');
-          ctx2d.fillRect(muteBoxX, muteBoxY, muteBoxW, muteBoxH);
-          ctx2d.font = 'bold 7px monospace';
-          ctx2d.fillStyle = '#ffffff';
-          ctx2d.fillText(isMuted ? 'M' : 'ON', muteBoxX + (isMuted ? 6 : 3), muteBoxY + 9.5);
-
-          // Botón interactivo Solo [S]
-          const soloBoxX = headerW - 17;
-          const soloBoxY = laneY + 4;
-          const soloBoxW = 14;
-          const soloBoxH = 13;
-          ctx2d.fillStyle = isSolo ? '#f59e0b' : (isLight ? '#cbd5e1' : '#1e293b');
-          ctx2d.fillRect(soloBoxX, soloBoxY, soloBoxW, soloBoxH);
-          ctx2d.fillStyle = isSolo ? '#000000' : (isLight ? '#64748b' : '#94a3b8');
-          ctx2d.fillText('S', soloBoxX + 4.5, soloBoxY + 9.5);
-
-          // Indicador LED / VU Meter animado
-          const activeClip = track.clips.find(c => curSec >= c.startSec && curSec < c.endSec);
-          const isTrackActive = isChallengerPlaying && activeClip && activeClip.active && isTrackAudible(tIdx);
-          const ledX = headerW - 8;
-          const ledY = laneY + 24;
-          ctx2d.beginPath();
-          ctx2d.arc(ledX, ledY, 2.5, 0, Math.PI * 2);
-          ctx2d.fillStyle = isTrackActive ? track.color : (isLight ? '#cbd5e1' : '#1e293b');
-          ctx2d.fill();
-
-          // ------------------------------------------------------------------
-          // Clips de Arreglo en el Timeline (Columna Derecha: headerW -> w)
-          // ------------------------------------------------------------------
-          track.clips.forEach(clip => {
-            const clipStartX = timeToX(clip.startSec);
-            const clipEndX = timeToX(clip.endSec);
-            const clipW = Math.max(3, clipEndX - clipStartX - 1);
-            const clipY = laneY + 2;
-            const clipH = laneH - 4;
-            const isClipCurrent = isChallengerPlaying && (curSec >= clip.startSec && curSec < clip.endSec) && isTrackAudible(tIdx);
-
-            if (clipEndX < headerW || clipStartX > w) return;
-
-            const visibleClipStartX = Math.max(headerW, clipStartX);
-            const visibleClipW = Math.min(clipW, w - visibleClipStartX);
-
-            if (clip.active && !isMuted) {
-              const rgb = hexToRgb(track.color);
-              ctx2d.fillStyle = isClipCurrent
-                ? `rgba(${rgb}, 0.32)`
-                : `rgba(${rgb}, 0.15)`;
-
-              if (ctx2d.roundRect) {
-                ctx2d.beginPath();
-                ctx2d.roundRect(visibleClipStartX, clipY, visibleClipW, clipH, 3);
-                ctx2d.fill();
-                ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
-                ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
-                ctx2d.stroke();
-              } else {
-                ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
-                ctx2d.strokeStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.55)`;
-                ctx2d.lineWidth = isClipCurrent ? 1.5 : 1;
-                ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
-              }
-
-              // Pastilla de encabezado del clip
-              if (visibleClipW > 35) {
-                ctx2d.fillStyle = isClipCurrent ? track.color : `rgba(${rgb}, 0.8)`;
-                ctx2d.fillRect(visibleClipStartX + 1, clipY + 1, Math.min(visibleClipW - 2, 105), 8);
-                ctx2d.font = 'bold 7px monospace';
-                ctx2d.fillStyle = '#ffffff';
-                ctx2d.fillText(clip.label.slice(0, 16), visibleClipStartX + 3, clipY + 7);
-              }
-
-              // Formas de onda dinámicas del clip
-              ctx2d.strokeStyle = isClipCurrent ? '#ffffff' : `rgba(${rgb}, 0.85)`;
-              ctx2d.lineWidth = 1;
-              ctx2d.beginPath();
-
-              const waveYMid = clipY + 9 + (clipH - 9) / 2;
-              const waveSteps = Math.min(48, Math.floor(visibleClipW / 3));
-              const stepW = visibleClipW / Math.max(1, waveSteps);
-
-              for (let ws = 0; ws < waveSteps; ws++) {
-                const wx = visibleClipStartX + ws * stepW;
-                let amp = 0.5;
-
-                if (clip.type === 'sub') {
-                  amp = Math.sin(ws * 0.35 + (isClipCurrent ? Date.now() * 0.008 : 0)) * 0.75;
-                } else if (clip.type === 'reese') {
-                  amp = (Math.sin(ws * 0.8) + Math.cos(ws * 1.6)) * 0.45;
-                } else if (clip.type === 'breakbeat' || clip.type === 'kick') {
-                  amp = (ws % 4 === 0) ? 0.9 : ((ws % 2 === 0) ? 0.45 : 0.15);
-                } else if (clip.type === 'pulse') {
-                  amp = (ws % 2 === 0) ? 0.7 : 0.2;
-                } else if (clip.type === 'bells' || clip.type === 'melody' || clip.type === 'arp') {
-                  amp = Math.sin(ws * 0.5) * 0.6;
-                } else {
-                  amp = (Math.sin(ws * 0.4) * 0.4) + 0.2;
-                }
-
-                if (isClipCurrent) {
-                  amp *= (1.0 + Math.sin(Date.now() * 0.01 + ws) * 0.25);
-                }
-
-                const maxAmpH = (clipH - 12) / 2;
-                const wyTop = waveYMid - amp * maxAmpH;
-                const wyBot = waveYMid + amp * maxAmpH;
-
-                ctx2d.moveTo(wx, wyTop);
-                ctx2d.lineTo(wx, wyBot);
-              }
-              ctx2d.stroke();
-
-            } else {
-              // Clip silenciado o en Mute
-              ctx2d.fillStyle = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.02)';
-              ctx2d.fillRect(visibleClipStartX, clipY, visibleClipW, clipH);
-              ctx2d.setLineDash([2, 2]);
-              ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.08)';
-              ctx2d.strokeRect(visibleClipStartX, clipY, visibleClipW, clipH);
-              ctx2d.setLineDash([]);
-              if (visibleClipW > 30) {
-                ctx2d.font = 'italic 7px monospace';
-                ctx2d.fillStyle = isLight ? '#94a3b8' : '#64748b';
-                ctx2d.fillText(isMuted ? '[MUTED]' : clip.label, visibleClipStartX + 4, clipY + 14);
-              }
-            }
-
-            // Resaltado de selección activa de clip con drag handles (estilo Suno Studio)
-            if (isTrackSelected && selEnd > clip.startSec && selStart < clip.endSec) {
-              const hlStartX = Math.max(headerW, timeToX(Math.max(clip.startSec, selStart)));
-              const hlEndX = Math.min(w, timeToX(Math.min(clip.endSec, selEnd)));
-              const hlW = Math.max(4, hlEndX - hlStartX);
-              ctx2d.strokeStyle = '#38bdf8';
-              ctx2d.lineWidth = 1.8;
-              ctx2d.strokeRect(hlStartX, clipY - 1, hlW, clipH + 2);
-
-              // Tiradores de esquina estilo DAW
-              ctx2d.fillStyle = '#38bdf8';
-              ctx2d.fillRect(hlStartX - 1, clipY - 2, 4, 4);
-              ctx2d.fillRect(hlStartX + hlW - 3, clipY - 2, 4, 4);
-            }
-          });
+        renderArrangerCanvas(ctx2d, {
+          w,
+          h,
+          rulerH,
+          headerW,
+          timelineW,
+          totalDuration,
+          visibleDur,
+          scrollOffsetSec,
+          zoomLevel,
+          curSec,
+          isLight,
+          isPlaying,
+          selStart,
+          selEnd,
+          selectedTrackIdx,
+          tracksMuted,
+          soloTrackIdx,
+          abletonTracks,
+          timeToX,
+          formatTime,
+          hexToRgb: (hex) => {
+            let c = hex.replace('#', '');
+            if (c.length === 3) c = c.split('').map(x => x + x).join('');
+            const num = parseInt(c, 16);
+            return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+          },
+          isTrackAudible
         });
-
-        // Divisores de Acto en el timeline (00:40, 02:00, 04:35)
-        [40, 120, 275].forEach(timeMarker => {
-          const mx = timeToX(timeMarker);
-          if (mx >= headerW && mx <= w) {
-            ctx2d.setLineDash([3, 4]);
-            ctx2d.strokeStyle = isLight ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.16)';
-            ctx2d.lineWidth = 1;
-            ctx2d.beginPath();
-            ctx2d.moveTo(mx, rulerH);
-            ctx2d.lineTo(mx, h);
-            ctx2d.stroke();
-            ctx2d.setLineDash([]);
-          }
-        });
-
-        // Cabezal vertical de reproducción unificado a través de las 9 pistas
-        const playheadX = timeToX(curSec);
-        if (playheadX >= headerW && playheadX <= w) {
-          ctx2d.strokeStyle = '#38bdf8';
-          ctx2d.lineWidth = 2;
-          ctx2d.shadowColor = '#0284c7';
-          ctx2d.shadowBlur = 6;
-          ctx2d.beginPath();
-          ctx2d.moveTo(playheadX, rulerH);
-          ctx2d.lineTo(playheadX, h);
-          ctx2d.stroke();
-          ctx2d.shadowBlur = 0;
-
-          // Triángulo Scrubber en el Ruler
-          ctx2d.fillStyle = '#38bdf8';
-          ctx2d.beginPath();
-          ctx2d.moveTo(playheadX - 5, rulerH - 6);
-          ctx2d.lineTo(playheadX + 5, rulerH - 6);
-          ctx2d.lineTo(playheadX, rulerH);
-          ctx2d.closePath();
-          ctx2d.fill();
-        }
       }
     });
 
@@ -3099,36 +3119,12 @@ ${codeBlocksXml}
     });
   }
 
-  // DAW Multitrack Toolbar & Channel Strip Event Handlers
+  // DAW Multitrack Toolbar & Track States UI Synchronization
   function syncChannelStripUI() {
-    channelToggleButtons.forEach((btn, idx) => {
-      const tIdx = parseInt(btn.getAttribute('data-channel-idx') || String(idx), 10);
-      const isMuted = tracksMuted[tIdx];
-      const isSolo = (soloTrackIdx === tIdx);
-      btn.classList.toggle('muted-channel', isMuted);
-      btn.classList.toggle('solo-channel', isSolo);
-      btn.setAttribute('aria-pressed', (!isMuted).toString());
-      const labelSpan = btn.querySelector('.btn-channel-label');
-      if (labelSpan) {
-        const trk = abletonTracks[tIdx];
-        labelSpan.textContent = isMuted ? `Mute ${trk.name}` : (isSolo ? `Solo ${trk.name}` : trk.name);
-      }
-    });
     if (ctxMuteLabel) {
       ctxMuteLabel.textContent = tracksMuted[selectedTrackIdx] ? 'Desmutear Pista' : 'Silenciar Pista (Mute)';
     }
   }
-
-  channelToggleButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const tIdx = parseInt(btn.getAttribute('data-channel-idx'), 10);
-      selectedTrackIdx = tIdx;
-      tracksMuted[tIdx] = !tracksMuted[tIdx];
-      syncChannelStripUI();
-      updateSelectionOverlays();
-      drawWaveforms();
-    });
-  });
 
   if (btnUnmuteAll) {
     btnUnmuteAll.addEventListener('click', () => {
@@ -3803,100 +3799,96 @@ ${codeBlocksXml}
     font-weight: 600;
   }
 
-  /* 9-Channel Interactive Mute / Solo Strip */
-  .channels-strip-container {
-    display: grid;
-    grid-template-columns: repeat(9, minmax(0, 1fr));
-    gap: 0.3rem;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 0.4rem;
-  }
-
-  @media (max-width: 900px) {
-    .channels-strip-container {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 550px) {
-    .channels-strip-container {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  .btn-channel-toggle {
+  /* Línea de Tiempo Superior del Single (Cronología Sin IDs) */
+  .daw-timeline-header {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.4rem;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.45rem 0.65rem;
     background: var(--bg-surface-elevated);
     border: 1px solid var(--border-subtle);
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.62rem;
-    color: var(--text-secondary);
-    transition: all 0.15s ease;
-    overflow: hidden;
-    text-align: left;
-    white-space: nowrap;
+    border-radius: 6px;
+    margin-bottom: 0.4rem;
     box-sizing: border-box;
+    flex-wrap: wrap;
   }
 
-  .btn-channel-toggle:hover {
-    border-color: var(--border-strong);
-    background: var(--btn-hover);
+  .timeline-header-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .timeline-header-icon {
+    font-size: 0.85rem;
+  }
+
+  .timeline-header-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
     color: var(--text-primary);
   }
 
-  .btn-channel-toggle .ch-led {
+  .timeline-acts-container {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 1;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .btn-timeline-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.22rem 0.55rem;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px;
+    font-size: 0.66rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-timeline-step:hover {
+    background: var(--btn-hover);
+    border-color: #38bdf8;
+    color: var(--text-primary);
+  }
+
+  .btn-timeline-step.active-act {
+    background: rgba(56, 189, 248, 0.18);
+    border-color: #38bdf8;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+  .btn-timeline-step .timeline-step-bullet {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 0 5px currentColor;
+    background: currentColor;
+    opacity: 0.7;
   }
 
-  .btn-channel-toggle .ch-num {
+  .btn-timeline-step .timeline-step-time {
     font-weight: 700;
-    opacity: 0.8;
+    letter-spacing: 0.02em;
   }
 
-  .btn-channel-toggle .ch-name {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .btn-timeline-step .timeline-step-name {
+    font-weight: 500;
+    opacity: 0.9;
   }
 
-  .btn-channel-toggle .ch-state {
-    font-weight: 800;
-    font-size: 0.58rem;
-    padding: 0.08rem 0.25rem;
-    border-radius: 3px;
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-  }
-
-  .btn-channel-toggle.muted-channel {
-    opacity: 0.45;
-    background: var(--bg-canvas);
-    border-color: var(--border-subtle);
-  }
-
-  .btn-channel-toggle.muted-channel .ch-led {
-    background: #64748b !important;
-    box-shadow: none;
-  }
-
-  .btn-channel-toggle.muted-channel .ch-state {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-  }
-
-  .btn-channel-toggle.solo-channel {
-    border-color: #f59e0b !important;
-    box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+  .btn-timeline-step .timeline-step-dur {
+    font-size: 0.6rem;
+    opacity: 0.65;
   }
 
   .dock-engine-select {
