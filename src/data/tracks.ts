@@ -346,18 +346,21 @@ export const NEUROGENESIS_SECTIONS: SongSection[] = [
     endSec: 65,
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
-    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz', 'Ocarina Modal Chimes', 'Warm Analog Drift Pad', 'Filter Sweep Lookahead'],
-    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 01 CONSERVADA): Comienzo ambient cinemático envolvente. El reloj de cuenta regresiva palpita a 16avos con micropaneo estéreo, sostenido por un subgrave puro a 35 Hz, campanas modales ancestrales y un barrido de filtro que asciende preparando la aceleración métrica progresiva.',
+    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz Swell', 'Ocarina Modal Chimes', 'Warm Analog Drift Pad', 'Filter Sweep Lookahead', 'Incoming Afro-Polyrhythm Shaker'],
+    description: 'NUEVO CHALLENGER (MUTACIÓN SEED 01 CONSERVADA & ANTICIPACIÓN BRAAM): Comienzo ambient cinemático envolvente. El reloj de cuenta regresiva palpita a 16avos con micropaneo estéreo, sostenido por un subgrave puro a 35 Hz. A partir de 00:38 se introducen armónicos de bronce y síncopas precursoras que conectan directamente con la evolución del Braam monumental.',
     strudelCode: `// SECCIÓN 01 (00:00 - 01:05): Ambient Cinemático & Reloj Inmersivo (105 BPM)
-// Mutación Seed 01 conservada: Pulso continuo y atmósfera espacial
+// Mutación Seed 01: Pulso continuo, atmósfera espacial y anticipación del Braam 35Hz
 stack(
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
   note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(160).gain(0.95).slow(2),
   note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,b3]>")
     .s("sawtooth").lpf(sine.range(400, 2800).slow(8)).resonance(12).gain(0.6).room(0.85),
   note("c5 eb5 g5 fs5 bb5 c6").slow(2).s("sine").delay(0.45).delayfeedback(0.7).gain(0.38),
+  // Anticipación sutil de sub-braam a partir de 00:38
+  note("<c0 eb-1 g-1 bb-1>").s("sawtooth").lpf(sine.range(80, 200).slow(8)).gain(0.55).slow(4),
   s("crackle*8").gain(perlin.range(0.08, 0.22)).hpf(3800)
-)`
+)
+`
   },
   {
     id: 'sec-ng-02',
@@ -369,15 +372,16 @@ stack(
     endSec: 135,
     bpm: 118,
     keyCenter: 'C menor / Eb mayor (118 BPM)',
-    instruments: ['Granular Guzheng Arpeggios', 'Syncopated Modular Breakbeat', 'Ghost Snare Rolls', 'Surge XT FM Modular Bass', 'Euclidean Ride 5/8'],
-    description: 'NUEVO CHALLENGER (TRANSCULTURAL ASIA ORIENTAL): Aceleración a 118 BPM. Batería breakbeat fluida y sincopada con redobles fantasma, arpegios granulares de Guzheng y Koto procesados con micro-delays estéreo y bajo modular Surge XT.',
+    instruments: ['Granular Guzheng Arpeggios', 'Syncopated Breakbeat & Afrobeats Polyrhythm', 'Ghost Snare & Euclidean Log Drum', 'Surge XT FM Modular Neuro Bass', 'Euclidean Ride 5/8'],
+    description: 'NUEVO CHALLENGER (MUTACIÓN ITERADA // PATRONES POLIRRÍTMICOS AFROBEAT & BAJO FM DINÁMICO): Responde a la anotación del Director en 00:38 - 01:23 para romper la monotonía. Incorpora polirritmia inspirada en Afrobeats con breakbeat progresivo a 118 BPM, bajo FM neuro Surge XT (12 LFOs) con variaciones tonales constantes y cuerdas de Guzheng granular entrelazadas.',
     strudelCode: `// SECCIÓN 02 (01:05 - 02:15): Breakbeat Progresivo & Guzheng Granular (118 BPM)
-// Polirritmia breakbeat y cuerdas de seda orientales
+// Polirritmia breakbeat, síncopas estilo Afrobeats y cuerdas de seda orientales
 stack(
   s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").gain(1.05),
   s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
   s("hh*16").euclid(11,16).gain("<0.3 0.8 0.45 0.9>*4").hpf(5200),
   s("ride(5,8)").gain(0.4).decay(0.28),
+  // Bajo Neuro FM Surge XT con cambio dinámico de patrones
   note("c2 [~ c2] [eb2!2] [~ f2] [fs2!2] g2 [bb1 c2]")
     .s("sawtooth").lpf(1800).resonance(14).gain(0.88),
   // Guzheng granular arpeggios
