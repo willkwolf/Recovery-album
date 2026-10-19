@@ -348,19 +348,23 @@ stack(
 
   // 2. ENCADENAMIENTO DE ACTOS MEDIANTE ARRANGE & ENVOLVENTES CONTINUAS DE MEZCLA
   arrange([
-    // ACTO 01: Ambient Inmersivo & Reloj (#sec-ng-01 CONSERVADA // 00:00 - 02:00)
-    [120,
+    // ACTO 01: Mashup Ambient Inmersivo & Mutación Sub-Braam 35Hz (00:00 - 01:50 // 110s)
+    [110,
       stack(
-        note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,b3]>")
-          .s("sawtooth").lpf(sine.range(400, 2400).slow(8)).resonance(12).gain(0.6).room(0.85),
-        note("c5 eb5 g5 fs5 bb5 c6").slow(2).s("sine").delay(0.45).delayfeedback(0.7).gain(0.38),
-        // Anticipación de armónicos del Braam preparatoria para el crossfade
-        note("<c0 eb-1 g-1 bb-1>").s("sawtooth").lpf(sine.range(80, 220).slow(8)).gain(sine.range(0.2, 0.6).slow(8)),
-        s("crackle*8").gain(perlin.range(0.08, 0.22)).hpf(3800)
+        // World Building: Atmósfera modal y progresiones ricas que evolucionan sin repeticiones mecánicas
+        note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,f4,b3] [bb2,f3,d4] [c3,g3,eb4,bb4]>")
+          .s("sawtooth").lpf(sine.range(420, 2600).slow(12)).resonance(14).gain(0.58).room(0.88),
+        // Mutación de #sec-ng-07: El Braam 35Hz despierta desde la intro de forma progresiva
+        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(70, 190).slow(10)).gain(sine.range(0.35, 0.95).slow(10)),
+        // Campanas ancestrales de Ocarina of Time con delay sideral y modulación microtonal
+        note("c5 eb5 g5 fs5 bb5 c6 d6 eb6").slow(3).s("sine").delay(0.48).delayfeedback(0.72).gain(0.38),
+        // Cuerdas de seda Guzheng granular entrelazadas sin saturar en repeticiones
+        note("c4 [eb4,g4] bb4 [c5,eb5]").fast(1.5).s("triangle").decay(0.12).gain(sine.range(0.1, 0.35).slow(6)),
+        s("crackle*8").gain(perlin.range(0.06, 0.2)).hpf(4000)
       )
     ],
 
-    // ACTO 02: Transición Continua Crossfader Equal-Power & Morfología Afro-Neuro (02:00 - 04:45)
+    // ACTO 02: Transición Continua Crossfader Equal-Power & Morfología Afro-Neuro (01:50 - 04:35 // 165s)
     [165,
       stack(
         // Batería sincopada con barrido exponencial continuo y envolvente Equal-Power
@@ -378,8 +382,8 @@ stack(
       )
     ],
 
-    // ACTO 03: Braam Monumental 35Hz & Catarsis (#sec-ng-07 CONSERVADA // 04:45 - 07:15)
-    [150,
+    // ACTO 03: Braam Monumental 35Hz & Catarsis (#sec-ng-07 CONSERVADA // 04:35 - 07:15 // 160s)
+    [160,
       stack(
         // Braam descomunal de 35Hz con resonancia de bronce
         note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
@@ -398,43 +402,44 @@ stack(
 export const NEUROGENESIS_SECTIONS: SongSection[] = [
   {
     id: 'sec-ng-01',
-    tag: '[SECCIÓN 01 // AMBIENT CINEMÁTICO & PULSO INMERSIVO] (CONSERVADA)',
-    name: 'Reloj Inmersivo & Espacio Modal (0:00 - 2:00)',
+    tag: '[SECCIÓN 01 // MASHUP AMBIENT & MUTACIÓN SUB-BRAAM 35HZ] (CONSERVADA)',
+    name: 'Mashup Ambient Inmersivo & Mutación Braam 35Hz (0:00 - 1:50)',
     startTime: '00:00',
-    endTime: '02:00',
+    endTime: '01:50',
     startSec: 0,
-    endSec: 120,
+    endSec: 110,
     bpm: 105,
     keyCenter: 'C menor modal / 105 BPM',
-    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz Swell', 'Ocarina Modal Chimes', 'Warm Analog Drift Pad', 'Filter Sweep Lookahead', 'Equal-Power Crossfade Out'],
-    description: 'MUTACIÓN SEMILLA CONSERVADA POR EL DG: Espacio modal ambient inmersivo. El reloj de cuenta regresiva palpita a 16avos con micropaneo estéreo, sostenido por un subgrave puro a 35 Hz. Su cola armónica se entrelaza de forma continua mediante fundido cruzado Equal-Power con el puente modular sin saltos abruptos.',
-    strudelCode: `// SECCIÓN 01 (00:00 - 02:00): Ambient Cinemático & Reloj Inmersivo (105 BPM) [CONSERVADA]
-// Mutación Seed 01: Pulso continuo, atmósfera espacial y anticipación del Braam 35Hz
+    instruments: ['Ticking Countdown Rimshot', 'Sub-Braam 35Hz Swell Mutado', 'Ancestral Ocarina Bells', 'Warm Evolving Analog Pad', 'Granular Silk Guzheng', 'Equal-Power Crossfade Out'],
+    description: 'MUTACIÓN Y MASHUP ORDENADO POR EL DG: Arranca la nueva versión fusionando #sec-ng-01 y la mutación de #sec-ng-07 en una intro progresiva de 1:50 (110s). El world-building cinematográfico se entrelaza con el despertar gradual del Braam monumental a 35Hz, campanas ancestrales de Ocarina of Time con ping-pong delay y progresiones armónicas ricas sin bucles mecánicos repetitivos.',
+    strudelCode: `// SECCIÓN 01 (00:00 - 01:50): Mashup Ambient & Mutación Sub-Braam 35Hz (105 BPM)
+// Intro de 1:50 fusionando world-building ambient con el despertar progresivo del Braam 35Hz
 stack(
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
   note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(160).gain(0.95).slow(2),
-  note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,b3]>")
-    .s("sawtooth").lpf(sine.range(400, 2800).slow(8)).resonance(12).gain(0.6).room(0.85),
-  note("c5 eb5 g5 fs5 bb5 c6").slow(2).s("sine").delay(0.45).delayfeedback(0.7).gain(0.38),
-  // Anticipación sutil de sub-braam a partir de 00:38 preparatoria para el crossfade
-  note("<c0 eb-1 g-1 bb-1>").s("sawtooth").lpf(sine.range(80, 200).slow(8)).gain(0.55).slow(4),
-  s("crackle*8").gain(perlin.range(0.08, 0.22)).hpf(3800)
+  note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,f4,b3] [bb2,f3,d4] [c3,g3,eb4,bb4]>")
+    .s("sawtooth").lpf(sine.range(420, 2600).slow(12)).resonance(14).gain(0.58).room(0.88),
+  // Mutación Braam 35Hz de #sec-ng-07 entrando desde el segundo 30
+  note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(70, 190).slow(10)).gain(sine.range(0.35, 0.95).slow(10)),
+  note("c5 eb5 g5 fs5 bb5 c6 d6 eb6").slow(3).s("sine").delay(0.48).delayfeedback(0.72).gain(0.38),
+  note("c4 [eb4,g4] bb4 [c5,eb5]").fast(1.5).s("triangle").decay(0.12).gain(sine.range(0.1, 0.35).slow(6)),
+  s("crackle*8").gain(perlin.range(0.06, 0.2)).hpf(4000)
 )`
   },
   {
     id: 'sec-ng-bridge',
     tag: '[SECCIÓN 02 // PUENTE CONTINUO CROSSFADER EQUAL-POWER & METRIC MODULATION] (NUEVA ARQUITECTURA)',
-    name: 'Transición Inteligente & Morfología Afro-Neuro (2:00 - 4:45)',
-    startTime: '02:00',
-    endTime: '04:45',
-    startSec: 120,
-    endSec: 285,
+    name: 'Transición Inteligente & Morfología Afro-Neuro (1:50 - 4:35)',
+    startTime: '01:50',
+    endTime: '04:35',
+    startSec: 110,
+    endSec: 275,
     bpm: 118,
     keyCenter: 'Modulación Continua C menor -> Eb mayor (105 -> 118 -> 105 BPM)',
     instruments: ['Dual-Plane Equal-Power Crossfader', 'Polyrhythmic Afrobeat & Modular Breakbeat', 'Surge XT 12 LFO Neuro FM Bass', 'Granular Guzheng Arpeggios', 'Exponential Filter Lookahead Ramps', '1-Beat Tension Breath Gate'],
-    description: 'NUEVA ARQUITECTURA DE ENCADENAMIENTO CONTINUO: Reemplaza las 5 secciones destruidas por un único puente morfogenético con mezcla moderna. Conecta fluidamente el Reloj Inmersivo con el Braam Monumental mediante envolventes de ecualización de potencia constante (Equal-Power: gain_out^2 + gain_in^2 == 1), modulación métrica suave (105 a 118 y retorno a 105 BPM), y transiciones sin cortes en el repl.',
-    strudelCode: `// SECCIÓN 02 (02:00 - 04:45): Puente Continuo Crossfader Equal-Power & Morfología Afro-Neuro (118 BPM)
-// Reemplaza las secciones 02-06 destruidas. Conexión continua sin cortes hacia el Braam.
+    description: 'NUEVA ARQUITECTURA DE ENCADENAMIENTO CONTINUO: Conecta fluidamente la intro mashup con la catarsis mediante envolventes de ecualización de potencia constante (Equal-Power: gain_out^2 + gain_in^2 == 1), modulación métrica suave (105 a 118 y retorno a 105 BPM), y transiciones sin cortes en el repl.',
+    strudelCode: `// SECCIÓN 02 (01:50 - 04:35): Puente Continuo Crossfader Equal-Power & Morfología Afro-Neuro (118 BPM)
+// Conexión continua sin cortes hacia el Braam culminante.
 stack(
   s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]").lpf(sine.range(450, 5200).slow(8)).gain(1.05),
   s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
@@ -452,16 +457,16 @@ stack(
   {
     id: 'sec-ng-07',
     tag: '[SECCIÓN 07 // MONUMENTAL SUB-BRAAM 35HZ & CATARSIS FINAL] (CONSERVADA)',
-    name: 'Braam Monumental & Fuga Sideral (4:45 - 7:15)',
-    startTime: '04:45',
+    name: 'Braam Monumental & Gran Fuga Sideral (4:35 - 7:15)',
+    startTime: '04:35',
     endTime: '07:15',
-    startSec: 285,
+    startSec: 275,
     endSec: 435,
     bpm: 105,
     keyCenter: 'C menor / Eb mayor (105 BPM)',
     instruments: ['Monumental Sub-Braam 35Hz', 'Sidechain Pumped Analog Pads', 'Ancestral Ocarina Bells', 'Deep Space Reverb', 'Distal TR-909 Fade', 'Equal-Power Crossfade In'],
-    description: 'MUTACIÓN SEMILLA CONSERVADA POR EL DG: La catarsis monumental culmina el viaje sonoro unificado. El braam de 35 Hz que se anticipó desde la sección 01 y evolucionó en el puente toma el plano principal sostenido por sintetizadores bombeados por sidechain y campanas ancestrales de Ocarina of Time, desvaneciéndose hacia el silencio cuántico.',
-    strudelCode: `// SECCIÓN 07 (04:45 - 07:15): Monumental Sub-Braam 35Hz & Catarsis (Seed 05) [CONSERVADA]
+    description: 'MUTACIÓN SEMILLA CONSERVADA POR EL DG: La catarsis monumental culmina el viaje sonoro unificado. El braam de 35 Hz que se anticipó y entrelazó en la intro y evolucionó en el puente toma el plano principal sostenido por sintetizadores bombeados por sidechain y campanas ancestrales de Ocarina of Time, desvaneciéndose hacia el silencio cuántico.',
+    strudelCode: `// SECCIÓN 07 (04:35 - 07:15): Monumental Sub-Braam 35Hz & Catarsis (Seed 05) [CONSERVADA]
 // Braam descomunal de 35Hz, bombeo sidechain y disolución cósmica
 stack(
   note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
