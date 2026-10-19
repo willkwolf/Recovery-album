@@ -147,11 +147,11 @@ const challengerTrack = TRACKS[1];
               <div class="crew-dictum-grid">
                 <div class="crew-dictum-item">
                   <span class="crew-role-badge badge-dm">L1 · DM (Music Director)</span>
-                  <span class="crew-role-verdict">"Supervisa el arco macro: transición de 105 a 118 BPM mediante curvas continuas y 'tension breath' antes de la catarsis."</span>
+                  <span class="crew-role-verdict">"Supervisa el arco macro: a partir del minuto 2:00 se introducen patrones completamente nuevos de acuerdo a la dirección de arte, guiados por modulación continua de tempo y tensión."</span>
                 </div>
                 <div class="crew-dictum-item">
                   <span class="crew-role-badge badge-cp">L2 · CP (Composer)</span>
-                  <span class="crew-role-verdict">"Articula la progresión modal C menor / Eb mayor. A los 2 min silencia el bajo para que la melodía OoT y la capa étnica respiren."</span>
+                  <span class="crew-role-verdict">"Orquesta el crescendo: a partir de 1:50 suena toda la orquestación del patrón en unísono pleno; al llegar a 2:00 da inicio formal a los nuevos patrones rítmicos y modulares."</span>
                 </div>
                 <div class="crew-dictum-item">
                   <span class="crew-role-badge badge-sd">L2 · SD (Sound Designer)</span>
@@ -682,10 +682,11 @@ const challengerTrack = TRACKS[1];
       sub: 'Sub 35Hz & Sine Sub-Braam',
       color: '#ef4444',
       clips: [
-        { startSec: 0, endSec: 75, label: 'Despertar Gradual 35Hz (0:40+)', active: true, type: 'sub' },
-        { startSec: 75, endSec: 120, label: 'Ensamble Sub-Braam 35Hz (<2min)', active: true, type: 'sub' },
+        { startSec: 0, endSec: 60, label: 'Despertar Gradual 35Hz (0:40+)', active: true, type: 'sub' },
+        { startSec: 60, endSec: 110, label: 'Ensamble Braam en Crescendo', active: true, type: 'sub' },
+        { startSec: 110, endSec: 120, label: 'Orquestación Plena Unísono (1:50)', active: true, type: 'sub' },
         { startSec: 120, endSec: 135, label: '[BASS DROPOUT // SILENCIO 0ms]', active: false, type: 'silence' },
-        { startSec: 135, endSec: 275, label: 'Sub-Bass Sincopado Mutante', active: true, type: 'sub' },
+        { startSec: 135, endSec: 275, label: 'Nuevos Patrones Sincopados (2:00+)', active: true, type: 'sub' },
         { startSec: 275, endSec: 435, label: 'Monumental Braam & Fuga Sideral', active: true, type: 'sub' }
       ]
     },
@@ -696,9 +697,10 @@ const challengerTrack = TRACKS[1];
       sub: 'Surge XT 12-LFO FM Growl',
       color: '#f97316',
       clips: [
-        { startSec: 0, endSec: 120, label: 'Sub-Harmónico Cálido (En reposo)', active: false, type: 'reese' },
+        { startSec: 0, endSec: 110, label: 'En Reposo // Reserva Tímbrica', active: false, type: 'reese' },
+        { startSec: 110, endSec: 120, label: 'Swell Unísono Orquestal (1:50)', active: true, type: 'reese' },
         { startSec: 120, endSec: 135, label: '[APAGÓN DE BAJOS // DESACTIVADO]', active: false, type: 'silence' },
-        { startSec: 135, endSec: 275, label: 'Surge XT FM Growl Mutado', active: true, type: 'reese' },
+        { startSec: 135, endSec: 275, label: 'Nuevos Patrones Surge XT FM (2:00+)', active: true, type: 'reese' },
         { startSec: 275, endSec: 435, label: 'Reese Sideral en Decaimiento', active: true, type: 'reese' }
       ]
     },
@@ -1413,19 +1415,32 @@ const challengerTrack = TRACKS[1];
             if (stepInBar === 0) playKick(ctx, time, 120, 36, 0.65 * g1);
             if (stepInBar % 8 === 4) playNoise(ctx, time, 0.18 * g1, 5800, 0.05);
           }
-          // Canal 01: SUB-BASS (Despertar gradual del Braam 35Hz a partir de s >= 75, pleno antes de 2min)
+          // Canal 01: SUB-BASS (Despertar gradual del Braam 35Hz a partir de s >= 60, pleno al 100% en 1:50 // s >= 110)
           if (isTrackAudible(0)) {
-            if (s >= 75 && stepInBar === 0) {
-              const subVol = Math.min(0.9, 0.35 + ((s - 75) / 35) * 0.55);
+            if (s >= 60 && stepInBar === 0) {
+              const subVol = Math.min(1.0, 0.35 + ((s - 60) / 50) * 0.65);
               playMonumentalBraam(ctx, time, 35, subVol * g1, 2.4);
             }
           }
-          // Canal 03: LEAD SYNTH (Polifonía aprobada ensamblada a partir de s >= 80)
-          if (isTrackAudible(2) && s >= 80) {
+          // Canal 03: LEAD SYNTH (Polifonía aprobada en crescendo, orquestación completa en 1:50 // s >= 110)
+          if (isTrackAudible(2) && s >= 70) {
             if (tickerStep % 2 === 0) {
               const polyNotes = [261.63, 311.13, 349.23, 392.00, 523.25];
-              playTriangle(ctx, time, polyNotes[(tickerStep / 2) % polyNotes.length], 0.25 * g1, 0.14);
+              const leadVol = Math.min(0.38, 0.18 + ((s - 70) / 40) * 0.2);
+              playTriangle(ctx, time, polyNotes[(tickerStep / 2) % polyNotes.length], leadVol * g1, 0.14);
             }
+          }
+          // Canal 02: NEURO BASS (Swell armónico que entra en 1:50 // s >= 110 preparando la orquestación total de Acto 1)
+          if (isTrackAudible(1) && s >= 110 && s < 120) {
+            if (stepInBar === 0 || stepInBar === 8) {
+              const rNotes = [65.41, 77.78, 87.31, 98.00];
+              playSaw(ctx, time, rNotes[chordIdx], 0.35 * g1, 1200, 0.45);
+            }
+          }
+          // Canal 09: TEXTURAS / FX (White noise tension sweep antes del corte del minuto 2:00 // s >= 115)
+          if (isTrackAudible(8) && s >= 115 && s < 120) {
+            const sweepProg = (s - 115) / 5;
+            playNoise(ctx, time, (0.05 + sweepProg * 0.3) * g1, 800 + sweepProg * 4500, 0.08);
           }
         }
 
