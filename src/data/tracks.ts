@@ -336,30 +336,42 @@ stack(
 ];
 
 export const NEUROGENESIS_MASTER_COMPILED_STRUDEL: string = `// ==============================================================================
-// RECOVERY // SINGLE MAESTRO COMPILADO: REWIRED // NEURO-GENESIS (SUITE CONTINUA)
-// Código único compilado gobernado por una sola línea de tiempo ininterrumpida
-// Arquitectura encadenada con Crossfader Equal-Power (gain_out^2 + gain_in^2 == 1.0)
-// Conserva #sec-ng-01 y #sec-ng-07; secciones 02-06 destruidas y unificadas en puente continuo.
+// RECOVERY // SINGLE MAESTRO COMPILADO: REWIRED // NEURO-GENESIS (SINGLE TERMINADO)
+// Suite continua integral (07:15) gobernada por una sola línea de tiempo ininterrumpida
+// Directiva DG: Inicio suave coral progresivo sin bajo + Mutación #sec-ng-07 integrada (00:40-01:39)
 // ==============================================================================
 stack(
   // 1. ESPINA CONTINUA INALTERADA (PULSO VIBE CORE 35Hz A LO LARGO DE TODA LA OBRA)
   s("rim*16").pan(sine.range(0.2, 0.8).slow(4)).gain("<0.65 0.85 0.7 0.95>*4"),
-  note("<c1 g0 eb0 bb0>").s("sawtooth").lpf(160).gain(0.95).slow(2),
 
   // 2. ENCADENAMIENTO DE ACTOS MEDIANTE ARRANGE & ENVOLVENTES CONTINUAS DE MEZCLA
   arrange([
-    // ACTO 01: Mashup Ambient Inmersivo & Mutación Sub-Braam 35Hz (00:00 - 01:50 // 110s)
-    [110,
+    // ACTO 01-A: Inicio suave coral progresivo (00:00 - 00:40 // 40s) — Sin bajo aplastante
+    [40,
       stack(
-        // World Building: Atmósfera modal y progresiones ricas que evolucionan sin repeticiones mecánicas
+        // Inicio Coral Progresivo (Pads etéreos en C menor modal sin sub-bass)
+        note("<[c4,g4,eb5] [ab3,eb4,c5] [f3,c4,ab4] [g3,d4,f5,b4]>")
+          .s("sawtooth").lpf(sine.range(320, 1800).slow(8)).gain(sine.range(0.25, 0.65).slow(8)).room(0.92),
+        // Notas suaves antes del bajo: Campanas de seda Ocarina of Time y microtonalidad
+        note("c5 [eb5 g5] ~ [fs5 bb5] c6 ~").slow(2).s("sine").delay(0.55).delayfeedback(0.75).gain(0.4),
+        // Cuerdas de seda Guzheng granular progresivo
+        note("c4 [eb4,g4] bb4").fast(1.5).s("triangle").decay(0.15).gain(sine.range(0.08, 0.3).slow(4)),
+        s("crackle*8").gain(perlin.range(0.04, 0.15)).hpf(4200)
+      )
+    ],
+
+    // ACTO 01-B: Mutación #sec-ng-07 // Sub-Braam 35Hz despierta & World-Building (00:40 - 01:50 // 70s)
+    [70,
+      stack(
+        // Entrada del bajo: Despertar gradual del Braam 35Hz (mutación de #sec-ng-07)
+        note("<c0 g-1 eb-1 bb-1>")
+          .s("sawtooth").lpf(sine.range(65, 210).slow(8)).gain(sine.range(0.4, 1.05).slow(8)),
+        // Armonía modal enriquecida en capas evolutivas
         note("<[c3,g3,eb4] [ab2,eb3,c4] [f2,c3,ab3] [g2,d3,f4,b3] [bb2,f3,d4] [c3,g3,eb4,bb4]>")
-          .s("sawtooth").lpf(sine.range(420, 2600).slow(12)).resonance(14).gain(0.58).room(0.88),
-        // Mutación de #sec-ng-07: El Braam 35Hz despierta desde la intro de forma progresiva
-        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(sine.range(70, 190).slow(10)).gain(sine.range(0.35, 0.95).slow(10)),
-        // Campanas ancestrales de Ocarina of Time con delay sideral y modulación microtonal
-        note("c5 eb5 g5 fs5 bb5 c6 d6 eb6").slow(3).s("sine").delay(0.48).delayfeedback(0.72).gain(0.38),
-        // Cuerdas de seda Guzheng granular entrelazadas sin saturar en repeticiones
-        note("c4 [eb4,g4] bb4 [c5,eb5]").fast(1.5).s("triangle").decay(0.12).gain(sine.range(0.1, 0.35).slow(6)),
+          .s("sawtooth").lpf(sine.range(420, 2800).slow(10)).resonance(14).gain(0.65).room(0.85),
+        // Guzheng y campanas ancestrales
+        note("c5 eb5 g5 fs5 bb5 c6 d6 eb6").slow(2.5).s("sine").delay(0.45).delayfeedback(0.7).gain(0.42),
+        note("c4 [eb4,g4] bb4 [c5,eb5]").fast(2).s("triangle").decay(0.12).gain(0.32),
         s("crackle*8").gain(perlin.range(0.06, 0.2)).hpf(4000)
       )
     ],
@@ -367,14 +379,15 @@ stack(
     // ACTO 02: Transición Continua Crossfader Equal-Power & Morfología Afro-Neuro (01:50 - 04:35 // 165s)
     [165,
       stack(
-        // Batería sincopada con barrido exponencial continuo y envolvente Equal-Power
+        // Batería sincopada inspirada en polirritmias Afrobeats con barrido continuo
         s("bd:3 [~ bd:1] ~ [bd:3 ~] ~ [bd:2 ~] [sd:2, cp] [~ sd:3*2]")
           .lpf(sine.range(450, 5200).slow(8)).gain(1.05),
+        s("~ sn:1*4 ~ sn:1*2").gain("<0.25 0.6 0.35 0.75>*4").pan(sine.range(0.3, 0.7).slow(2)),
         s("hh*16").euclid(11,16).gain(sine.range(0.25, 0.9).slow(6)).hpf(4800),
         s("ride(5,8)").gain(0.4).decay(0.28),
         // Bajo Neuro FM Surge XT con modulación formántica continua (12 LFOs)
         note("c2 [~ c2] [eb2!2] [~ f2] [fs2!2] g2 [bb1 c2]")
-          .s("sawtooth").lpf(sine.range(500, 3600).slow(6)).resonance(18).distort(0.45).gain(0.88),
+          .s("sawtooth").lpf(sine.range(500, 3600).slow(6)).resonance(18).distort(0.45).gain(0.9),
         // Cuerdas de seda Guzheng granulares
         note("c4 eb4 f4 g4 bb4 c5 eb5").fast(3).s("triangle").decay(0.08).gain(0.42).pan(sine.range(0.15, 0.85).fast(2)),
         // Rampa de aproximación al Braam 35Hz
@@ -382,16 +395,16 @@ stack(
       )
     ],
 
-    // ACTO 03: Braam Monumental 35Hz & Catarsis (#sec-ng-07 CONSERVADA // 04:35 - 07:15 // 160s)
+    // ACTO 03: Braam Monumental 35Hz & Gran Fuga Sideral (#sec-ng-07 // 04:35 - 07:15 // 160s)
     [160,
       stack(
         // Braam descomunal de 35Hz con resonancia de bronce
-        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.15).slow(2),
+        note("<c0 g-1 eb-1 bb-1>").s("sawtooth").lpf(160).gain(1.18).slow(2),
         // Pads bombeados rítmicamente por sidechain
         note("<[c3,g3,c4,eb4] [eb3,bb3,eb4,g4] [f3,c4,f4,ab4] [g3,d4,g4,bb4]>")
           .s("sawtooth").lpf(sine.range(500, 2400).slow(6)).gain("<0.15 0.95 0.3 0.95>*4").room(0.85),
         // Campanas ancestrales de Ocarina of Time con ping-pong delay sideral
-        note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.42),
+        note("c5 eb5 g5 fs5 bb5 c6 bb5 g5").slow(2).s("sine").delay(0.5).delayfeedback(0.78).gain(0.45),
         s("bd*4").bank("RolandTR909").lpf(sine.range(400, 120).slow(8)).gain(0.65),
         s("crackle*8").gain(perlin.range(0.08, 0.25)).hpf(3500)
       )
